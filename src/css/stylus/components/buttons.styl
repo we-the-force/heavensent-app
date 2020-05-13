@@ -1,0 +1,44 @@
+.btns-cont
+    margin 0px
+
+    &.center
+        flex-cont(row, center, center)
+
+    &.two
+        flex-cont(row, space-between, center)
+        padding 0px 15px
+
+    .button
+        height 48px
+        width fit-content
+        padding 0px 30px
+        text-transform unset
+
+        &.round
+            border-radius 24px
+            font-template(500, 16px, 24px)
+
+            &.face
+                color blue_face !important
+
+            &.color-white
+                background Grey_light_1
+                border 0.5px solid #f4f3f3
+                box-shadow-button(white, #f3f3f3)
+                color blue
+
+            &.color-blue
+                background blue
+                border 0.5px solid #e6e6e6
+                box-shadow-button(#4ad2f2, #17abe9)
+                color white
+
+            &.small
+                min-width 118px
+
+        &.link
+            font-template(normal, 16px, 22px)
+            height 22px !important
+
+            &.color-blue
+                color blue

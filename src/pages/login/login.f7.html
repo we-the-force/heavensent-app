@@ -1,0 +1,53 @@
+<template>
+	<div class="page" data-name="login-screen" id="login-screen">
+		<div class="sqr_bck" id="sqr1"></div>
+		<div class="sqr_bck" id="sqr2"></div>
+		<div class="sqr_bck" id="sqr3"></div>
+		<div class="sqr_bck" id="sqr4"></div>
+		<div class="page-content" id="login-screen">
+			<div class="logo-cont">
+				<img src="../../static/img/LOGO.png" alt="" class="logo" id="title" />
+			</div>
+			<div class="inputs list">
+				<ul>
+					<li class="item-content item-input">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="email" id="email" placeholder="e-mail" required validate />
+								<i class="icons material-icons">edit</i>
+								<!-- <span class="input-clear-button"></span> -->
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="password" id="password" placeholder="Password" required validate />
+								<i class="icons material-icons">edit</i>
+								<!-- <span class="input-clear-button"></span> -->
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="btns-cont center face">
+				<button class="button round color-white face">Login with Facebook</button>
+			</div>
+			<div class="btns-cont two">
+				<button class="button round color-white small">Sing up</button>
+				<button class="button round color-blue small">Login</button>
+			</div>
+			<div class="btns-cont center pass">
+				<button class="button link color-blue">Forgot password?</button>
+			</div>
+		</div>
+	</div>
+</template>
+<script>
+	import $$ from "dom7";
+	export default {
+		on: {
+			pageInit: function (e, page) {},
+		},
+	};
+</script>
