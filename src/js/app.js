@@ -22,7 +22,9 @@ var app = new Framework7({
   name: 'Heaven Sent', // App name
   theme: 'auto', // Automatic theme detection
 
-
+  data: {
+    server: 'http://localhost:1337'
+  },
 
   // App routes
   routes: routes,
