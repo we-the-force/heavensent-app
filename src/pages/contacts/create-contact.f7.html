@@ -1,0 +1,100 @@
+<template>
+    <div class="page" data-name="create-contact">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="if-not-md">Back</span>
+                    </a>
+                </div>
+                <div class="title">Create family member</div>
+            </div>
+        </div>
+        <div class="page-content">
+            <a href="">Imagen de perfil</a>
+            <div class="inputs list">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="name" placeholder="name" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="email" id="email" placeholder="email" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="mobile" placeholder="mobile" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="relation" placeholder="relation" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="date" id="birthday" placeholder="birthday" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <label class="item-checkbox item-content">
+                            <div class="item-inner">
+                                <div class="item-title">Is administrator?</div>
+                            </div>
+                            <input type="checkbox" id="is-admin" name="demo-checkbox" checked="checked"/>
+                            <i class="icon icon-checkbox"></i>
+                        </label>
+                    </li>
+                    <li class="item-content item-input">
+                        <label class="item-checkbox item-content">
+                            <div class="item-inner">
+                                <div class="item-title">Edit memories:</div>
+                            </div>
+                            <input type="checkbox" id="edit-memories" name="demo-checkbox" checked="checked"/>
+                            <i class="icon icon-checkbox"></i>
+                        </label>
+                    </li>
+                    <li class="item-content">
+                        <p></p>
+                    </li>
+                    <li class="item-content item-input">
+                        <label class="item-checkbox item-content">
+                            <div class="item-inner">
+                                <div class="item-title">Is a minor?</div>
+                            </div>
+                            <input type="checkbox" id="is-minor" name="demo-checkbox" checked="checked"/>
+                            <i class="icon icon-checkbox"></i>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="btns-cont center">
+                <a id="create-guardian-btn" class="button color-white round small">select or create guardian</a>
+            </div>
+            <div class="btns-cont center">
+                <a id="create-member-btn" class="button color-blue round small">Create member</a>
+            </div>
+        </div>
+    </div>
+    
+</template>
+<script>
+    export default{
+        
+    }
+</script>

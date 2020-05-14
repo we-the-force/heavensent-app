@@ -1,5 +1,6 @@
-import Login from '../pages/login/login.f7.html'
-import SignupStep1 from '../pages/signup/signup-step1.f7.html'
+import Login from '../pages/login/login.f7.html';
+import SignupStep1 from '../pages/signup/signup-step1.f7.html';
+import CreateContact from '../pages/contacts/create-contact.f7.html'
 
 import HomePage from '../pages/home.f7.html';
 import AboutPage from '../pages/about.f7.html';
@@ -20,6 +21,11 @@ var routes = [{
     name: 'signup-step1',
     path: '/signup-step1/',
     component: SignupStep1,
+},
+{
+    name: 'create-contact',
+    path: '/create-contact/',
+    component: CreateContact,
 },
 {
     name: 'about',
