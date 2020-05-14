@@ -187,15 +187,9 @@
 				this.$update();
 			},
 			alertLoginData() {
-				this.$f7.dialog.alert(
-					"Username: " +
-						this.username +
-						"<br>Password: " +
-						this.password,
-					() => {
-						this.$f7.loginScreen.close();
-					}
-				);
+				this.$f7.dialog.alert("Username: " + this.username + "<br>Password: " + this.password, () => {
+					this.$f7.loginScreen.close();
+				});
 			},
 		},
 	};

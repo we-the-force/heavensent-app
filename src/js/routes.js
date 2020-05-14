@@ -1,9 +1,9 @@
-import Login from '../pages/login/login.f7.html'
+import Login from '../pages/login/login.f7.html';
+import Recovery from '../pages/login/recovery.f7.html';
 
 import HomePage from '../pages/home.f7.html';
 import AboutPage from '../pages/about.f7.html';
 import FormPage from '../pages/form.f7.html';
-
 import LeftPage1 from '../pages/left-page-1.f7.html';
 import LeftPage2 from '../pages/left-page-2.f7.html';
 import DynamicRoutePage from '../pages/dynamic-route.f7.html';
@@ -12,7 +12,13 @@ import NotFoundPage from '../pages/404.f7.html';
 
 var routes = [{
     path: '/',
+    name: 'login',
     component: Login,
+},
+{
+    path: '/recovery/',
+    name: 'recovery',
+    component: Recovery,
 },
 {
     path: '/about/',
