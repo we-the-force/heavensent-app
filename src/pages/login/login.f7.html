@@ -5,6 +5,7 @@
 		<div class="sqr_bck" id="sqr3"></div>
 		<div class="sqr_bck" id="sqr4"></div>
 		<div class="page-content" id="login-screen">
+			
 			<div class="logo-cont">
 				<img src="../../static/img/LOGO.png" alt="" class="logo" id="title" />
 			</div>
@@ -35,7 +36,7 @@
 			</div>
 			<div class="btns-cont two">
 				<a class="button round color-white small">Sing up</a>
-				<a class="button round color-blue small">Login</a>
+				<a id="login-btn" class="button round color-blue small">Login</a>
 			</div>
 			<div class="btns-cont center pass">
 				<a class="button link color-blue" href="/recovery/">Forgot password?</a>
@@ -47,7 +48,39 @@
 	import $$ from "dom7";
 	export default {
 		on: {
-			pageInit: function (e, page) {},
+			pageInit: function (e, page) {
+				var self = this;
+				// console.log(this);
+				var emailInputValue = '';
+				var passwordInputValue = '';
+
+				$$('#email').val('will@wetheforce.com');
+				$$('#password').val('123456789');
+				emailInputValue=$$('#email').val();
+
+				console.log(emailInputValue);
+				// password_login=$$
+				var app = self.$app;
+
+				$$('#login-btn').on('click', function (e) {
+					e.preventDefault();
+					emailInputValue=$$('#email').val();
+					passwordInputValue=$$('#password').val();
+					
+					app.preloader.show('blue');
+					app.request.promise.postJSON(app.data.server+'/auth/local', {
+						"identifier": emailInputValue,
+						"password": passwordInputValue
+					})
+					.then(function (res) {
+						app.preloader.hide();
+						app.views.main.router.navigate({name: 'about'});
+					})
+					.catch(function (err) {
+						console.log(err);
+					});
+				});
+			},
 		},
 	};
 </script>
