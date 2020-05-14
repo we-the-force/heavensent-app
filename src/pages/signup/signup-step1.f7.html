@@ -1,0 +1,143 @@
+<template>
+    <div class="page" data-name="signup-step1">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="if-not-md">Back</span>
+                    </a>
+                </div>
+                <div class="title">Sign up</div>
+            </div>
+        </div>
+        <div class="page-content">
+            <a href="">Imagen de perfil</a>
+            <div class="inputs list">
+                <ul>
+                    
+                    <!-- li.item-content.item-input> -->
+                    <!-- li.item-content.item-input>.item-inner>.item-input-wrap -->
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="name" placeholder="Name" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="date" id="birthday" placeholder="Birthday" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="mobile" placeholder="Mobile" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="email" id="email" placeholder="Email" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="password" id="password" placeholder="Password" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="email" id="admin-email" placeholder="Admin email" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <label class="item-checkbox item-content">
+                            <div class="item-inner">
+                                <div class="item-title">Admin can edit?</div>
+                            </div>
+                            <input type="checkbox" id="admin-edit" name="demo-checkbox" value="Books" checked="checked"/>
+                            <i class="icon icon-checkbox"></i>
+                            
+                        </label>
+                        <!-- <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="email" id="admin-email" placeholder="Admin email" required validate>
+                            </div>
+                        </div> -->
+                    </li>
+                </ul>
+            </div>
+            <div class="btns-cont center">
+                <a id="create-btn" class="button color-blue round small">Create account</a>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import $$ from "dom7";
+    export default {
+        // auth/local/register
+        on:{
+            pageInit: function(e, page)
+            {
+                var self = this;
+                var app = self.$app;
+                
+                var username = '', birthday='', mobile='', email='',password='',adminEmail='';
+                var profilePicture = '';
+                var adminCouldEdit = '';
+                
+                // Nomas pa testear, quitarlo mas al ratito.
+                $$('#name').val('test1');
+                $$('#birthday').val('01/01/1990');
+                $$('#mobile').val('123456789');
+                $$('#email').val('asd@asd.com');
+                $$('#password').val('1234567890');
+                $$('#admin-email').val('dsa@dsa.com');
+                // $$('#').val('test1');
+
+
+                $$('#create-btn').on('click', function(e){
+                    e.preventDefault();
+                    
+                    username=$$('#name').val();
+                    birthday=$$('#birthday').val();
+                    mobile = $$('#mobile').val();
+                    email=$$('#email').val();
+                    password=$$('#password').val();
+                    adminEmail=$$('#admin-email').val();
+                    adminCouldEdit=$$('#admin-edit').val();
+
+					app.preloader.show('blue');
+                    app.request.promise.postJSON(app.data.server + '/auth/local/register',{
+                        "username": username,
+                        "birthday": birthday,
+                        "mobile": mobile,
+                        "email": email,
+                        "password": password,
+                        // "adminEmail"
+                    })
+                    .then(function (res) {
+                        app.preloader.hide();
+                        app.views.main.router.navigate({name: 'login'})
+                    })
+                    .catch(function (err) {
+                        console.log('Errorerror!');
+                        console.log(err);
+                    });
+                })
+            }
+        }
+    };
+</script>
