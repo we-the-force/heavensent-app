@@ -1,15 +1,15 @@
 <template>
-	<div class="page" data-name="recovery" id="recovery">
+	<div class="page" data-name="recovery-new-pass" id="recovery-new-pass">
 		<div class="sqr_bck" id="sqr1"></div>
 		<div class="sqr_bck" id="sqr2"></div>
 		<div class="sqr_bck" id="sqr3"></div>
-		<div class="page-content" id="recovery">
+		<div class="page-content" id="recovery-new-pass">
 			<div class="header-cont">
 				<div class="header">
 					<a href="" class="back-btn back">
 						<i class="icons material-icons">chevron_left</i>
 					</a>
-					<h1 class="title">Forgot password?</h1>
+					<h1 class="title">Change password</h1>
 					<div class="none"></div>
 				</div>
 			</div>
@@ -21,7 +21,7 @@
 			</div>
 			<div class="text-cont">
 				<p class="text">
-					Enter your email address and we will send you instructions to reset your password
+					Create a new password
 				</p>
 			</div>
 			<div class="inputs list">
@@ -29,7 +29,16 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="email" placeholder="e-mail" required validate />
+								<input type="password" id="pass" placeholder="New password" required validate />
+								<i class="icons material-icons">edit</i>
+								<!-- <span class="input-clear-button"></span> -->
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="password" id="pass_2" placeholder="Repeat password" required validate />
 								<i class="icons material-icons">edit</i>
 								<!-- <span class="input-clear-button"></span> -->
 							</div>
@@ -38,7 +47,7 @@
 				</ul>
 			</div>
 			<div class="btns-cont center">
-				<a href="/recovery/mailSend" class="button round color-blue large">Recover password</a>
+				<a href="/" class="button round color-blue large">Save password</a>
 			</div>
 		</div>
 	</div>

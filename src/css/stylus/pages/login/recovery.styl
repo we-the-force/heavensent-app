@@ -1,5 +1,5 @@
 .page
-    &#recovery
+    &#recovery, &#recovery-mail, &#recovery-new-pass
         .sqr_bck
             deg = -37.5deg
 
@@ -19,29 +19,44 @@
                 right -200px
 
     .page-content
-        flex-cont(column, center, unset)
+        &#recovery, &#recovery-mail, &#recovery-new-pass
+            flex-cont(column, center, unset)
 
-        .header-cont
-            flex-grow 0
+            .header-cont
+                flex-grow 0
 
-            h1
-                color Grey_dark_2
+                h1
+                    color Grey_dark_2
 
-        .logo-cont
-            flex-grow 1
-            flex-cont(column, center, center)
+            .logo-cont
+                flex-grow 1
+                flex-cont(column, center, center)
 
-        .text-cont
-            flex-grow 0
-            padding 0px 15px 10px 15px
+                .logo
+                    transform translate(0px, 5%)
 
-            .text
-                margin 0px
+            .text-cont
+                flex-grow 0
+                padding 0px 40px
+                flex-cont(column, center, center)
 
-        .inputs
-            flex-grow 0
+                .text
+                    margin 0px
 
-        .btns-cont
-            flex-grow 2
-            align-items flex-start
-            padding-top 40px
+            .inputs
+                flex-grow 0
+
+            .btns-cont
+                flex-grow 2
+
+        &#recovery
+            .text-cont
+                padding 0px 15px 10px 15px
+
+            .btns-cont
+                align-items flex-start
+                padding-top 40px
+
+        &#recovery-new-pass
+            .text-cont
+                flex-grow 0.5
