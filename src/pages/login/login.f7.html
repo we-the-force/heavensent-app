@@ -32,14 +32,14 @@
 				</ul>
 			</div>
 			<div class="btns-cont center face">
-				<button class="button round color-white face">Login with Facebook</button>
+				<a class="button round color-white face">Login with Facebook</a>
 			</div>
 			<div class="btns-cont two">
-				<button class="button round color-white small">Sing up</button>
-				<button id="login-btn" class="button round color-blue small">Login</button>
+				<a class="button round color-white small">Sing up</a>
+				<a id="login-btn" class="button round color-blue small">Login</a>
 			</div>
 			<div class="btns-cont center pass">
-				<button class="button link color-blue">Forgot password?</button>
+				<a class="button link color-blue" href="/recovery/">Forgot password?</a>
 			</div>
 		</div>
 	</div>
@@ -63,9 +63,10 @@
 				var app = self.$app;
 
 				$$('#login-btn').on('click', function (e) {
+					e.preventDefault();
 					emailInputValue=$$('#email').val();
 					passwordInputValue=$$('#password').val();
-					e.preventDefault();
+					
 					app.preloader.show('blue');
 					app.request.promise.postJSON(app.data.server+'/auth/local', {
 						"identifier": emailInputValue,
