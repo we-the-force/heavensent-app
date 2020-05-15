@@ -5,6 +5,9 @@ import RecoveryNewPass from '../pages/login/recovery-new-pass.f7.html';
 
 import SignupStep1 from '../pages/signup/signup-step1.f7.html'
 import CreateContact from '../pages/contacts/create-contact.f7.html'
+import CreateGuardian from '../pages/guardian/create-guardian.f7.html'
+
+import ViewFamily from '../pages/family/view-family.f7.html'
 
 import HomePage from '../pages/home.f7.html';
 import AboutPage from '../pages/about.f7.html';
@@ -44,6 +47,16 @@ var routes = [{
     name: 'create-contact',
     path: '/create-contact/',
     component: CreateContact,
+},
+{
+    name: 'create-guardian',
+    path: '/create-guardian/',
+    component: CreateGuardian,
+},
+{
+    name: 'view-family',
+    path: '/view-family',
+    component: ViewFamily,
 },
 {
     name: 'about',
