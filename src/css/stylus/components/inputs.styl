@@ -6,7 +6,7 @@
 
         .item-inner
             flex-direction unset
-            padding 15px 8px 15px 0px
+            padding 20px 8px 20px 0px
 
         .item-input-wrap
             height 46px
@@ -27,3 +27,14 @@
 
             &:after
                 content none !important
+
+.ios
+    .item-input-wrap::after, .item-inner::after
+        content none
+
+    .item-input-error-message
+        position absolute
+        margin-bottom 0px
+        margin-top 0px
+        bottom -18px
+        left 30px
