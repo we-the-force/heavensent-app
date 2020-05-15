@@ -3,6 +3,8 @@ import Recovery from '../pages/login/recovery.f7.html';
 import RecoveryMailSend from '../pages/login/recovery-mail-send.f7.html';
 import RecoveryNewPass from '../pages/login/recovery-new-pass.f7.html';
 
+import SignupStep1 from '../pages/signup/signup-step1.f7.html'
+
 import HomePage from '../pages/home.f7.html';
 import AboutPage from '../pages/about.f7.html';
 import FormPage from '../pages/form.f7.html';
@@ -13,6 +15,7 @@ import RequestAndLoad from '../pages/request-and-load.f7.html';
 import NotFoundPage from '../pages/404.f7.html';
 
 var routes = [{
+    name: 'login',
     path: '/',
     name: 'login',
     component: Login,
@@ -30,6 +33,11 @@ var routes = [{
     path: '/recovery/newPass',
     name: 'recovery_new_pass',
     component: RecoveryNewPass,
+},
+{
+    name: 'signup-step1',
+    path: '/signup-step1/',
+    component: SignupStep1,
 },
 {
     name: 'about',
