@@ -4,6 +4,8 @@ import RecoveryMailSend from '../pages/login/recovery-mail-send.f7.html';
 import RecoveryNewPass from '../pages/login/recovery-new-pass.f7.html';
 
 import SignupStep1 from '../pages/signup/signup-step1.f7.html'
+import SignupConfirm from '../pages/signup/signup-confirm.f7.html'
+import ImportContacts from '../pages/contacts/import-contacts.f7.html'
 import CreateContact from '../pages/contacts/create-contact.f7.html'
 import CreateGuardian from '../pages/guardian/create-guardian.f7.html'
 import InviteAdmin from '../pages/contacts/invite-admin.f7.html'
@@ -43,6 +45,16 @@ var routes = [{
     name: 'signup-step1',
     path: '/signup-step1/',
     component: SignupStep1,
+},
+{
+    name: 'signup-confirm',
+    path: '/signup-confirm/',
+    component: SignupConfirm,
+},
+{
+    name: 'import-contacts',
+    path: '/import-contacts/',
+    component: ImportContacts,
 },
 {
     name: 'create-contact',
