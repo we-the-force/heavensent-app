@@ -6,6 +6,7 @@ import RecoveryNewPass from '../pages/login/recovery-new-pass.f7.html';
 import SignupStep1 from '../pages/signup/signup-step1.f7.html'
 import CreateContact from '../pages/contacts/create-contact.f7.html'
 import CreateGuardian from '../pages/guardian/create-guardian.f7.html'
+import InviteAdmin from '../pages/contacts/invite-admin.f7.html'
 
 import ViewFamily from '../pages/family/view-family.f7.html'
 
@@ -52,6 +53,11 @@ var routes = [{
     name: 'create-guardian',
     path: '/create-guardian/',
     component: CreateGuardian,
+},
+{
+    name: 'invite-admin',
+    path: '/invite-admin/',
+    component: InviteAdmin,
 },
 {
     name: 'view-family',
