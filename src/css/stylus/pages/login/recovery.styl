@@ -62,3 +62,25 @@
         &#recovery-new-pass
             .text-cont
                 flex-grow 0.5
+
+@media (min-width 480px)
+    .page-content
+        align-items center !important
+
+        .header-cont, .logo-cont, .text-cont, .inputs, .btns-cont
+            min-width 480px
+
+@media screen and (min-width 1024px) and (orientation landscape)
+    .page
+        &#recovery, &#recovery-mail, &#recovery-new-pass
+            .sqr_bck
+                &#sqr2
+                    left calc(-345px + 30%)
+
+                &#sqr3
+                    left calc(-200px + 30%)
+
+        .page-content
+            .header
+                .back-btn
+                    visibility hidden
