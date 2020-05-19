@@ -11,6 +11,8 @@ import SignupConfirm from '../pages/signup/signup-confirm.f7.html'
 import ImportContacts from '../pages/contacts/import-contacts.f7.html'
 import InviteAdmin from '../pages/contacts/invite-admin.f7.html'
 
+import CreateMemory from '../pages/memory/create-memory.f7.html'
+
 import ViewFamily from '../pages/family/view-family.f7.html'
 
 import HomePage from '../pages/home.f7.html';
@@ -82,6 +84,11 @@ var routes = [{
     name: 'view-family',
     path: '/view-family',
     component: ViewFamily,
+},
+{
+    name: 'create-memory',
+    path: '/create-memory/',
+    component: CreateMemory,
 },
 {
     name: 'about',

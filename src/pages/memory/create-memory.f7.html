@@ -1,0 +1,125 @@
+<template>
+    <div class="page" data-name="create-memory">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="if-not-md">Back</span>
+                    </a>
+                </div>
+                <div class="title">Create Memory</div>
+            </div>
+        </div>
+        <div class="page-content">
+            <p>.</p>
+            <div class="inputs list">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="title" placeholder="Title" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <textarea id="description" placeholder="Description"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="list">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">Notes</div>
+                            <div class="item-input-wrap inputs">
+                                <textarea id="notes-description" placeholder="Text"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="btns-cont center">
+                <a id="add-note-btn" class="button color-blue round small">Add note</a>
+            </div>
+            <p>,</p>
+            <div class="list inputs">
+                <ul>
+                    <li class="item-content item-input">
+                        <span>On Demand  <a id="on-demand-info" class="">I</a></span>
+                        <label class="toggle">
+                            <input id="on-demand-toggle" type="checkbox">
+                            <span class="toggle-icon"></span>
+                        </label>
+                    </li>
+                    <li>
+                        <p><span id="space-progressbar" data-progress="10" class="progressbar"></span></p>
+                        <div class="center">Available space 100MB our of 100MB</div>
+                    </li>
+                    <li>
+                        <!-- cover -->
+                    </li>
+                    <li>
+                        <!-- iconitos -->
+                    </li>
+                    <li>
+                        <div class="btns-cont center pass">
+                            <a id="add-media-btn" class="button color-blue round small" href="">+</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="list inputs">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-title item-label">Add contacts</div>
+                    </li>
+                    <li>
+                        <!-- Listita de contactos -->
+                    </li>
+                    <li>
+                        <div class="btns-cont center pass">
+                            <a id="add-contact-btn" class="button color-blue round small" href="">+</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="list inputs">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-title item-label">Location</div>
+                    </li>
+                    <li>
+                        <div class="btns-cont center pass">
+                            <a id="add-location-btn" class="button color-blue round small" href="">Add location</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="list inputs">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-title item-label">Delivery date</div>
+                    </li>
+                    <li>
+                        <div class="btns-cont center pass">
+                            <a id="add-deliver-date-btn" class="button color-blue round small" href="">Add date</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+			<div class="btns-cont center pass">
+				<a id="create-memory-btn" class="button link round color-white small" href="">Create memory</a>
+				<!-- <a id="create-memory-btn" class="button link color-white" href="">Create memory</a> -->
+			</div>
+        </div>
+    </div>
+</template>
+<script>
+    
+</script>
