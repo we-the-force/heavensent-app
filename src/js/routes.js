@@ -3,9 +3,10 @@ import Recovery from '../pages/login/recovery.f7.html';
 import RecoveryMailSend from '../pages/login/recovery-mail-send.f7.html';
 import RecoveryNewPass from '../pages/login/recovery-new-pass.f7.html';
 
-import SignupStep1 from '../pages/signup/signup-step1.f7.html'
-import CreateContact from '../pages/contacts/create-contact.f7.html'
-import CreateGuardian from '../pages/guardian/create-guardian.f7.html'
+import UserAgreement from '../pages/signup/user-agreement.f7.html';
+import SignupStep1 from '../pages/signup/signup-step1.f7.html';
+import CreateContact from '../pages/contacts/create-contact.f7.html';
+import CreateGuardian from '../pages/guardian/create-guardian.f7.html';
 
 import ViewFamily from '../pages/family/view-family.f7.html'
 
@@ -33,10 +34,16 @@ var routes = [{
     path: '/recovery/mailSend',
     name: 'recovery_mail_send',
     component: RecoveryMailSend,
-}, {
+},
+{
     path: '/recovery/newPass',
     name: 'recovery_new_pass',
     component: RecoveryNewPass,
+},
+{
+    path: '/UserAgreement',
+    name: 'user-agreement',
+    component: UserAgreement,
 },
 {
     name: 'signup-step1',
