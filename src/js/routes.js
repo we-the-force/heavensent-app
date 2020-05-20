@@ -14,6 +14,8 @@ import InviteAdmin from '../pages/contacts/invite-admin.f7.html';
 import CreateMemory from '../pages/memory/create-memory.f7.html';
 
 import SelectMembership from '../pages/membership/select-membership.f7.html';
+import ViewMembership from '../pages/membership/view-membership.f7.html';
+import PaymentConfirmMembership from '../pages/membership/payment-confirm-membership.f7.html';
 
 import ViewFamily from '../pages/family/view-family.f7.html';
 
@@ -96,6 +98,16 @@ var routes = [{
     name: 'select-membership',
     path: '/select-membership/',
     component: SelectMembership,
+},
+{
+    name: 'view-membership',
+    path: '/view-membership/',
+    component: ViewMembership,
+},
+{
+    name: 'payment-confirm-membership',
+    path: '/payment-confirm-membership/',
+    component: PaymentConfirmMembership,
 },
 {
     name: 'about',
