@@ -7,13 +7,15 @@ import UserAgreement from '../pages/signup/user-agreement.f7.html';
 import SignupStep1 from '../pages/signup/signup-step1.f7.html';
 import CreateContact from '../pages/contacts/create-contact.f7.html';
 import CreateGuardian from '../pages/guardian/create-guardian.f7.html';
-import SignupConfirm from '../pages/signup/signup-confirm.f7.html'
-import ImportContacts from '../pages/contacts/import-contacts.f7.html'
-import InviteAdmin from '../pages/contacts/invite-admin.f7.html'
+import SignupConfirm from '../pages/signup/signup-confirm.f7.html';
+import ImportContacts from '../pages/contacts/import-contacts.f7.html';
+import InviteAdmin from '../pages/contacts/invite-admin.f7.html';
 
-import CreateMemory from '../pages/memory/create-memory.f7.html'
+import CreateMemory from '../pages/memory/create-memory.f7.html';
 
-import ViewFamily from '../pages/family/view-family.f7.html'
+import SelectMembership from '../pages/membership/select-membership.f7.html';
+
+import ViewFamily from '../pages/family/view-family.f7.html';
 
 import HomePage from '../pages/home.f7.html';
 import AboutPage from '../pages/about.f7.html';
@@ -89,6 +91,11 @@ var routes = [{
     name: 'create-memory',
     path: '/create-memory/',
     component: CreateMemory,
+},
+{
+    name: 'select-membership',
+    path: '/select-membership/',
+    component: SelectMembership,
 },
 {
     name: 'about',
