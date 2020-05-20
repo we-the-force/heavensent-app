@@ -1,11 +1,11 @@
 <template>
-    <div class="page" data-name="signup-step1" id="signup-step1">
-        <div class="sqr_bck" id="sqr1"></div>
-        <div class="sqr_bck" id="sqr2"></div>
-        <div class="sqr_bck" id="sqr3"></div>
+	<div class="page" data-name="signup-step1" id="signup-step1">
+		<div class="sqr_bck" id="sqr1"></div>
+		<div class="sqr_bck" id="sqr2"></div>
+		<div class="sqr_bck" id="sqr3"></div>
 		<div class="sqr_bck" id="sqr4"></div>
-        <div class="page-content" id="signup-step1">
-            <div class="header-cont">
+		<div class="page-content" id="signup-step1">
+			<div class="header-cont">
 				<div class="header">
 					<a href="" class="back-btn back">
 						<i class="icons material-icons">chevron_left</i>
@@ -14,131 +14,541 @@
 					<div class="none"></div>
 				</div>
 			</div>
-            <a href="">Imagen de perfil</a>
-            <div class="inputs list">
-                <ul>
-                    
-                    <!-- li.item-content.item-input> -->
-                    <!-- li.item-content.item-input>.item-inner>.item-input-wrap -->
-                    <li class="item-content item-input">
-                        <div class="item-inner">
-                            <div class="item-input-wrap">
-                                <input type="text" id="name" placeholder="Name" required validate>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item-content item-input">
-                        <div class="item-inner">
-                            <div class="item-input-wrap">
-                                <input type="date" id="birthday" placeholder="Birthday" required validate>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item-content item-input">
-                        <div class="item-inner">
-                            <div class="item-input-wrap">
-                                <input type="text" id="mobile" placeholder="Mobile" required validate>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item-content item-input">
-                        <div class="item-inner">
-                            <div class="item-input-wrap">
-                                <input type="email" id="email" placeholder="Email" required validate>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item-content item-input">
-                        <div class="item-inner">
-                            <div class="item-input-wrap">
-                                <input type="password" id="password" placeholder="Password" required validate>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item-content item-input">
-                        <div class="item-inner">
-                            <div class="item-input-wrap">
-                                <input type="email" id="admin-email" placeholder="Admin email" required validate>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item-content item-input">
-                        <label class="item-checkbox item-content">
-                            <div class="item-inner">
-                                <div class="item-title">Admin can edit?</div>
-                            </div>
-                            <input type="checkbox" id="admin-edit" name="demo-checkbox" value="admin-edit" checked="checked"/>
-                            <i class="icon icon-checkbox"></i>
-                            
-                        </label>
-                        <!-- <div class="item-inner">
-                            <div class="item-input-wrap">
-                                <input type="email" id="admin-email" placeholder="Admin email" required validate>
-                            </div>
-                        </div> -->
-                    </li>
-                </ul>
-            </div>
-            <div class="btns-cont center">
-                <a id="create-btn" class="button color-blue round small">Create account</a>
-            </div>
-        </div>
-    </div>
+			<div class="upload-cont">
+				<div class="upload-img">
+					<div class="photo"></div>
+				</div>
+				<label class="img-btn" for="file-upload">
+					<i class="icons material-icons">photo_camera</i>
+					<input id="file-upload" type="file" style="display: none;" />
+				</label>
+			</div>
+			<div class="inputs list">
+				<ul>
+					<li class="item-content item-input">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="text" id="name" placeholder="Name" required validate />
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="date" id="birthday" placeholder="Birthday" required validate />
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="tel" id="mobile" placeholder="Phone number" required validate />
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="email" id="email" placeholder="Email" required validate />
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="password" id="password" placeholder="Password" required validate />
+								<span class="show">Show</span>
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="email" id="admin-email" placeholder="Admin email" required validate />
+								<a class="popup-open" href="#" data-popup=".popup-admin">
+									<i class="info icons material-icons">info</i>
+								</a>
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input right">
+						<label class="item-checkbox item-content">
+							<div class="item-inner">
+								<div class="item-title">Admin can edit?</div>
+							</div>
+							<input type="checkbox" id="admin-edit" name="demo-checkbox" value="admin-edit" checked="checked" />
+							<i class="icon icon-checkbox"></i>
+						</label>
+					</li>
+				</ul>
+			</div>
+			<div class="btns-cont center">
+				<a id="create-btn" class="button color-blue round large">Create account</a>
+			</div>
+		</div>
+		<div class="popup popup-admin">
+			<a class="link popup-close" href="#">Close popup</a>
+			<div class="title">What is an admin?</div>
+			<p class="content">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit amet, consectetur adipiscing elit,
+				sed do eiusmod tempor
+			</p>
+		</div>
+	</div>
 </template>
 <script>
-    import $$ from "dom7";
-    export default {
-        // auth/local/register
-        on:{
-            pageInit: function(e, page)
-            {
-                var self = this;
-                var app = self.$app;
-                
-                var username = '', birthday='', mobile='', email='',password='',adminEmail='';
-                var profilePicture = '';
-                var adminCouldEdit = '';
-                
-                // Nomas pa testear, quitarlo mas al ratito.
-                $$('#name').val('test1');
-                $$('#birthday').val('01/01/1990');
-                $$('#mobile').val('123456789');
-                $$('#email').val('asd@asd.com');
-                $$('#password').val('1234567890');
-                $$('#admin-email').val('dsa@dsa.com');
-                // $$('#').val('test1');
+	import $$ from "dom7";
+	import croppie from "croppie";
+	export default {
+		// auth/local/register
+		on: {
+			pageInit: function (e, page) {
+				var self = this;
+				var app = self.$app;
 
+				var c,
+					username = "",
+					birthday = "",
+					mobile = "",
+					email = "",
+					password = "",
+					adminEmail = "";
+				var profilePicture = "";
+				var adminCouldEdit = "";
 
-                $$('#create-btn').on('click', function(e){
+				//mostrar contrase;a
+				$$(".show").click(function (val) {
+					let type = $$("#password").attr("type");
+					if (type == "password") {
+						$$("#password").attr("type", "text");
+					} else {
+						$$("#password").attr("type", "password");
+					}
+				});
+
+				//mostrar span de show
+				$$("#password").on("input:notempty", function (val) {
+					$$(".show").css("display", "block");
+				});
+
+				//ocultar span cuando el input este vacio
+				$$("#password").on("input:empty", function (val) {
+					$$(".show").css("display", "none");
+				});
+
+				//upload photo
+				$$(".img-btn").on("click", function () {
+					if (window.File && window.FileReader && window.FormData) {
+						var inputField = $$("#file-upload");
+						inputField.off("change");
+						inputField.on("change", function (e) {
+							var file = e.target.files[0];
+
+							if (file) {
+								if (/^image\//i.test(file.type)) {
+									$$(".img-btn").off("click");
+									readFile(file);
+								} else {
+									alert("Not a valid image!");
+									console.log("Not a valid image!");
+								}
+							} else {
+								console.log("Not a FILE");
+							}
+						});
+					} else {
+						alert("File upload is not supported!");
+						console.log("File upload is not supported!");
+					}
+				});
+
+				// Nomas pa testear, quitarlo mas al ratito.
+				$$("#name").val("test1");
+				$$("#birthday").val("01/01/1990");
+				$$("#mobile").val("123456789");
+				$$("#email").val("asd@asd.com");
+				$$("#password").val("1234567890");
+				$$("#admin-email").val("dsa@dsa.com");
+				// $$('#').val('test1');
+
+				$$("#create-btn").on("click", function (e) {
                     e.preventDefault();
                     
-                    username=$$('#name').val();
-                    birthday=$$('#birthday').val();
-                    mobile = $$('#mobile').val();
-                    email=$$('#email').val();
-                    password=$$('#password').val();
-                    adminEmail=$$('#admin-email').val();
-                    adminCouldEdit=$$('#admin-edit').val();
-
-					app.preloader.show('blue');
-                    app.request.promise.postJSON(app.data.server + '/auth/local/register',{
-                        "username": username,
-                        "birthday": birthday,
-                        "mobile": mobile,
-                        "email": email,
-                        "password": password,
-                        // "adminEmail"
-                    })
-                    .then(function (res) {
-                        app.preloader.hide();
-                        app.views.main.router.navigate({name: 'login'})
-                    })
-                    .catch(function (err) {
-                        console.log('Errorerror!');
-                        console.log(err);
+                    //obtiene la foto ya cortada en formato blob
+					c.result("blob").then((blob) => {
+                        console.log(blob);
+                        
                     });
-                })
-            }
-        }
-    };
+
+					username = $$("#name").val();
+					birthday = $$("#birthday").val();
+					mobile = $$("#mobile").val();
+					email = $$("#email").val();
+					password = $$("#password").val();
+					adminEmail = $$("#admin-email").val();
+					adminCouldEdit = $$("#admin-edit").val();
+
+					app.preloader.show("blue");
+					app.request.promise
+						.postJSON(app.data.server + "/auth/local/register", {
+							"username": username,
+							"birthday": birthday,
+							"mobile": mobile,
+							"email": email,
+							"password": password,
+							// "adminEmail"
+						})
+						.then(function (res) {
+							app.preloader.hide();
+							app.views.main.router.navigate({ name: "login" });
+						})
+						.catch(function (err) {
+							console.log("Errorerror!");
+							console.log(err);
+						});
+				});
+
+				//funcion para leer la foto
+				function readFile(file) {
+					var reader = new FileReader();
+
+					reader.onloadend = function () {
+						processFile(reader.result, file.type);
+					};
+
+					reader.onerror = function () {
+						alert("There was an error reading the file!");
+					};
+
+					reader.readAsDataURL(file);
+				}
+
+				//procesar foto
+				function processFile(dataURL, fileType) {
+					var maxWidth = 440;
+					var maxHeight = 440;
+
+					var image = new Image();
+					image.src = dataURL;
+
+					image.onload = function () {
+						var width = image.width;
+						var height = image.height;
+						var shouldResize = width > maxWidth || height > maxHeight;
+
+						if (!shouldResize) {
+							sendFile(dataURL);
+							return;
+						}
+
+						var newWidth;
+						var newHeight;
+
+						if (width > height) {
+							newHeight = height * (maxWidth / width);
+							newWidth = maxWidth;
+						} else {
+							newWidth = width * (maxHeight / height);
+							newHeight = maxHeight;
+						}
+
+						var canvas = document.createElement("canvas");
+
+						canvas.width = newWidth;
+						canvas.height = newHeight;
+
+						var context = canvas.getContext("2d");
+
+						context.drawImage(this, 0, 0, newWidth, newHeight);
+
+						dataURL = canvas.toDataURL(fileType);
+
+						sendFile(dataURL);
+					};
+
+					image.onerror = function () {
+						alert("There was an error processing your file!");
+					};
+				}
+
+				//poner foto en la pagina
+				function sendFile(dataURL) {
+					var imgHtml = '<img id="web-img" src="' + dataURL + '" alt="">';
+					$$(".photo").html(imgHtml);
+					c = new croppie(document.getElementById("web-img"), {
+						viewport: {
+							width: 178,
+							height: 178,
+							type: "circle",
+						},
+						boundary: {
+							width: 178,
+							height: 178,
+						},
+						showZoomer: false,
+					});
+					checkVal();
+				}
+			},
+		},
+	};
 </script>
+<style>
+	.croppie-container {
+		width: 100%;
+		height: 100%;
+	}
+
+	.croppie-container .cr-image {
+		z-index: -1;
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform-origin: 0 0;
+		max-height: none;
+		max-width: none;
+	}
+
+	.croppie-container .cr-boundary {
+		position: relative;
+		overflow: hidden;
+		margin: 0 auto;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+	}
+
+	.croppie-container .cr-viewport,
+	.croppie-container .cr-resizer {
+		position: absolute;
+		border: 0px solid #fff;
+		margin: auto;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		box-shadow: 0 0 2000px 2000px rgba(0, 0, 0, 0.5);
+		z-index: 0;
+	}
+
+	.croppie-container .cr-resizer {
+		z-index: 2;
+		box-shadow: none;
+		pointer-events: none;
+	}
+
+	.croppie-container .cr-resizer-vertical,
+	.croppie-container .cr-resizer-horisontal {
+		position: absolute;
+		pointer-events: all;
+	}
+
+	.croppie-container .cr-resizer-vertical::after,
+	.croppie-container .cr-resizer-horisontal::after {
+		display: block;
+		position: absolute;
+		box-sizing: border-box;
+		border: 1px solid black;
+		background: #fff;
+		width: 10px;
+		height: 10px;
+		content: "";
+	}
+
+	.croppie-container .cr-resizer-vertical {
+		bottom: -5px;
+		cursor: row-resize;
+		width: 100%;
+		height: 10px;
+	}
+
+	.croppie-container .cr-resizer-vertical::after {
+		left: 50%;
+		margin-left: -5px;
+	}
+
+	.croppie-container .cr-resizer-horisontal {
+		right: -5px;
+		cursor: col-resize;
+		width: 10px;
+		height: 100%;
+	}
+
+	.croppie-container .cr-resizer-horisontal::after {
+		top: 50%;
+		margin-top: -5px;
+	}
+
+	.croppie-container .cr-original-image {
+		display: none;
+	}
+
+	.croppie-container .cr-vp-circle {
+		border-radius: 50%;
+	}
+
+	.croppie-container .cr-overlay {
+		z-index: 1;
+		position: absolute;
+		cursor: move;
+		touch-action: none;
+	}
+
+	.croppie-container .cr-slider-wrap {
+		width: 75%;
+		margin: 15px auto;
+		text-align: center;
+	}
+
+	.croppie-result {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.croppie-result img {
+		position: absolute;
+	}
+
+	.croppie-container .cr-image,
+	.croppie-container .cr-overlay,
+	.croppie-container .cr-viewport {
+		-webkit-transform: translateZ(0);
+		-moz-transform: translateZ(0);
+		-ms-transform: translateZ(0);
+		transform: translateZ(0);
+	}
+	/*************************************/
+	/***** STYLING RANGE INPUT ***********/
+	/*************************************/
+	/*http://brennaobrien.com/blog/2014/05/style-input-type-range-in-every-browser.html */
+	/*************************************/
+
+	.cr-slider {
+		-webkit-appearance: none;
+		/*removes default webkit styles*/
+		/*border: 1px solid white; */
+		/*fix for FF unable to apply focus style bug */
+		width: 300px;
+		/*required for proper track sizing in FF*/
+		max-width: 100%;
+		padding-top: 8px;
+		padding-bottom: 8px;
+		background-color: transparent;
+	}
+
+	.cr-slider::-webkit-slider-runnable-track {
+		width: 100%;
+		height: 3px;
+		background: rgba(0, 0, 0, 0.5);
+		border: 0;
+		border-radius: 3px;
+	}
+
+	.cr-slider::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		border: none;
+		height: 16px;
+		width: 16px;
+		border-radius: 50%;
+		background: #ddd;
+		margin-top: -6px;
+	}
+
+	.cr-slider:focus {
+		outline: none;
+	}
+
+	.cr-slider::-moz-range-track {
+		width: 100%;
+		height: 3px;
+		background: rgba(0, 0, 0, 0.5);
+		border: 0;
+		border-radius: 3px;
+	}
+
+	.cr-slider::-moz-range-thumb {
+		border: none;
+		height: 16px;
+		width: 16px;
+		border-radius: 50%;
+		background: #ddd;
+		margin-top: -6px;
+	}
+	/*hide the outline behind the border*/
+
+	.cr-slider:-moz-focusring {
+		outline: 1px solid white;
+		outline-offset: -1px;
+	}
+
+	.cr-slider::-ms-track {
+		width: 100%;
+		height: 5px;
+		background: transparent;
+		/*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+		border-color: transparent;
+		/*leave room for the larger thumb to overflow with a transparent border */
+		border-width: 6px 0;
+		color: transparent;
+		/*remove default tick marks*/
+	}
+
+	.cr-slider::-ms-fill-lower {
+		background: rgba(0, 0, 0, 0.5);
+		border-radius: 10px;
+	}
+
+	.cr-slider::-ms-fill-upper {
+		background: rgba(0, 0, 0, 0.5);
+		border-radius: 10px;
+	}
+
+	.cr-slider::-ms-thumb {
+		border: none;
+		height: 16px;
+		width: 16px;
+		border-radius: 50%;
+		background: #ddd;
+		margin-top: 1px;
+	}
+
+	.cr-slider:focus::-ms-fill-lower {
+		background: rgba(0, 0, 0, 0.5);
+	}
+
+	.cr-slider:focus::-ms-fill-upper {
+		background: rgba(0, 0, 0, 0.5);
+	}
+	/*******************************************/
+	/***********************************/
+	/* Rotation Tools */
+	/***********************************/
+
+	.cr-rotate-controls {
+		position: absolute;
+		bottom: 5px;
+		left: 5px;
+		z-index: 1;
+	}
+
+	.cr-rotate-controls button {
+		border: 0;
+		background: none;
+	}
+
+	.cr-rotate-controls i:before {
+		display: inline-block;
+		font-style: normal;
+		font-weight: 900;
+		font-size: 22px;
+	}
+
+	.cr-rotate-l i:before {
+		content: "↺";
+	}
+
+	.cr-rotate-r i:before {
+		content: "↻";
+	}
+</style>
