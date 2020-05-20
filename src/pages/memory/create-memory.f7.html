@@ -51,7 +51,8 @@
             <div class="list inputs">
                 <ul>
                     <li class="item-content item-input">
-                        <span>On Demand  <a id="on-demand-info" class="">I</a></span>
+                        <span>On Demand  <a id="on-demand-info" class="link popover-open" data-popover=".popover-info">I</a></span>
+                        <!-- <span>On Demand  <a class="link popover-open" href="#!/create-memory/" data-popover=".popover-about">Open About Popover</a></span> -->
                         <label class="toggle">
                             <input id="on-demand-toggle" type="checkbox">
                             <span class="toggle-icon"></span>
@@ -131,26 +132,34 @@
                             <div class="row">
                                 <div class="col">
                                     <a href="#" class="item-link item-content">
-                                        <div class="item-media"><i class="icon icon-f7"></i></div>
-                                        
+                                        <div class="item-media">
+                                            <i class="icon icon-f7"></i>
+                                            <a href="">x</a>
+                                        </div>
                                     </a>
                                 </div>
                                 <div class="col">
                                     <a href="#" class="item-link item-content">
-                                        <div class="item-media"><i class="icon icon-f7"></i></div>
-                                        
+                                        <div class="item-media">
+                                            <i class="icon icon-f7"></i>
+                                            <a href="">x</a>
+                                        </div>
                                     </a>
                                 </div>
                                 <div class="col">
                                     <a href="#" class="item-link item-content">
-                                        <div class="item-media"><i class="icon icon-f7"></i></div>
-                                        
+                                        <div class="item-media">
+                                            <i class="icon icon-f7"></i>
+                                            <a href="">x</a>
+                                        </div>
                                     </a>
                                 </div>
                                 <div class="col">
                                     <a href="#" class="item-link item-content">
-                                        <div class="item-media"><i class="icon icon-f7"></i></div>
-                                        
+                                        <div class="item-media">
+                                            <i class="icon icon-f7"></i>
+                                            <a href="">x</a>
+                                        </div>
                                     </a>
                                 </div>
                             </div>
@@ -165,8 +174,22 @@
             </div>
             <div class="list inputs">
                 <ul>
+                    <li>
+                        <div class="card">
+                            <div class="card-content ">
+                                <img src="http://via.placeholder.com/314x174.png?text=Mapa" alt="">
+                            </div>
+                        </div>
+                    </li>
                     <li class="item-content item-input">
                         <div class="item-title item-label">Location</div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="address" placeholder="Address" required validate>
+                            </div>
+                        </div>
                     </li>
                     <li>
                         <div class="btns-cont center pass">
@@ -175,15 +198,49 @@
                     </li>
                 </ul>
             </div>
-            <div class="list inputs">
+            <div class="list no-hairlines-md">
                 <ul>
                     <li class="item-content item-input">
                         <div class="item-title item-label">Delivery date</div>
                     </li>
-                    <li>
+                    <li class="item-content item-input">
+                        <div class="item-media">
+                            <i class="icon demo-list-icon"></i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title item-label">Date</div>
+                            <div class="item-input-wrap">
+                                <input type="datetime-local" value="2014-04-30" placeholder="Please choose...">
+                            </div>
+                        </div>
+                    </li>
+                    <!-- <li>
                         <div class="btns-cont center pass">
                             <a id="add-deliver-date-btn" class="button color-blue round small" href="">Add date</a>
                         </div>
+                    </li> -->
+                </ul>
+            </div>
+            <div class="list">
+                <ul>
+                    <li>
+                        <a class="item-link smart-select smart-select-init">
+                            <select name="repeat">
+                                <option value="never" selected>Never</option>
+                                <option value="every-day">Every day</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="biweekly">Biweekly</option>
+                                <option value="each-month">Each month</option>
+                                <option value="every-3-months">Every 3 months</option>
+                                <option value="every-6-months">Every 6 months</option>
+                                <option value="every-year">Every year</option>
+                            </select>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">Repeat</div>
+                                </div>
+                            </div>
+                        </a>  
                     </li>
                 </ul>
             </div>
@@ -191,9 +248,42 @@
                 <a id="create-memory-btn" class="button link round color-white small" href="">Create memory</a>
                 <!-- <a id="create-memory-btn" class="button link color-white" href="">Create memory</a> -->
             </div>
+
+            
+            <div class="block">
+                <p>
+                  <!-- In data-popover attribute we specify CSS selector of popover we need to open -->
+                  <a class="link popover-open" href="#/create-memory/" data-popover=".popover-about">Open About Popover</a>
+                </p>
+              </div>
+        </div>
+    </div>
+    <div class="popover popover-info">
+        <div class="popover-inner">
+            <div class="block">
+                <p>Info</p>
+                <p>The user can access the content as many times as they can and wherever</p>
+            </div>
+        </div>
+    </div>
+    <div class="popover popover-about">
+        <div class="popover-inner">
+            <div class="block">
+                <p>About</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+            </div>
         </div>
     </div>
 </template>
 <script>
+    // var app = new Framework7();
+    import $$ from "dom7";
     
+    $$('.popover-info').on('popover:open', function(e){
+        console.log('Info popover open');
+    });
+    
+    export default {
+        
+    }
 </script>
