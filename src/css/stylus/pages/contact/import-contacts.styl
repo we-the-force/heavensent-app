@@ -1,0 +1,54 @@
+.page
+    &#import-contacts
+        background Grey_light_1
+
+        .sqr_bck
+            deg = -15deg
+            rad = 30px
+
+            &#sqr1
+                sqr(300px, deg)
+                top -215px
+                left -65px
+                border-radius rad
+
+            &#sqr2
+                sqr(500px, deg)
+                bottom -230px
+                left -220px
+                border-radius rad
+
+            &#sqr3
+                sqr(500px, deg)
+                bottom -190px
+                right -480px
+                border-radius rad
+
+        .page-content
+            padding-bottom 50px
+            flex-cont(column, center, unset)
+
+            .logo-cont
+                flex-grow 4
+                flex-cont(column, center, center)
+
+                .logo
+                    .background
+                        height 190px
+                        width 190px
+                        box-shadow 0px 7.91667px 15.8333px rgba(0, 0, 0, 0.15), inset 0px 6px 0px #fdfdfd, inset 0px -6px 0px #f0f0f0
+                        flex-cont(row, center, center)
+                        
+                        img
+                            position unset
+                            transform translateY(-5px)
+                            left unset
+
+            .text-cont
+                flex-grow 1.5
+                flex-cont(row, center, flex-start)
+                font-template(500, 20px, 23px)
+                color Grey_dark_3
+
+            .btns-cont
+                flex-grow 0.5

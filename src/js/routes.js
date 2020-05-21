@@ -66,12 +66,12 @@ var routes = [{
 },
 {
     name: 'import-contacts',
-    path: '/import-contacts/',
+    path: '/contact/import',
     component: ImportContacts,
 },
 {
     name: 'create-contact',
-    path: '/create-contact/',
+    path: '/contact/create',
     component: CreateContact,
 },
 {
