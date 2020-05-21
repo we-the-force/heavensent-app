@@ -58,7 +58,7 @@ var routes = [{
 },
 {
     name: 'signup-step1',
-    path: '/signup-step1/',
+    path: '/signup/step1',
     component: SignupStep1,
 },
 {
