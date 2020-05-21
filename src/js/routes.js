@@ -13,6 +13,8 @@ import InviteAdmin from '../pages/contacts/invite-admin.f7.html';
 
 import CreateMemory from '../pages/memory/create-memory.f7.html';
 
+import FundationsSingle from '../pages/fundations/fundations-single.f7.html';
+
 import SelectMembership from '../pages/membership/select-membership.f7.html';
 import ViewMembership from '../pages/membership/view-membership.f7.html';
 import PaymentConfirmMembership from '../pages/membership/payment-confirm-membership.f7.html';
@@ -108,6 +110,11 @@ var routes = [{
     name: 'payment-confirm-membership',
     path: '/payment-confirm-membership/',
     component: PaymentConfirmMembership,
+},
+{
+    name: 'fundations-single',
+    path: '/fundations-single/',
+    component: FundationsSingle,
 },
 {
     name: 'about',
