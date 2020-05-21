@@ -1,13 +1,72 @@
 .popup
+    border-radius 10px
+
     &.popup-admin
+        overflow unset
+        padding 20px
         width 300px
         height 290px
         position absolute
         top 50%
         left 50%
 
+        .title
+            font-template(500, 24px, 28px)
+            text-align center
+            color Grey_dark_3
+            margin 20px 0px 15px 0px
+
+        p.content
+            font-template(normal, 14px, 18px)
+            text-align center
+            color black
+            margin 15px 0px 20px 0px
+
+        .background
+            border-radius 10px
+            position absolute
+            overflow hidden
+            top 0px
+            left 0px
+            height 100%
+            width 100%
+            z-index -2
+
+            .sqr_bck
+                deg = -36deg
+
+                &#sqr1
+                    sqr(100px, deg)
+                    border-radius 15px
+                    top -30px
+                    left -65px
+
+                &#sqr2
+                    sqr(150px, deg)
+                    border-radius 15px
+                    bottom -110px
+                    right -50px
+
     &.modal-in
+        display flex !important
+        flex-cont(column, center, center)
         transform translate(-50%, -50%)
 
     &.modal-out
         transform translate(-50%, 100%)
+
+    .close-btn
+        position absolute
+        top -15px
+        right -15px
+        height 48px
+        width 48px
+        background Grey_light_1
+        border-radius 50%
+        border 0.3125px solid #F5F5F5
+        flex-cont(row, center, center)
+        box-shadow 2px 3px 8px rgba(0, 0, 0, 0.12), inset 0px 1px 0px #fdfdfd, inset 0px -1px 0px #f0f0f0
+
+        i
+            font-size 26px
+            color blue
