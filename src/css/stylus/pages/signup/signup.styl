@@ -1,39 +1,99 @@
-.page#signup-step1
-    background Grey_light_1
+.page
+    &#signup-step1
+        background Grey_light_1
 
-    .sqr_bck
-        deg = -36deg
+        .sqr_bck
+            deg = -36deg
 
-        &#sqr1
-            sqr(230px, deg)
-            top -200px
-            right -75px
+            &#sqr1
+                sqr(230px, deg)
+                top -200px
+                right -75px
 
-        &#sqr2
-            sqr(230px, deg)
-            top 55px
-            right -180px
+            &#sqr2
+                sqr(230px, deg)
+                top 55px
+                right -180px
 
-        &#sqr3
-            sqr(230px, deg)
-            top 120px
-            left -200px
+            &#sqr3
+                sqr(230px, deg)
+                top 120px
+                left -200px
 
-        &#sqr4
-            sqr(290px, -15deg)
-            bottom -250px
-            left -190px
+            &#sqr4
+                sqr(290px, -15deg)
+                bottom -250px
+                left -190px
 
-    .page-content
-        flex-cont(column, flex-start, unset)
+        .page-content
+            flex-cont(column, flex-start, unset)
 
-        .upload-cont
-            flex-cont(row, center, flex-end)
-            padding 50px 0px 40px 0px
+            .upload-cont
+                flex-cont(row, center, flex-end)
+                padding 50px 0px 40px 0px
 
-            .img-btn
-                position absolute
-                transform translate(65px)
+                .img-btn
+                    position absolute
+                    transform translate(65px)
 
-        .btns-cont
-            padding 60px 0px 50px 0px
+            .btns-cont
+                padding 60px 0px 50px 0px
+
+    &#signup-confirm
+        background Grey_light_1
+
+        .sqr_bck
+            deg = -15deg
+
+            &#sqr1
+                sqr(290px, deg)
+                top -230px
+                left -75px
+
+            &#sqr2
+                sqr(230px, deg)
+                bottom -160px
+                left -115px
+
+            &#sqr3
+                sqr(230px, deg)
+                bottom -135px
+                right -50px
+
+        .page-content
+            flex-cont(column, center, unset)
+
+            .logo-cont
+                flex-grow 2.5
+                flex-cont(column, flex-end, center)
+
+                .logo
+                    .background
+                        height 178px
+                        width 178px
+                        box-shadow 7.41667px 11.125px 29.6667px rgba(0, 0, 0, 0.12), -7.41667px -7.41667px 14.8333px rgba(255, 255, 255, 0.9), inset 0px 5px 0px #fdfdfd, inset 0px -5px 0px #f0f0f0
+
+                    .feather
+                        position absolute
+                        left 50%
+                        transform translate(calc(-50% + -18px), -10px)
+
+                    .check
+                        position relative
+                        right 25px
+                        bottom -25px
+
+                        img
+                            position unset
+                            transform unset
+                            left unset
+
+            .text-cont
+                flex-grow 1
+                flex-cont(row, center, center)
+                font-template(500, 20px, 23px)
+                color Grey_dark_3
+
+            .btns-cont
+                flex-grow 1
+                align-items flex-start
