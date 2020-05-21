@@ -1,0 +1,74 @@
+.page
+    &#view-family
+        background Grey_light_1
+
+        .sqr_bck
+            deg = -10deg
+
+            &#sqr1
+                sqr(200px, deg)
+                top 55px
+                right -195px
+
+            &#sqr2
+                sqr(200px, deg)
+                bottom -135px
+                left -130px
+
+            &#sqr3
+                sqr(200px, deg)
+                bottom -170px
+                right -80px
+
+        .page-content
+            padding-top 146px
+            padding-bottom 90px
+            flex-cont(column, flex-start, unset)
+
+            .family-cont
+                height 100%
+                overflow scroll
+                margin 0px
+                border-bottom 1px solid #F0F0F0
+
+        .navbar
+            height 70px
+
+            .subnavbar
+                background unset
+                height 76px
+                padding 0px 15px
+
+                &:after, &:before
+                    content none
+
+                .searchbar:after
+                    content ''
+                    border-bottom 1px solid #F0F0F0
+
+                .searchbar-icon:after
+                    color #bdbdbd
+
+            .header-cont
+                padding-top 20px
+                width 100%
+
+                .title
+                    color Grey_dark_3
+
+                .back-btn
+                    margin-left 8px
+
+                .close-btn
+                    margin-right 8px
+
+        .footer
+            position fixed
+            width 100%
+            bottom 0
+
+            .button
+                margin 20px 0px
+
+        .searchbar-backdrop
+            opacity 0

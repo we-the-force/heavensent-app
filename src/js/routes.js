@@ -86,7 +86,7 @@ var routes = [{
 },
 {
     name: 'view-family',
-    path: '/view-family',
+    path: '/family/view',
     component: ViewFamily,
 },
 {

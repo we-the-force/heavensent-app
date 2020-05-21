@@ -1,70 +1,124 @@
 <template>
-    <div class="page" data-name="create-guardian">
-        <div class="navbar">
-            <div class="navbar-bg"></div>
-            <div class="navbar-inner sliding">
-                <div class="left">
-                    <a href="#" class="link back">
-                        <i class="icon icon-back"></i>
-                        <span class="if-not-md">Back</span>
-                    </a>
-                </div>
-                <div class="title">[User]'s Family</div>
-            </div>
-        </div>
-        <form class="searchbar">
-            <div class="searchbar-inner">
-                <div class="searchbar-input-wrap">
-                    <input type="search" placeholder="Search...">
-                    <i class="searchbar-icon"></i>
-                    <span class="input-clear-button"></span>
-                </div>
-                <span class="searchbar-disable-button">Cancel</span>
-            </div>
-        </form>
-        <div class="page-content">
-            <!-- Nomas los puse para poder ver la lista, si todavia hay <p></p> despues de un rato, denme un zape -->
-            <!-- <p>.</p>
-            <p>.</p> -->
-            <div id="family-list" class="list">
-                <ul>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="icon icon-f7">[PP]</i></div>
-                            <div class="item-inner">
-                                <div class="item-title">Ralh Ross</div>
-                                <div class="item-after">Son</div>
-                            </div>
-                        </div>
+	<div class="page" id="view-family">
+		<div class="sqr_bck" id="sqr1"></div>
+		<div class="sqr_bck" id="sqr2"></div>
+		<div class="sqr_bck" id="sqr3"></div>
+		<div class="navbar">
+			<div class="navbar-inner sliding">
+				<div class="header-cont">
+					<div class="header">
+						<a href="" class="back-btn back">
+							<i class="icons material-icons">chevron_left</i>
+						</a>
+						<h1 class="title">Mario's Family</h1>
+						<a href="" class="close-btn">
+							<i class="icons material-icons">close</i>
+						</a>
+					</div>
+				</div>
+				<div class="subnavbar">
+					<form class="searchbar">
+						<div class="searchbar-inner">
+							<div class="searchbar-input-wrap">
+								<input type="search" placeholder="Search" />
+								<i class="searchbar-icon"></i>
+								<span class="input-clear-button"></span>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="page-content">
+			<div id="family-list" class="family-cont list searchbar-found media-list">
+				<ul>
+					<li>
+						<a class=" item-link item-content">
+							<div class="item-media"><img src="../../static/img/136128.png" width="44" /></div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">Rosa</div>
+								</div>
+								<div class="item-text">Niece</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="item-link item-content">
+							<div class="item-media"><img src="../../static/img/chris_evans_crop1569801286473.png" width="44" /></div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">Nathan</div>
+								</div>
+								<div class="item-text">Nephew</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="item-link item-content">
+							<div class="item-media"><img src="../../static/img/Jason_Momoa_by_Gage_Skidmore_2.png" width="44" /></div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">Sam</div>
+								</div>
+								<div class="item-text">Son</div>
+							</div>
+						</a>
                     </li>
                     <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="icon icon-f7">[PP]</i></div>
-                            <div class="item-inner">
-                                <div class="item-title">Ralh Ross</div>
-                                <div class="item-after">Daughter</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="icon icon-f7">[PP]</i></div>
-                            <div class="item-inner">
-                                <div class="item-title">Ralh Ross</div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="btns-cont two">
-                <a class="button round color-white small" href="">Done</a>
-                <a id="create-member-btn" class="button round color-blue small">Create member</a>
-            </div>
-        </div>
-    </div>
+						<a class=" item-link item-content">
+							<div class="item-media"><img src="../../static/img/136128.png" width="44" /></div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">Keira</div>
+								</div>
+								<div class="item-text">Daughter</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="item-link item-content">
+							<div class="item-media"><img src="../../static/img/active.png" width="44" /></div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">Johana</div>
+								</div>
+								<div class="item-text">Cousin</div>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="block searchbar-not-found">
+				<div class="block-inner">Nothing found</div>
+			</div>
+		</div>
+		<footer class="footer">
+			<div class="btns-cont center">
+				<a id="create-member-btn" class="button round color-blue large">Create member</a>
+			</div>
+		</footer>
+	</div>
 </template>
 <script>
-    export default{
-        
-    }
+	import $$ from "dom7";
+	export default {
+		on: {
+			pageInit: function (e, page) {
+                var self = this;
+				var app = self.$app;
+
+				var searchbar = app.searchbar.create({
+					el: ".searchbar",
+					searchContainer: ".list",
+					searchIn: ".item-title, .item-text",
+					on: {
+						search(sb, query, previousQuery) {
+							console.log(query, previousQuery);
+						},
+					},
+				});
+			},
+		},
+	};
 </script>
