@@ -61,7 +61,7 @@ var routes = [{
 },
 {
     name: 'signup-confirm',
-    path: '/signup-confirm/',
+    path: '/signup/confirm',
     component: SignupConfirm,
 },
 {
@@ -81,7 +81,7 @@ var routes = [{
 },
 {
     name: 'invite-admin',
-    path: '/invite-admin/',
+    path: '/admin/invite',
     component: InviteAdmin,
 },
 {

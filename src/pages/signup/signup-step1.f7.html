@@ -74,7 +74,7 @@
 					<li class="item-content item-input right">
 						<label class="item-checkbox item-content">
 							<div class="item-inner">
-								<div class="item-title">Admin can edit?</div>
+								<div class="item-title">Admin could edit?</div>
 							</div>
 							<input type="checkbox" id="admin-edit" name="demo-checkbox" value="admin-edit" checked="checked" />
 							<i class="icon icon-checkbox"></i>
@@ -83,17 +83,17 @@
 				</ul>
 			</div>
 			<div class="btns-cont center">
-				<a id="create-btn" class="button color-blue round large">Create account</a>
+				<a id="create-btn" href="/UserAgreement" class="button color-blue round large">Create account</a>
 			</div>
 		</div>
 		<div class="popup popup-admin">
-            <div class="background">
-                <div class="sqr_bck" id="sqr1"></div>
-                <div class="sqr_bck" id="sqr2"></div>
-            </div>
+			<div class="background">
+				<div class="sqr_bck" id="sqr1"></div>
+				<div class="sqr_bck" id="sqr2"></div>
+			</div>
 			<a class="close-btn popup-close" href="#">
-                <i class="icons material-icons">close</i>
-            </a>
+				<i class="icons material-icons">close</i>
+			</a>
 			<h1 class="title">What is an admin?</h1>
 			<p class="content">
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -179,13 +179,12 @@
 				// $$('#').val('test1');
 
 				$$("#create-btn").on("click", function (e) {
-                    e.preventDefault();
-                    
-                    //obtiene la foto ya cortada en formato blob
+					e.preventDefault();
+
+					//obtiene la foto ya cortada en formato blob
 					c.result("blob").then((blob) => {
-                        console.log(blob);
-                        
-                    });
+						console.log(blob);
+					});
 
 					username = $$("#name").val();
 					birthday = $$("#birthday").val();
