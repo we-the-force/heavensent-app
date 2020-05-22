@@ -24,17 +24,49 @@
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus vel placeat eum tenetur recusandae doloremque ad aliquam fugit tempore fugiat eaque accusantium dolor, id aliquid quasi distinctio laborum perspiciatis. Deleniti!
                 </div>
             </div>
-            <div>
-                <a class="button" href="" id="package-btn" style="width: 200px; height: 150px">
-                    <img src="http://via.placeholder.com/200x150.png?text=package-info" alt="">
-                </a>
+            <!-- Los links dentro de los cards tienen un style para forzar el tamanio, por cuestiones de test. -->
+            <div data-space-between="10" data-slides-per-view="auto" data-centered-slides="true" class="swiper-container swiper-init demo-swiper demo-swiper-auto">
+                <div class="swiper-wrapper">
+                    <!-- Slide 1 -->
+                    <div id="package-a-slide" class="swiper-slide">
+                        <div class="card" style="align-content: center; justify-content: center;">
+                            <a class="button" href="" id="package-a-btn" style="width: 300px; height: 300px">
+                                <div>
+                                    <img src="http://via.placeholder.com/200x150.png?text=package-info" alt="">
+                                    <br>
+                                    Package 1
+                                    <br>
+                                    Content
+                                    <br>
+                                    $0.00CAD
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div id="package-a-slide" class="swiper-slide">
+                        <div class="card" style="align-content: center; justify-content: center;">
+                            <a class="button" href="" id="package-b-btn" style="width: 300px; height: 300px">
+                                <div>
+                                    <img src="http://via.placeholder.com/200x150.png?text=package-info" alt="">
+                                    <br>
+                                    Package 2
+                                    <br>
+                                    Content
+                                    <br>
+                                    $0.00CAD
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="btns-cont center pass">
-				<a id="donate-btn" class="button color-blue small round" href="">Give $0</a>
+                <a id="donate-btn" class="button color-blue small round" href="">Give $0</a>
             </div>
             <div class="btns-cont center pass">
-				<a id="donate-btn" class="link color-blue" href="">+ Add a payment method</a>
-			</div>
+                <a id="donate-btn" class="link color-blue" href="">+ Add a payment method</a>
+            </div>
         </div>
     </div>
 </template>
