@@ -14,7 +14,8 @@ import InviteAdmin from '../pages/contacts/invite-admin.f7.html';
 import CreateMemory from '../pages/memory/create-memory.f7.html';
 
 import MemoryDashboard from '../pages/recipient/dashboard.f7.html';
-import MemoryView from '../pages/memory/view-memory.f7.html';
+import MemoryView from '../pages/recipient/view-memory.f7.html';
+import MemoryNotification from '../pages/recipient/memory-notification.f7.html';
 
 import FundationsSingle from '../pages/fundations/fundations-single.f7.html';
 
@@ -103,6 +104,11 @@ var routes = [{
     name: 'memory-dashboard',
     path: '/memory-dashboard/',
     component: MemoryDashboard,
+},
+{
+    name: 'memory-notification',
+    path: '/memory-notification/',
+    component: MemoryNotification,
 },
 {
     name: 'view-memory',
