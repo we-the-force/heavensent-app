@@ -1,0 +1,105 @@
+@media screen and (min-width 1024px) and (orientation landscape)
+    .page
+        .artwork
+            background blue_light
+            position absolute
+            width 30%
+            height 100%
+            top 0
+            left 0
+
+        .footer
+            position absolute
+            width 70% !important
+            right 0
+            bottom 0
+
+        .page-content, .navbar
+            position absolute
+            width 70% !important
+            right 0
+            top 0
+            left unset
+
+            .header
+                .back-btn
+                    visibility hidden
+
+        &#recovery, &#recovery-mail, &#recovery-new-pass
+            .sqr_bck
+                &#sqr2
+                    left calc(-345px + 30%)
+
+                &#sqr3
+                    left calc(-200px + 30%)
+
+        &#login-screen
+            .sqr_bck
+                &#sqr1
+                    left calc(-108px + 30%)
+
+                &#sqr3
+                    left calc(-216px + 30%)
+
+                &#sqr4
+                    left calc(-10px + 30%)
+
+        &#signup-step1
+            .sqr_bck
+                &#sqr3
+                    left calc(-200px + 30%)
+
+                &#sqr4
+                    left calc(-190px + 30%)
+
+        &#invite-admin
+            .sqr_bck
+                &#sqr2
+                    left calc(-265px + 30%)
+
+                &#sqr3
+                    left calc(-15px + 30%)
+
+        &#user-agreement
+            .sqr_bck
+                &#sqr1
+                    left calc(-235px + 30%)
+
+        &#signup-confirm
+            .sqr_bck
+                &#sqr1
+                    left calc(-75px + 30%)
+
+                &#sqr2
+                    left calc(-115px + 30%)
+
+        &#import-contacts
+            .sqr_bck
+                &#sqr1
+                    left calc(-65px + 30%)
+
+                &#sqr2
+                    left calc(-220px + 30%)
+
+        &#view-family
+            .sqr_bck
+                &#sqr2
+                    left calc(-130px + 30%)
+
+@media (min-width 480px)
+    .page-content, .footer
+        align-items center !important
+
+        .header-cont, .logo-cont, .text-cont, .inputs, .btns-cont, .btns-cont.face, .btns-cont.two, .btns-cont.pass, .family-cont
+            min-width 480px
+
+        .text-cont
+            width 480px
+
+    .navbar
+        justify-content center
+        display flex
+
+        .navbar-inner
+            position relative
+            width 480px
