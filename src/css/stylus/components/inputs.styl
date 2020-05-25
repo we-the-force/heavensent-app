@@ -37,7 +37,7 @@
 
         .item-inner
             flex-direction unset
-            padding 15px 8px 15px 0px
+            padding 20px 8px 20px 0px
 
         .item-input-wrap
             height 46px
@@ -117,3 +117,13 @@
                 background unset
                 padding 0px 48px 0px 36px
                 height var(--f7-input-height)
+.ios
+    .item-input-wrap::after, .item-inner::after
+        content none
+
+    .item-input-error-message
+        position absolute
+        margin-bottom 0px
+        margin-top 0px
+        bottom -18px
+        left 30px

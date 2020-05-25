@@ -48,3 +48,22 @@
         .btns-cont.pass
             flex-grow 0.5
             align-items flex-end
+
+@media (min-width 480px)
+    .page-content
+        align-items center !important
+
+        .logo-cont, .inputs, .btns-cont.face, .btns-cont.two, .btns-cont.pass
+            min-width 480px
+
+@media screen and (min-width 1024px) and (orientation landscape)
+    .page#login-screen
+        .sqr_bck
+            &#sqr1
+                left calc(-108px + 30%)
+
+            &#sqr3
+                left calc(-216px + 30%)
+
+            &#sqr4
+                left calc(-10px + 30%)
