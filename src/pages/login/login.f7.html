@@ -54,16 +54,20 @@
 				// console.log(this);
 				var emailInputValue = '';
 				var passwordInputValue = '';
-
+				
 				// $$('#email').val('will@wetheforce.com');
 				// $$('#password').val('123456789');
 				// emailInputValue=$$('#email').val();
-
+				
 				console.log(emailInputValue);
 				// password_login=$$
 				var app = self.$app;
-
+				
+				//Console.log(app.data.server);
+				console.log(app.data.server);
+				
 				$$('#login-btn').on('click', function (e) {
+					
 					e.preventDefault();
 					emailInputValue=$$('#email').val();
 					passwordInputValue=$$('#password').val();
