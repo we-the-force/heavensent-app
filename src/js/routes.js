@@ -82,7 +82,7 @@ var routes = [{
 },
 {
     name: 'create-guardian',
-    path: '/create-guardian/',
+    path: '/guardian/create',
     component: CreateGuardian,
 },
 {

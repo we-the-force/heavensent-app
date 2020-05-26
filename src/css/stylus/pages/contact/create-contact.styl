@@ -1,0 +1,67 @@
+.page
+    &#create-contact, &#create-guardian
+        background Grey_light_1
+
+        .sqr_bck
+            deg = -36deg
+
+            &#sqr1
+                sqr(230px, deg)
+                top -200px
+                right -75px
+
+            &#sqr2
+                sqr(230px, deg)
+                top 55px
+                right -180px
+
+            &#sqr3
+                sqr(230px, deg)
+                top 120px
+                left -200px
+
+            &#sqr4
+                sqr(290px, deg)
+                bottom -250px
+                left -190px
+
+            &#sqr5
+                sqr(290px, deg)
+                bottom -60px
+                right -290px
+
+        .page-content
+            flex-cont(column, flex-start, unset)
+
+            .header-cont
+                flex-grow 0
+
+            .upload-cont
+                flex-grow 1
+                flex-cont(row, center, flex-end)
+                padding 50px 0px 40px 0px
+
+                .upload-img
+                    height 114px
+                    width 114px
+                    background-image url('../static/img/Busto.png')
+                    background-size 53px 58px
+                    background-position-y 45%
+
+                    .photo
+                        width 114px
+                        height 114px
+
+                .img-btn
+                    position absolute
+                    transform translate(45px, 15px)
+
+            .inputs
+                flex-grow 1
+
+                .item-content.item-checkbox
+                    width 100%
+
+            .btns-cont
+                flex-grow 1
+                padding 25px 0px 25px 0px
