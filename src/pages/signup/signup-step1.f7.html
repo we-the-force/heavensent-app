@@ -3,7 +3,7 @@
 		<div class="sqr_bck" id="sqr1"></div>
 		<div class="sqr_bck" id="sqr2"></div>
 		<div class="sqr_bck" id="sqr3"></div>
-        <div class="sqr_bck" id="sqr4"></div>
+		<div class="sqr_bck" id="sqr4"></div>
 		<div class="artwork"></div>
 		<div class="page-content" id="signup-step1">
 			<div class="header-cont">
@@ -84,7 +84,7 @@
 				</ul>
 			</div>
 			<div class="btns-cont center">
-				<a id="create-btn" href="/admin/invite" class="button color-blue round large">Create account</a>
+				<a id="create-btn" class="button color-blue round large">Create account</a>
 			</div>
 		</div>
 		<div class="popup popup-admin">
@@ -157,7 +157,8 @@
 									$$(".img-btn").off("click");
 									readFile(file);
 								} else {
-									alert("Not a valid image!");
+									// alert("Not a valid image!");
+									app.dialog.alert("Not a valid image!");
 									console.log("Not a valid image!");
 								}
 							} else {
@@ -165,7 +166,7 @@
 							}
 						});
 					} else {
-						alert("File upload is not supported!");
+						app.dialog.alert("File upload is not supported!");
 						console.log("File upload is not supported!");
 					}
 				});
@@ -183,11 +184,6 @@
 					e.preventDefault();
 					console.log("Doing the post");
 					
-					//obtiene la foto ya cortada en formato blob
-					c.result("blob").then((blob) => {
-						console.log(blob);
-					});
-					
 					
 					console.log("Setting data");
 					username = $$("#name").val();
@@ -198,22 +194,43 @@
 					adminEmail = $$("#admin-email").val();
 					adminCouldEdit = $$("#admin-edit").val();
 					
+					console.log('c: \"' + c + '\"');
+					if (!c)
+					{
+						app.dialog.alert('Please upload an image');
+						return false;
+					}
+					if (!validateText(username, 'Please, enter your desired username.', 'Your username may not have spaces before or after the text.'))
+					{
+						console.log("username not valid");
+						return false;
+					}
+					if (!validateText(birthday, 'Plase, enter your birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.'))
+					{
+						return false;
+					}
+					if (!validateText(mobile, 'Plase, enter your mobile phone number.', 'Your phone number may not have spaces before or after the text'))
+					{
+						return false;
+					}
+					if (!validateEmail(email))
+					{
+						app.dialog.alert('Please enter a valid email');
+						return false;
+					}
+					if (!validateText(password, 'Plase, enter your desired password.', 'Your password may not have spaces before or after the text', false))
+					{
+						return false;
+					}
+					if (!validateEmail(adminEmail))
+					{
+						app.dialog.alert('Please enter a valid admin email');
+						return false;
+					}
+					
 					console.log("showing blue");
 					app.preloader.show("blue");
 					console.log("app.request");
-					
-					// web-img
-					
-					// const formElement = document.getElementById("web-img").src;
-					// // const formElement = document.querySelector('web-img');
-					// console.log(formElement);
-					// const request = new XMLHttpRequest();
-					// request.open('POST', app.data.server + '/upload');
-					// request.responseType = 'blob';
-					// request.mimeType = 'multipart/form-data';
-					// // request.send(c.result("blob"));
-					// // request.send(new FormData(formElement));
-					// request.send(formElement);
 					
 					app.request.promise
 					.postJSON(app.data.server + "/auth/local/register", {
@@ -225,7 +242,6 @@
 						// "adminEmail"
 					})
 					.then(function (res) {
-						app.preloader.hide();
 						// console.log(res);
 						// console.log(res.data);
 						console.log(res.data.user);
@@ -237,28 +253,13 @@
 							data: {
 								"mobile": mobile,
 								"birthday": birthday,
-								// "password": password,
-								// "profilePicture	": c.result("blob"),
 							}
 						});
-						// let file = new File([blob], "perfil.png", new Date());
-						// 	const data = new FormData();
-						// 	data.append("files", file);
-						// 	data.append("refId", res.data.user.id);
-						// 	data.append("ref", "user");
-						// 	data.append('source', 'users-permissions');
-						// 	data.append('field', 'profilePicture');
-						// 	app.request({
-						// 		url: app.data.server + '/upload',
-						// 		method: "POST",
-						// 		crossDomain: true,
-						// 		contentType: "multipart/form-data",
-						// 		data: data
-						// 	});
-						c.result('blob').then(blob => {
-							let file = new File([blob], "perfil.png", new Date());
+						c.result('blob', 'png').then(blob => {
+							// let file = new File([blob], "perfil.png", new Date());
 							const data = new FormData();
-							data.append("files", file);
+							// data.append("files", file);
+							data.append("files", blob, 'profile.png');
 							data.append("refId", res.data.user.id);
 							data.append("ref", "user");
 							data.append('source', 'users-permissions');
@@ -272,15 +273,71 @@
 							});
 						});
 						
-						app.views.main.router.navigate({ name: "login" });
+						app.preloader.hide();
+						app.views.main.router.navigate({ name: "invite-admin" });
 					})
 					.catch(function (err) {
+						app.preloader.hide();
 						console.log("Errorerror!");
 						console.log(err);
+						var obj = JSON.parse(err.xhr.response);
+						app.dialog.alert('Some fields are incomplete or incorrect, please try again.'+'\r\n'+obj.message[0].messages[0].message);
+						
 					});
 					
 					
 				});
+				
+				function validateEmail(mail) 
+				{
+					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+					{
+						return (true)
+					}
+					// alert("You have entered an invalid email address!")
+					return (false)
+				}
+				
+				function validateText(text, emptyText, trimmedText, checkTrimmed = true)
+				{
+					console.log(`${text}, trim?: ${checkTrimmed}`);
+					if (isTextEmptyOrWhitespace(text))
+					{
+						app.dialog.alert(emptyText);
+						return false;
+					}
+					else
+					{
+						if (checkTrimmed)
+						{
+							if (!isTextTrimmed(text))
+							{
+								app.dialog.alert(trimmedText);
+								return false;
+							}
+						}
+						return true;
+					}
+				}
+				
+				function isTextValid(value)
+				{
+					return !isTextEmptyOrWhitespace(value) && isTextTrimmed(value);
+				}
+				
+				function isTextEmptyOrWhitespace(value)
+				{
+					if (!value || !value.trim())
+					{
+						return true;
+					}
+					return false;
+				}
+				
+				function isTextTrimmed(value)
+				{
+					return (value == value.trim());
+				}
 				
 				//funcion para leer la foto
 				function readFile(file) {
