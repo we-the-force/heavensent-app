@@ -41,7 +41,7 @@ var routes = [{
     component: Login,
 },
 {
-    path: '/recovery/',
+    path: '/recovery',
     name: 'recovery',
     component: Recovery,
 },
