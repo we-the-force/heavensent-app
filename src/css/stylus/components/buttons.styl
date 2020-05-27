@@ -86,3 +86,39 @@
         font-size 20px
         font-weight bold
         color blue
+
+.button-plan
+    width 100px
+    height 98.5px
+    background-image url('../static/img/rectangle_white.png')
+    background-position center
+    background-repeat no-repeat
+    filter saturate(0) opacity(0.3)
+    flex-cont(column, space-around, center)
+
+    h2, p
+        margin 0px
+
+    .title-plan
+        font-template(500, 16px, 24px)
+        color Grey_light_3
+
+    .price-cont
+        flex-cont(row, center, flex-end)
+        .symbol
+            font-template(500, 18px, 18px)
+            color Grey_dark_1
+
+        .price
+            font-template(500, 36px, 24px)
+            color Grey_dark_1
+
+    .per-month
+        font-template(500, 10px, 24px)
+        color Grey_light_3
+
+    &.active
+        filter unset
+        background-image url('../static/img/rectangle.png')
+        h2, p
+            color Grey_light_1 !important

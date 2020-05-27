@@ -117,12 +117,12 @@ var routes = [{
 },
 {
     name: 'select-membership',
-    path: '/select-membership/',
+    path: '/membership/select',
     component: SelectMembership,
 },
 {
     name: 'view-membership',
-    path: '/view-membership/',
+    path: '/membership/view',
     component: ViewMembership,
 },
 {

@@ -1,163 +1,142 @@
 <template>
-    <div class="page" data-name="select-membership">
-        <div class="navbar">
-            <div class="navbar-bg"></div>
-            <div class="navbar-inner sliding">
-                <div class="left">
-                    <a href="#" class="link back">
-                        <i class="icon icon-back"></i>
-                        <span class="if-not-md">Back</span>
+	<div class="page" id="select-membership">
+		<div class="artwork"></div>
+		<div class="page-content">
+			<div class="header-cont">
+				<div class="header">
+					<a href="" class="back-btn back">
+						<i class="icons material-icons">chevron_left</i>
+					</a>
+					<h1 class="title">Select Package</h1>
+					<div class="none"></div>
+				</div>
+			</div>
+			<div class="text-cont">
+				<h1 class="title2">Choose a plan that's right for you.</h1>
+				<p class="text">Downgrade or upgrade at any type</p>
+			</div>
+			<div class="plans-cont">
+				<div class="btns-cont">
+                    <a class="button-plan plan-a active">
+                        <h2 class="title-plan">Basic</h2>
+                        <div class="price-cont">
+                            <p class="symbol">$</p>
+                            <p class="price">5</p>
+                        </div>
+                        <p class="per-month">PER MONTH</p>
+                    </a>
+                    <a class="button-plan plan-b">
+                        <h2 class="title-plan">Standar</h2>
+                        <div class="price-cont">
+                            <p class="symbol">$</p>
+                            <p class="price">15</p>
+                        </div>
+                        <p class="per-month">PER MONTH</p>
+                    </a>
+                    <a class="button-plan plan-c">
+                        <h2 class="title-plan">Premium</h2>
+                        <div class="price-cont">
+                            <p class="symbol">$</p>
+                            <p class="price">25</p>
+                        </div>
+                        <p class="per-month">PER MONTH</p>
                     </a>
                 </div>
-                <div class="title">Select Package</div>
-            </div>
-        </div>
-        <div class="page-content">
-            <p>,</p>
-            <div>
-                Choose a plan that's right for you.
-                <br>
-                Downgrade or upgrade at any type
-                <br>
-            </div>
-            <div class="block">
-                <div class="row no-gap">
-                    <div class="col">
-                        <div>
-                            <a class="button" href="" id="package-a-btn" style="width: 95px; height: 95px">
-                                <img src="http://via.placeholder.com/95x95.png?text=$5" alt="">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <a class="button" href="" id="package-b-btn" style="width: 95px; height: 95px">
-                            <img src="http://via.placeholder.com/95x95.png?text=$15" alt="">
-                        </a>
-                    </div>
-                    <div class="col">
-                        <a class="button" href="" id="package-c-btn" style="width: 95px; height: 95px">
-                            <img src="http://via.placeholder.com/95x95.png?text=$25" alt="">
-                        </a>
-                    </div>
+                <p class="title3">Text Notes</p>
+				<div class="icons-cont" id="text-notes">
+					<div class="icon">
+						<span id="package-a-tex-notes" class="material-icons active">done</span>
+					</div>
+					<div class="icon">
+						<span id="package-b-tex-notes" class="material-icons">done</span>
+					</div>
+					<div class="icon">
+						<span id="package-c-tex-notes" class="material-icons">done</span>
+					</div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <hr width="90%" size="3">
-                        <div class="item-title item-label">Text Notes</div>
-                    </div>
+                <p class="title3">Pictures</p>
+				<div class="icons-cont" id="pictures">
+					<div class="icon">
+						<span id="package-a-tex-notes" class="material-icons active">done</span>
+					</div>
+					<div class="icon">
+						<span id="package-b-tex-notes" class="material-icons">done</span>
+					</div>
+					<div class="icon">
+						<span id="package-c-tex-notes" class="material-icons">done</span>
+					</div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <span id="package-a-tex-notes" class="material-icons">done</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-b-tex-notes" class="material-icons">done</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-c-tex-notes" class="material-icons">done</span>
-                    </div>
+                <p class="title3">Video</p>
+                <div class="icons-cont" id="text-notes">
+					<div class="icon">
+						<span id="package-a-tex-notes" class="material-icons active">clear</span>
+					</div>
+					<div class="icon">
+						<span id="package-b-tex-notes" class="material-icons">done</span>
+					</div>
+					<div class="icon">
+						<span id="package-c-tex-notes" class="material-icons">done</span>
+					</div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <hr width="90%" size="3">
-                        <div class="item-title item-label">Pictures</div>
-                    </div>
+                <p class="title3">GPS</p>
+                <div class="icons-cont" id="text-notes">
+					<div class="icon">
+						<span id="package-a-tex-notes" class="material-icons active">clear</span>
+					</div>
+					<div class="icon">
+						<span id="package-b-tex-notes" class="material-icons">clear</span>
+					</div>
+					<div class="icon">
+						<span id="package-c-tex-notes" class="material-icons">done</span>
+					</div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <span id="package-a-pictures" class="material-icons">done</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-b-pictures" class="material-icons">done</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-c-pictures" class="material-icons">done</span>
-                    </div>
+                <p class="title3">On Demand</p>
+                <div class="icons-cont" id="text-notes">
+					<div class="icon">
+						<span id="package-a-tex-notes" class="material-icons active">clear</span>
+					</div>
+					<div class="icon">
+						<span id="package-b-tex-notes" class="material-icons">clear</span>
+					</div>
+					<div class="icon">
+						<span id="package-c-tex-notes" class="material-icons">done</span>
+					</div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <hr width="90%" size="3">
-                        <div class="item-title item-label">Video</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <span id="package-a-video" class="material-icons">clear</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-b-video" class="material-icons">done</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-c-video" class="material-icons">done</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <hr width="90%" size="3">
-                        <div class="item-title item-label">GPS</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <span id="package-a-gps" class="material-icons">clear</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-b-gps" class="material-icons">clear</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-c-gps" class="material-icons">done</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <hr width="90%" size="3">
-                        <div class="item-title item-label">On Demand</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <span id="package-a-on-demand" class="material-icons">clear</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-b-on-demand" class="material-icons">clear</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-c-on-demand" class="material-icons">done</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <hr width="90%" size="3">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <span id="package-a-desc">6 Memories / Person / Years</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-b-desc">6 Memories / Person / Years</span>
-                    </div>
-                    <div class="col">
-                        <span id="package-c-desc">12 Memories / Person / Years</span>
-                    </div>
-                </div>
-            </div>
-            <div class="btns-cont center">
-                <a id="confirm-plan-btn" class="button color-blue round small">Select plan</a>
-            </div>
-            <!-- <div class="block">
-                <div class="col no-gap">
-                    <div class="row">
-                        <img src="http://via.placeholder.com/95x95.png?text=$5" alt="">
-                    </div>
-                    <div class="row">Thing 2</div>
-                    <div class="row">Thing 3</div>
-                    <div class="row">Thing 4</div>
-                </div>
-            </div> -->
-        </div>
-    </div>
+				<div class="desc-cont">
+					<div class="item">
+						<p id="package-a-desc" class="active">6 Memories / Person / Years</p>
+					</div>
+					<div class="item">
+						<p id="package-b-desc">6 Memories / Person / Years</p>
+					</div>
+					<div class="item">
+						<p id="package-c-desc">12 Memories / Person / Years</p>
+					</div>
+				</div>
+			</div>
+			<div class="btns-cont center">
+				<a id="confirm-plan-btn" class="button color-blue round large">Select plan</a>
+			</div>
+		</div>
+	</div>
 </template>
 <script>
-    
+	import $$ from "dom7";
+	export default {
+		// auth/local/register
+		on: {
+			pageInit: function (e, page) {
+				var self = this;
+                var app = self.$app;
+                
+                $$('.button-plan').click(function (val) {
+                    let el = $$(this);                    
+                    if(!el.hasClass('active')){
+                        el.siblings('.active').removeClass('active')
+                        el.addClass('active');
+                    }
+                });
+			},
+		},
+	};
 </script>
