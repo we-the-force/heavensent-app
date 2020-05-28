@@ -2,7 +2,7 @@
 	<div class="page" id="view-family">
 		<div class="sqr_bck" id="sqr1"></div>
 		<div class="sqr_bck" id="sqr2"></div>
-        <div class="sqr_bck" id="sqr3"></div>
+		<div class="sqr_bck" id="sqr3"></div>
 		<div class="artwork"></div>
 		<div class="navbar">
 			<div class="navbar-inner sliding">
@@ -34,7 +34,7 @@
 			<div id="family-list" class="family-cont list searchbar-found media-list">
 				<ul>
 					<li>
-						<a class=" item-link item-content">
+						<a class="item-link item-content">
 							<div class="item-media"><img src="../../static/img/136128.png" width="44" /></div>
 							<div class="item-inner">
 								<div class="item-title-row">
@@ -65,9 +65,9 @@
 								<div class="item-text">Son</div>
 							</div>
 						</a>
-                    </li>
-                    <li>
-						<a class=" item-link item-content">
+					</li>
+					<li>
+						<a class="item-link item-content">
 							<div class="item-media"><img src="../../static/img/136128.png" width="44" /></div>
 							<div class="item-inner">
 								<div class="item-title-row">
@@ -88,17 +88,27 @@
 							</div>
 						</a>
 					</li>
+					<li>
+						<a href="#" class="item-link item-content">
+							<div class="item-media"><img src="../../static/img/active.png" width="44" /></div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">Johana</div>
+								</div>
+								<div class="item-text">Cousin</div>
+							</div>
+						</a>
+					</li>
 				</ul>
 			</div>
+			<div class="btns-cont center">
+				<a href="/contact/create" id="create-member-btn" class="button round color-blue large">Create member</a>
+			</div>
+
 			<div class="block searchbar-not-found">
 				<div class="block-inner">Nothing found</div>
 			</div>
 		</div>
-		<footer class="footer">
-			<div class="btns-cont center">
-				<a href="/contact/create" id="create-member-btn" class="button round color-blue large">Create member</a>
-			</div>
-		</footer>
 	</div>
 </template>
 <script>
@@ -106,7 +116,7 @@
 	export default {
 		on: {
 			pageInit: function (e, page) {
-                var self = this;
+				var self = this;
 				var app = self.$app;
 
 				var searchbar = app.searchbar.create({

@@ -1,121 +1,125 @@
 <template>
 	<div class="page" id="select-membership">
 		<div class="artwork"></div>
-		<div class="page-content">
-			<div class="header-cont">
-				<div class="header">
-					<a href="" class="back-btn back">
-						<i class="icons material-icons">chevron_left</i>
-					</a>
-					<h1 class="title">Select Package</h1>
-					<div class="none"></div>
+		<div class="navbar">
+			<div class="navbar-inner sliding">
+				<div class="header-cont">
+					<div class="header">
+						<a href="" class="back-btn back">
+							<i class="icons material-icons">chevron_left</i>
+						</a>
+						<h1 class="title">Select Package</h1>
+						<div class="none"></div>
+					</div>
 				</div>
 			</div>
+		</div>
+		<div class="page-content">
 			<div class="text-cont">
 				<h1 class="title2">Choose a plan that's right for you.</h1>
 				<p class="text">Downgrade or upgrade at any type</p>
 			</div>
 			<div class="plans-cont">
 				<div class="btns-cont">
-                    <a class="button-plan plan-a active">
-                        <h2 class="title-plan">Basic</h2>
-                        <div class="price-cont">
-                            <p class="symbol">$</p>
-                            <p class="price">5</p>
-                        </div>
-                        <p class="per-month">PER MONTH</p>
-                    </a>
-                    <a class="button-plan plan-b">
-                        <h2 class="title-plan">Standar</h2>
-                        <div class="price-cont">
-                            <p class="symbol">$</p>
-                            <p class="price">15</p>
-                        </div>
-                        <p class="per-month">PER MONTH</p>
-                    </a>
-                    <a class="button-plan plan-c">
-                        <h2 class="title-plan">Premium</h2>
-                        <div class="price-cont">
-                            <p class="symbol">$</p>
-                            <p class="price">25</p>
-                        </div>
-                        <p class="per-month">PER MONTH</p>
-                    </a>
-                </div>
-                <p class="title3">Text Notes</p>
+					<a class="button-plan plan-a active" id="plan-a">
+						<h2 class="title-plan">Basic</h2>
+						<div class="price-cont">
+							<p class="symbol">$</p>
+							<p class="price">5</p>
+						</div>
+						<p class="per-month">PER MONTH</p>
+					</a>
+					<a class="button-plan plan-b" id="plan-b">
+						<h2 class="title-plan">Standar</h2>
+						<div class="price-cont">
+							<p class="symbol">$</p>
+							<p class="price">15</p>
+						</div>
+						<p class="per-month">PER MONTH</p>
+					</a>
+					<a class="button-plan plan-c" id="plan-c">
+						<h2 class="title-plan">Premium</h2>
+						<div class="price-cont">
+							<p class="symbol">$</p>
+							<p class="price">25</p>
+						</div>
+						<p class="per-month">PER MONTH</p>
+					</a>
+				</div>
+				<p class="title3">Text Notes</p>
 				<div class="icons-cont" id="text-notes">
 					<div class="icon">
-						<span id="package-a-tex-notes" class="material-icons active">done</span>
+						<span id="package-a-tex-notes" class="plan plan-a material-icons active">done</span>
 					</div>
 					<div class="icon">
-						<span id="package-b-tex-notes" class="material-icons">done</span>
+						<span id="package-b-tex-notes" class="plan plan-b material-icons">done</span>
 					</div>
 					<div class="icon">
-						<span id="package-c-tex-notes" class="material-icons">done</span>
+						<span id="package-c-tex-notes" class="plan plan-c material-icons">done</span>
 					</div>
-                </div>
-                <p class="title3">Pictures</p>
+				</div>
+				<p class="title3">Pictures</p>
 				<div class="icons-cont" id="pictures">
 					<div class="icon">
-						<span id="package-a-tex-notes" class="material-icons active">done</span>
+						<span id="package-a-pictures" class="plan plan-a material-icons active">done</span>
 					</div>
 					<div class="icon">
-						<span id="package-b-tex-notes" class="material-icons">done</span>
+						<span id="package-b-pictures" class="plan plan-b material-icons">done</span>
 					</div>
 					<div class="icon">
-						<span id="package-c-tex-notes" class="material-icons">done</span>
+						<span id="package-c-pictures" class="plan plan-c material-icons">done</span>
 					</div>
-                </div>
-                <p class="title3">Video</p>
-                <div class="icons-cont" id="text-notes">
+				</div>
+				<p class="title3">Video</p>
+				<div class="icons-cont" id="video">
 					<div class="icon">
-						<span id="package-a-tex-notes" class="material-icons active">clear</span>
-					</div>
-					<div class="icon">
-						<span id="package-b-tex-notes" class="material-icons">done</span>
+						<span id="package-a-video" class="plan plan-a material-icons active">clear</span>
 					</div>
 					<div class="icon">
-						<span id="package-c-tex-notes" class="material-icons">done</span>
-					</div>
-                </div>
-                <p class="title3">GPS</p>
-                <div class="icons-cont" id="text-notes">
-					<div class="icon">
-						<span id="package-a-tex-notes" class="material-icons active">clear</span>
+						<span id="package-b-video" class="plan plan-b material-icons">done</span>
 					</div>
 					<div class="icon">
-						<span id="package-b-tex-notes" class="material-icons">clear</span>
+						<span id="package-c-video" class="plan plan-c material-icons">done</span>
+					</div>
+				</div>
+				<p class="title3">GPS</p>
+				<div class="icons-cont" id="gps">
+					<div class="icon">
+						<span id="package-a-gps" class="plan plan-a material-icons active">clear</span>
 					</div>
 					<div class="icon">
-						<span id="package-c-tex-notes" class="material-icons">done</span>
-					</div>
-                </div>
-                <p class="title3">On Demand</p>
-                <div class="icons-cont" id="text-notes">
-					<div class="icon">
-						<span id="package-a-tex-notes" class="material-icons active">clear</span>
+						<span id="package-b-gps" class="plan plan-b material-icons">clear</span>
 					</div>
 					<div class="icon">
-						<span id="package-b-tex-notes" class="material-icons">clear</span>
+						<span id="package-c-gps" class="plan plan-c material-icons">done</span>
+					</div>
+				</div>
+				<p class="title3">On Demand</p>
+				<div class="icons-cont" id="demand">
+					<div class="icon">
+						<span id="package-a-demand" class="plan plan-a material-icons active">clear</span>
 					</div>
 					<div class="icon">
-						<span id="package-c-tex-notes" class="material-icons">done</span>
+						<span id="package-b-demand" class="plan plan-b material-icons">clear</span>
 					</div>
-                </div>
+					<div class="icon">
+						<span id="package-c-demand" class="plan plan-c material-icons">done</span>
+					</div>
+				</div>
 				<div class="desc-cont">
 					<div class="item">
-						<p id="package-a-desc" class="active">6 Memories / Person / Years</p>
+						<p id="package-a-desc" class="plan plan-a active">6 Memories / Person / Years</p>
 					</div>
 					<div class="item">
-						<p id="package-b-desc">6 Memories / Person / Years</p>
+						<p id="package-b-desc" class="plan plan-b">6 Memories / Person / Years</p>
 					</div>
 					<div class="item">
-						<p id="package-c-desc">12 Memories / Person / Years</p>
+						<p id="package-c-desc" class="plan plan-c">12 Memories / Person / Years</p>
 					</div>
 				</div>
 			</div>
 			<div class="btns-cont center">
-				<a id="confirm-plan-btn" class="button color-blue round large">Select plan</a>
+				<a id="confirm-plan-btn" href="/membership/card" class="button color-blue round large">Select plan</a>
 			</div>
 		</div>
 	</div>
@@ -127,15 +131,17 @@
 		on: {
 			pageInit: function (e, page) {
 				var self = this;
-                var app = self.$app;
-                
-                $$('.button-plan').click(function (val) {
-                    let el = $$(this);                    
-                    if(!el.hasClass('active')){
-                        el.siblings('.active').removeClass('active')
-                        el.addClass('active');
-                    }
-                });
+				var app = self.$app;
+
+				$$(".button-plan").click(function (val) {
+					let el = $$(this);
+					if (!el.hasClass("active")) {
+						el.siblings(".active").removeClass("active");
+						el.addClass("active");
+						$$(".plan").removeClass("active");
+                        $$("."+el.attr('id')).addClass("active");
+					}
+				});
 			},
 		},
 	};

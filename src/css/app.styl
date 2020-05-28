@@ -8,6 +8,8 @@
 @import 'stylus/media/media.styl'
 
 .page
+    background Grey_light_1
+
     .page-content
         padding 15px
         position absolute
@@ -24,3 +26,9 @@
             text-align center
             color Grey_dark_3
 
+    .navbar + .page-content
+        padding-top 70px
+
+    .navbar
+        background Grey_light_1
+        height 70px

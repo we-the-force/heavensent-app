@@ -1,0 +1,58 @@
+<template>
+	<div class="page" id="add-card-info">
+		<div class="artwork"></div>
+		<div class="navbar">
+			<div class="navbar-inner sliding">
+				<div class="header-cont">
+					<div class="header">
+						<a href="" class="back-btn back">
+							<i class="icons material-icons">chevron_left</i>
+						</a>
+						<h1 class="title">Add card info</h1>
+						<div class="none"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="page-content">
+			<div class="logo-cont">
+				<img src="../../static/img/card.png" alt="" />
+			</div>
+			<div class="inputs list">
+				<ul>
+					<li class="item-content item-input with-label">
+						<label for="name">Name on card</label>
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="text" id="name" placeholder="Name on card" required validate />
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input with-label">
+						<label for="number">Number card</label>
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="number" id="number" placeholder="Credit card" required validate />
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input two-inputs">
+						<div class="item-inner padd-r20 col-65">
+							<div class="item-input-wrap">
+								<input type="month" id="expires" placeholder="Expires" required validate />
+							</div>
+						</div>
+						<div class="item-inner col-25">
+							<div class="item-input-wrap">
+								<input type="password" id="csv" placeholder="CSV" required validate />
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="btns-cont center">
+				<a id="confirm" href="/membership/confirmed" class="button color-blue round small">Confirm</a>
+			</div>
+		</div>
+	</div>
+</template>

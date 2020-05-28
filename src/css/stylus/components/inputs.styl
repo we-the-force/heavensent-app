@@ -72,6 +72,21 @@
         &.right
             justify-content flex-end
 
+        &.with-label
+            flex-cont(column, unset, unset)
+
+            label
+                font-template(500, 18px, 21px)
+                color Grey_dark_3
+                padding 0px 17px
+
+            .item-inner
+                padding-top 5px
+
+        &.two-inputs
+            .item-inner
+                min-width unset
+
 .upload-cont
     .upload-img
         position inherit
@@ -117,6 +132,7 @@
                 background unset
                 padding 0px 48px 0px 36px
                 height var(--f7-input-height)
+
 .ios
     .item-input-wrap::after, .item-inner::after
         content none

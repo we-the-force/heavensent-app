@@ -20,6 +20,7 @@ import MemoryNotification from '../pages/recipient/memory-notification.f7.html';
 import FundationsSingle from '../pages/fundations/fundations-single.f7.html';
 
 import SelectMembership from '../pages/membership/select-membership.f7.html';
+import AddCardInfo from '../pages/membership/add-card-info.f7.html';
 import ViewMembership from '../pages/membership/view-membership.f7.html';
 import PaymentConfirmMembership from '../pages/membership/payment-confirm-membership.f7.html';
 
@@ -41,7 +42,7 @@ var routes = [{
     component: Login,
 },
 {
-    path: '/recovery/',
+    path: '/recovery',
     name: 'recovery',
     component: Recovery,
 },
@@ -121,13 +122,18 @@ var routes = [{
     component: SelectMembership,
 },
 {
+    name: 'card-info',
+    path: '/membership/card',
+    component: AddCardInfo,
+},
+{
     name: 'view-membership',
     path: '/membership/view',
     component: ViewMembership,
 },
 {
     name: 'payment-confirm-membership',
-    path: '/payment-confirm-membership/',
+    path: '/membership/confirmed',
     component: PaymentConfirmMembership,
 },
 {
