@@ -29,35 +29,35 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="name" placeholder="Name" required validate />
+								<input type="text" id="signup-name" placeholder="Name" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="date" id="birthday" placeholder="Birthday" required validate />
+								<input type="date" id="signup-birthday" placeholder="Birthday" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="tel" id="mobile" placeholder="Phone number" required validate />
+								<input type="tel" id="signup-mobile" placeholder="Phone number" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="email" placeholder="Email" required validate />
+								<input type="email" id="signup-email" placeholder="Email" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="password" id="password" placeholder="Password" required validate />
+								<input type="password" id="signup-password" placeholder="Password" required validate />
 								<span class="show">Show</span>
 							</div>
 						</div>
@@ -65,7 +65,7 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="admin-email" placeholder="Admin email" required validate />
+								<input type="email" id="signup-admin-email" placeholder="Admin email" required validate />
 								<a class="popup-open" href="#" data-popup=".popup-admin">
 									<i class="info icons material-icons">info</i>
 								</a>
@@ -77,7 +77,7 @@
 							<div class="item-inner">
 								<div class="item-title">Admin could edit?</div>
 							</div>
-							<input type="checkbox" id="admin-edit" name="demo-checkbox" value="admin-edit" checked="checked" />
+							<input type="checkbox" id="signup-admin-edit" name="demo-checkbox" value="admin-edit" checked="checked" />
 							<i class="icon icon-checkbox"></i>
 						</label>
 					</li>
@@ -126,21 +126,21 @@
 				
 				//mostrar contrase;a
 				$$(".show").click(function (val) {
-					let type = $$("#password").attr("type");
+					let type = $$("#signup-password").attr("type");
 					if (type == "password") {
-						$$("#password").attr("type", "text");
+						$$("#signup-password").attr("type", "text");
 					} else {
-						$$("#password").attr("type", "password");
+						$$("#signup-password").attr("type", "password");
 					}
 				});
 				
 				//mostrar span de show
-				$$("#password").on("input:notempty", function (val) {
+				$$("#signup-password").on("input:notempty", function (val) {
 					$$(".show").css("display", "block");
 				});
 				
 				//ocultar span cuando el input este vacio
-				$$("#password").on("input:empty", function (val) {
+				$$("#signup-password").on("input:empty", function (val) {
 					$$(".show").css("display", "none");
 				});
 				
@@ -172,12 +172,12 @@
 				});
 				
 				// Nomas pa testear, quitarlo mas al ratito.
-				$$("#name").val("test1");
-				$$("#birthday").val("01/01/1990");
-				$$("#mobile").val("123456789");
-				$$("#email").val("asd@asd.com");
-				$$("#password").val("1234567890");
-				$$("#admin-email").val("dsa@dsa.com");
+				$$("#signup-name").val("test1");
+				$$("#signup-birthday").val("01/01/1990");
+				$$("#signup-mobile").val("123456789");
+				$$("#signup-email").val("asd@asd.com");
+				$$("#signup-password").val("1234567890");
+				$$("#signup-admin-email").val("dsa@dsa.com");
 				// $$('#').val('test1');
 				
 				$$("#create-btn").on("click", function (e) {
@@ -186,13 +186,13 @@
 					
 					
 					console.log("Setting data");
-					username = $$("#name").val();
-					birthday = $$("#birthday").val();
-					mobile = $$("#mobile").val();
-					email = $$("#email").val();
-					password = $$("#password").val();
-					adminEmail = $$("#admin-email").val();
-					adminCouldEdit = $$("#admin-edit").val();
+					username =       $$("#signup-name").val();
+					birthday =       $$("#signup-birthday").val();
+					mobile =         $$("#signup-mobile").val();
+					email =          $$("#signup-email").val();
+					password =       $$("#signup-password").val();
+					adminEmail =     $$("#signup-admin-email").val();
+					adminCouldEdit = $$("#signup-admin-edit").val();
 					
 					console.log('c: \"' + c + '\"');
 					if (!c)
@@ -274,7 +274,8 @@
 						});
 						
 						app.preloader.hide();
-						app.views.main.router.navigate({ name: "invite-admin" });
+						app.dialog.alert("We've sent you and email to confirm your account.");
+						app.views.main.router.navigate({ name: "login" });
 					})
 					.catch(function (err) {
 						app.preloader.hide();

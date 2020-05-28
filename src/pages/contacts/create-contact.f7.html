@@ -30,35 +30,35 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="name" placeholder="name" required validate />
+								<input type="text" id="create-cont-name" placeholder="name" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="email" placeholder="email" required validate />
+								<input type="email" id="create-cont-email" placeholder="email" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="mobile" placeholder="mobile" required validate />
+								<input type="text" id="create-cont-mobile" placeholder="mobile" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="relation" placeholder="relation" required validate />
+								<input type="text" id="create-cont-relation" placeholder="relation" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="date" id="birthday" placeholder="birthday" required validate />
+								<input type="date" id="create-cont-birthday" placeholder="birthday" required validate />
 							</div>
 						</div>
 					</li>
@@ -67,7 +67,7 @@
 							<div class="item-inner">
 								<div class="item-title">Is administrator?</div>
 							</div>
-							<input type="checkbox" id="is-admin" name="demo-checkbox" checked="checked" />
+							<input type="checkbox" id="create-cont-is-admin" name="demo-checkbox" checked="checked" />
 							<i class="icon icon-checkbox"></i>
 						</label>
 					</li>
@@ -76,7 +76,7 @@
 							<div class="item-inner">
 								<div class="item-title">Edit memories:</div>
 							</div>
-							<input type="checkbox" id="edit-memories" name="demo-checkbox" checked="checked" />
+							<input type="checkbox" id="create-cont-edit-memories" name="demo-checkbox" checked="checked" />
 							<i class="icon icon-checkbox"></i>
 						</label>
 					</li>
@@ -88,7 +88,7 @@
 							<div class="item-inner">
 								<div class="item-title">Is a minor?</div>
 							</div>
-							<input type="checkbox" id="is-minor" name="demo-checkbox" checked="checked" />
+							<input type="checkbox" id="create-cont-is-minor" name="demo-checkbox" checked="checked" />
 							<i class="icon icon-checkbox"></i>
 						</label>
 					</li>
@@ -112,7 +112,24 @@
 				var self = this;
 				var app = self.$app;
 				var c;
-
+				var username = "";
+				var email="";
+				var mobile="";
+				var relation="";
+				var birthday="";
+				var isAdmin="";
+				var editMemories="";
+				var isMinor="";
+				
+				$$("#create-cont-name").val("Test4123");
+				$$("#create-cont-email").val("Test4123@123.com");
+				$$("#create-cont-mobile").val("123456789123");
+				$$("#create-cont-relation").val("Hijuesu");
+				// $$("#create-cont-birthday").val();
+				$$("#create-cont-is-admin").val();
+				$$("#create-cont-edit-memories").val();
+				$$("#create-cont-is-minor").val();
+				
 				//upload photo
 				$$(".img-btn").on("click", function () {
 					if (window.File && window.FileReader && window.FormData) {
@@ -120,7 +137,7 @@
 						inputField.off("change");
 						inputField.on("change", function (e) {
 							var file = e.target.files[0];
-
+							
 							if (file) {
 								if (/^image\//i.test(file.type)) {
 									$$(".img-btn").off("click");
@@ -138,52 +155,168 @@
 						console.log("File upload is not supported!");
 					}
 				});
-
+				
 				$$("#create-member-btn").on("click", function (e) {
+					console.log("create-member-btn click");
 					e.preventDefault();
-
+					
 					//obtiene la foto ya cortada en formato blob
-					c.result("blob").then((blob) => {
-						console.log(blob);
-					});
+					// c.result("blob").then((blob) => {console.log(blob);});
+					
+					username =     $$("#create-cont-name").val();
+					email =        $$("#create-cont-email").val();
+					mobile =       $$("#create-cont-mobile").val();
+					relation =     $$("#create-cont-relation").val();
+					birthday =     $$("#create-cont-birthday").val();
+					isAdmin =      $$("#create-cont-is-admin").val();
+					editMemories = $$("#create-cont-edit-memories").val();
+					isMinor =      $$("#create-cont-is-minor").val();
+					
+					if (!c)
+					{
+						app.dialog.alert('Please upload an image');
+						return false;
+					}
+					if (!validateText(username, 'Please, enter your family member\'s desired username.', 'Your username may not have spaces before or after the text.'))
+					{
+						console.log("username not valid");
+						return false;
+					}
+					if (!validateText(mobile, 'Plase, enter your family member\'s mobile phone number.', 'Your phone number may not have spaces before or after the text'))
+					{
+						return false;
+					}
+					if (!validateEmail(email))
+					{
+						app.dialog.alert('Please enter a valid email');
+						return false;
+					}
+					if (!validateText(birthday, 'Plase, enter your family member\'s birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.'))
+					{
+						return false;
+					}
+					
+					// app.preloader.show("blue");
+					
+					app.request.promise.get(`${app.data.server}/users/?email=${email.toLowerCase()}`)
+					.then(function (res){
+						if (res.data === "[]")
+						{
+							console.log(`result was empty\r\nCreating user\r\n${res.data}`);
+							app.request.promise.postJSON(`${app.data.server}/auth/local/register`,{
+								"username": username,
+								"password": " ",
+								"email": email,
+							})
+							.then(function(res){
+								console.log(`User created successfully\r\n\r\n${res}`);
+							})
+							.catch(function(err){
+								console.log(`An error occurred`);
+								console.log(err);
+								var obj = JSON.parse(err.xhr.response);
+								app.dialog.alert('Some fields are incomplete or incorrect, please try again.'+'\r\n'+obj.message[0].messages[0].message);
+							})
+						}
+						else
+						{
+							console.log(`result wasn't empty!\r\nassigning user\r\n${res.data}`)
+						}
+					})
+					.catch(function (err){
+						console.log(err);
+					})
 				});
-
+				
+				
+				function validateEmail(mail) 
+				{
+					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+					{
+						return (true)
+					}
+					// alert("You have entered an invalid email address!")
+					return (false)
+				}
+				
+				function validateText(text, emptyText, trimmedText, checkTrimmed = true)
+				{
+					console.log(`${text}, trim?: ${checkTrimmed}`);
+					if (isTextEmptyOrWhitespace(text))
+					{
+						app.dialog.alert(emptyText);
+						return false;
+					}
+					else
+					{
+						if (checkTrimmed)
+						{
+							if (!isTextTrimmed(text))
+							{
+								app.dialog.alert(trimmedText);
+								return false;
+							}
+						}
+						return true;
+					}
+				}
+				
+				function isTextValid(value)
+				{
+					return !isTextEmptyOrWhitespace(value) && isTextTrimmed(value);
+				}
+				
+				function isTextEmptyOrWhitespace(value)
+				{
+					if (!value || !value.trim())
+					{
+						return true;
+					}
+					return false;
+				}
+				
+				function isTextTrimmed(value)
+				{
+					return (value == value.trim());
+				}
+				
+				
 				//funcion para leer la foto
 				function readFile(file) {
 					var reader = new FileReader();
-
+					
 					reader.onloadend = function () {
 						processFile(reader.result, file.type);
 					};
-
+					
 					reader.onerror = function () {
 						alert("There was an error reading the file!");
 					};
-
+					
 					reader.readAsDataURL(file);
 				}
-
+				
 				//procesar foto
 				function processFile(dataURL, fileType) {
 					var maxWidth = 440;
 					var maxHeight = 440;
-
+					
 					var image = new Image();
 					image.src = dataURL;
-
+					
 					image.onload = function () {
 						var width = image.width;
 						var height = image.height;
 						var shouldResize = width > maxWidth || height > maxHeight;
-
+						
 						if (!shouldResize) {
 							sendFile(dataURL);
 							return;
 						}
-
+						
 						var newWidth;
 						var newHeight;
-
+						
 						if (width > height) {
 							newHeight = height * (maxWidth / width);
 							newWidth = maxWidth;
@@ -191,26 +324,26 @@
 							newWidth = width * (maxHeight / height);
 							newHeight = maxHeight;
 						}
-
+						
 						var canvas = document.createElement("canvas");
-
+						
 						canvas.width = newWidth;
 						canvas.height = newHeight;
-
+						
 						var context = canvas.getContext("2d");
-
+						
 						context.drawImage(this, 0, 0, newWidth, newHeight);
-
+						
 						dataURL = canvas.toDataURL(fileType);
-
+						
 						sendFile(dataURL);
 					};
-
+					
 					image.onerror = function () {
 						alert("There was an error processing your file!");
 					};
 				}
-
+				
 				//poner foto en la pagina
 				function sendFile(dataURL) {
 					var imgHtml = '<img id="web-img" src="' + dataURL + '" alt="">';
@@ -237,7 +370,7 @@
 		width: 100%;
 		height: 100%;
 	}
-
+	
 	.croppie-container .cr-image {
 		z-index: -1;
 		position: absolute;
@@ -247,7 +380,7 @@
 		max-height: none;
 		max-width: none;
 	}
-
+	
 	.croppie-container .cr-boundary {
 		position: relative;
 		overflow: hidden;
@@ -256,7 +389,7 @@
 		width: 100%;
 		height: 100%;
 	}
-
+	
 	.croppie-container .cr-viewport,
 	.croppie-container .cr-resizer {
 		position: absolute;
@@ -269,19 +402,19 @@
 		box-shadow: 0 0 2000px 2000px rgba(0, 0, 0, 0.5);
 		z-index: 0;
 	}
-
+	
 	.croppie-container .cr-resizer {
 		z-index: 2;
 		box-shadow: none;
 		pointer-events: none;
 	}
-
+	
 	.croppie-container .cr-resizer-vertical,
 	.croppie-container .cr-resizer-horisontal {
 		position: absolute;
 		pointer-events: all;
 	}
-
+	
 	.croppie-container .cr-resizer-vertical::after,
 	.croppie-container .cr-resizer-horisontal::after {
 		display: block;
@@ -293,61 +426,61 @@
 		height: 10px;
 		content: "";
 	}
-
+	
 	.croppie-container .cr-resizer-vertical {
 		bottom: -5px;
 		cursor: row-resize;
 		width: 100%;
 		height: 10px;
 	}
-
+	
 	.croppie-container .cr-resizer-vertical::after {
 		left: 50%;
 		margin-left: -5px;
 	}
-
+	
 	.croppie-container .cr-resizer-horisontal {
 		right: -5px;
 		cursor: col-resize;
 		width: 10px;
 		height: 100%;
 	}
-
+	
 	.croppie-container .cr-resizer-horisontal::after {
 		top: 50%;
 		margin-top: -5px;
 	}
-
+	
 	.croppie-container .cr-original-image {
 		display: none;
 	}
-
+	
 	.croppie-container .cr-vp-circle {
 		border-radius: 50%;
 	}
-
+	
 	.croppie-container .cr-overlay {
 		z-index: 1;
 		position: absolute;
 		cursor: move;
 		touch-action: none;
 	}
-
+	
 	.croppie-container .cr-slider-wrap {
 		width: 75%;
 		margin: 15px auto;
 		text-align: center;
 	}
-
+	
 	.croppie-result {
 		position: relative;
 		overflow: hidden;
 	}
-
+	
 	.croppie-result img {
 		position: absolute;
 	}
-
+	
 	.croppie-container .cr-image,
 	.croppie-container .cr-overlay,
 	.croppie-container .cr-viewport {
@@ -361,7 +494,7 @@
 	/*************************************/
 	/*http://brennaobrien.com/blog/2014/05/style-input-type-range-in-every-browser.html */
 	/*************************************/
-
+	
 	.cr-slider {
 		-webkit-appearance: none;
 		/*removes default webkit styles*/
@@ -374,7 +507,7 @@
 		padding-bottom: 8px;
 		background-color: transparent;
 	}
-
+	
 	.cr-slider::-webkit-slider-runnable-track {
 		width: 100%;
 		height: 3px;
@@ -382,7 +515,7 @@
 		border: 0;
 		border-radius: 3px;
 	}
-
+	
 	.cr-slider::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		border: none;
@@ -392,11 +525,11 @@
 		background: #ddd;
 		margin-top: -6px;
 	}
-
+	
 	.cr-slider:focus {
 		outline: none;
 	}
-
+	
 	.cr-slider::-moz-range-track {
 		width: 100%;
 		height: 3px;
@@ -404,7 +537,7 @@
 		border: 0;
 		border-radius: 3px;
 	}
-
+	
 	.cr-slider::-moz-range-thumb {
 		border: none;
 		height: 16px;
@@ -414,12 +547,12 @@
 		margin-top: -6px;
 	}
 	/*hide the outline behind the border*/
-
+	
 	.cr-slider:-moz-focusring {
 		outline: 1px solid white;
 		outline-offset: -1px;
 	}
-
+	
 	.cr-slider::-ms-track {
 		width: 100%;
 		height: 5px;
@@ -431,17 +564,17 @@
 		color: transparent;
 		/*remove default tick marks*/
 	}
-
+	
 	.cr-slider::-ms-fill-lower {
 		background: rgba(0, 0, 0, 0.5);
 		border-radius: 10px;
 	}
-
+	
 	.cr-slider::-ms-fill-upper {
 		background: rgba(0, 0, 0, 0.5);
 		border-radius: 10px;
 	}
-
+	
 	.cr-slider::-ms-thumb {
 		border: none;
 		height: 16px;
@@ -450,11 +583,11 @@
 		background: #ddd;
 		margin-top: 1px;
 	}
-
+	
 	.cr-slider:focus::-ms-fill-lower {
 		background: rgba(0, 0, 0, 0.5);
 	}
-
+	
 	.cr-slider:focus::-ms-fill-upper {
 		background: rgba(0, 0, 0, 0.5);
 	}
@@ -462,30 +595,30 @@
 	/***********************************/
 	/* Rotation Tools */
 	/***********************************/
-
+	
 	.cr-rotate-controls {
 		position: absolute;
 		bottom: 5px;
 		left: 5px;
 		z-index: 1;
 	}
-
+	
 	.cr-rotate-controls button {
 		border: 0;
 		background: none;
 	}
-
+	
 	.cr-rotate-controls i:before {
 		display: inline-block;
 		font-style: normal;
 		font-weight: 900;
 		font-size: 22px;
 	}
-
+	
 	.cr-rotate-l i:before {
 		content: "↺";
 	}
-
+	
 	.cr-rotate-r i:before {
 		content: "↻";
 	}
