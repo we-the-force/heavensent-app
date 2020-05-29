@@ -1,45 +1,48 @@
 <template>
-    <div class="page">
-        <div class="navbar">
-            <div class="navbar-bg"></div>
-            <div class="navbar-inner sliding">
-                <div class="left">
-                    <a href="#" class="link back">
-                        <i class="icon icon-back"></i>
-                        <span class="if-not-md">Back</span>
-                    </a>
-                </div>
-                <div class="title">Membership</div>
-            </div>
-        </div>
+    <div class="page" id="membership-view">
+        <div class="artwork"></div>
+		<div class="navbar">
+			<div class="navbar-inner sliding">
+				<div class="header-cont">
+					<div class="header">
+						<a href="" class="back-btn back">
+							<i class="icons material-icons">chevron_left</i>
+						</a>
+						<h1 class="title">Membership</h1>
+						<div class="none"></div>
+					</div>
+				</div>
+			</div>
+		</div>
         <div class="page-content">
-            <p>,</p>
-            <img src="http://via.placeholder.com/190x95.png?text=membership-icon" alt="">
-            <div>
-                Hello Jacob
-                <br>
-                Thanks for being a HeavenSent member
+            <div class="logo-cont">
+				<img src="../../static/img/Pluma_blue.png" alt="" />
             </div>
-            <div>
-                <div id="package-name">Package 3 membership</div>
-                <div id="package-cost">$15.00 USB /MO</div>
-                <div>
+            <div class="title-cont">
+                <h1>Hello Jacob</h1>
+                <p>Thanks for being a HeavenSent member</p>
+            </div>
+            <div class="text-cont">
+                <h1 class="text-title" id="package-name">Package 3 membership</h1>
+                <p class="text-cost" id="package-cost">$15.00 USB /MO</p>
+                
+                <p class="text">
                     Next billing date: <span id="next-bill-date">06/26/2020</span>
-                </div>
-                <div>
+                </p>
+                <p class="text mar-t15">
                     Billed with: 
-                    <span id="billing-info">
+                    <a class="card-info" id="billing-info">
                         Amex ******1548
-                        <a id="edit-billing-info-btn" class="button">lapicito</a>
-                    </span>
-                </div>
+                        <span id="edit-billing-info-btn" class="material-icons">edit</span>
+                    </a>
+                </p>
             </div>
 
             <div class="btns-cont center">
-                <a id="change-plan-btn" class="button color-white round small">Change plan</a>
+                <a id="change-plan-btn" class="button color-white round large">Change plan</a>
             </div>
-            <div class="btns-cont center">
-                <a id="cancel-plan-btn" class="button color-blue round small">Cancel Subscription</a>
+            <div class="btns-cont center">  
+                <a id="cancel-plan-btn" class="button color-blue round large">Cancel Subscription</a>
             </div>
         </div>
     </div>
