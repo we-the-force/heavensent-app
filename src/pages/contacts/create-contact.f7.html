@@ -5,8 +5,8 @@
 		<div class="sqr_bck" id="sqr3"></div>
 		<div class="sqr_bck" id="sqr4"></div>
 		<div class="sqr_bck" id="sqr5"></div>
-        <div class="artwork"></div>
-        <div class="navbar">
+		<div class="artwork"></div>
+		<div class="navbar">
 			<div class="navbar-inner sliding">
 				<div class="header-cont">
 					<div class="header">
@@ -178,8 +178,8 @@
 					
 					if (!c)
 					{
-						app.dialog.alert('Please upload an image');
-						return false;
+						// app.dialog.alert('Please upload an image');
+						// return false;
 					}
 					if (!validateText(username, 'Please, enter your family member\'s desired username.', 'Your username may not have spaces before or after the text.'))
 					{
@@ -197,7 +197,7 @@
 					}
 					if (!validateText(birthday, 'Plase, enter your family member\'s birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.'))
 					{
-						return false;
+						// return false;
 					}
 					
 					// app.preloader.show("blue");
@@ -212,8 +212,9 @@
 								"password": " ",
 								"email": email,
 							})
-							.then(function(res){
-								console.log(`User created successfully\r\n\r\n${res}`);
+							.then(function(res2){
+								console.log(`User created successfully\r\n\r\n${res2.data}`);
+								assignRelation(res2.data, "asd@asd.com", relation, isAdmin);
 							})
 							.catch(function(err){
 								console.log(`An error occurred`);
@@ -224,14 +225,66 @@
 						}
 						else
 						{
-							console.log(`result wasn't empty!\r\nassigning user\r\n${res.data}`)
+							let user = JSON.parse(res.data)[0];
+							console.log(`result wasn't empty!\r\nassigning user\r\n${user}`)
+							console.log(user)
+							// assignRelation(res.data, "asd@asd.com", relation, isAdmin);
+							try {
+								const auxData = new FormData();
+								
+								app.request({
+									url: app.data.server = "/users/?id=36",
+									method: "PUT",
+									data: {
+										"contact": [{
+											"id": 3,
+											"guardian": "asd@asd.com",
+											// "info": res.data,
+											"info": {
+												"id":user.id,
+												"email": user.email,
+											},
+											"relation": relation,
+											"isAdmin": isAdmin,
+										}]
+									},
+									contentType: "multipart/form-data"
+								});
+							} catch (error) {
+								console.log("Error assigning thingie");
+								console.log(error);
+							}
 						}
 					})
 					.catch(function (err){
+						console.log("Error error");
 						console.log(err);
 					})
 				});
 				
+				function assignRelation(user, guardian, contactRelation, contactIsAdmin)
+				{
+					//start by setting it to id 37
+					app.request({
+						url: app.data.server = "/users/?id=37",
+						method: "PUT",
+						data: {
+							"guardian": guardian,
+							"info": user,
+							
+						},
+						relation: contactRelation,
+						isAdmin: contactIsAdmin,
+					})
+					.then(function (res){
+						console.log("response assignRelation");
+						console.log(res);
+					})
+					.catch(function(err){
+						console.log("error addignRelation");
+						console.log(err);
+					})
+				}
 				
 				function validateEmail(mail) 
 				{
