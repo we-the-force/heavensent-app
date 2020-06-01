@@ -12,6 +12,7 @@ import ImportContacts from '../pages/contacts/import-contacts.f7.html';
 import InviteAdmin from '../pages/contacts/invite-admin.f7.html';
 
 import CreateMemory from '../pages/memory/create-memory.f7.html';
+import HomeMemories from '../pages/memory/home-memories.f7.html';
 
 import MemoryDashboard from '../pages/recipient/dashboard.f7.html';
 import MemoryView from '../pages/recipient/view-memory.f7.html';
@@ -100,6 +101,11 @@ var routes = [{
     name: 'create-memory',
     path: '/create-memory/',
     component: CreateMemory,
+},
+{
+    name: 'home-memories',
+    path: '/memories/home',
+    component: HomeMemories,
 },
 {
     name: 'memory-dashboard',
