@@ -51,8 +51,67 @@
 				</ul>
 			</div>
 			<div class="btns-cont center">
-				<a id="confirm" href="/membership/confirmed" class="button color-blue round small">Confirm</a>
+				<!-- <a id="confirm" href="/membership/confirmed" class="button color-blue round small">Confirm</a> -->
+				<a id="confirm" class="button color-blue round small">Confirm</a>
 			</div>
 		</div>
 	</div>
-</template>
+</template>]
+<script>
+	import $$ from "dom7";
+	import croppie from "croppie";
+	export default{
+		on: {
+			pageInit: function(e, page){
+				var self = this;
+				var app = self.$app;
+				
+				var queryPlan = app.views.main.router.currentRoute.query.plan;
+				
+				var wea = formatDate();
+				console.log(wea);
+
+				// $$("#confirm")[0].href = `/membership/confirmed/?plan=${queryPlan}`;
+				$$("#confirm").click(function (val) {
+					app.request.promise.get(`${app.data.server}/memberships/?name=${queryPlan}`)
+					.then(function(planRes){
+						let plan = JSON.parse(planRes.data)[0];
+						app.request.promise.get(`${app.data.server}/users/?email=test@test.com`)
+						.then(function(userRes){
+							let user = JSON.parse(userRes.data)[0];
+							app.request({
+								url: `${app.data.server}/users/${user.id}`,
+								method: 'PUT',
+								data:{
+									"currentMembership": {
+										"isActive": true,
+										"nextBillingDate": formatDate(),
+										"billedCard": 123123,
+										"plan": plan.id
+									}
+								}
+							});
+							console.log(plan);
+							console.log(user);
+						})
+					})
+				});
+
+				function formatDate()
+				{
+					let date = new Date();
+					date.setDate(date.getDate() + 30);
+					let dd = String(date.getDate()).padStart(2, '0');
+					let mm = String(date.getMonth() + 1).padStart(2, '0');
+					let yyyy = date.getFullYear();
+					let hour = date.getHours();
+					
+					//2020-06-11T19:00:00.000Z
+					let result = `${yyyy}-${mm}-${dd}T${hour}:00:00.000Z`;
+
+					return result;
+				}
+			}
+		},
+	};
+</script>
