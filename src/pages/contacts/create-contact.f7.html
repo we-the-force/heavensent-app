@@ -132,7 +132,7 @@
 				// $$("#create-cont-birthday").val();
 				$$("#create-cont-is-admin").val();
 				$$("#create-cont-edit-memories").val();
-				$$("#create-cont-is-minor").val();
+				$$("#create-cont-is-minor").val("off");
 				
 				//upload photo
 				$$(".img-btn").on("click", function () {
@@ -173,9 +173,10 @@
 					mobile =       $$("#create-cont-mobile").val();
 					relation =     $$("#create-cont-relation").val();
 					birthday =     $$("#create-cont-birthday").val();
-					isAdmin =      $$("#create-cont-is-admin").val();
-					editMemories = $$("#create-cont-edit-memories").val();
-					isMinor =      $$("#create-cont-is-minor").val();
+					// isAdmin =      $$("#create-cont-is-admin").val();
+					isAdmin =      $$("#create-cont-is-admin").prop('checked');
+					editMemories = $$("#create-cont-edit-memories").prop('checked');
+					isMinor =      $$("#create-cont-is-minor").prop('checked');
 					
 					if (!c)
 					{
@@ -246,7 +247,7 @@
 								});
 								
 								console.log("Inserting contact to newly created temp contact");
-								assignRelation(res2.data.user, relation, isAdmin);
+								assignRelation(res2.data.user, relation, isAdmin, isMinor, editMemories);
 								app.preloader.hide();
 								
 							})
@@ -267,7 +268,7 @@
 							try {
 								
 								console.log("Inserting contact to existing contact");
-								assignRelation(user, relation, isAdmin);
+								assignRelation(user, relation, isAdmin, isMinor, editMemories);
 								app.preloader.hide();
 								
 							} catch (error) {
@@ -282,16 +283,25 @@
 					})
 				});
 				
-				function assignRelation(contactUser, contactRelation, contactIsAdmin)
+				function assignRelation(contactUser, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories)
 				{
-					
+					console.log("user");
+					console.log(contactUser);
+					console.log("relation");
+					console.log(contactRelation);
+					console.log("isAdmin");
+					console.log(contactIsAdmin);
+					console.log("editMemories");
+					console.log(contactEditMemories);
+					console.log("isMinor");
+					console.log(contactIsMinor);
 					app.request.promise.get(`${app.data.server}/contacts/?owner=${12}&contact=${contactUser.id}`)
 					.then(function(res){
-						console.log("right after get");
-						console.log(res);
+						// console.log("right after get");
+						// console.log(res);
 						if (res.data === "[]")
 						{
-							console.log('Already has contact');
+							// console.log('Already has contact');
 							//start by setting it to id 37
 							app.request.promise.postJSON(`${app.data.server}/contacts`,{
 								"relation": contactRelation,
@@ -300,11 +310,14 @@
 								},
 								"contact":{
 									"id": contactUser.id
-								}
+								},
+								"isAdmin": contactIsAdmin,
+								"isMinor": contactIsMinor,
+								"editMemories": contactEditMemories
 							})
 							.then(function (res){
-								console.log("response assignRelation");
-								console.log(res);
+								// console.log("response assignRelation");
+								// console.log(res);
 							})
 							.catch(function(err){
 								console.log("error addignRelation");
@@ -313,7 +326,7 @@
 						}
 						else
 						{
-							console.log('doesnt have contact');
+							// console.log('doesnt have contact');
 							app.dialog.alert('You already have that user as a contact!');
 						}
 					});
@@ -327,13 +340,13 @@
 						console.log(res);
 						if (res.data === "[]")
 						{
-							console.log("user doesnt have contact");
+							// console.log("user doesnt have contact");
 							// console.log(res.data);
 							return (false);
 						}
 						else
 						{
-							console.log("user has contact");
+							// console.log("user has contact");
 							// console.log(res.data);
 							return (true);
 						}

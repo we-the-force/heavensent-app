@@ -24,6 +24,7 @@ var app = new Framework7({
 
     data: {
         server: 'http://167.172.156.126:1337'
+        // server: 'http://localhost:1337'
     },
 
     // App routes
