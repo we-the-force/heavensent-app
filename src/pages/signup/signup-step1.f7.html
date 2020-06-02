@@ -234,20 +234,36 @@
 					console.log("app.request");
 
 					app.request.promise
-						.postJSON(app.data.server + "/auth/local/register", {
-							"username": username,
-							"birthday": birthday,
-							"mobile": mobile,
-							"email": email,
-							"password": password,
-							// "adminEmail"
-						})
-						.then(function (res) {
-							// console.log(res);
-							// console.log(res.data);
-							console.log(res.data.user);
-							// console.log(res.data.user.id);
-							console.log(password);
+					.postJSON(app.data.server + "/auth/local/register", {
+						"username": username,
+						"birthday": birthday,
+						"mobile": mobile,
+						"email": email,
+						"password": password,
+						// "adminEmail"
+					})
+					.then(function (res) {
+						// console.log(res);
+						// console.log(res.data);
+						console.log(res.data.user);
+						// console.log(res.data.user.id);
+						app.request({
+							url: app.data.server + '/users/' + res.data.user.id,
+							method: 'PUT',
+							data: {
+								"mobile": mobile,
+								"birthday": birthday,
+							}
+						});
+						c.result('blob', 'png').then(blob => {
+							// let file = new File([blob], "perfil.png", new Date());
+							const data = new FormData();
+							// data.append("files", file);
+							data.append("files", blob, 'profile.png');
+							data.append("refId", res.data.user.id);
+							data.append("ref", "user");
+							data.append('source', 'users-permissions');
+							data.append('field', 'profilePicture');
 							app.request({
 								url: app.data.server + '/users/' + res.data.user.id,
 								method: 'PUT',

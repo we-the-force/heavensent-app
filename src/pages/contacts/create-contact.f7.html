@@ -132,7 +132,7 @@
 				// $$("#create-cont-birthday").val();
 				$$("#create-cont-is-admin").val();
 				$$("#create-cont-edit-memories").val();
-				$$("#create-cont-is-minor").val();
+				$$("#create-cont-is-minor").val("off");
 				
 				//upload photo
 				$$(".img-btn").on("click", function () {
@@ -162,6 +162,7 @@
 				
 				$$("#create-member-btn").on("click", function (e) {
 					console.log("create-member-btn click");
+					console.log(app.data.server);
 					e.preventDefault();
 					
 					//obtiene la foto ya cortada en formato blob
@@ -172,14 +173,15 @@
 					mobile =       $$("#create-cont-mobile").val();
 					relation =     $$("#create-cont-relation").val();
 					birthday =     $$("#create-cont-birthday").val();
-					isAdmin =      $$("#create-cont-is-admin").val();
-					editMemories = $$("#create-cont-edit-memories").val();
-					isMinor =      $$("#create-cont-is-minor").val();
+					// isAdmin =      $$("#create-cont-is-admin").val();
+					isAdmin =      $$("#create-cont-is-admin").prop('checked');
+					editMemories = $$("#create-cont-edit-memories").prop('checked');
+					isMinor =      $$("#create-cont-is-minor").prop('checked');
 					
 					if (!c)
 					{
-						// app.dialog.alert('Please upload an image');
-						// return false;
+						app.dialog.alert('Please upload an image');
+						return false;
 					}
 					if (!validateText(username, 'Please, enter your family member\'s desired username.', 'Your username may not have spaces before or after the text.'))
 					{
@@ -197,10 +199,10 @@
 					}
 					if (!validateText(birthday, 'Plase, enter your family member\'s birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.'))
 					{
-						// return false;
+						return false;
 					}
 					
-					// app.preloader.show("blue");
+					app.preloader.show("blue");
 					
 					app.request.promise.get(`${app.data.server}/users/?email=${email.toLowerCase()}`)
 					.then(function (res){
@@ -214,11 +216,45 @@
 							})
 							.then(function(res2){
 								console.log(`User created successfully\r\n\r\n${res2.data}`);
-								assignRelation(res2.data, "asd@asd.com", relation, isAdmin);
+								console.log(res2);
+								console.log("res.data")
+								console.log(res2.data);
+								console.log(res2.data.user);
+								console.log(res2.data.user.id);
+								
+								app.request({
+									url: app.data.server + '/users/' + res2.data.user.id,
+									method: 'PUT',
+									data: {
+										"mobile": mobile,
+										"birthday": birthday,
+									}
+								});
+								c.result('blob', 'png').then(blob =>{
+									const data = new FormData();
+									data.append("files", blob, 'profile.png');
+									data.append("refId", res2.data.user.id);
+									data.append("ref", "user");
+									data.append('source', 'users-permissions');
+									data.append('field', 'profilePicture');
+									app.request({
+										url: app.data.server + '/upload',
+										method: "POST",
+										crossDomain: true,
+										contentType: "multipart/form-data",
+										data: data
+									});
+								});
+								
+								console.log("Inserting contact to newly created temp contact");
+								assignRelation(res2.data.user, relation, isAdmin, isMinor, editMemories);
+								app.preloader.hide();
+								
 							})
 							.catch(function(err){
 								console.log(`An error occurred`);
 								console.log(err);
+								app.preloader.hide();
 								var obj = JSON.parse(err.xhr.response);
 								app.dialog.alert('Some fields are incomplete or incorrect, please try again.'+'\r\n'+obj.message[0].messages[0].message);
 							})
@@ -230,28 +266,13 @@
 							console.log(user)
 							// assignRelation(res.data, "asd@asd.com", relation, isAdmin);
 							try {
-								const auxData = new FormData();
 								
-								app.request({
-									url: app.data.server = "/users/?id=36",
-									method: "PUT",
-									data: {
-										"contact": [{
-											"id": 3,
-											"guardian": "asd@asd.com",
-											// "info": res.data,
-											"info": {
-												"id":user.id,
-												"email": user.email,
-											},
-											"relation": relation,
-											"isAdmin": isAdmin,
-										}]
-									},
-									contentType: "multipart/form-data"
-								});
+								console.log("Inserting contact to existing contact");
+								assignRelation(user, relation, isAdmin, isMinor, editMemories);
+								app.preloader.hide();
+								
 							} catch (error) {
-								console.log("Error assigning thingie");
+								console.log("Error assigning contact");
 								console.log(error);
 							}
 						}
@@ -262,38 +283,84 @@
 					})
 				});
 				
-				function assignRelation(user, guardian, contactRelation, contactIsAdmin)
+				function assignRelation(contactUser, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories)
 				{
-					//start by setting it to id 37
-					app.request({
-						url: app.data.server = "/users/?id=37",
-						method: "PUT",
-						data: {
-							"guardian": guardian,
-							"info": user,
-							
-						},
-						relation: contactRelation,
-						isAdmin: contactIsAdmin,
-					})
-					.then(function (res){
-						console.log("response assignRelation");
+					console.log("user");
+					console.log(contactUser);
+					console.log("relation");
+					console.log(contactRelation);
+					console.log("isAdmin");
+					console.log(contactIsAdmin);
+					console.log("editMemories");
+					console.log(contactEditMemories);
+					console.log("isMinor");
+					console.log(contactIsMinor);
+					app.request.promise.get(`${app.data.server}/contacts/?owner=${12}&contact=${contactUser.id}`)
+					.then(function(res){
+						// console.log("right after get");
+						// console.log(res);
+						if (res.data === "[]")
+						{
+							// console.log('Already has contact');
+							//start by setting it to id 37
+							app.request.promise.postJSON(`${app.data.server}/contacts`,{
+								"relation": contactRelation,
+								"owner": {
+									"id": 12
+								},
+								"contact":{
+									"id": contactUser.id
+								},
+								"isAdmin": contactIsAdmin,
+								"isMinor": contactIsMinor,
+								"editMemories": contactEditMemories
+							})
+							.then(function (res){
+								// console.log("response assignRelation");
+								// console.log(res);
+							})
+							.catch(function(err){
+								console.log("error addignRelation");
+								console.log(err);
+							})
+						}
+						else
+						{
+							// console.log('doesnt have contact');
+							app.dialog.alert('You already have that user as a contact!');
+						}
+					});
+				}
+				
+				function userHasContact(user, contact)
+				{
+					app.request.promise.get(`${app.data.server}/contacts/?owner=${user}&contact=${contact}`)
+					.then(function(res){
+						console.log("right after get");
 						console.log(res);
-					})
-					.catch(function(err){
-						console.log("error addignRelation");
-						console.log(err);
-					})
+						if (res.data === "[]")
+						{
+							// console.log("user doesnt have contact");
+							// console.log(res.data);
+							return (false);
+						}
+						else
+						{
+							// console.log("user has contact");
+							// console.log(res.data);
+							return (true);
+						}
+					});
 				}
 				
 				function validateEmail(mail) 
 				{
 					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
 					{
-						return (true)
+						return (true);
 					}
 					// alert("You have entered an invalid email address!")
-					return (false)
+					return (false);
 				}
 				
 				function validateText(text, emptyText, trimmedText, checkTrimmed = true)
