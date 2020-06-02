@@ -3,9 +3,9 @@
 		<div class="sqr_bck" id="sqr1"></div>
 		<div class="sqr_bck" id="sqr2"></div>
 		<div class="sqr_bck" id="sqr3"></div>
-        <div class="sqr_bck" id="sqr4"></div>
-        <div class="artwork"></div>
-        <div class="navbar">
+		<div class="sqr_bck" id="sqr4"></div>
+		<div class="artwork"></div>
+		<div class="navbar">
 			<div class="navbar-inner sliding">
 				<div class="header-cont">
 					<div class="header">
@@ -250,7 +250,6 @@
 						// console.log(res.data);
 						console.log(res.data.user);
 						// console.log(res.data.user.id);
-						console.log(password);
 						app.request({
 							url: app.data.server + '/users/' + res.data.user.id,
 							method: 'PUT',
