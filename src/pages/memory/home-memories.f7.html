@@ -1,21 +1,17 @@
 <template>
 	<div class="page" id="home-memories">
-		<div class="sqr_bck" id="sqr1"></div>
-		<div class="sqr_bck" id="sqr2"></div>
-		<div class="sqr_bck" id="sqr3"></div>
-        <div class="sqr_bck" id="sqr4"></div>
-        <div class="artwork"></div>
-        <div class="navbar">
+		<div class="artwork"></div>
+		<div class="navbar">
 			<div class="navbar-inner sliding">
 				<div class="header-cont">
 					<div class="header">
 						<a href="" class="menu-btn panel-open" data-panel=".panel-left">
 							<i class="icons material-icons">menu</i>
-                        </a>
-                        <div class="title-sub">
-                            <h1 class="title">Jacob Ethan</h1>
-                            <p class="subtitle">Membership</p>
-                        </div>
+						</a>
+						<div class="title-sub">
+							<h1 class="title">Jacob Ethan</h1>
+							<p class="subtitle">Membership</p>
+						</div>
 						<a href="" class="avatar-fab">
 							<img src="../../static/img/chris_evans_crop1569801286473.png" alt="">
 						</a>
@@ -24,6 +20,255 @@
 			</div>
 		</div>
 		<div class="page-content" id="home-memories">
+			<div class="sqr_bck" id="sqr1"></div>
+			<div class="sqr_bck" id="sqr2"></div>
+			<div class="sqr_bck" id="sqr3"></div>
+			<div class="contacts-cont">
+				<div class="contacts-title">Contacts</div>
+				<a href="" class="add-btn">
+					<i class="icons material-icons">add</i>
+				</a>
+			</div>
+
+			<div data-space-between="25" data-slides-per-view="3.3"
+				class="swiper-container swiper-init contacts-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="person-cont">
+							<a href="#" class="avatar-person">
+								<img src="../../static/img/wallace.jpeg" alt="" srcset="">
+							</a>
+							<p class="name-person">Wallace</p>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="person-cont">
+							<a href="#" class="avatar-person">
+								<img src="../../static/img/scott.jpeg" alt="" srcset="">
+							</a>
+							<p class="name-person">Scott</p>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="person-cont">
+							<a href="#" class="avatar-person">
+								<img src="../../static/img/ramona.jpeg" alt="" srcset="">
+							</a>
+							<p class="name-person">Ramona</p>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="person-cont">
+							<a href="#" class="avatar-person">
+								<img src="../../static/img/envy.jpg" alt="" srcset="">
+							</a>
+							<p class="name-person">Natalia</p>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="person-cont">
+							<a href="#" class="avatar-person">
+								<img src="../../static/img/steven.jpeg" alt="" srcset="">
+							</a>
+							<p class="name-person">Steven</p>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="person-cont">
+							<a href="#" class="avatar-person">
+								<img src="../../static/img/neil.jpeg" alt="" srcset="">
+							</a>
+							<p class="name-person">Neil</p>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="person-cont">
+							<a href="#" class="avatar-person">
+								<img src="../../static/img/kim.jpeg" alt="" srcset="">
+							</a>
+							<p class="name-person">Kim</p>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="person-cont">
+							<a href="#" class="avatar-person">
+								<img src="../../static/img/gideon.jpeg" alt="" srcset="">
+							</a>
+							<p class="name-person">Gideon</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="create-title">Create</div>
+			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init create-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="card simple memory" id="new">
+							<img src="../../static/img/Pluma_card.png" alt="" srcset="">
+							<div class="card-content">
+								<p> New Memory </p>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card simple memory" id="birthday">
+							<img src="../../static/img/Regalo_card.png" alt="" srcset="">
+							<div class="card-content">
+								<p> Birthday Memory </p>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card simple memory" id="colagge">
+							<img src="../../static/img/sqrs.png" alt="" srcset=""
+								style="margin-left: 4px; margin-top: 2px;">
+							<div class="card-content">
+								<p> Colagge </p>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card simple memory" id="special">
+							<img src="../../static/img/Pluma_card_tail.png" alt="" srcset="">
+							<div class="card-content">
+								<p> Especial Memory </p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="scheduled-title">Scheduled</div>
+			<div data-space-between="10" data-slides-per-view="1.1"
+				class="swiper-container swiper-init sheduled-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">
+								<div class="title-card">
+									<h1>Good trip</h1>
+									<p>04/18/2020</p>
+								</div>
+								<a href="#" class="edit">
+									<span class="material-icons">more</span>
+								</a>
+							</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="icons">
+									<a href="#">
+										<span class="material-icons">comment</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">img</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">video</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">mic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">ubic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">play</span>
+									</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="person">
+									<img src="../../static/img/ramona.jpeg" alt="">
+								</div>
+								<div class="person">
+									<img src="../../static/img/envy.jpg" alt="">
+								</div>
+								<div class="person">
+									<img src="../../static/img/wallace.jpeg" alt="">
+								</div>
+								<div class="person">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">Good trip</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+							</div>
+							<div class="card-footer"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">Good trip</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+							</div>
+							<div class="card-footer"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">Good trip</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+							</div>
+							<div class="card-footer"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="later-title">Send later</div>
+			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init later-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">Good trip</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+							</div>
+							<div class="card-footer"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">Good trip</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+							</div>
+							<div class="card-footer"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">Good trip</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+							</div>
+							<div class="card-footer"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">Good trip</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+							</div>
+							<div class="card-footer"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="donate-title">Donate</div>
+			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init donate-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">Give Now</div>
+					<div class="swiper-slide">Give Now</div>
+					<div class="swiper-slide">Give Now</div>
+					<div class="swiper-slide">Give Now</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -31,9 +276,11 @@
 	import $$ from "dom7";
 	export default {
 		on: {
-			pageInit: function (e, page) {},
+			pageInit: function (e, page) {
+				$$('.page-content').scroll(function () {
+				});
+
+			},
 		},
 	};
 </script>
-<style>
-</style>

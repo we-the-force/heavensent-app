@@ -5,6 +5,7 @@
 @import 'stylus/pages/contact/*'
 @import 'stylus/pages/family/*'
 @import 'stylus/pages/membership/*'
+@import 'stylus/pages/memories/*'
 @import 'stylus/media/media.styl'
 
 .page
@@ -14,6 +15,7 @@
         padding 15px
         position absolute
         width 100%
+        overflow-x hidden
 
         .list ul
             background none
@@ -30,5 +32,7 @@
         padding-top 70px
 
     .navbar
-        background Grey_light_1
+        background unset
         height 70px
+        &.active
+            background Grey_light_1

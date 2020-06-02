@@ -1,5 +1,28 @@
 .panel-left
     padding 15px
+    background Grey_light_1
+    overflow hidden
+
+    .sqr_bck
+        deg = -40deg
+
+        &#sqr1
+            sqr(500px, deg)
+            bottom 400px
+            left -145px
+            z-index -1
+
+        &#sqr2
+            sqr(400px, deg)
+            bottom 35px
+            right -325px
+            z-index -1
+
+        &#sqr3
+            sqr(400px, deg)
+            bottom -10px
+            left -365px
+            z-index -1
 
     .profile
         margin 15px 0px 30px 0px
@@ -37,3 +60,31 @@
                 margin 0px
                 font-template(normal, 12px, 14px)
                 color Grey_dark_3
+
+    .btns-cont
+        flex-cont(column, flex-start, flex-start)
+
+        .btn-panel
+            margin 2px 0px
+
+    .footer
+        position absolute
+        bottom 0
+        left 0
+        width 100%
+        padding 15px
+        box-sizing border-box
+        background Grey_light_2
+        flex-cont(column, flex-start, flex-start)
+
+        .btn-end
+            padding 0px 5px
+            font-template(500, 18px, 40px)
+            width 100%
+            box-sizing border-box
+
+            &.terms
+                color Grey_dark_1
+
+            &.sign-out
+                color Grey_dark_2

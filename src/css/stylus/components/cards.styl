@@ -1,0 +1,22 @@
+.card
+    background Grey_light_1
+    border-radius 11px
+    border 1px solid #ECECEC
+    box-shadow 2px 3px 8px rgba(0, 0, 0, 0.12), -2px -2px 4px rgba(255, 255, 255, 0.9)
+    overflow hidden
+
+    &.simple
+        height 100px
+        width 280px
+
+    &.complete
+        &.v1
+            width 272px
+            height 340px
+            .card-header
+                &:after
+                    content none
+
+            .card-footer
+                &:before
+                    content none

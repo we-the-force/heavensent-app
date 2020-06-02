@@ -1,0 +1,73 @@
+.page
+    &#home-memories
+        background Grey_light_1
+
+        .page-content
+            .sqr_bck
+                deg = -36deg
+
+                &#sqr1
+                    sqr(230px, deg)
+                    top -245px
+                    right -45px
+                    z-index -1
+
+                &#sqr2
+                    sqr(230px, deg)
+                    top -25px
+                    right -180px
+                    z-index -1
+
+                &#sqr3
+                    sqr(230px, deg)
+                    top -65px
+                    left -225px
+                    z-index -1
+
+            .contacts-cont
+                padding 20px 10px 20px 5px
+                flex-cont(row, space-between, center)
+
+                .contacts-title
+                    font-template(500, 20px, 23px)
+                    color Grey_dark_3
+
+            .contacts-swiper
+                margin-bottom 20px
+
+                .person-cont
+                    width 80px
+                    height 106px
+                    flex-cont(column, space-between, center)
+
+                    .avatar-person
+                        height 80px
+                        width 80px
+                        display flex
+
+                        img
+                            width 100%
+                            border-radius 50%
+
+                    .name-person
+                        margin 0px
+                        font-template(500, 13px, 15px)
+                        color Grey_dark_3
+
+            .create-swiper
+                .memory
+                    flex-cont(row, unset, center)
+
+                    .card-content
+                        flex-grow 1
+                        flex-cont(row, center, center)
+
+                        p
+                            font-template(500, 18px, 21px)
+                            color Grey_dark_3
+
+
+            .create-title,.scheduled-title,.later-title,.donate-title
+                padding 20px 5px
+                font-template(500, 20px, 23px)
+                color Grey_dark_3
