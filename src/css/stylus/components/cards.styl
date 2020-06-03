@@ -13,6 +13,7 @@
         &.v1
             width 272px
             height 340px
+
             .card-header
                 &:after
                     content none
@@ -20,3 +21,27 @@
             .card-footer
                 &:before
                     content none
+
+            .card-header
+                padding 8px 15px
+                flex-cont(row, space-between, flex-start)
+
+                .title-card
+                    flex-cont(column, flex-start, flex-start)
+
+                    h1
+                        margin 0px
+                        font-template(500, 20px, 23px)
+                        color Grey_dark_3
+
+                    p
+                        margin 0px
+                        font-template(500, 14px, 16px)
+                        color Grey_dark_1
+
+                .edit
+                    font-size 20px
+                    color Grey_dark_3
+
+            .card-content
+                flex-cont(column, center, center)
