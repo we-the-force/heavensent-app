@@ -24,7 +24,7 @@
 
             .card-header
                 padding 8px 15px
-                flex-cont(row, space-between, flex-start)
+                flex-cont(row, space-between, center)
 
                 .title-card
                     flex-cont(column, flex-start, flex-start)
@@ -40,8 +40,131 @@
                         color Grey_dark_1
 
                 .edit
+                    flex-cont(row, center, center)
                     font-size 20px
                     color Grey_dark_3
 
             .card-content
+                flex-cont(column, center, stretch)
+                padding 0px 16px
+
+                .icons
+                    flex-cont(row, space-between, center)
+                    padding 0px 5px 25px 5px
+
+                    a
+                        span
+                            color Grey_light_2
+
+                            &.active
+                                color blue
+
+            .card-footer
+                flex-cont(row, flex-start, center)
+                padding 25px 18px
+
+                .contacts
+                    width 80%
+                    flex-cont(row, space-between, center)
+
+                    .person
+                        width 35px
+                        height 35px
+                        border-radius 50%
+
+                        &.plus
+                            box-shadow inset 0px -1.5px 0px Grey_light_1, inset 1px 1.5px 0px #e7e6e6
+                            border 0.364583px solid #ECECEC
+                            border-radius 50%
+                            background-color Grey_light_2
+                            flex-cont(row, center, center)
+
+                            p
+                                margin 0px
+                                font-template(500, 11px, 13px)
+                                color Grey_dark_1
+
+    &.card-expandable
+        border none
+        margin 8px
+        height 484px
+        width 288px
+
+        .bg-video
+            position relative
+            background white
+            height 384px
+            width 288px
+            overflow hidden
+            flex-cont(row, center, center)
+
+            span
+                font-size 100px
+                color Grey_light_2
+
+            .sqr_bck
+                width 80px
+                height 80px
+                background Grey_light_2
+                box-shadow 2px 3px 8px rgba(black, 0.12), -2px -2px 4px rgba(white, 0.9)
+                border-radius 6px
+                transform rotate(-40deg)
+                position absolute
+
+                &#sqr6
+                    width 60px
+                    height 60px
+                    bottom 55px
+                    left -5px
+                    z-index 1
+
+                &#sqr7
+                    bottom -45px
+                    left 15px
+                    z-index 1
+
+                &#sqr8
+                    bottom -40px
+                    left -55px
+                    z-index 1
+
+        .card-content-padding
+            width 288px
+            height 100px
+            background Grey_light_2
+            box-sizing border-box
+            z-index 2
+            flex-cont(column, center, center)
+
+            .btns-cont
                 flex-cont(column, center, center)
+
+                .btn-card
+                    border-radius 9px
+                    width 238px
+                    height 48.3px
+                    background blue_dark
+                    color Grey_light_1
+                    flex-cont(row, center, center)
+
+        &.card-opened
+            .card-content
+                flex-cont(column, unset, unset)
+
+                .bg-video
+                    height 192px
+                    width 100%
+
+                .card-content-padding
+                    flex-grow 1
+                    width 100%
+                    flex-cont(column, flex-start, unset)
+
+            .card-opened-fade-out
+                display none
+
+            .card-opened-fade-in
+                display block
+
+        .card-opened-fade-in
+            display none
