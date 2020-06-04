@@ -59,3 +59,15 @@ var app = new Framework7({
     },
 });
 
+$$(document).on('page:init', function (e) {
+    console.log('ahoy');
+    $$('.page-content').scroll(function () {
+        if ($$('.page-content').scrollTop() > 30) {
+            $$('.navbar').addClass('bg-white');
+        } else {
+            $$('.navbar').removeClass('bg-white')
+        }
+    });
+});
+
+
