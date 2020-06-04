@@ -70,7 +70,7 @@
 						<div class="item-inner">
 							<div class="item-input-wrap">
 								<input type="email" id="signup-admin-email" placeholder="Admin email" required
-									validate />
+								validate />
 								<a class="popup-open" href="#" data-popup=".popup-admin">
 									<i class="info icons material-icons">info</i>
 								</a>
@@ -81,7 +81,7 @@
 						<div class="item-inner">
 							<div class="item-input-wrap">
 								<input type="text" id="signup-admin-relation" placeholder="Admin relationship" required
-									validate />
+								validate />
 								<a class="popup-open" href="#" data-popup=".popup-admin-relation">
 									<i class="info icons material-icons">info</i>
 								</a>
@@ -94,7 +94,7 @@
 								<div class="item-title">Admin could edit?</div>
 							</div>
 							<input type="checkbox" id="signup-admin-edit" name="demo-checkbox" value="admin-edit"
-								checked="checked" />
+							checked="checked" />
 							<i class="icon icon-checkbox"></i>
 						</label>
 					</li>
@@ -132,17 +132,18 @@
 			pageInit: function (e, page) {
 				var self = this;
 				var app = self.$app;
-
+				
 				var c,
-					username = "",
-					birthday = "",
-					mobile = "",
-					email = "",
-					password = "",
-					adminEmail = "";
+				username = "",
+				birthday = "",
+				mobile = "",
+				email = "",
+				password = "",
+				adminEmail = "",
+				adminRelation = "";
 				var profilePicture = "";
 				var adminCouldEdit = "";
-
+				
 				//mostrar contrase;a
 				$$(".show").click(function (val) {
 					let type = $$("#signup-password").attr("type");
@@ -152,17 +153,17 @@
 						$$("#signup-password").attr("type", "password");
 					}
 				});
-
+				
 				//mostrar span de show
 				$$("#signup-password").on("input:notempty", function (val) {
 					$$(".show").css("display", "block");
 				});
-
+				
 				//ocultar span cuando el input este vacio
 				$$("#signup-password").on("input:empty", function (val) {
 					$$(".show").css("display", "none");
 				});
-
+				
 				//upload photo
 				$$(".img-btn").on("click", function () {
 					if (window.File && window.FileReader && window.FormData) {
@@ -170,7 +171,7 @@
 						inputField.off("change");
 						inputField.on("change", function (e) {
 							var file = e.target.files[0];
-
+							
 							if (file) {
 								if (/^image\//i.test(file.type)) {
 									$$(".img-btn").off("click");
@@ -189,7 +190,7 @@
 						console.log("File upload is not supported!");
 					}
 				});
-
+				
 				// Nomas pa testear, quitarlo mas al ratito.
 				// $$("#signup-name").val("test1");
 				// $$("#signup-birthday").val("01/01/1990");
@@ -198,21 +199,36 @@
 				// $$("#signup-password").val("1234567890");
 				// $$("#signup-admin-email").val("dsa@dsa.com");
 				// $$('#').val('test1');
-
+				
 				$$("#create-btn").on("click", function (e) {
 					e.preventDefault();
 					console.log("Doing the post");
-
-
+					
+					
 					console.log("Setting data");
 					username = $$("#signup-name").val();
 					birthday = $$("#signup-birthday").val();
 					mobile = $$("#signup-mobile").val();
 					email = $$("#signup-email").val();
 					password = $$("#signup-password").val();
+					
 					adminEmail = $$("#signup-admin-email").val();
-					adminCouldEdit = $$("#signup-admin-edit").val();
-
+					adminRelation = $$("#signup-admin-relation").val();
+					adminCouldEdit = $$("#signup-admin-edit").prop('checked');
+					
+					let json = JSON.parse("[{}]")[0];
+					console.log("JSON");
+					console.log(json[0]);
+					
+					if (json != undefined)
+					{
+						console.log("json not here");
+					}
+					else
+					{
+						console.log("json is something yay")
+					}
+					
 					console.log('c: \"' + c + '\"');
 					if (!c) {
 						app.dialog.alert('Please upload an image');
@@ -239,13 +255,13 @@
 						app.dialog.alert('Please enter a valid admin email');
 						return false;
 					}
-
+					
 					console.log("showing blue");
 					app.preloader.show("blue");
 					console.log("app.request");
-
-					app.request.promise
-					.postJSON(app.data.server + "/auth/local/register", {
+					
+					console.log("Creating main user");
+					app.request.promise.postJSON(app.data.server + "/auth/local/register", {
 						"username": username,
 						"birthday": birthday,
 						"mobile": mobile,
@@ -253,45 +269,47 @@
 						"password": password,
 						// "adminEmail"
 					})
-					.then(function (res) {
-						// console.log(res);
-						// console.log(res.data);
-						console.log(res.data.user);
-						// console.log(res.data.user.id);
+					.then(function (signupRes) {
+						console.log("User created, adding extra data");
+						// console.log(signupRes.data.user);
 						app.request({
-							url: app.data.server + '/users/' + res.data.user.id,
+							url: app.data.server + '/users/' + signupRes.data.user.id,
 							method: 'PUT',
 							data: {
 								"mobile": mobile,
 								"birthday": birthday,
 							}
 						});
+						console.log("Adding photo");
 						c.result('blob', 'png').then(blob => {
 							// let file = new File([blob], "perfil.png", new Date());
 							const data = new FormData();
 							// data.append("files", file);
 							data.append("files", blob, 'profile.png');
-							data.append("refId", res.data.user.id);
+							data.append("refId", signupRes.data.user.id);
 							data.append("ref", "user");
 							data.append('source', 'users-permissions');
 							data.append('field', 'profilePicture');
+							console.log("Put request");
 							app.request({
-								url: app.data.server + '/users/' + res.data.user.id,
+								url: app.data.server + '/users/' + signupRes.data.user.id,
 								method: 'PUT',
 								data: {
 									"mobile": mobile,
 									"birthday": birthday,
 								}
 							});
+							console.log("croppie result");
 							c.result('blob', 'png').then(blob => {
 								// let file = new File([blob], "perfil.png", new Date());
 								const data = new FormData();
 								// data.append("files", file);
 								data.append("files", blob, 'profile.png');
-								data.append("refId", res.data.user.id);
+								data.append("refId", signupRes.data.user.id);
 								data.append("ref", "user");
 								data.append('source', 'users-permissions');
 								data.append('field', 'profilePicture');
+								console.log("Post image request");
 								app.request({
 									url: app.data.server + '/upload',
 									method: "POST",
@@ -300,7 +318,45 @@
 									data: data
 								});
 							});
-
+							
+							
+							console.log("Creating admin");
+							//CREATE ADMIN THING
+							app.request.promise.get(`${app.data.server}/users/?email=${adminEmail.toLowerCase()}`)
+							.then(function(adminCheckRes){
+								if(adminCheckRes.data === "[]")
+								{
+									//Admin account doesn't exist
+									console.log(`admin email doesn't exist, creating admin account (${adminEmail})`);
+									app.request.promise.postJSON(`${app.data.server}/auth/local/register`,{
+										"username": makeid(6) + "-" + adminEmail + "-admin",
+										"password": makeid(10),
+										"email": adminEmail,
+									})
+									.then(function(adminAccRes){
+										//Add to contacts as admin
+										assignRelation(signupRes.data.user, adminAccRes.data.user, adminRelation, true, adminCouldEdit)
+									})
+									.catch(function(adminAccError){
+										app.preloader.hide();
+										let adminError = JSON.parse(adminAccError.xhr.response);
+										console.log("There was an error adding the admin")
+										console.log(adminAccError.xhr);
+										app.dialog.alert(`There was an error adding the admin account!       \r\n${adminError.message[0].messages[0].message}`);
+									})
+								}
+								else
+								{
+									//Admin account exists
+									//Add to contact as admin
+									console.log(`Admin email did exist, adding admin account (${adminEmail})`);
+									let adminUser = JSON.parse(adminCheckRes.data)[0];
+									assignRelation(signupRes.data.user, adminUser, adminRelation, true, adminCouldEdit);
+								}
+							})
+							
+							
+							
 							app.preloader.hide();
 							app.dialog.alert("We've sent you and email to confirm your account.");
 							app.views.main.router.navigate({ name: "login" });
@@ -311,14 +367,79 @@
 							console.log(err);
 							var obj = JSON.parse(err.xhr.response);
 							app.dialog.alert('Some fields are incomplete or incorrect, please try again.' + '\r\n' + obj.message[0].messages[0].message);
-
+							
 						});
-
+						
+					})
+					.catch(function(userAddError){
+						app.preloader.hide();
+						let errorObj = JSON.parse(userAddError.xhr.response);
+						console.log(userAddError.xhr);
+						app.dialog.alert("There was an error while creating the user.           \r\n" + errorObj.message[0].messages[0].message);
 					});
-
-
+					
 				});
-
+				
+				function makeid(length) {
+					var result           = '';
+					var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+					var charactersLength = characters.length;
+					for ( var i = 0; i < length; i++ ) {
+						result += characters.charAt(Math.floor(Math.random() * charactersLength));
+					}
+					return result;
+				}
+				
+				function assignRelation(targetUser, contactUser, contactRelation, contactIsAdmin, contactEditMemories)
+				{
+					console.log("targetUser");
+					console.log(targetUser);
+					console.log("adminUser");
+					console.log(contactUser);
+					console.log("relation");
+					console.log(contactRelation);
+					console.log("isAdmin");
+					console.log(contactIsAdmin);
+					console.log("editMemories");
+					console.log(contactEditMemories);
+					app.request.promise.get(`${app.data.server}/contacts/?owner=${12}&contact=${contactUser.id}`)
+					.then(function(res){
+						// console.log("right after get");
+						// console.log(res);
+						if (res.data === "[]")
+						{
+							// console.log('Already has contact');
+							//start by setting it to id 37
+							app.request.promise.postJSON(`${app.data.server}/contacts`,{
+								"relation": contactRelation,
+								"owner": {
+									"id": targetUser.id
+								},
+								"contact":{
+									"id": contactUser.id
+								},
+								"isAdmin": contactIsAdmin,
+								"isMinor": false,
+								"editMemories": contactEditMemories
+							})
+							.then(function (assignRelRes){
+								console.log("response assignRelation");
+								console.log(assignRelRes);
+							})
+							.catch(function(assignRelErr){
+								console.log("error addignRelation");
+								console.log(assignRelErr);
+							})
+						}
+						else
+						{
+							// console.log('doesnt have contact');
+							app.dialog.alert('You already have that user as a contact!');
+						}
+					});
+				}
+				
+				
 				function validateEmail(mail) {
 					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
 						return (true)
@@ -326,7 +447,7 @@
 					// alert("You have entered an invalid email address!")
 					return (false)
 				}
-
+				
 				function validateText(text, emptyText, trimmedText, checkTrimmed = true) {
 					console.log(`${text}, trim?: ${checkTrimmed}`);
 					if (isTextEmptyOrWhitespace(text)) {
@@ -343,58 +464,58 @@
 						return true;
 					}
 				}
-
+				
 				function isTextValid(value) {
 					return !isTextEmptyOrWhitespace(value) && isTextTrimmed(value);
 				}
-
+				
 				function isTextEmptyOrWhitespace(value) {
 					if (!value || !value.trim()) {
 						return true;
 					}
 					return false;
 				}
-
+				
 				function isTextTrimmed(value) {
 					return (value == value.trim());
 				}
-
+				
 				//funcion para leer la foto
 				function readFile(file) {
 					var reader = new FileReader();
-
+					
 					reader.onloadend = function () {
 						processFile(reader.result, file.type);
 					};
-
+					
 					reader.onerror = function () {
 						alert("There was an error reading the file!");
 					};
-
+					
 					reader.readAsDataURL(file);
 				}
-
+				
 				//procesar foto
 				function processFile(dataURL, fileType) {
 					var maxWidth = 440;
 					var maxHeight = 440;
-
+					
 					var image = new Image();
 					image.src = dataURL;
-
+					
 					image.onload = function () {
 						var width = image.width;
 						var height = image.height;
 						var shouldResize = width > maxWidth || height > maxHeight;
-
+						
 						if (!shouldResize) {
 							sendFile(dataURL);
 							return;
 						}
-
+						
 						var newWidth;
 						var newHeight;
-
+						
 						if (width > height) {
 							newHeight = height * (maxWidth / width);
 							newWidth = maxWidth;
@@ -402,26 +523,26 @@
 							newWidth = width * (maxHeight / height);
 							newHeight = maxHeight;
 						}
-
+						
 						var canvas = document.createElement("canvas");
-
+						
 						canvas.width = newWidth;
 						canvas.height = newHeight;
-
+						
 						var context = canvas.getContext("2d");
-
+						
 						context.drawImage(this, 0, 0, newWidth, newHeight);
-
+						
 						dataURL = canvas.toDataURL(fileType);
-
+						
 						sendFile(dataURL);
 					};
-
+					
 					image.onerror = function () {
 						alert("There was an error processing your file!");
 					};
 				}
-
+				
 				//poner foto en la pagina
 				function sendFile(dataURL) {
 					var imgHtml = '<img id="web-img" src="' + dataURL + '" alt="">';
@@ -448,7 +569,7 @@
 		width: 100%;
 		height: 100%;
 	}
-
+	
 	.croppie-container .cr-image {
 		z-index: -1;
 		position: absolute;
@@ -458,7 +579,7 @@
 		max-height: none;
 		max-width: none;
 	}
-
+	
 	.croppie-container .cr-boundary {
 		position: relative;
 		overflow: hidden;
@@ -467,7 +588,7 @@
 		width: 100%;
 		height: 100%;
 	}
-
+	
 	.croppie-container .cr-viewport,
 	.croppie-container .cr-resizer {
 		position: absolute;
@@ -480,19 +601,19 @@
 		box-shadow: 0 0 2000px 2000px rgba(0, 0, 0, 0.5);
 		z-index: 0;
 	}
-
+	
 	.croppie-container .cr-resizer {
 		z-index: 2;
 		box-shadow: none;
 		pointer-events: none;
 	}
-
+	
 	.croppie-container .cr-resizer-vertical,
 	.croppie-container .cr-resizer-horisontal {
 		position: absolute;
 		pointer-events: all;
 	}
-
+	
 	.croppie-container .cr-resizer-vertical::after,
 	.croppie-container .cr-resizer-horisontal::after {
 		display: block;
@@ -504,61 +625,61 @@
 		height: 10px;
 		content: "";
 	}
-
+	
 	.croppie-container .cr-resizer-vertical {
 		bottom: -5px;
 		cursor: row-resize;
 		width: 100%;
 		height: 10px;
 	}
-
+	
 	.croppie-container .cr-resizer-vertical::after {
 		left: 50%;
 		margin-left: -5px;
 	}
-
+	
 	.croppie-container .cr-resizer-horisontal {
 		right: -5px;
 		cursor: col-resize;
 		width: 10px;
 		height: 100%;
 	}
-
+	
 	.croppie-container .cr-resizer-horisontal::after {
 		top: 50%;
 		margin-top: -5px;
 	}
-
+	
 	.croppie-container .cr-original-image {
 		display: none;
 	}
-
+	
 	.croppie-container .cr-vp-circle {
 		border-radius: 50%;
 	}
-
+	
 	.croppie-container .cr-overlay {
 		z-index: 1;
 		position: absolute;
 		cursor: move;
 		touch-action: none;
 	}
-
+	
 	.croppie-container .cr-slider-wrap {
 		width: 75%;
 		margin: 15px auto;
 		text-align: center;
 	}
-
+	
 	.croppie-result {
 		position: relative;
 		overflow: hidden;
 	}
-
+	
 	.croppie-result img {
 		position: absolute;
 	}
-
+	
 	.croppie-container .cr-image,
 	.croppie-container .cr-overlay,
 	.croppie-container .cr-viewport {
@@ -567,13 +688,13 @@
 		-ms-transform: translateZ(0);
 		transform: translateZ(0);
 	}
-
+	
 	/*************************************/
 	/***** STYLING RANGE INPUT ***********/
 	/*************************************/
 	/*http://brennaobrien.com/blog/2014/05/style-input-type-range-in-every-browser.html */
 	/*************************************/
-
+	
 	.cr-slider {
 		-webkit-appearance: none;
 		/*removes default webkit styles*/
@@ -586,7 +707,7 @@
 		padding-bottom: 8px;
 		background-color: transparent;
 	}
-
+	
 	.cr-slider::-webkit-slider-runnable-track {
 		width: 100%;
 		height: 3px;
@@ -594,7 +715,7 @@
 		border: 0;
 		border-radius: 3px;
 	}
-
+	
 	.cr-slider::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		border: none;
@@ -604,11 +725,11 @@
 		background: #ddd;
 		margin-top: -6px;
 	}
-
+	
 	.cr-slider:focus {
 		outline: none;
 	}
-
+	
 	.cr-slider::-moz-range-track {
 		width: 100%;
 		height: 3px;
@@ -616,7 +737,7 @@
 		border: 0;
 		border-radius: 3px;
 	}
-
+	
 	.cr-slider::-moz-range-thumb {
 		border: none;
 		height: 16px;
@@ -625,14 +746,14 @@
 		background: #ddd;
 		margin-top: -6px;
 	}
-
+	
 	/*hide the outline behind the border*/
-
+	
 	.cr-slider:-moz-focusring {
 		outline: 1px solid white;
 		outline-offset: -1px;
 	}
-
+	
 	.cr-slider::-ms-track {
 		width: 100%;
 		height: 5px;
@@ -644,17 +765,17 @@
 		color: transparent;
 		/*remove default tick marks*/
 	}
-
+	
 	.cr-slider::-ms-fill-lower {
 		background: rgba(0, 0, 0, 0.5);
 		border-radius: 10px;
 	}
-
+	
 	.cr-slider::-ms-fill-upper {
 		background: rgba(0, 0, 0, 0.5);
 		border-radius: 10px;
 	}
-
+	
 	.cr-slider::-ms-thumb {
 		border: none;
 		height: 16px;
@@ -663,43 +784,43 @@
 		background: #ddd;
 		margin-top: 1px;
 	}
-
+	
 	.cr-slider:focus::-ms-fill-lower {
 		background: rgba(0, 0, 0, 0.5);
 	}
-
+	
 	.cr-slider:focus::-ms-fill-upper {
 		background: rgba(0, 0, 0, 0.5);
 	}
-
+	
 	/*******************************************/
 	/***********************************/
 	/* Rotation Tools */
 	/***********************************/
-
+	
 	.cr-rotate-controls {
 		position: absolute;
 		bottom: 5px;
 		left: 5px;
 		z-index: 1;
 	}
-
+	
 	.cr-rotate-controls button {
 		border: 0;
 		background: none;
 	}
-
+	
 	.cr-rotate-controls i:before {
 		display: inline-block;
 		font-style: normal;
 		font-weight: 900;
 		font-size: 22px;
 	}
-
+	
 	.cr-rotate-l i:before {
 		content: "↺";
 	}
-
+	
 	.cr-rotate-r i:before {
 		content: "↻";
 	}
