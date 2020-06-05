@@ -1,13 +1,11 @@
 <template>
 	<div class="page" data-name="login-screen" id="login-screen">
-		<div class="sqr_bck" id="sqr1"></div>
-		<div class="sqr_bck" id="sqr2"></div>
-		<div class="sqr_bck" id="sqr3"></div>
-		<div class="sqr_bck" id="sqr4"></div>
-		
 		<div class="artwork"></div>
-		
 		<div class="page-content" id="login-screen">
+			<div class="sqr_bck" id="sqr1"></div>
+			<div class="sqr_bck" id="sqr2"></div>
+			<div class="sqr_bck" id="sqr3"></div>
+			<div class="sqr_bck" id="sqr4"></div>
 			<div class="logo-cont">
 				<img src="../../static/img/LOGO.png" alt="" class="logo" id="title" />
 			</div>
@@ -56,33 +54,33 @@
 				// console.log(this);
 				var emailInputValue = "";
 				var passwordInputValue = "";
-				
+
 				// $$('#email').val('will@wetheforce.com');
 				// $$('#password').val('123456789');
 				// emailInputValue=$$('#email').val();
-				
+
 				console.log(emailInputValue);
 				// password_login=$$
 				var app = self.$app;
-				
+
 				$$("#login-btn").on("click", function (e) {
 					e.preventDefault();
 					emailInputValue = $$("#email").val();
 					passwordInputValue = $$("#password").val();
-					
+
 					app.preloader.show("blue");
 					app.request.promise
-					.postJSON(app.data.server + "/auth/local", {
-						identifier: emailInputValue,
-						password: passwordInputValue,
-					})
-					.then(function (res) {
-						app.preloader.hide();
-						app.views.main.router.navigate({ name: "about" });
-					})
-					.catch(function (err) {
-						console.log(err);
-					});
+						.postJSON(app.data.server + "/auth/local", {
+							identifier: emailInputValue,
+							password: passwordInputValue,
+						})
+						.then(function (res) {
+							app.preloader.hide();
+							app.views.main.router.navigate({ name: "about" });
+						})
+						.catch(function (err) {
+							console.log(err);
+						});
 				});
 			},
 		},

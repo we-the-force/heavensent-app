@@ -2,27 +2,31 @@
     &#recovery, &#recovery-mail, &#recovery-new-pass
         background Grey_light_1
 
-        .sqr_bck
-            deg = -37.5deg
-
-            &#sqr1
-                sqr(290px, deg)
-                top -55px
-                right -270px
-
-            &#sqr2
-                sqr(400px, deg)
-                bottom -110px
-                left -345px
-
-            &#sqr3
-                sqr(290px, deg)
-                bottom -50px
-                right -200px
-
     .page-content
         &#recovery, &#recovery-mail, &#recovery-new-pass
             flex-cont(column, flex-start, unset)
+            overflow-y hidden
+
+            .sqr_bck
+                deg = -37.5deg
+
+                &#sqr1
+                    sqr(290px, deg)
+                    top -55px
+                    right -270px
+                    z-index -1
+
+                &#sqr2
+                    sqr(400px, deg)
+                    bottom -110px
+                    left -345px
+                    z-index -1
+
+                &#sqr3
+                    sqr(290px, deg)
+                    bottom -50px
+                    right -200px
+                    z-index -1
 
             .header-cont
                 flex-grow 0

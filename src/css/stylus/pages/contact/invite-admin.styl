@@ -2,28 +2,31 @@
     &#invite-admin
         background Grey_light_1
 
-        .sqr_bck
-            deg = 35deg
-
-            &#sqr1
-                sqr(290px, deg)
-                top -90px
-                right -275px
-                z-index 501
-
-            &#sqr2
-                sqr(290px, deg)
-                bottom -85px
-                left -265px
-
-            &#sqr3
-                sqr(290px, deg)
-                bottom -290px
-                left -15px
-
     .page-content
         &#invite-admin
             flex-cont(column, center, unset)
+            overflow-y hidden
+
+            .sqr_bck
+                deg = 35deg
+
+                &#sqr1
+                    sqr(290px, deg)
+                    top -90px
+                    right -275px
+                    z-index -1
+                
+                &#sqr2
+                    sqr(290px, deg)
+                    bottom -85px
+                    left -265px
+                    z-index -1
+
+                &#sqr3
+                    sqr(290px, deg)
+                    bottom -290px
+                    left -15px
+                    z-index -1
 
             .header-cont
                 flex-grow 0
