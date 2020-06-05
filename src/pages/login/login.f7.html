@@ -49,8 +49,40 @@
 </template>
 <script>
 	import $$ from "dom7";
+	import localforage from "localforage";
 	export default {
 		on: {
+			pageBeforeIn: function(){
+				var self = this;
+				var app = self.$app;
+				
+				console.log("Before In");
+				localforage.getItem('loggedUserId')
+				.then(function(lsValue){
+					console.log("Checking if not empty");
+					if (isTextEmptyOrWhitespace(lsValue.toString()))
+					{
+						console.log("User wasn't logged in");
+					}
+					else
+					{
+						console.log("User was logged in, skipping to dashboard");
+						app.views.main.router.navigate({ name: "home-memories" });
+					}
+				}).catch(function(err) {
+					// This code runs if there were any errors
+					console.log(err);
+				});
+				
+				function isTextEmptyOrWhitespace(value)
+				{
+					if (!value || !value.trim())
+					{
+						return true;
+					}
+					return false;
+				}
+			},
 			pageInit: function (e, page) {
 				var self = this;
 				// console.log(this);
@@ -64,6 +96,25 @@
 				// password_login=$$
 				var app = self.$app;
 				
+				console.log("Init");
+
+				localforage.getItem('loggedUserId')
+				.then(function(lsValue){
+					console.log("Checking if not empty (init)");
+					if (isTextEmptyOrWhitespace(lsValue.toString()))
+					{
+						console.log("User wasn't logged in(init)");
+					}
+					else
+					{
+						console.log("User was logged in, skipping to dashboard(init)");
+						app.views.main.router.navigate({ name: "home-memories" });
+					}
+				}).catch(function(err) {
+					// This code runs if there were any errors
+					console.log(err);
+				});
+
 				$$("#login-btn").on("click", function (e) {
 					e.preventDefault();
 					emailInputValue = $$("#email").val();
@@ -99,7 +150,15 @@
 						}
 						else
 						{
-							app.views.main.router.navigate({ name: "home-memories" });
+							localforage.setItem('loggedUserId', user.id)
+							.then(function (value) {
+								// Do other things once the value has been saved.
+								console.log(value);
+								app.views.main.router.navigate({ name: "home-memories" });
+							}).catch(function(err) {
+								// This code runs if there were any errors
+								console.log(err);
+							});
 						}
 					})
 					.catch(function (err) {
