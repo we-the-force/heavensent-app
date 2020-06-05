@@ -124,66 +124,138 @@ var routes = [{
 },
 {
     name: 'select-membership',
-    path: '/membership/select',
+    path: '/membership/select/user/:userID',
     component: SelectMembership,
 },
 {
     name: 'card-info',
-    path: '/membership/card',
+    path: '/membership/card/user/:userID/plan/:planName',
     component: AddCardInfo,
 },
 {
     name: 'view-membership',
-    path: '/membership/view',
-    component: ViewMembership,
-},
-{
-    name: 'payment-confirm-membership',
-    path: '/membership/confirmed',
-    component: PaymentConfirmMembership,
-},
-{
-    name: 'fundations-single',
-    path: '/fundations-single/',
-    component: FundationsSingle,
-},
-{
-    name: 'about',
-    path: '/about/',
-    async: function (routeTo, routeFrom, resolve, reject) {
-        // Router instance
+    path: '/membership/view/user/:userID',
+    async: function(routeTo, routeFrom, resolve, reject){
         var router = this;
-        console.log(router);
-
-        // App instance
         var app = router.app;
-
-        // Show Preloader
+        var userID = routeTo.params.userID;
+        
         app.preloader.show();
-
-        // User ID from request
-        var userId = routeTo.params.userId;
-
-        // Simulate Ajax Request
-        setTimeout(function () {
-            // We got user data from request
-            var user = {
-                firstName: 'Vladimir',
-                lastName: 'Kharlampidi',
-                about: 'Hello, i am creator of Framework7! Hope you like it!',
-                links: [{
-                    title: 'Framework7 Website',
-                    url: 'http://framework7.io',
+        
+        app.request.promise.json(`${app.data.server}/users/${userID}`)
+        .then(function(res){
+            console.log(res.data);
+            app.preloader.hide();
+            resolve(
+                {
+                    component: ViewMembership,
                 },
                 {
-                    title: 'Framework7 Forum',
-                    url: 'http://forum.framework7.io',
-                },
+                    context: {
+                        UserName: GetUserName(res.data),
+                        PlanName: GetPlanName(res.data.currentMembership),
+                        PlanPrice: GetPlanPrice(res.data.currentMembership),
+                        BillingDate: GetNextPayDate(res.data.currentMembership),
+                    }
+                }
+                );
+                
+                
+            });
+            
+            function GetUserName(user)
+            {
+                if (user === null)
+                {
+                    return "No user!";
+                }
+                else
+                {
+                    return user.username;
+                }
+            }
+            function GetPlanName(plan)
+            {
+                if (plan === null)
+                {
+                    return "None";
+                }
+                else
+                {
+                    return plan.plan.name;
+                }
+            }
+            function GetPlanPrice(plan)
+            {
+                if (plan === null)
+                {
+                    return "--.--";
+                }
+                else
+                {
+                    return plan.plan.costPerMonth;
+                }
+            }
+            function GetNextPayDate(plan)
+            {
+                if (plan === null)
+                {
+                    return "----------";
+                }
+                else
+                {
+                    return plan.nextBillingDate;
+                }
+            }
+        }
+    },
+    {
+        name: 'payment-confirm-membership',
+        path: '/membership/confirmed',
+        component: PaymentConfirmMembership,
+    },
+    {
+        name: 'fundations-single',
+        path: '/fundations-single/',
+        component: FundationsSingle,
+    },
+    {
+        name: 'about',
+        path: '/about/',
+        async: function (routeTo, routeFrom, resolve, reject) {
+            // Router instance
+            var router = this;
+            console.log(router);
+            
+            // App instance
+            var app = router.app;
+            
+            // Show Preloader
+            app.preloader.show();
+            
+            // User ID from request
+            var userId = routeTo.params.userId;
+            
+            // Simulate Ajax Request
+            setTimeout(function () {
+                // We got user data from request
+                var user = {
+                    firstName: 'Vladimir',
+                    lastName: 'Kharlampidi',
+                    about: 'Hello, i am creator of Framework7! Hope you like it!',
+                    links: [{
+                        title: 'Framework7 Website',
+                        url: 'http://framework7.io',
+                    },
+                    {
+                        title: 'Framework7 Forum',
+                        url: 'http://forum.framework7.io',
+                    },
                 ]
             };
             // Hide Preloader
             app.preloader.hide();
-
+            
             // Resolve route to load page
             resolve({
                 component: RequestAndLoad,
@@ -218,16 +290,16 @@ var routes = [{
         // Router instance
         var router = this;
         console.log(router);
-
+        
         // App instance
         var app = router.app;
-
+        
         // Show Preloader
         app.preloader.show();
-
+        
         // User ID from request
         var userId = routeTo.params.userId;
-
+        
         // Simulate Ajax Request
         setTimeout(function () {
             // We got user data from request
@@ -243,21 +315,21 @@ var routes = [{
                     title: 'Framework7 Forum',
                     url: 'http://forum.framework7.io',
                 },
-                ]
-            };
-            // Hide Preloader
-            app.preloader.hide();
-
-            // Resolve route to load page
-            resolve({
-                component: RequestAndLoad,
-            }, {
-                context: {
-                    user: user,
-                }
-            });
-        }, 1000);
-    },
+            ]
+        };
+        // Hide Preloader
+        app.preloader.hide();
+        
+        // Resolve route to load page
+        resolve({
+            component: RequestAndLoad,
+        }, {
+            context: {
+                user: user,
+            }
+        });
+    }, 1000);
+},
 },
 {
     path: '(.*)',

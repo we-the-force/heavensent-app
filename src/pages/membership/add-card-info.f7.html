@@ -60,27 +60,35 @@
 <script>
 	import $$ from "dom7";
 	import croppie from "croppie";
-	export default{
+	export default {
 		on: {
 			pageInit: function(e, page){
 				var self = this;
 				var app = self.$app;
 				
-				var queryPlan = app.views.main.router.currentRoute.query.plan;
-				
+				var queryPlan = app.views.main.router.currentRoute.params.planName;
+				var queryID = app.views.main.router.currentRoute.params.userID;
+				console.log(queryPlan);
+				console.log(queryID);
 				var wea = formatDate();
 				console.log(wea);
-
+				
 				// $$("#confirm")[0].href = `/membership/confirmed/?plan=${queryPlan}`;
 				$$("#confirm").click(function (val) {
+					console.log(`/membership/view/users/${queryID}`);
+					console.log("Getting plan")
 					app.request.promise.get(`${app.data.server}/memberships/?name=${queryPlan}`)
 					.then(function(planRes){
 						let plan = JSON.parse(planRes.data)[0];
-						app.request.promise.get(`${app.data.server}/users/?email=test@test.com`)
+						console.log(plan);
+						console.log(plan.id);
+						console.log("Getting user");
+						console.log(`${app.data.server}/memberships/?name=${queryPlan}`);
+						app.request.promise.get(`${app.data.server}/users/${queryID}`)
 						.then(function(userRes){
-							let user = JSON.parse(userRes.data)[0];
+							console.log("Inserting membership");
 							app.request({
-								url: `${app.data.server}/users/${user.id}`,
+								url: `${app.data.server}/users/${queryID}`,
 								method: 'PUT',
 								data:{
 									"currentMembership": {
@@ -91,12 +99,17 @@
 									}
 								}
 							});
-							console.log(plan);
-							console.log(user);
+							console.log(`/membership/view/user/${queryID}`);
+							// app.views.main.router.navigate({ path: '/membership/select/user/' + queryID });
+							app.views.main.router.navigate({ 
+								name: 'view-membership',
+								params: { userID: queryID },
+							});
+							
 						})
 					})
 				});
-
+				
 				function formatDate()
 				{
 					let date = new Date();
@@ -108,7 +121,7 @@
 					
 					//2020-06-11T19:00:00.000Z
 					let result = `${yyyy}-${mm}-${dd}T${hour}:00:00.000Z`;
-
+					
 					return result;
 				}
 			}

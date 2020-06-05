@@ -134,8 +134,11 @@
 				var self = this;
 				var app = self.$app;
 				
+				var queryID = app.views.main.router.currentRoute.params.userID;
+				console.log("La wea");
+				console.log(queryID);
 				var selectedPlan = "basic";
-				
+
 				$$(".button-plan").click(function (val) {
 					let el = $$(this);
 					console.log(el);
@@ -153,7 +156,7 @@
 				function changeConfirmButtonHref(extraRef)
 				{
 					// console.log($$("#confirm-plan-btn"));
-					$$("#confirm-plan-btn")[0].href = `/membership/card/?plan=${extraRef}`;
+					$$("#confirm-plan-btn")[0].href = `/membership/card/user/${queryID}/plan/${extraRef}`;
 				}
 				
 				function getIndex(buttonId)

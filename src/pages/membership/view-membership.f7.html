@@ -19,15 +19,19 @@
 				<img src="../../static/img/Pluma_blue.png" alt="" />
             </div>
             <div class="title-cont">
-                <h1>Hello Jacob</h1>
+                <!-- <h1>Hello Jacob</h1> -->
+                <h1>{{UserName}}</h1>
                 <p>Thanks for being a HeavenSent member</p>
             </div>
             <div class="text-cont">
-                <h1 class="text-title" id="package-name">Package 3 membership</h1>
-                <p class="text-cost" id="package-cost">$15.00 USB /MO</p>
+                <!-- <h1 class="text-title" id="package-name">Package 3 membership</h1> -->
+                <!-- <p class="text-cost" id="package-cost">$15.00 USB /MO</p> -->
+                <h1 class="text-title" id="package-name">{{PlanName}} membership</h1>
+                <p class="text-cost" id="package-cost">${{PlanPrice}}.00 USD /MO</p>
                 
                 <p class="text">
-                    Next billing date: <span id="next-bill-date">06/26/2020</span>
+                    <!-- Next billing date: <span id="next-bill-date">06/26/2020</span> -->
+                    Next billing date: <span id="next-bill-date">{{BillingDate}}</span>
                 </p>
                 <p class="text mar-t15">
                     Billed with: 
