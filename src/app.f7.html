@@ -16,19 +16,19 @@
 					<p>Membership</p>
 				</div>
 			</div>
-
+			
 			<div class="btns-cont">
 				<a href="#" class="btn-panel active">Profile</a>
 				<a href="#" class="btn-panel ">Plan</a>
 				<a href="#" class="btn-panel ">Donate</a>
 			</div>
-
+			
 			<div class="footer">
 				<a href="" class="btn-end terms">Terms & Conditions</a>
-				<a href="" class="btn-end sign-out">Sign Out</a>
+				<a href="" class="btn-end sign-out" id="sign-out-btn">Sign Out</a>
 			</div>
 		</div>
-
+		
 		<!-- Right panel with reveal effect-->
 		<!-- <div class="panel panel-right panel-reveal theme-dark">
 			<div class="view">
@@ -45,10 +45,10 @@
 				</div>
 			</div>
 		</div> -->
-
+		
 		<!-- Your main view, should have "view-main" class -->
 		<div class="view view-main view-init safe-areas" data-url="/"></div>
-
+		
 		<!-- Popup -->
 		<!-- <div class="popup" id="my-popup">
 			<div class="view">
@@ -70,7 +70,7 @@
 				</div>
 			</div>
 		</div> -->
-
+		
 		<!-- Login Screen -->
 		<!-- <div class="login-screen" id="my-login-screen">
 			<div class="view">
@@ -86,11 +86,11 @@
 										</div>
 										<div class="item-input-wrap">
 											<input
-												type="text"
-												name="username"
-												placeholder="Your username"
-												value="{{username}}"
-												@input="updateUsername"
+											type="text"
+											name="username"
+											placeholder="Your username"
+											value="{{username}}"
+											@input="updateUsername"
 											/>
 										</div>
 									</div>
@@ -102,11 +102,11 @@
 										</div>
 										<div class="item-input-wrap">
 											<input
-												type="password"
-												name="password"
-												placeholder="Your password"
-												value="{{password}}"
-												@input="updatePassword"
+											type="password"
+											name="password"
+											placeholder="Your password"
+											value="{{password}}"
+											@input="updatePassword"
 											/>
 										</div>
 									</div>
@@ -117,10 +117,10 @@
 							<ul>
 								<li>
 									<a
-										href="#"
-										class="item-link list-button login-button"
-										@click="alertLoginData"
-										>Sign In</a
+									href="#"
+									class="item-link list-button login-button"
+									@click="alertLoginData"
+									>Sign In</a
 									>
 								</li>
 							</ul>
@@ -136,6 +136,7 @@
 	</div>
 </template>
 <script>
+	import $$ from "dom7";
 	export default {
 		data() {
 			return {
@@ -164,6 +165,23 @@
 				this.$f7.dialog.alert("Username: " + this.username + "<br>Password: " + this.password, () => {
 					this.$f7.loginScreen.close();
 				});
+			},
+		},
+		on: {
+			pageInit: async function(){
+				var self = this;
+				var app = self.$app;
+				
+				$$("#sign-out-btn").on("click", async function(e){
+					e.preventDefault();
+
+					console.log("Logging out");
+					if (await app.methods.setLocalValueToKey(-1, 'loggedUserId'))
+					{
+						console.log("Successfully logged out!");
+						app.views.main.router.navigate({ name: "login" });
+					}
+				})
 			},
 		},
 	};

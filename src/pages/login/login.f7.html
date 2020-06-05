@@ -52,27 +52,36 @@
 	import localforage from "localforage";
 	export default {
 		on: {
-			pageBeforeIn: function(){
+			pageBeforeIn: async function(){
 				var self = this;
 				var app = self.$app;
 				
 				console.log("Before In");
-				localforage.getItem('loggedUserId')
-				.then(function(lsValue){
-					console.log("Checking if not empty");
-					if (isTextEmptyOrWhitespace(lsValue.toString()))
-					{
-						console.log("User wasn't logged in");
-					}
-					else
-					{
-						console.log("User was logged in, skipping to dashboard");
-						app.views.main.router.navigate({ name: "home-memories" });
-					}
-				}).catch(function(err) {
-					// This code runs if there were any errors
-					console.log(err);
-				});
+				var asd = await app.methods.getLocalValue('loggedUserId');
+				if (asd != -1)
+				{
+					console.log("User was logged in");
+					app.request.promise.get(`${app.data.server}/users/${asd}`).then(function(getResult){
+						console.log(getResult);
+						let user = JSON.parse(getResult.data);
+						console.log(user);
+						if (user.confirmed)
+						{
+							console.log("User was logged in, skipping to dashboard");
+							app.views.main.router.navigate({ name: "home-memories" });
+						}
+						else
+						{
+							app.dialog.alert(`That user is no longer active!`);
+						}
+					}).catch(function(error){
+						app.dialog.alert(`This user no longer exists!`);
+					})
+				}
+				else
+				{
+					console.log("User wasn't logged in");
+				}
 				
 				function isTextEmptyOrWhitespace(value)
 				{
@@ -83,7 +92,7 @@
 					return false;
 				}
 			},
-			pageInit: function (e, page) {
+			pageInit: async function (e, page) {
 				var self = this;
 				// console.log(this);
 				var emailInputValue = "";
@@ -96,26 +105,19 @@
 				// password_login=$$
 				var app = self.$app;
 				
-				console.log("Init");
-
-				localforage.getItem('loggedUserId')
-				.then(function(lsValue){
-					console.log("Checking if not empty (init)");
-					if (isTextEmptyOrWhitespace(lsValue.toString()))
-					{
-						console.log("User wasn't logged in(init)");
-					}
-					else
-					{
-						console.log("User was logged in, skipping to dashboard(init)");
-						app.views.main.router.navigate({ name: "home-memories" });
-					}
+				localforage.keys().then(function(keys) {
+					// An array of all the key names.
+					console.log(keys);
 				}).catch(function(err) {
 					// This code runs if there were any errors
 					console.log(err);
 				});
-
-				$$("#login-btn").on("click", function (e) {
+				
+				console.log("Init");
+				var asd = await app.methods.getLocalValue('loggedUserId');
+				console.log(asd);
+				
+				$$("#login-btn").on("click", async function (e) {
 					e.preventDefault();
 					emailInputValue = $$("#email").val();
 					passwordInputValue = $$("#password").val();
@@ -137,7 +139,7 @@
 						identifier: emailInputValue,
 						password: passwordInputValue,
 					})
-					.then(function (res) {
+					.then(async function (res) {
 						console.log("Getting inside 'then'");
 						console.log(res);
 						app.preloader.hide();
@@ -150,18 +152,16 @@
 						}
 						else
 						{
-							localforage.setItem('loggedUserId', user.id)
-							.then(function (value) {
-								// Do other things once the value has been saved.
-								console.log(value);
+							console.log("localForage");
+							if (await app.methods.setLocalValueToKey(user.id, 'loggedUserId'))
+							{
+								console.log("Successfully logged in");
+								console.log(await app.methods.getLocalValue('loggedUserId'))
 								app.views.main.router.navigate({ name: "home-memories" });
-							}).catch(function(err) {
-								// This code runs if there were any errors
-								console.log(err);
-							});
+							}
 						}
 					})
-					.catch(function (err) {
+					.catch(async function (err) {
 						console.log("Errorerror");
 						app.preloader.hide();
 						console.log(err);
