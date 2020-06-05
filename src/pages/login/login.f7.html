@@ -47,9 +47,50 @@
 </template>
 <script>
 	import $$ from "dom7";
+	import localforage from "localforage";
 	export default {
 		on: {
-			pageInit: function (e, page) {
+			pageBeforeIn: async function(){
+				var self = this;
+				var app = self.$app;
+				
+				console.log("Before In");
+				var asd = await app.methods.getLocalValue('loggedUserId');
+				if (asd != -1)
+				{
+					console.log("User was logged in");
+					app.request.promise.get(`${app.data.server}/users/${asd}`).then(function(getResult){
+						console.log(getResult);
+						let user = JSON.parse(getResult.data);
+						console.log(user);
+						if (user.confirmed)
+						{
+							console.log("User was logged in, skipping to dashboard");
+							app.views.main.router.navigate({ name: "home-memories" });
+						}
+						else
+						{
+							app.dialog.alert(`That user is no longer active!`);
+						}
+					}).catch(function(error){
+						app.dialog.alert(`This user no longer exists!`);
+					})
+				}
+				else
+				{
+					console.log("User wasn't logged in");
+				}
+				
+				function isTextEmptyOrWhitespace(value)
+				{
+					if (!value || !value.trim())
+					{
+						return true;
+					}
+					return false;
+				}
+			},
+			pageInit: async function (e, page) {
 				var self = this;
 				// console.log(this);
 				var emailInputValue = "";
@@ -58,29 +99,118 @@
 				// $$('#email').val('will@wetheforce.com');
 				// $$('#password').val('123456789');
 				// emailInputValue=$$('#email').val();
-
+				
 				// password_login=$$
 				var app = self.$app;
-
-				$$("#login-btn").on("click", function (e) {
+				
+				localforage.keys().then(function(keys) {
+					// An array of all the key names.
+					console.log(keys);
+				}).catch(function(err) {
+					// This code runs if there were any errors
+					console.log(err);
+				});
+				
+				console.log("Init");
+				var asd = await app.methods.getLocalValue('loggedUserId');
+				console.log(asd);
+				
+				$$("#login-btn").on("click", async function (e) {
 					e.preventDefault();
 					emailInputValue = $$("#email").val();
 					passwordInputValue = $$("#password").val();
-
+					
+					if (!validateEmail(emailInputValue, 'enter a valid email'))
+					{
+						console.log('username not valid');
+						return false;
+					}
+					if (!validateText(passwordInputValue, 'enter a valid password'))
+					{
+						console.log('password not valid');
+						return false;
+					}
+					
 					app.preloader.show("blue");
-					app.request.promise
-						.postJSON(app.data.server + "/auth/local", {
-							identifier: emailInputValue,
-							password: passwordInputValue,
-						})
-						.then(function (res) {
-							app.preloader.hide();
-							app.views.main.router.navigate({ name: "about" });
-						})
-						.catch(function (err) {
-							console.log(err);
-						});
+					// console.log(`Posting to "${app.data.server}/auth/local"`);
+					app.request.promise.postJSON(app.data.server + "/auth/local", {
+						identifier: emailInputValue,
+						password: passwordInputValue,
+					})
+					.then(async function (res) {
+						console.log("Getting inside 'then'");
+						console.log(res);
+						app.preloader.hide();
+						
+						let user = res.data.user;
+						if (!user.confirmed)
+						{
+							app.dialog.alert("This account has not been confirmed yet, please check your email");
+							return false;
+						}
+						else
+						{
+							console.log("localForage");
+							if (await app.methods.setLocalValueToKey(user.id, 'loggedUserId'))
+							{
+								console.log("Successfully logged in");
+								console.log(await app.methods.getLocalValue('loggedUserId'))
+								app.views.main.router.navigate({ name: "home-memories" });
+							}
+						}
+					})
+					.catch(async function (err) {
+						console.log("Errorerror");
+						app.preloader.hide();
+						console.log(err);
+						var obj = JSON.parse(err.xhr.response);
+						app.dialog.alert('Some fields are incomplete or incorrect, please try again.'+'\r\n'+obj.message[0].messages[0].message);
+					});
 				});
+				
+				function validateEmail(mail, errorText) 
+				{
+					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+					{
+						return (true);
+					}
+					app.dialog.alert(errorText);
+					return (false);
+				}
+				function validateText(text, emptyText, trimmedText, checkTrimmed = true)
+				{
+					console.log(`${text}, trim?: ${checkTrimmed}`);
+					if (isTextEmptyOrWhitespace(text))
+					{
+						app.dialog.alert(emptyText);
+						return false;
+					}
+					else
+					{
+						if (checkTrimmed)
+						{
+							if (!isTextTrimmed(text))
+							{
+								app.dialog.alert(trimmedText);
+								return false;
+							}
+						}
+						return true;
+					}
+				}
+				function isTextEmptyOrWhitespace(value)
+				{
+					if (!value || !value.trim())
+					{
+						return true;
+					}
+					return false;
+				}
+				
+				function isTextTrimmed(value)
+				{
+					return (value == value.trim());
+				}
 			},
 		},
 	};

@@ -1,4 +1,5 @@
 import $$ from 'dom7';
+import localforage from "localforage";
 import Framework7 from 'framework7/framework7.esm.bundle.js';
 
 // Import F7 Styles
@@ -21,15 +22,56 @@ var app = new Framework7({
     id: 'io.wetheforce.heavensent', // App bundle ID
     name: 'Heaven Sent', // App name
     theme: 'auto', // Automatic theme detection
-
+    
     data: {
-        server: 'http://167.172.156.126:1337'
-        // server: 'http://localhost:1337'
+        // server: 'http://167.172.156.126:1337'
+        server: 'http://localhost:1337'
     },
-
+    
+    methods: {
+        //Los datos a cambiar van a ser todos los del usuario.
+        async getLocalValue(key)
+        {
+            let result = -1;
+            await localforage.getItem(key).then(function(lsValue){
+                result = lsValue;
+            }).catch(function(glvError){
+                result = -1;
+            })
+            return result;
+        },
+        async setLocalValueToKey(value, key)
+        {
+            console.log(`SetLocalValue\r\n Key: ${key}, Value: ${value}`);
+            let result = false;
+            await localforage.setItem(key, value).then(function(value){
+                result=true;
+            }).catch(function(err){
+                console.log(err);
+                result=false;
+            })
+            return result;
+        },
+        helloWorld() {
+            this.$f7.dialog.alert("Hello World!");
+        },
+        updateUsername(e) {
+            this.username = e.target.value;
+            this.$update();
+        },
+        updatePassword(e) {
+            this.password = e.target.value;
+            this.$update();
+        },
+        alertLoginData() {
+            this.$f7.dialog.alert("Username: " + this.username + "<br>Password: " + this.password, () => {
+                this.$f7.loginScreen.close();
+            });
+        },
+    },
     // App routes
     routes: routes,
-
+    
     // Register service worker
     serviceWorker: Framework7.device.cordova ? {} : {
         path: '/service-worker.js',
@@ -54,11 +96,11 @@ var app = new Framework7({
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
             }
-
+            
         },
     },
 });
-
+//Aqui metes algo pa redirigirte
 $$(document).on('page:init', function (e) {
     $$('.page-content').off('scroll');
     $$('.page-content').scroll(function () {
