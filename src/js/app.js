@@ -60,13 +60,16 @@ var app = new Framework7({
 });
 
 $$(document).on('page:init', function (e) {
+    $$('.page-content').off('scroll');
     $$('.page-content').scroll(function () {
-        if ($$('.page-content').scrollTop() > 30) {
-            $$('.navbar').addClass('bg-white');
+        console.log($$('.page-current .page-content').scrollTop());
+        if ($$('.page-current .page-content').scrollTop() > 30) {
+            $$(this).prev().addClass('bg-white');
         } else {
-            $$('.navbar').removeClass('bg-white')
+            $$(this).prev().removeClass('bg-white');
         }
     });
 });
+
 
 
