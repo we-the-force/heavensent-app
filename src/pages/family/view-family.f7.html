@@ -1,8 +1,5 @@
 <template>
 	<div class="page" id="view-family">
-		<div class="sqr_bck" id="sqr1"></div>
-		<div class="sqr_bck" id="sqr2"></div>
-		<div class="sqr_bck" id="sqr3"></div>
 		<div class="artwork"></div>
 		<div class="navbar">
 			<div class="navbar-inner sliding">
@@ -11,9 +8,14 @@
 						<a href="" class="back-btn back">
 							<i class="icons material-icons">chevron_left</i>
 						</a>
+						<!-- cambia el titulo dependiendo de la pantalla -->
 						<h1 class="title">Mario's Family</h1>
+						<!-- quita la clase none del boton que debe estar y pon la clase none en donde no debe estar -->
 						<a href="" class="close-btn">
-							<i class="icons material-icons">close</i>
+							<i class="icons material-icons">close</i> 
+						</a>
+						<a href="" class="add-btn none">
+							<i class="icons material-icons">add</i> 
 						</a>
 					</div>
 				</div>
@@ -31,6 +33,9 @@
 			</div>
 		</div>
 		<div class="page-content">
+			<div class="sqr_bck" id="sqr1"></div>
+			<div class="sqr_bck" id="sqr2"></div>
+			<div class="sqr_bck" id="sqr3"></div>
 			<div id="family-list" class="family-cont list searchbar-found media-list">
 				<ul>
 					<li>
@@ -46,7 +51,8 @@
 					</li>
 					<li>
 						<a href="#" class="item-link item-content">
-							<div class="item-media"><img src="../../static/img/chris_evans_crop1569801286473.png" width="44" /></div>
+							<div class="item-media"><img src="../../static/img/chris_evans_crop1569801286473.png"
+									width="44" /></div>
 							<div class="item-inner">
 								<div class="item-title-row">
 									<div class="item-title">Nathan</div>
@@ -57,7 +63,8 @@
 					</li>
 					<li>
 						<a class="item-link item-content">
-							<div class="item-media"><img src="../../static/img/Jason_Momoa_by_Gage_Skidmore_2.png" width="44" /></div>
+							<div class="item-media"><img src="../../static/img/Jason_Momoa_by_Gage_Skidmore_2.png"
+									width="44" /></div>
 							<div class="item-inner">
 								<div class="item-title-row">
 									<div class="item-title">Sam</div>

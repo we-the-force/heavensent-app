@@ -24,6 +24,27 @@
                     left -225px
                     z-index -1
 
+            .footer
+                overflow hidden
+                position relative
+                padding-top 200px
+                margin -200px -15px -15px -15px
+
+                .sqr_bck
+                    deg = -36deg
+
+                    &#sqr4
+                        sqr(230px, deg)
+                        bottom -230px
+                        left 110px
+                        z-index -1
+
+                    &#sqr5
+                        sqr(230px, deg)
+                        bottom -110px
+                        left -60px
+                        z-index -1
+
             .contacts-cont
                 padding 20px 10px 20px 5px
                 flex-cont(row, space-between, center)
@@ -69,10 +90,11 @@
             .swiper-container
                 overflow visible
                 z-index 300
+
                 .swiper-slide
                     transform unset
 
-            .create-title,.scheduled-title,.later-title,.donate-title
+            .create-title, .scheduled-title, .later-title, .donate-title
                 padding 20px 5px
                 font-template(500, 20px, 23px)
                 color Grey_dark_3

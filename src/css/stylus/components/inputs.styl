@@ -29,7 +29,7 @@
             input[type='checkbox']:checked ~ .icon-checkbox
                 background blue
                 border-color #fefefe
-                box-shadow inset 0px -2px 0px #00CFFF, inset 1.5px 1.5px 0px #27B4EF
+                box-shadow inset 0px -2px 0px blue_dark, inset 1.5px 1.5px 0px #76BDE5
 
             .item-title
                 font-template(500, 18px, 21px)
@@ -68,6 +68,23 @@
 
             &:after
                 content none !important
+
+            &.textarea
+                height auto
+                min-height 100px
+                align-items flex-start
+                border-radius 11px
+                border 1px solid #DDDDDD
+                flex-cont(column, inherit, stretch)
+                box-shadow unset
+
+                textarea
+                    padding 9px 0px 0px 0px
+
+                span
+                    text-align right
+                    color Grey_light_3
+                    font-template(500, 12px, 24px)
 
         &.right
             justify-content flex-end
@@ -132,6 +149,48 @@
                 background unset
                 padding 0px 48px 0px 36px
                 height var(--f7-input-height)
+
+.toggle
+    width 48px
+    height 24px
+
+    .toggle-icon
+        width 48px
+        height 25px
+        border 0.5px solid #FDFDFD
+
+        &:before
+            content ''
+            position absolute
+            width 100%
+            height 100%
+            z-index -1
+            border-radius 14px
+            transform rotate(180deg)
+            background linear-gradient(180deg, #FFFFFF -91.67%, rgba(255, 255, 255, 0) 30.65%), radial-gradient(293.75% 293.75% at 55.91% -125%, #F0F0F0 44.57%, #F0F0F0 65.35%, rgba(255, 255, 255, 0) 100%), #C4C4C4
+            transition all 0s ease-in-out
+
+        &:after
+            height 16px
+            width 16px
+            top 3.5px
+            left 4px
+
+    input[type='checkbox']:checked + .toggle-icon
+        background none
+
+        &:before
+            content ''
+            position absolute
+            width 100%
+            height 100%
+            z-index -1
+            border-radius 14px
+            background blue
+
+        &:after
+            transform translateX(24px) !important
+            background Grey_light_1 !important
 
 .ios
     .item-input-wrap::after, .item-inner::after

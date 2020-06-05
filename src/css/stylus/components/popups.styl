@@ -1,7 +1,7 @@
 .popup
     border-radius 10px
 
-    &.popup-admin,&.popup-admin-relation
+    &.popup-admin, &.popup-admin-relation
         overflow unset
         padding 20px
         width 300px
@@ -71,3 +71,34 @@
             font-size 26px
             font-weight bold
             color blue
+
+.popover
+    border-radius 11px
+    background white
+    border 1px solid #EBEBEB
+    padding 0px 17px
+
+    &.popover-opt
+        width 120px
+        height 85px
+
+    &.popover-person
+        width 150px
+        height 85px
+
+    &.popover-opt,&.popover-person
+        .list
+            li
+                border-top 0.5px solid Grey_light_1
+                border-bottom 0.5px solid Grey_light_1
+
+                &:first-child
+                    border-top none
+
+                &:last-child
+                    border-bottom none
+
+                .list-button
+                    padding 0px 5px
+                    font-template(500, 18px, 41px)
+                    color Grey_dark_1
