@@ -1,20 +1,21 @@
 <template>
-    <div class="page" data-name="create-memory">
+    <div class="page" data-name="create-memory" id="create-memory">
+        <div class="artwork"></div>
         <div class="navbar">
-            <div class="navbar-bg"></div>
             <div class="navbar-inner sliding">
-                <div class="left">
-                    <a href="#" class="link back">
-                        <i class="icon icon-back"></i>
-                        <span class="if-not-md">Back</span>
-                    </a>
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="back-btn back">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title">Create Memory</h1>
+                        <div class="none"></div>
+                    </div>
                 </div>
-                <div class="title">Create Memory</div>
             </div>
         </div>
         <div class="page-content">
-            <p>.</p>
-            <div class="inputs list">
+            <div class="inputs list" id="_01">
                 <ul>
                     <li class="item-content item-input">
                         <div class="item-inner">
@@ -25,255 +26,206 @@
                     </li>
                     <li class="item-content item-input">
                         <div class="item-inner">
-                            <div class="item-input-wrap">
-                                <textarea id="description" placeholder="Description"></textarea>
+                            <div class="item-input-wrap textarea">
+                                <textarea id="description" placeholder="Description" class="resizable"
+                                    maxlength="140"></textarea>
+                                <span class="contador">0/140</span>
                             </div>
                         </div>
                     </li>
-                </ul>
-            </div>
-            <div class="list">
-                <ul>
-                    <li class="item-content item-input">
+                    <li class="item-content item-input with-label">
+                        <label for="notes" class="note-title">Note</label>
                         <div class="item-inner">
-                            <div class="item-title item-label">Notes</div>
-                            <div class="item-input-wrap inputs">
-                                <textarea id="notes-description" placeholder="Text"></textarea>
+                            <div class="item-input-wrap textarea">
+                                <textarea id="notes" placeholder="Text" class="resizable" maxlength="140"></textarea>
+                                <span class="contador">0/140</span>
                             </div>
                         </div>
                     </li>
                 </ul>
             </div>
-            <div class="btns-cont center">
-                <a id="add-note-btn" class="button color-blue round small">Add note</a>
+            <div class="btns-cont center" id="b_01">
+                <a id="add-note-btn" class="button color-blue round large">Add note</a>
             </div>
-            <p>,</p>
-            <div class="list inputs">
-                <ul>
-                    <li class="item-content item-input">
-                        <span>On Demand  <a id="on-demand-info" class="link popover-open" data-popover=".popover-info">I</a></span>
-                        <!-- <span>On Demand  <a class="link popover-open" href="#!/create-memory/" data-popover=".popover-about">Open About Popover</a></span> -->
-                        <label class="toggle">
-                            <input id="on-demand-toggle" type="checkbox">
-                            <span class="toggle-icon"></span>
-                        </label>
-                    </li>
-                    <li>
-                        <p><span id="space-progressbar" data-progress="10" class="progressbar"></span></p>
-                        <div class="center">Available space 100MB our of 100MB</div>
-                    </li>
-                    <li>
-                        <!-- cover -->
-                        <div class="card">
-                            <div class="card-content ">
-                                <img src="http://via.placeholder.com/314x174.png?text=Cover" alt="">
-                                <a  class="">
-                                    
-                                    ...
-                                    
-                                </a>  
-                            </div>
+            <div class="upload-title">Upload files</div>
+            <div class="upload-cont">
+                <div class="ondemand-cont">
+                    <div class="ondemand">
+                        <h1>On Demand</h1>
+                        <a class="popup-open" href="#" data-popup=".popup-demand">
+                            <i class="info icons material-icons">info</i>
+                        </a>
+                    </div>
+                    <label class="toggle toggle-init">
+                        <input id="on-demand-toggle" type="checkbox">
+                        <span class="toggle-icon"></span>
+                    </label>
+                </div>
+                <div class="progress-cont">
+                    <p class="bar"><span data-progress="70" class="progressbar" id="space-progressbar"></span></p>
+                    <p class="desc">Available space 100MB our of 100MB</p>
+                </div>
+                <div class="media-cont">
+                    <div class="cover">
+                        <img src="" alt="">
+                        <a class="edit popover-open" data-popover=".popover-opt">
+                            <span class="material-icons">more_horiz</span>
+                        </a>
+                    </div>
+                    <div class="medias">
+                        <div class="media">
+                            <span class="material-icons">mic</span>
                         </div>
-                    </li>
-                    <li>
-                        <!-- iconitos -->
-                        <div class="block">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-content ">
-                                            <img src="http://via.placeholder.com/62x62.png" alt="">
-                                            <a href="">x</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-content ">
-                                            <img src="http://via.placeholder.com/62x62.png" alt="">
-                                            <a href="">x</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-content ">
-                                            <img src="http://via.placeholder.com/62x62.png" alt="">
-                                            <a href="">x</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-content ">
-                                            <img src="http://via.placeholder.com/62x62.png" alt="">
-                                            <a href="">x</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="media">
+                            <span class="material-icons">comment</span>
                         </div>
-                    </li>
-                    <li>
-                        <div class="btns-cont center pass">
-                            <a id="add-media-btn" class="button color-blue round small" href="">+</a>
+                        <div class="media">
+                            <span class="material-icons">image</span>
                         </div>
-                    </li>
-                </ul>
+                        <div class="media">
+                            <span class="material-icons">videocam</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="btns-cont center add" id="b_02">
+                    <a id="add-media" href="" class="add-btn">
+                        <i class="icons material-icons">add</i>
+                    </a>
+                </div>
             </div>
-            <div class="list contacts inputs">
-                <ul>
-                    <li class="item-content item-input">
-                        <div class="item-title item-label">Add contacts</div>
-                    </li>
-                    <li>
-                        <!-- Listita de contactos -->
-                        <div class="block">
-                            <div class="row">
-                                <div class="col">
-                                    <a href="#" class="item-link item-content">
-                                        <div class="item-media">
-                                            <i class="icon icon-f7"></i>
-                                            <a href="">x</a>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <a href="#" class="item-link item-content">
-                                        <div class="item-media">
-                                            <i class="icon icon-f7"></i>
-                                            <a href="">x</a>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <a href="#" class="item-link item-content">
-                                        <div class="item-media">
-                                            <i class="icon icon-f7"></i>
-                                            <a href="">x</a>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <a href="#" class="item-link item-content">
-                                        <div class="item-media">
-                                            <i class="icon icon-f7"></i>
-                                            <a href="">x</a>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="btns-cont center pass">
-                            <a id="add-contact-btn" class="button color-blue round small" href="">+</a>
-                        </div>
-                    </li>
-                </ul>
+            <div class="contacts-title">Add contacts
             </div>
-            <div class="list inputs">
-                <ul>
-                    <li>
-                        <div class="card">
-                            <div class="card-content ">
-                                <img src="http://via.placeholder.com/314x174.png?text=Mapa" alt="">
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item-content item-input">
-                        <div class="item-title item-label">Location</div>
-                    </li>
-                    <li class="item-content item-input">
-                        <div class="item-inner">
-                            <div class="item-input-wrap">
-                                <input type="text" id="address" placeholder="Address" required validate>
-                                <!-- <input type="button" id="address-btn"> -->
-                                <a class="button link color-blue" href="">lapicito</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="btns-cont center pass">
-                            <a id="add-location-btn" class="button color-blue round small" href="">Add location</a>
-                        </div>
-                    </li>
-                </ul>
+            <div class="contacts-cont">
+                <div class="contacts">
+                    <div class="person">
+                        <span class="material-icons none">close</span>
+                        <img src="" alt="">
+                    </div>
+                    <div class="person">
+                        <span class="material-icons none">close</span>
+                        <img src="" alt="">
+                    </div>
+                    <div class="person">
+                        <span class="material-icons none">close</span>
+                        <img src="" alt="">
+                    </div>
+                    <div class="person">
+                        <span class="material-icons none">close</span>
+                        <img src="" alt="">
+                    </div>
+                </div>
+                <div class="btns-cont center add" id="b_03">
+                    <a id="add-contact" href="" class="add-btn">
+                        <i class="icons material-icons">add</i>
+                    </a>
+                </div>
             </div>
-            <div class="list no-hairlines-md">
-                <ul>
-                    <li class="item-content item-input">
-                        <div class="item-title item-label">Delivery date</div>
-                        <a class="button link color-blue" href="">lapicito</a>
-                    </li>
-                    <li class="item-content item-input">
-                        <div class="item-media">
-                            <i class="icon demo-list-icon"></i>
-                        </div>
-                        <div class="item-inner">
-                            <div class="item-title item-label">Date</div>
-                            <div class="item-input-wrap">
-                                <input type="datetime-local" value="2014-04-30" placeholder="Please choose...">
-                            </div>
-                        </div>
-                    </li>
-                    <!-- <li>
-                        <div class="btns-cont center pass">
-                            <a id="add-deliver-date-btn" class="button color-blue round small" href="">Add date</a>
-                        </div>
-                    </li> -->
-                </ul>
+            <div class="location-title">Location
             </div>
-            <div class="list">
-                <ul>
-                    <li>
-                        <a class="item-link smart-select smart-select-init">
-                            <select name="repeat">
-                                <option value="never" selected>Never</option>
-                                <option value="every-day">Every day</option>
-                                <option value="weekly">Weekly</option>
-                                <option value="biweekly">Biweekly</option>
-                                <option value="each-month">Each month</option>
-                                <option value="every-3-months">Every 3 months</option>
-                                <option value="every-6-months">Every 6 months</option>
-                                <option value="every-year">Every year</option>
-                            </select>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title">Repeat</div>
-                                </div>
-                            </div>
-                        </a>  
-                    </li>
-                </ul>
+            <div class="location-cont">
+                <div class="btns-cont center location-btn" id="b_04">
+                    <a id="add-deliver-date" class="button color-blue round large">Add location</a>
+                </div>
             </div>
-            <div class="btns-cont center pass">
-                <a id="create-memory-btn" class="button link round color-white small" href="">Create memory</a>
-                <!-- <a id="create-memory-btn" class="button link color-white" href="">Create memory</a> -->
+            <div class="date-title">Deliver date
+                <a id="edit-date" href="" class="add-btn none">
+                    <i class="icons material-icons">edit</i>
+                </a>
             </div>
-
-            
-            <div class="block">
-                <p>
-                  <!-- In data-popover attribute we specify CSS selector of popover we need to open -->
-                  <a class="link popover-open" href="#/create-memory/" data-popover=".popover-about">Open About Popover</a>
-                </p>
-              </div>
+            <div class="deliver-cont">
+                <div class="btns-cont center date-btn" id="b_05">
+                    <a id="add-deliver-date" class="button color-blue round large popup-open"
+                        data-popup=".popup-deliver">Aggregate</a>
+                </div>
+            </div>
+            <div class="btns-cont center create" id="b_04">
+                <a id="add-deliver-date" class="button color-white round large">Create memory</a>
+            </div>
         </div>
-    </div>
-    <div class="popover popover-info">
-        <div class="popover-inner">
+        <div class="popup popup-demand">
             <div class="block">
-                <p>Info</p>
                 <p>The user can access the content as many times as they can and wherever</p>
             </div>
         </div>
-    </div>
-    <div class="popover popover-about">
-        <div class="popover-inner">
-            <div class="block">
-                <p>About</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+        <div class="popup popup-deliver">
+            <div class="immediately-cont">
+                <h1>Send immediately</h1>
+                <label class="toggle toggle-init">
+                    <input id="immediately-toggle" type="checkbox">
+                    <span class="toggle-icon"></span>
+                </label>
+            </div>
+
+            <div class="inputs list">
+                <ul>
+                    <li class="item-content item-input two-inputs">
+                        <div class="item-inner">
+                            <label for="date" class="label">Date</label>
+                            <div class="item-input-wrap">
+                                <input type="date" id="date" required validate />
+                            </div>
+                        </div>
+                        <div class="item-inner">
+                            <label for="time" class="label">Time</label>
+                            <div class="item-input-wrap">
+                                <input type="time" id="time" required validate />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="repeat-cont">
+                <h1>Repeat</h1>
+                <div class="inputs list">
+                    <ul>
+                        <li class="item-content item-input two-inputs">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <a id="select-repeat" class="select color-white round small popover-open"
+                                        data-popover=".popover-repeat">
+                                        <i class="material-icons">keyboard_arrow_down</i>
+                                        <p> Every Year</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="end-repeat-cont">
+                <h1>End repetition</h1>
+                <div class="inputs list">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <input type="date" id="date-end" required validate />
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer">The memory will repeat itself every year until 08/22/2024</div>
+            <div class="btns-cont center" id="date">
+                <a id="accept-deliver-date" class="button color-blue round small popup-close">Accept</a>
+            </div>
+        </div>
+        <div class="popover popover-repeat">
+            <div class="popover-inner">
+                <div class="list">
+                    <ul>
+                        <li><a class="list-btn never popover-close" href="#">Never</a></li>
+                        <li><a class="list-btn every_day popover-close" href="#">Every day</a></li>
+                        <li><a class="list-btn weekly popover-close" href="#">Weekly</a></li>
+                        <li><a class="list-btn biweekly popover-close" href="#">Biweekly</a></li>
+                        <li><a class="list-btn each_month popover-close" href="#">Each month </a></li>
+                        <li><a class="list-btn every_3_months popover-close" href="#">Every 3 months</a></li>
+                        <li><a class="list-btn every_6_months popover-close" href="#">Every 6 months</a></li>
+                        <li><a class="list-btn every_year popover-close checked" href="#">Every year</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -281,12 +233,23 @@
 <script>
     // var app = new Framework7();
     import $$ from "dom7";
-    
-    $$('.popover-info').on('popover:open', function(e){
-        console.log('Info popover open');
-    });
-    
     export default {
-        
+        on: {
+            pageInit: function (e, page) {
+
+                $$('.popover-repeat .popover-close').click(function (el) {
+                    $$(this).parent().parent().find('.checked').removeClass('checked');
+                    $$(this).addClass('checked');
+                    $$('.popup-deliver .select p').text($$(this).text());
+                })
+
+                $$('textarea').on('input:notempty', function (val) {
+                    $$(this).next().text($$(this).val().length + '/140');
+                });
+                $$('textarea').on('input:empty', function (val) {
+                    $$(this).next().text('0/140');
+                });
+            },
+        },
     }
 </script>

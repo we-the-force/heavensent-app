@@ -100,7 +100,7 @@ var routes = [{
 },
 {
     name: 'create-memory',
-    path: '/create-memory/',
+    path: '/memories/create',
     component: CreateMemory,
 },
 {

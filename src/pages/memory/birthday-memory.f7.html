@@ -100,28 +100,98 @@
             </div>
             <div class="deliver-cont">
                 <div class="btns-cont center date-btn" id="b_03">
-                    <a id="add-deliver-date" class="button color-blue round large">Aggregate</a>
+                    <a id="add-deliver-date" class="button color-blue round large popup-open"
+                        data-popup=".popup-deliver">Aggregate</a>
                 </div>
             </div>
             <div class="btns-cont center create" id="b_04">
                 <a id="add-deliver-date" class="button color-white round large">Create memory</a>
             </div>
         </div>
-    </div>
-    <div class="popover popover-info">
-        <div class="popover-inner">
+        <div class="popup popup-demand">
             <div class="block">
-                <p>Info</p>
                 <p>The user can access the content as many times as they can and wherever</p>
             </div>
         </div>
-    </div>
-    <div class="popover popover-about">
-        <div class="popover-inner">
-            <div class="block">
-                <p>About</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a
-                    nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+        <div class="popup popup-deliver">
+            <div class="immediately-cont">
+                <h1>Send immediately</h1>
+                <label class="toggle toggle-init">
+                    <input id="immediately-toggle" type="checkbox">
+                    <span class="toggle-icon"></span>
+                </label>
+            </div>
+
+            <div class="inputs list">
+                <ul>
+                    <li class="item-content item-input two-inputs">
+                        <div class="item-inner">
+                            <label for="date" class="label">Date</label>
+                            <div class="item-input-wrap">
+                                <input type="date" id="date" required validate />
+                            </div>
+                        </div>
+                        <div class="item-inner">
+                            <label for="time" class="label">Time</label>
+                            <div class="item-input-wrap">
+                                <input type="time" id="time" required validate />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="repeat-cont">
+                <h1>Repeat</h1>
+                <div class="inputs list">
+                    <ul>
+                        <li class="item-content item-input two-inputs">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <a id="select-repeat" class="select color-white round small popover-open"
+                                        data-popover=".popover-repeat">
+                                        <i class="material-icons">keyboard_arrow_down</i>
+                                        <p> Every Year</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="end-repeat-cont">
+                <h1>End repetition</h1>
+                <div class="inputs list">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <input type="date" id="date-end" required validate />
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer">The memory will repeat itself every year until 08/22/2024</div>
+            <div class="btns-cont center" id="date">
+                <a id="accept-deliver-date" class="button color-blue round small popup-close">Accept</a>
+            </div>
+        </div>
+        <div class="popover popover-repeat">
+            <div class="popover-inner">
+                <div class="list">
+                    <ul>
+                        <li><a class="list-btn never popover-close" href="#">Never</a></li>
+                        <li><a class="list-btn every_day popover-close" href="#">Every day</a></li>
+                        <li><a class="list-btn weekly popover-close" href="#">Weekly</a></li>
+                        <li><a class="list-btn biweekly popover-close" href="#">Biweekly</a></li>
+                        <li><a class="list-btn each_month popover-close" href="#">Each month </a></li>
+                        <li><a class="list-btn every_3_months popover-close" href="#">Every 3 months</a></li>
+                        <li><a class="list-btn every_6_months popover-close" href="#">Every 6 months</a></li>
+                        <li><a class="list-btn every_year popover-close checked" href="#">Every year</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -132,6 +202,12 @@
     export default {
         on: {
             pageInit: function (e, page) {
+
+                $$('.popover-repeat .popover-close').click(function (el) {
+                    $$(this).parent().parent().find('.checked').removeClass('checked');
+                    $$(this).addClass('checked');
+                    $$('.popup-deliver .select p').text($$(this).text());
+                })
 
                 $$('textarea').on('input:notempty', function (val) {
                     $$(this).next().text($$(this).val().length + '/140');
