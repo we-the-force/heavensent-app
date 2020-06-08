@@ -55,13 +55,15 @@
 				var app = self.$app;
 				
 				console.log("Before In");
-				var asd = await app.methods.getLocalValue('loggedUserId');
-				if (asd != -1)
+				var localUser = await app.methods.getLocalValue('loggedUser');
+				if (localUser != -1)
 				{
 					console.log("User was logged in");
-					app.request.promise.get(`${app.data.server}/users/${asd}`).then(function(getResult){
+					app.request.promise.get(`${app.data.server}/users/${localUser.id}`).then(function(getResult){
+						console.log("get request");
 						console.log(getResult);
 						let user = JSON.parse(getResult.data);
+						console.log("User gotten from get request");
 						console.log(user);
 						if (user.confirmed)
 						{
@@ -73,7 +75,7 @@
 							app.dialog.alert(`That user is no longer active!`);
 						}
 					}).catch(function(error){
-						app.dialog.alert(`This user no longer exists!`);
+						app.dialog.alert(`This user was not found or no longer exists!`);
 					})
 				}
 				else
@@ -100,7 +102,6 @@
 				// $$('#password').val('123456789');
 				// emailInputValue=$$('#email').val();
 				
-				// password_login=$$
 				var app = self.$app;
 				
 				localforage.keys().then(function(keys) {
@@ -112,8 +113,6 @@
 				});
 				
 				console.log("Init");
-				var asd = await app.methods.getLocalValue('loggedUserId');
-				console.log(asd);
 				
 				$$("#login-btn").on("click", async function (e) {
 					e.preventDefault();
@@ -151,10 +150,10 @@
 						else
 						{
 							console.log("localForage");
-							if (await app.methods.setLocalValueToKey(user.id, 'loggedUserId'))
+							if (await app.methods.setLocalValueToKey(user, 'loggedUser'))
 							{
 								console.log("Successfully logged in");
-								console.log(await app.methods.getLocalValue('loggedUserId'))
+								console.log(await app.methods.getLocalValue('loggedUser'))
 								app.views.main.router.navigate({ name: "home-memories" });
 							}
 						}
