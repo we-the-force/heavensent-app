@@ -3,17 +3,35 @@
         background Grey_light_1
 
         .page-content
+            .date-title
+                font-template(500, 20px, 24px)
+                color Grey_dark_3
+                padding 0px 20px
+
             .note-title
                 font-template(500, 20px, 24px)
                 color Grey_dark_3
-
-            .btns-cont
-                padding 5px 0px 50px 0px
 
             .upload-title
                 font-template(500, 20px, 24px)
                 color Grey_dark_3
                 padding 0px 20px
+
+            .btns-cont
+                padding 5px 0px 50px 0px
+
+                &.add
+                    padding-top 0px
+
+                    .add-btn
+                        height 50px
+                        width 50px
+                        box-shadow 0px 2px 4px rgba(0, 0, 0, 0.15), inset 0px 2px 0px blue_light, inset 0px -1.5px 0px blue_dark
+
+                        i
+                            font-size 35px
+                &.create
+                    padding 37px 0px
 
             .upload-cont
                 flex-cont(column, unset, stretch)
@@ -79,6 +97,7 @@
                         top 0
                         right 10px
                         flex-cont(row, center, center)
+                        z-index 2
 
                         span
                             color Grey_dark_3
@@ -91,6 +110,28 @@
                         transform translate(-50%, -50%)
                         font-template(500, 14px, 24px)
                         color Grey_light_3
+                        z-index 0
 
                 .medias
                     flex-cont(row, space-between, center)
+
+                    .media
+                        flex-cont(row, center, center)
+                        height 70px
+                        width 70px
+                        background Grey_light_2
+                        box-shadow inset 3.3px 4.3px 0px #e7e6e6, inset 0px -3.3px 0px #F7F7F7
+                        border 0.7px solid white
+                        border-radius 9.2px
+
+                        span
+                            font-size 24px
+                            color Grey_light_3
+
+            .deliver-cont
+                padding 10px 8px 0px 8px
+
+                .date-btn
+                    padding 5px 0px 25px 0px
+                    margin 0px 12px 50px 12px
+                    border-bottom 0.4px solid #D2D2D2
