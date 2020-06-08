@@ -6,20 +6,20 @@
 			<div class="sqr_bck" id="sqr3"></div>
 			<div class="profile">
 				<div class="avatar">
-					<img src="../../static/img/chris_evans_crop1569801286473.png" alt="">
+					<img id="side-logged-user-picture" src="../../static/img/chris_evans_crop1569801286473.png" alt="">
 				</div>
 				<div class="text">
 					<div class="name-cont">
-						<h1 class="name">Jacob Ethan</h1>
+						<h1   id="side-logged-user-name" class="name capitalize">Jacob Ethan</h1>
 						<span class="material-icons">edit</span>
 					</div>
-					<p>Membership</p>
+					<p id="side-logged-user-membership">Membership</p>
 				</div>
 			</div>
 			
 			<div class="btns-cont">
 				<a href="/memories/home" class="btn-panel panel-close active">Profile</a>
-				<a href="/membership/view/user/18" class="btn-panel panel-close ">Plan</a><!-- herdcoded -->
+				<a id="app-plan-button" href="/membership/view/user/18" class="btn-panel panel-close ">Plan</a><!-- herdcoded -->
 				<a href="#" class="btn-panel panel-close ">Donate</a>
 			</div>
 			
@@ -172,16 +172,52 @@
 				var self = this;
 				var app = self.$app;
 				
+				var loggedUser = await app.methods.getLocalValue('loggedUser');
+				console.log(loggedUser);
+				updateControls();
+				
 				$$("#sign-out-btn").on("click", async function(e){
 					e.preventDefault();
-
+					
 					console.log("Logging out");
-					if (await app.methods.setLocalValueToKey(-1, 'loggedUserId'))
+					if (await app.methods.setLocalValueToKey(-1, 'loggedUser'))
 					{
 						console.log("Successfully logged out!");
 						app.views.main.router.navigate({ name: "login" });
 					}
 				})
+				
+				function updateControls()
+				{
+					// document.getElementById("logged-user-name").innerHTML("Asd");
+					var currentMembership = loggedUser.currentMembership;
+					console.log("Current membership");
+					console.log(currentMembership);
+					if(currentMembership === null)
+					{
+						currentMembership = "No Membership";
+					}
+					else
+					{
+						currentMembership = loggedUser.currentMembership.plan.name + " membership";
+					}
+					
+					console.log("Setting stuff");
+					
+					$$("#side-logged-user-name")[0].textContent = loggedUser.username;
+					$$("#side-logged-user-membership")[0].textContent = currentMembership;
+					$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+					
+					console.log("Changing href");
+					console.log($$("#app-plan-button")[0].href);
+					$$("#app-plan-button")[0].href = `/membership/view/user/${loggedUser.id}`;
+					console.log("Changed???");
+					console.log($$("#app-plan-button")[0].href);
+
+					// "http://localhost:1337/uploads/profile_8818aa9129.png" 
+					// loggedUser.profilePicture.url;
+					// $$("#logged-user-name")[0].outerText("ASd");
+				}
 			},
 		},
 	};
