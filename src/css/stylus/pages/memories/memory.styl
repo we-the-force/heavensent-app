@@ -1,9 +1,9 @@
 .page
-    &#birthday-memory,&#create-memory
+    &#birthday-memory, &#create-memory
         background Grey_light_1
 
         .page-content
-            .date-title,.location-title
+            .date-title, .location-title, .contacts-title
                 font-template(500, 20px, 24px)
                 color Grey_dark_3
                 padding 0px 20px
@@ -30,6 +30,7 @@
 
                         i
                             font-size 35px
+
                 &.create
                     padding 37px 0px
 
@@ -128,10 +129,48 @@
                             font-size 24px
                             color Grey_light_3
 
-            .deliver-cont,.location-cont
+            .deliver-cont, .location-cont
                 padding 10px 8px 0px 8px
 
-                .date-btn,.location-btn
+                .date-btn, .location-btn
                     padding 5px 0px 25px 0px
                     margin 0px 12px 50px 12px
-                    border-bottom 0.4px solid #D2D2D2
+                    border-bottom 0.4px solid Grey_light_3
+
+            .contacts-cont
+                .contacts
+                    padding 15px 5px
+                    flex-cont(row, flex-start, center)
+                    flex-wrap wrap
+
+                    .person
+                        margin 5px
+                        position relative
+                        width 70px
+                        height 70px
+                        background Grey_light_2
+                        border-radius 50%
+                        box-shadow inset 3px 4px 0px #e7e6e6, inset 0px -2.5px 0px Grey_light_1
+                        background-image url('../static/img/Busto_grey.png')
+                        background-repeat no-repeat
+                        background-position center
+                        background-size 28px
+
+                        .none
+                            display none
+
+                        img
+                            border-radius 50%
+                            width 100%
+
+                        .close
+                            padding 3px
+                            position absolute
+                            right -3px
+                            top 1px
+                            border-radius 50%
+                            background Grey_light_1
+                            border 0.208333px solid #f5f5f5
+                            color Grey_dark_2
+                            box-shadow inset 0px 1px 0px #fdfdfd, inset 0px -1px 0px Grey_light_2
+                            font-size 14px
