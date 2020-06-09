@@ -18,6 +18,7 @@
 			<div class="sqr_bck" id="sqr1"></div>
 			<div class="sqr_bck" id="sqr2"></div>
 			<div class="sqr_bck" id="sqr3"></div>
+
 			<div class="upload-cont">
 				<div class="upload-img">
 					<div class="photo"></div>
@@ -99,9 +100,11 @@
 					</li>
 				</ul>
 			</div>
+			
 			<div class="btns-cont center">
 				<a id="create-btn" class="button color-blue round large">Create account</a>
 			</div>
+
 			<div class="footer">
 				<div class="sqr_bck" id="sqr4"></div>
 			</div>
@@ -145,7 +148,7 @@
 	import $$ from "dom7";
 	import croppie from "croppie";
 	export default {
-		// auth/local/register
+		//// auth/local/register
 		on: {
 			pageInit: function (e, page) {
 				var self = this;
@@ -162,7 +165,7 @@
 				var profilePicture = "";
 				var adminCouldEdit = "";
 
-				//mostrar contrase;a
+				////mostrar contrase;a
 				$$(".show").click(function (val) {
 					let type = $$("#signup-password").attr("type");
 					if (type == "password") {
@@ -172,17 +175,17 @@
 					}
 				});
 
-				//mostrar span de show
+				////mostrar span de show
 				$$("#signup-password").on("input:notempty", function (val) {
 					$$(".show").css("display", "block");
 				});
 
-				//ocultar span cuando el input este vacio
+				////ocultar span cuando el input este vacio
 				$$("#signup-password").on("input:empty", function (val) {
 					$$(".show").css("display", "none");
 				});
 
-				//upload photo
+				////upload photo
 				$$(".img-btn").on("click", function () {
 					if (window.File && window.FileReader && window.FormData) {
 						var inputField = $$("#file-upload");
@@ -195,7 +198,7 @@
 									$$(".img-btn").off("click");
 									readFile(file);
 								} else {
-									// alert("Not a valid image!");
+									//// alert("Not a valid image!");
 									app.dialog.alert("Not a valid image!");
 									console.log("Not a valid image!");
 								}
@@ -208,15 +211,6 @@
 						console.log("File upload is not supported!");
 					}
 				});
-
-				// Nomas pa testear, quitarlo mas al ratito.
-				// $$("#signup-name").val("test1");
-				// $$("#signup-birthday").val("01/01/1990");
-				// $$("#signup-mobile").val("123456789");
-				// $$("#signup-email").val("asd@asd.com");
-				// $$("#signup-password").val("1234567890");
-				// $$("#signup-admin-email").val("dsa@dsa.com");
-				// $$('#').val('test1');
 
 				$$("#create-btn").on("click", function (e) {
 					e.preventDefault();
@@ -233,10 +227,6 @@
 					adminEmail = $$("#signup-admin-email").val();
 					adminRelation = $$("#signup-admin-relation").val();
 					adminCouldEdit = $$("#signup-admin-edit").prop('checked');
-
-					let json = JSON.parse("[{}]")[0];
-					console.log("JSON");
-					console.log(json[0]);
 
 					if (json != undefined) {
 						console.log("json not here");
@@ -283,7 +273,7 @@
 						"mobile": mobile,
 						"email": email,
 						"password": password,
-						// "adminEmail"
+						//// "adminEmail"
 					})
 						.then(function (signupRes) {
 							console.log("User created, adding extra data");

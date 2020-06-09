@@ -1,22 +1,22 @@
 <template>
     <div class="page" id="membership-view">
         <div class="artwork"></div>
-		<div class="navbar">
-			<div class="navbar-inner sliding">
-				<div class="header-cont">
-					<div class="header">
-						<a href="" class="back-btn back">
-							<i class="icons material-icons">chevron_left</i>
-						</a>
-						<h1 class="title">Membership</h1>
-						<div class="none"></div>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="back-btn back">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title">Membership</h1>
+                        <div class="none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="page-content">
             <div class="logo-cont">
-				<img src="../../static/img/Pluma_blue.png" alt="" />
+                <img src="../../static/img/Pluma_blue.png" alt="" />
             </div>
             <div class="title-cont">
                 <!-- <h1>Hello Jacob</h1> -->
@@ -41,7 +41,7 @@
                     </a>
                 </p>
             </div>
-
+            
             <div class="btns-cont center">
                 <a id="change-plan-btn" class="button color-white round large">Change plan</a>
             </div>
@@ -52,5 +52,25 @@
     </div>
 </template>
 <script>
-    
+    import $$ from "dom7";
+    export default {
+        on: {
+            pageInit: async function(){
+                var self = this;
+                var app = self.$app;
+                
+                var loggedUser = await app.methods.getLocalValue('loggedUser');
+                updateControls();
+
+
+                function updateControls()
+                {
+                    console.log("UpdateControls()")
+                    $$("#change-plan-btn")[0].href = `/membership/select/user/${loggedUser.id}`;
+                    console.log($$("#package-name"));
+                    // $$("#package-name")[0].innerText = "Caca";
+                }
+            }
+        },
+    };
 </script>

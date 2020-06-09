@@ -62,32 +62,32 @@
 	import croppie from "croppie";
 	export default {
 		on: {
-			pageInit: function(e, page){
+			pageInit: async function(e, page){
 				var self = this;
 				var app = self.$app;
 				
 				var queryPlan = app.views.main.router.currentRoute.params.planName;
 				var queryID = app.views.main.router.currentRoute.params.userID;
-				console.log(queryPlan);
-				console.log(queryID);
+				// console.log(queryPlan);
+				// console.log(queryID);
 				var wea = formatDate();
-				console.log(wea);
+				// console.log(wea);
 				
 				// $$("#confirm")[0].href = `/membership/confirmed/?plan=${queryPlan}`;
-				$$("#confirm").click(function (val) {
-					console.log(`/membership/view/users/${queryID}`);
-					console.log("Getting plan")
+				$$("#confirm").click(async function (val) {
+					// console.log(`/membership/view/users/${queryID}`);
+					// console.log("Getting plan")
 					app.request.promise.get(`${app.data.server}/memberships/?name=${queryPlan}`)
-					.then(function(planRes){
+					.then(async function(planRes){
 						let plan = JSON.parse(planRes.data)[0];
-						console.log(plan);
-						console.log(plan.id);
-						console.log("Getting user");
-						console.log(`${app.data.server}/memberships/?name=${queryPlan}`);
+						// console.log(plan);
+						// console.log(plan.id);
+						// console.log("Getting user");
+						// console.log(`${app.data.server}/memberships/?name=${queryPlan}`);
 						app.request.promise.get(`${app.data.server}/users/${queryID}`)
-						.then(function(userRes){
+						.then(async function(userRes){
 							console.log("Inserting membership");
-							app.request({
+							await app.request({
 								url: `${app.data.server}/users/${queryID}`,
 								method: 'PUT',
 								data:{
@@ -99,7 +99,9 @@
 									}
 								}
 							});
-							console.log(`/membership/view/user/${queryID}`);
+
+							await app.methods.updateCurrentUser();
+							// console.log(`/membership/view/user/${queryID}`);
 							// app.views.main.router.navigate({ path: '/membership/select/user/' + queryID });
 							app.views.main.router.navigate({ 
 								name: 'view-membership',

@@ -139,6 +139,7 @@
 				console.log(queryID);
 				var selectedPlan = "basic";
 
+				changeConfirmButtonHref(selectedPlan);
 				$$(".button-plan").click(function (val) {
 					let el = $$(this);
 					console.log(el);

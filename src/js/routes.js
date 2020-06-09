@@ -150,9 +150,11 @@ var routes = [{
         
         app.preloader.show();
         
+        console.log("Move to view");
+        console.log(`${app.data.server}/users/${userID}`);
         app.request.promise.json(`${app.data.server}/users/${userID}`)
         .then(function(res){
-            console.log(res.data);
+            console.log(res.data.currentMembership);
             app.preloader.hide();
             resolve(
                 {
@@ -167,8 +169,6 @@ var routes = [{
                     }
                 }
                 );
-                
-                
             });
             
             function GetUserName(user)
@@ -190,6 +190,8 @@ var routes = [{
                 }
                 else
                 {
+                    console.log("Plan: (GetPlanName)");
+                    console.log(plan);
                     return plan.plan.name;
                 }
             }
