@@ -24,8 +24,8 @@ var app = new Framework7({
     theme: 'auto', // Automatic theme detection
     
     data: {
-        server: 'http://167.172.156.126:1337'
-        // server: 'http://localhost:1337'
+        // server: 'http://167.172.156.126:1337'
+        server: 'http://localhost:1337'
     },
     
     methods: {
@@ -58,20 +58,26 @@ var app = new Framework7({
             var currentLocalUser = await app.methods.getLocalValue('loggedUser');
             let result = false;
             this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult){
-                console.log("Get result");
-                console.log(getResult);
+                // console.log("Get result");
+                // console.log(getResult);
                 var user = JSON.parse(getResult.data);
-                console.log('User Object');
-                console.log(user);
-                console.log(this);
-                console.log(app);
+                // console.log('User Object');
+                // console.log(user);
+                // console.log(this);
+                // console.log(app);
                 result = await app.methods.setLocalValueToKey(user, 'loggedUser');
-                console.log("Result:" + result);
+                console.log("Update User Result:" + result);
             }).catch(function (error){
                 console.log("Error updating current user!!!");
                 console.log(error);
                 result = false;
             });
+            return result;
+        },
+        async clearCurrentUser()
+        {
+            var app=this;
+            let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
             return result;
         },
         

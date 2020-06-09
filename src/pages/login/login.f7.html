@@ -56,7 +56,7 @@
 				
 				console.log("Before In");
 				var localUser = await app.methods.getLocalValue('loggedUser');
-				if (localUser != -1)
+				if (localUser != null)
 				{
 					console.log("User was logged in");
 					app.request.promise.get(`${app.data.server}/users/${localUser.id}`).then(function(getResult){
@@ -74,8 +74,17 @@
 						{
 							app.dialog.alert(`That user is no longer active!`);
 						}
-					}).catch(function(error){
+					}).catch(async function(error){
 						app.dialog.alert(`This user was not found or no longer exists!`);
+						let result = await app.methods.clearCurrentUser();
+						if (result === true)
+						{
+							console.log("Cleared user data succesfully");
+						}
+						else
+						{
+							console.log("Couldn't clear user");
+						}
 					})
 				}
 				else
