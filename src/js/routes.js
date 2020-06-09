@@ -37,10 +37,53 @@ import DynamicRoutePage from '../pages/dynamic-route.f7.html';
 import RequestAndLoad from '../pages/request-and-load.f7.html';
 import NotFoundPage from '../pages/404.f7.html';
 
+async function checkAuth(to, from, resolve, reject)
+{
+    var router = this;
+    var app = router.app;
+    var valid = await app.methods.userIsValid();
+    console.log("CheckAuth!!!!");
+    if (valid)
+    {
+        resolve();
+    }
+    else
+    {
+        reject();
+        this.navigate('/');
+        return;
+        // resolve('/asd/');
+    }
+}
+async function isLoggedIn(to, from, resolve, reject)
+{
+    var router = this;
+    var app = router.app;
+    var valid = await app.methods.userIsValid();
+    console.log("IsLoggedIn!!!!!!!!!");
+    console.log(to);
+    console.log(from);
+    if (valid)
+    {
+        console.log("User was valid");
+        console.log(valid);
+        reject();
+        router.navigate('/memories/home');
+    }
+    else
+    {
+        console.log("User was not valid");
+        console.log(valid);
+        resolve();
+    }
+}
+
+
 var routes = [{
     name: 'login',
     path: '/',
     name: 'login',
+    beforeEnter: isLoggedIn,
     component: Login,
 },
 {
@@ -76,75 +119,128 @@ var routes = [{
 {
     name: 'import-contacts',
     path: '/contact/import',
+    beforeEnter: checkAuth,
     component: ImportContacts,
 },
 {
     name: 'create-contact',
     path: '/contact/create',
+    beforeEnter: checkAuth,
     component: CreateContact,
 },
 {
     name: 'create-guardian',
     path: '/guardian/create',
+    beforeEnter: checkAuth,
     component: CreateGuardian,
 },
 {
     name: 'invite-admin',
     path: '/admin/invite',
+    beforeEnter: checkAuth,
     component: InviteAdmin,
 },
 {
     name: 'view-family',
     path: '/family/view',
+    beforeEnter: checkAuth,
     component: ViewFamily,
 },
 {
     name: 'create-memory',
     path: '/memories/create',
+    beforeEnter: checkAuth,
     component: CreateMemory,
 },
 {
     name: 'home-memories',
     path: '/memories/home',
+    beforeEnter: checkAuth,
     component: HomeMemories,
 },
 {
     name: 'birthday-memories',
     path: '/memories/birthday',
+    beforeEnter: checkAuth,
     component: BirthdayMemory,
 },
 {
     name: 'memory-dashboard',
     path: '/memory-dashboard/',
+    beforeEnter: checkAuth,
     component: MemoryDashboard,
 },
 {
     name: 'memory-notification',
     path: '/memory-notification/',
+    beforeEnter: checkAuth,
     component: MemoryNotification,
 },
 {
     name: 'view-memory',
     path: '/view-memory/',
+    beforeEnter: checkAuth,
     component: MemoryView,
 },
 {
     name: 'select-membership',
     path: '/membership/select/user/:userID',
+    beforeEnter: checkAuth,
     component: SelectMembership,
 },
 {
     name: 'card-info',
     path: '/membership/card/user/:userID/plan/:planName',
+    beforeEnter: checkAuth,
     component: AddCardInfo,
 },
 {
     name: 'view-membership',
     path: '/membership/view/user/:userID',
+    beforeEnter: checkAuth,
     async: function(routeTo, routeFrom, resolve, reject){
         var router = this;
         var app = router.app;
         var userID = routeTo.params.userID;
+        
+        // var home = null;
+        // for (var i = 0; i < routes.length; i++)
+        // {
+        //     if (routes[i]["name"] === "home-memories")
+        //     home = routes[i];
+        // }
+        // console.log(home);
+        
+        // var asd = 
+        // {
+        //     hash: undefined,
+        //     name: "home-memories",
+        //     params: {},
+        //     parentPath: undefined,
+        //     path: "/memories/home",
+        //     query: {},
+        //     route: home,
+        //     url: "/memories/home"
+        // }
+        
+        // console.log("");
+        // console.log("");
+        
+        // console.log(this.routes);
+        // console.log("Going to view membership");
+        // console.log("From");
+        // console.log(routeFrom);
+        // console.log("New From\r\n");
+        // routeFrom = asd;
+        // console.log(routeFrom);
+        // console.log("To");
+        // console.log(routeTo);
+        // console.log("resolve");
+        // console.log(resolve);
+        
+        
+        // console.log("");
+        // console.log("");
         
         app.preloader.show();
         
@@ -220,16 +316,19 @@ var routes = [{
     {
         name: 'payment-confirm-membership',
         path: '/membership/confirmed',
+        beforeEnter: checkAuth,
         component: PaymentConfirmMembership,
     },
     {
         name: 'fundations-single',
         path: '/fundations-single/',
+        beforeEnter: checkAuth,
         component: FundationsSingle,
     },
     {
         name: 'about',
         path: '/about/',
+        beforeEnter: checkAuth,
         async: function (routeTo, routeFrom, resolve, reject) {
             // Router instance
             var router = this;

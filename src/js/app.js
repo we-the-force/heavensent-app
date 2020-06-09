@@ -24,8 +24,8 @@ var app = new Framework7({
     theme: 'auto', // Automatic theme detection
 
     data: {
-        // server: 'http://167.172.156.126:1337'
-        server: 'http://localhost:1337'
+        server: 'http://167.172.156.126:1337'
+        // server: 'http://localhost:1337'
     },
 
     methods: {
@@ -78,7 +78,31 @@ var app = new Framework7({
             let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
             return result;
         },
-        
+        async userIsEmpty()
+        {
+            var currentUser = await this.methods.getLocalValue('loggedUser');
+            if (currentUser === null)
+            {
+                return true;
+            }
+            return false;
+        },
+        async userIsValid()
+        {
+            console.log("!! Entering UserIsValid() !!")
+            var currentUser = await this.methods.getLocalValue('loggedUser');
+            console.log(currentUser);
+            if (currentUser != null)
+            {
+                if (currentUser.confirmed)
+                {
+                    console.log("Valid");
+                    return true;
+                }
+            }
+            console.log("not valid");
+            return false;
+        },
         updateUsername(e) {
             this.username = e.target.value;
             this.$update();

@@ -180,7 +180,7 @@
 					e.preventDefault();
 					
 					console.log("Logging out");
-					if (await app.methods.setLocalValueToKey(-1, 'loggedUser'))
+					if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
 					{
 						console.log("Successfully logged out!");
 						app.views.main.router.navigate({ name: "login" });

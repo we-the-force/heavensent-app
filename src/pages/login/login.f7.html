@@ -54,28 +54,16 @@
 				var self = this;
 				var app = self.$app;
 				
-				console.log("Before In");
 				var localUser = await app.methods.getLocalValue('loggedUser');
 				if (localUser != null)
 				{
-					console.log("User was logged in");
 					app.request.promise.get(`${app.data.server}/users/${localUser.id}`).then(function(getResult){
-						console.log("get request");
-						console.log(getResult);
 						let user = JSON.parse(getResult.data);
-						console.log("User gotten from get request");
-						console.log(user);
-						if (user.confirmed)
+						if (!user.confirmed)
 						{
-							console.log("User was logged in, skipping to dashboard");
-							app.views.main.router.navigate({ name: "home-memories" });
-						}
-						else
-						{
-							app.dialog.alert(`That user is no longer active!`);
+							app.dialog.alert(`That user is no longer confirmed! Please check your email or contact an admin`);
 						}
 					}).catch(async function(error){
-						app.dialog.alert(`This user was not found or no longer exists!`);
 						let result = await app.methods.clearCurrentUser();
 						if (result === true)
 						{
@@ -106,20 +94,12 @@
 				// console.log(this);
 				var emailInputValue = "";
 				var passwordInputValue = "";
-
+				
 				// $$('#email').val('will@wetheforce.com');
 				// $$('#password').val('123456789');
 				// emailInputValue=$$('#email').val();
 				
 				var app = self.$app;
-				
-				localforage.keys().then(function(keys) {
-					// An array of all the key names.
-					console.log(keys);
-				}).catch(function(err) {
-					// This code runs if there were any errors
-					console.log(err);
-				});
 				
 				console.log("Init");
 				
