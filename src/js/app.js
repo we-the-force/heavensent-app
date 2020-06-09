@@ -22,33 +22,31 @@ var app = new Framework7({
     id: 'io.wetheforce.heavensent', // App bundle ID
     name: 'Heaven Sent', // App name
     theme: 'auto', // Automatic theme detection
-    
+
     data: {
         // server: 'http://167.172.156.126:1337'
         server: 'http://localhost:1337'
     },
-    
+
     methods: {
         //Los datos a cambiar van a ser todos los del usuario.
-        async getLocalValue(key)
-        {
+        async getLocalValue(key) {
             let result = -1;
-            await localforage.getItem(key).then(function(lsValue){
+            await localforage.getItem(key).then(function (lsValue) {
                 result = lsValue;
-            }).catch(function(glvError){
+            }).catch(function (glvError) {
                 result = -1;
             })
             return result;
         },
-        async setLocalValueToKey(value, key)
-        {
+        async setLocalValueToKey(value, key) {
             console.log(`SetLocalValue\r\n Key: ${key}, Value: ${value}`);
             let result = false;
-            await localforage.setItem(key, value).then(function(value){
-                result=true;
-            }).catch(function(err){
+            await localforage.setItem(key, value).then(function (value) {
+                result = true;
+            }).catch(function (err) {
                 console.log(err);
-                result=false;
+                result = false;
             })
             return result;
         },
@@ -97,7 +95,7 @@ var app = new Framework7({
     },
     // App routes
     routes: routes,
-    
+
     // Register service worker
     serviceWorker: Framework7.device.cordova ? {} : {
         path: '/service-worker.js',
@@ -122,7 +120,7 @@ var app = new Framework7({
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
             }
-            
+
         },
     },
 });

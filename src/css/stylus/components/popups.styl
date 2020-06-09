@@ -72,6 +72,100 @@
             font-weight bold
             color blue
 
+    &.popup-demand
+        width 290px
+        height 50px
+        position absolute
+        top 50%
+        left 50%
+        border-radius 5px
+
+        p
+            font-template(normal, 14px, 16px)
+            color Grey_dark_3
+
+        &.modal-out
+            transform translate(100%, 100%)
+
+    &.popup-deliver
+        width 330px
+        height 500px
+        position absolute
+        top 50%
+        left 50%
+        border-radius 10px
+        padding 15px
+        flex-cont(column, space-between, stretch)
+
+        h1
+            font-template(500, 18px, 16px)
+            margin 0px
+            color Grey_dark_3
+
+        .immediately-cont
+            padding 20px 10px
+            flex-cont(row, space-between, center)
+
+        .inputs
+            ul
+                &:before, &:after
+                    content none
+
+                .item-input
+                    padding-left 0px
+
+                    .item-inner
+                        padding-right 0px
+                        flex-grow 1
+                        flex-cont(column, flex-start, stretch)
+
+                        .item-input-wrap
+                            width auto
+
+                            input
+                                color blue_dark
+                                font-template(500, 18px, 24px)
+
+                        .label
+                            padding-left 10px
+                            font-template(500, 18px, 24px)
+                            color Grey_dark_3
+
+                        &:last-child
+                            width 39%
+                            margin-left 4px
+
+                        &:first-child
+                            width 59%
+                            margin-right 4px
+
+        .repeat-cont, .end-repeat-cont
+            padding 0px 0px 10px 10px
+            flex-cont(row, space-between, center)
+
+            .inputs
+                .item-inner
+                    margin 0px !important
+                    padding 0px
+
+                    .select
+                        i,p
+                            color blue_dark
+
+        .end-repeat-cont
+            padding 10px 0px 10px 10px
+
+            .inputs
+                width 63%
+
+        .footer
+            padding 10px
+            font-template(normal, 14px, 16px)
+            color Grey_light_3
+
+        .btns-cont
+            margin-top 20px
+
 .popover
     border-radius 11px
     background white
@@ -86,7 +180,7 @@
         width 150px
         height 85px
 
-    &.popover-opt,&.popover-person
+    &.popover-opt, &.popover-person
         .list
             li
                 border-top 0.5px solid Grey_light_1
@@ -102,3 +196,31 @@
                     padding 0px 5px
                     font-template(500, 18px, 41px)
                     color Grey_dark_1
+
+    &.popover-repeat
+        --f7-popover-width 190px
+        padding 5px 10px
+
+        li
+            display flex
+            border-bottom 0.5px solid Grey_light_2
+
+            &:last-child
+                border-bottom none
+
+            .list-btn
+                width 100%
+                font-template(normal, 18px, 35px)
+                color Grey_dark_1
+
+                &.checked:after
+                    content 'done'
+                    font-family Material Icons
+                    font-weight normal
+                    font-style normal
+                    font-size 24px
+                    color blue_light
+                    margin 0px 0px 0px 0px
+                    text-decoration none
+                    position absolute
+                    right 10px
