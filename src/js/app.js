@@ -71,8 +71,8 @@ var app = new Framework7({
                 result = false;
             });
             return result;
-        },
-        
+        }
+        ,
         updateUsername(e) {
             this.username = e.target.value;
             this.$update();

@@ -1,0 +1,107 @@
+<template>
+    <div class="page" id="location-memory">
+        <div class="artwork"></div>
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="back-btn back">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title">Add location</h1>
+                        <div class="none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="map-cont" id="map">
+
+            </div>
+            <div class="inputs list">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="direction" placeholder="Direction"/>
+                                <i class="icons material-icons">edit</i>
+                                <!-- <span class="input-clear-button"></span> -->
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="btns-cont center">
+                <a href="/contact/create" id="create-member-btn" class="button round color-blue large">Save location</a>
+            </div>
+
+            <!-- <div class="block searchbar-not-found">
+				<div class="block-inner">Nothing found</div>
+			</div> -->
+        </div>
+    </div>
+</template>
+<script>
+    import $$ from "dom7";
+    export default {
+        on: {
+            pageInit: function (e, page) {
+                var self = this;
+                var app = self.$app;
+                var pos = { lat: -34.397, lng: 150.644 };
+                var map = new google.maps.Map(document.getElementById("map"), {
+                    center: pos,
+                    zoom: 14
+                });
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        map.setCenter(pos);
+                        addMarker(pos,map);
+                    }, function () {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                    });
+                } else {
+                    // Browser doesn't support Geolocation
+                    handleLocationError(false, infoWindow, map.getCenter());
+                }
+
+                function addMarker(pos, map) {
+                    var marker = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        icon: '../../static/img/Pluma_map.png'
+                    });
+                }
+
+                function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent(browserHasGeolocation ?
+                        'Error: The Geolocation service failed.' :
+                        'Error: Your browser doesn\'t support geolocation.');
+                    infoWindow.open(map);
+                }
+
+                /* 				var searchbar = app.searchbar.create({
+                                    el: ".searchbar",
+                                    searchContainer: ".list",
+                                    searchIn: ".item-title, .item-text",
+                                    on: {
+                                        search(sb, query, previousQuery) {
+                                            console.log(query, previousQuery);
+                                        },
+                                    },
+                                }); */
+            },
+        },
+    };
+</script>
+
+<!-- <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZX-mLrJgQHeWPX1rx17tg_ajcNBxTcsc&callback=initMap">
+</script> -->

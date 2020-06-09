@@ -14,6 +14,7 @@ import InviteAdmin from '../pages/contacts/invite-admin.f7.html';
 import CreateMemory from '../pages/memory/create-memory.f7.html';
 import BirthdayMemory from '../pages/memory/birthday-memory.f7.html';
 import HomeMemories from '../pages/memory/home-memories.f7.html';
+import LocationMemory from '../pages/memory/add-location.f7.html';
 
 import MemoryDashboard from '../pages/recipient/dashboard.f7.html';
 import MemoryView from '../pages/recipient/view-memory.f7.html';
@@ -28,11 +29,7 @@ import PaymentConfirmMembership from '../pages/membership/payment-confirm-member
 
 import ViewFamily from '../pages/family/view-family.f7.html';
 
-import HomePage from '../pages/home.f7.html';
-import AboutPage from '../pages/about.f7.html';
 import FormPage from '../pages/form.f7.html';
-import LeftPage1 from '../pages/left-page-1.f7.html';
-import LeftPage2 from '../pages/left-page-2.f7.html';
 import DynamicRoutePage from '../pages/dynamic-route.f7.html';
 import RequestAndLoad from '../pages/request-and-load.f7.html';
 import NotFoundPage from '../pages/404.f7.html';
@@ -114,20 +111,25 @@ var routes = [{
     component: BirthdayMemory,
 },
 {
+    name: 'location-memories',
+    path: '/memories/location',
+    component: LocationMemory,
+},
+{
     name: 'memory-dashboard',
     path: '/memory-dashboard/',
     component: MemoryDashboard,
-},
+},/*  */
 {
     name: 'memory-notification',
     path: '/memory-notification/',
     component: MemoryNotification,
-},
+},/*  */
 {
     name: 'view-memory',
     path: '/view-memory/',
     component: MemoryView,
-},
+},/*  */
 {
     name: 'select-membership',
     path: '/membership/select/user/:userID',
@@ -276,15 +278,6 @@ var routes = [{
 {
     path: '/form/',
     component: FormPage,
-},
-
-{
-    path: '/left-page-1/',
-    component: LeftPage1,
-},
-{
-    path: '/left-page-2/',
-    component: LeftPage2,
 },
 {
     path: '/dynamic-route/blog/:blogId/post/:postId/',

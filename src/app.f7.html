@@ -10,25 +10,26 @@
 				</div>
 				<div class="text">
 					<div class="name-cont">
-						<h1   id="side-logged-user-name" class="name capitalize">Jacob Ethan</h1>
+						<h1 id="side-logged-user-name" class="name capitalize">Jacob Ethan</h1>
 						<span class="material-icons">edit</span>
 					</div>
 					<p id="side-logged-user-membership">Membership</p>
 				</div>
 			</div>
-			
+
 			<div class="btns-cont">
 				<a href="/memories/home" class="btn-panel panel-close active">Profile</a>
-				<a id="app-plan-button" href="/membership/view/user/18" class="btn-panel panel-close ">Plan</a><!-- herdcoded -->
+				<a id="app-plan-button" href="/membership/view/user/18" class="btn-panel panel-close ">Plan</a>
+				<!-- herdcoded -->
 				<a href="#" class="btn-panel panel-close ">Donate</a>
 			</div>
-			
+
 			<div class="footer">
 				<a href="/UserAgreement" class="btn-end panel-close terms">Terms & Conditions</a>
 				<a href="/" class="btn-end panel-close sign-out" id="sign-out-btn">Sign Out</a>
 			</div>
 		</div>
-		
+
 		<!-- Right panel with reveal effect-->
 		<!-- <div class="panel panel-right panel-reveal theme-dark">
 			<div class="view">
@@ -45,10 +46,10 @@
 				</div>
 			</div>
 		</div> -->
-		
+
 		<!-- Your main view, should have "view-main" class -->
 		<div class="view view-main view-init safe-areas" data-url="/"></div>
-		
+
 		<!-- Popup -->
 		<!-- <div class="popup" id="my-popup">
 			<div class="view">
@@ -70,7 +71,7 @@
 				</div>
 			</div>
 		</div> -->
-		
+
 		<!-- Login Screen -->
 		<!-- <div class="login-screen" id="my-login-screen">
 			<div class="view">
@@ -168,10 +169,10 @@
 			},
 		},
 		on: {
-			pageInit: async function(){
+			pageInit: async function () {
 				var self = this;
 				var app = self.$app;
-				
+				/* 
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
 				console.log(loggedUser);
 				updateControls();
@@ -217,7 +218,7 @@
 					// "http://localhost:1337/uploads/profile_8818aa9129.png" 
 					// loggedUser.profilePicture.url;
 					// $$("#logged-user-name")[0].outerText("ASd");
-				}
+				} */
 			},
 		},
 	};
