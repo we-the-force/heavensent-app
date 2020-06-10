@@ -102,7 +102,7 @@
                     <div class="person">
                         <span class="material-icons close">close</span>
                         <img src="../../static/img/envy.jpg" alt="">
-                    </div> 
+                    </div>
                     <div class="person">
                         <span class="material-icons close">close</span>
                         <img src="../../static/img/ramona.jpeg" alt="">
@@ -126,7 +126,18 @@
             </div>
             <div class="location-cont">
                 <div class="btns-cont center location-btn" id="b_04">
-                    <a id="add-deliver-date" href="/memories/location" class="button color-blue round large">Add location</a>
+                    <a id="add-deliver-date" href="/memories/location" class="button color-blue round large">Add
+                        location</a>
+                </div>
+                <div class="location-map none">
+                    <div class="map"></div>
+                    <div class="map-info">
+                        <div class="address">
+                            <h1 class="title">Address</h1>
+                            <p class="addr">6th Ave 1274b</p>
+                        </div>
+                        <div class="edit-addr"></div>
+                    </div>
                 </div>
             </div>
             <div class="date-title">Deliver date
@@ -238,6 +249,17 @@
     export default {
         on: {
             pageInit: function (e, page) {
+                var self = this;
+                var app = self.$app;
+                var latlng = sessionStorage.latlng;
+                var addr = sessionStorage.addr
+                if (latlng && addr) {
+                    latlng = JSON.parse(latlng);
+                    addr = JSON.parse(addr);
+                    $$('.location-cont .location-btn').addClass('none');
+                    $$('.location-cont .location-map').removeClass('none');
+                }
+
 
                 $$('.popover-repeat .popover-close').click(function (el) {
                     $$(this).parent().parent().find('.checked').removeClass('checked');
@@ -250,6 +272,11 @@
                 });
                 $$('textarea').on('input:empty', function (val) {
                     $$(this).next().text('0/140');
+                });
+
+                $$('.popup-deliver .btns-cont#date').click(x => {
+                    console.log('ahoy data');
+                    /* guarda datos y proyecta en la pantalla */
                 });
             },
         },
