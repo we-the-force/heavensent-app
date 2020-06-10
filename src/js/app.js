@@ -40,11 +40,11 @@ var app = new Framework7({
             return result;
         },
         async setLocalValueToKey(value, key) {
-            console.log(`SetLocalValue\r\n Key: ${key}, Value: ${value}`);
             let result = false;
             await localforage.setItem(key, value).then(function (value) {
                 result = true;
             }).catch(function (err) {
+                console.log("Error [setLocalValueToKey()]")
                 console.log(err);
                 result = false;
             })
@@ -56,17 +56,11 @@ var app = new Framework7({
             var currentLocalUser = await app.methods.getLocalValue('loggedUser');
             let result = false;
             this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult){
-                // console.log("Get result");
-                // console.log(getResult);
                 var user = JSON.parse(getResult.data);
-                // console.log('User Object');
-                // console.log(user);
-                // console.log(this);
-                // console.log(app);
                 result = await app.methods.setLocalValueToKey(user, 'loggedUser');
-                console.log("Update User Result:" + result);
+                console.log("Update User Result:" + result + " [updateCurrentUser()]");
             }).catch(function (error){
-                console.log("Error updating current user!!!");
+                console.log("Error updating current user!!! [updateCurrentUser()]");
                 console.log(error);
                 result = false;
             });
@@ -96,11 +90,11 @@ var app = new Framework7({
             {
                 if (currentUser.confirmed)
                 {
-                    console.log("User Is Valid");
+                    console.log("User Is Valid [userIsValid()]");
                     return true;
                 }
             }
-            console.log("User Is Not Valid");
+            console.log("User Is Not Valid [userIsValid()]");
             return false;
         },
         updateUsername(e) {

@@ -174,59 +174,39 @@
 				var app = self.$app;
 				
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
-				// console.log(loggedUser);
 				updateControls();
 				
 				$$("#sign-out-btn").on("click", async function(e){
 					e.preventDefault();
 					
-					console.log("Logging out");
+					console.log("Logging out [pageInit.sign-out-btn.onClick]");
 					if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
 					{
-						console.log("Successfully logged out!");
+						console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
 						app.views.main.router.navigate({ name: "login" });
 					}
 				})
 				
 				function updateControls()
 				{
-					console.log("Updating controls");
+					console.log("Updating controls [pageInit.updateControls()]");
 					if (loggedUser != null)
 					{
-						// console.log(loggedUser);
-						// console.log("IsNull?")
-						// console.log(loggedUser == null);
-						// document.getElementById("logged-user-name").innerHTML("Asd");
 						var currentMembership = loggedUser.currentMembership;
-						// console.log("Current membership");
-						// console.log(currentMembership);
 						if(currentMembership === null)
 						{
-							// console.log(currentMembership);
 							currentMembership = "No Membership";
 						}
 						else
 						{
-							// console.log(currentMembership);
 							currentMembership = loggedUser.currentMembership.plan.name + " membership";
 						}
 						
-						// console.log("Setting stuff");
-						// console.log("user-name instances");
-						// console.log($$("#logged-user-name"));
 						$$("#side-logged-user-name")[0].textContent = loggedUser.username;
 						$$("#side-logged-user-membership")[0].textContent = currentMembership;
 						$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
 						
-						// console.log("Changing href");
-						// console.log($$("#app-plan-button")[0].href);
 						$$("#app-plan-button")[0].href = `/membership/view/user/${loggedUser.id}`;
-						// console.log("Changed???");
-						// console.log($$("#app-plan-button")[0].href);
-						
-						// "http://localhost:1337/uploads/profile_8818aa9129.png" 
-						// loggedUser.profilePicture.url;
-						// $$("#logged-user-name")[0].outerText("ASd");
 					}
 					else
 					{

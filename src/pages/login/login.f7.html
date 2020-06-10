@@ -67,17 +67,17 @@
 						let result = await app.methods.clearCurrentUser();
 						if (result === true)
 						{
-							console.log("Cleared user data succesfully");
+							console.log("Cleared user data succesfully [pageBeforeIn]");
 						}
 						else
 						{
-							console.log("Couldn't clear user");
+							console.log("Couldn't clear user [pageBeforeIn]");
 						}
 					})
 				}
 				else
 				{
-					console.log("User wasn't logged in");
+					console.log("User wasn't logged in [pageBeforeIn]");
 				}
 				
 				function isTextEmptyOrWhitespace(value)
@@ -91,17 +91,12 @@
 			},
 			pageInit: async function (e, page) {
 				var self = this;
-				// console.log(this);
 				var emailInputValue = "";
 				var passwordInputValue = "";
 				
-				// $$('#email').val('will@wetheforce.com');
-				// $$('#password').val('123456789');
-				// emailInputValue=$$('#email').val();
-				
 				var app = self.$app;
 				
-				console.log("Init");
+				console.log("Init [pageInit]");
 				
 				$$("#login-btn").on("click", async function (e) {
 					e.preventDefault();
@@ -110,12 +105,12 @@
 					
 					if (!validateEmail(emailInputValue, 'enter a valid email'))
 					{
-						console.log('username not valid');
+						console.log('username not valid [pageInit.login-btn.onClick]');
 						return false;
 					}
 					if (!validateText(passwordInputValue, 'enter a valid password'))
 					{
-						console.log('password not valid');
+						console.log('password not valid [pageInit.login-btn.onClick]');
 						return false;
 					}
 					
@@ -126,7 +121,7 @@
 						password: passwordInputValue,
 					})
 					.then(async function (res) {
-						console.log("Getting inside 'then'");
+						console.log("Getting inside 'then' [pageInit.login-btn.onClick]");
 						console.log(res);
 						app.preloader.hide();
 						
@@ -138,18 +133,18 @@
 						}
 						else
 						{
-							console.log("localForage");
+							console.log("localForage [pageInit.login-btn.onClick]");
 							if (await app.methods.setLocalValueToKey(user, 'loggedUser'))
 							{
-								console.log("Successfully logged in");
+								console.log("Successfully logged in [pageInit.login-btn.onClick]");
 								console.log(await app.methods.getLocalValue('loggedUser'))
 								app.views.main.router.navigate({ name: "home-memories" });
 							}
 						}
 					})
 					.catch(async function (err) {
-						console.log("Errorerror");
 						app.preloader.hide();
+						console.log("Errorerror [pageInit.login-btn.onClick]");
 						console.log(err);
 						var obj = JSON.parse(err.xhr.response);
 						app.dialog.alert('Some fields are incomplete or incorrect, please try again.'+'\r\n'+obj.message[0].messages[0].message);
@@ -167,7 +162,6 @@
 				}
 				function validateText(text, emptyText, trimmedText, checkTrimmed = true)
 				{
-					console.log(`${text}, trim?: ${checkTrimmed}`);
 					if (isTextEmptyOrWhitespace(text))
 					{
 						app.dialog.alert(emptyText);

@@ -623,11 +623,9 @@
 				var self =this;
 				var app = self.$app;
 				
-				console.log("home-memories pageInit");
+				console.log("home-memories pageInit [pageInit]");
 
-				// app.methods.updateCurrentUser();
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
-				console.log(loggedUser);
 				updateControls();
 				
 				
@@ -635,14 +633,9 @@
 				{
 					if (loggedUser != null)
 					{
-						// document.getElementById("logged-user-name").innerHTML("Asd");
-						// console.log($$("#logged-user-name"));
-						// console.log($$("#logged-user-name")[0].textContent);
-						// console.log(loggedUser.currentMembership);
 						var currentMembership = loggedUser.currentMembership;
 						if(currentMembership === null)
 						{
-							// console.log("Membership was null :c");
 							currentMembership = "No Membership";
 						}
 						else
@@ -650,20 +643,13 @@
 							currentMembership = loggedUser.currentMembership.plan.name + " membership";
 						}
 						
-						
-						// console.log($$("#logged-user-name"));
 						$$("#logged-user-name")[0].textContent = loggedUser.username;
 						$$("#logged-user-membership")[0].textContent = currentMembership;
-						// console.log("Image thing aaaaaaaaaaaaaaaaaaah");
-						// console.log($$("#logged-user-picture"));
 						$$("#logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
-						// "http://localhost:1337/uploads/profile_8818aa9129.png" 
-						// loggedUser.profilePicture.url;
-						// $$("#logged-user-name")[0].outerText("ASd");
 					}
 					else
 					{
-						console.log("User was null, not updating anything");
+						console.log("User was null, not updating anything [pageInit.updateControls]");
 					}
 				}
 			},

@@ -39,7 +39,6 @@ async function checkAuth(to, from, resolve, reject)
     var router = this;
     var app = router.app;
     var valid = await app.methods.userIsValid();
-    console.log("CheckAuth!!!!");
     if (valid)
     {
         resolve();
@@ -57,19 +56,14 @@ async function isLoggedIn(to, from, resolve, reject)
     var router = this;
     var app = router.app;
     var valid = await app.methods.userIsValid();
-    // console.log("IsLoggedIn!!!!!!!!!");
-    // console.log(to);
-    // console.log(from);
     if (valid)
     {
-        // console.log("User was valid");
-        console.log(valid);
         reject();
         router.navigate('/memories/home');
     }
     else
     {
-        console.log("User was not valid");
+        console.log("User was not valid [isLoggedIn()]");
         console.log(valid);
         resolve();
     }
@@ -205,51 +199,13 @@ var routes = [{
         var app = router.app;
         var userID = routeTo.params.userID;
         
-        // var home = null;
-        // for (var i = 0; i < routes.length; i++)
-        // {
-        //     if (routes[i]["name"] === "home-memories")
-        //     home = routes[i];
-        // }
-        // console.log(home);
-        
-        // var asd = 
-        // {
-        //     hash: undefined,
-        //     name: "home-memories",
-        //     params: {},
-        //     parentPath: undefined,
-        //     path: "/memories/home",
-        //     query: {},
-        //     route: home,
-        //     url: "/memories/home"
-        // }
-        
-        // console.log("");
-        // console.log("");
-        
-        // console.log(this.routes);
-        // console.log("Going to view membership");
-        // console.log("From");
-        // console.log(routeFrom);
-        // console.log("New From\r\n");
-        // routeFrom = asd;
-        // console.log(routeFrom);
-        // console.log("To");
-        // console.log(routeTo);
-        // console.log("resolve");
-        // console.log(resolve);
-        
-        
-        // console.log("");
-        // console.log("");
-        
         app.preloader.show();
         
-        console.log("Move to view");
-        console.log(`${app.data.server}/users/${userID}`);
+        console.log("Move to view [view-membership.async]");
+        console.log(`${app.data.server}/users/${userID} [view-membership.async]`);
         app.request.promise.json(`${app.data.server}/users/${userID}`)
         .then(function(res){
+            console.log("Current membership: [view-membership.json]")
             console.log(res.data.currentMembership);
             app.preloader.hide();
             resolve(
@@ -286,7 +242,7 @@ var routes = [{
                 }
                 else
                 {
-                    console.log("Plan: (GetPlanName)");
+                    console.log("Plan: [view-membership.async.getPlanName]");
                     console.log(plan);
                     return plan.plan.name;
                 }
@@ -334,7 +290,6 @@ var routes = [{
         async: function (routeTo, routeFrom, resolve, reject) {
             // Router instance
             var router = this;
-            console.log(router);
             
             // App instance
             var app = router.app;
