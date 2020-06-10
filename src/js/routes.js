@@ -57,12 +57,12 @@ async function isLoggedIn(to, from, resolve, reject)
     var router = this;
     var app = router.app;
     var valid = await app.methods.userIsValid();
-    console.log("IsLoggedIn!!!!!!!!!");
-    console.log(to);
-    console.log(from);
+    // console.log("IsLoggedIn!!!!!!!!!");
+    // console.log(to);
+    // console.log(from);
     if (valid)
     {
-        console.log("User was valid");
+        // console.log("User was valid");
         console.log(valid);
         reject();
         router.navigate('/memories/home');

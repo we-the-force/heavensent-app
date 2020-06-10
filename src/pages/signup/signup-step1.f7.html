@@ -398,7 +398,7 @@
 					console.log(contactIsAdmin);
 					console.log("editMemories");
 					console.log(contactEditMemories);
-					app.request.promise.get(`${app.data.server}/contacts/?owner=${12}&contact=${contactUser.id}`)
+					app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUser.id}&contact=${contactUser.id}`)
 						.then(function (res) {
 							// console.log("right after get");
 							// console.log(res);
