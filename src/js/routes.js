@@ -146,7 +146,7 @@ var routes = [{
 {
     name: 'create-memory',
     path: '/memories/create',
-    beforeEnter: checkAuth,
+    /* beforeEnter: checkAuth, */
     component: CreateMemory,
 },
 {

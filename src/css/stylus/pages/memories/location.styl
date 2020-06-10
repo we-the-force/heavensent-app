@@ -4,11 +4,37 @@
 
         .page-content
             flex-cont(column, flex-start, stretch)
+
             .map-cont
                 height 310px
                 width auto
                 margin 0px -15px
 
+                .centerMarker
+                    position absolute
+                    background url('../static/img/Pluma_map_v2.png') no-repeat
+                    background-size contain
+                    top 50%
+                    left 50%
+                    z-index 1
+                    margin-left -22px
+                    margin-top -94px
+                    height 94px
+                    width 33px
+
+                .ubi-btn
+                    position absolute/* 
+                    background-image url('../static/img/Pluma_map_v2.png')
+                    background-repeat no-repeat */
+                    bottom 13px
+                    right 17px
+                    z-index 1
+
             .btns-cont
                 margin-top auto
-                margin-bottom 10px  
+                margin-bottom 10px
+
+.pac-container
+    z-index 10000
+    &:after
+        content none
