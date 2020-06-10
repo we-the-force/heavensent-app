@@ -32,7 +32,7 @@
                 </ul>
             </div>
             <div class="btns-cont center">
-                <a href="/memories/create" id="save-location-btn" class="button round color-blue large">Save
+                <a href="#" id="save-location-btn" class="button round color-blue large">Save
                     location</a>
             </div>
 
@@ -46,6 +46,15 @@
             pageInit: function (e, page) {
                 var self = this;
                 var app = self.$app;
+                /* declara variables 
+                    pos: posicion predeterminada
+                    geooder: servicio de google para buscar direcciones a partir de lat lng
+                    input: pues el input xD
+                    searchboX: servicio de gooogle que usa el input para buscar lat lng a partir de la direccion
+                    marker: plumita del centro
+                    ubi-btn: boton para centrar tu ubicacion
+                    map: google map
+                */
                 var pos = { lat: 25.43, lng: -101.00 };
                 var geocoder = new google.maps.Geocoder;
                 var input = document.getElementById('direction');
@@ -57,16 +66,21 @@
                     center: pos,
                     disableDefaultUI: true
                 });
+
+                /* agrego plumita y boton sobre el mapa */
                 marker.addClass('centerMarker').appendTo(map.getDiv());
                 ubi_btn.appendTo(map.getDiv());
 
+                /* funcion para centrar la ubicacion tuya */
                 currentLocation();
 
+                /* click en el boton de centrar ubicacion, centra ubicacion y pone la direccion en el input */
                 ubi_btn.click(x => {
                     currentLocation();
                     geoCode();
                 });
 
+                /* cuando cambian el input cambia el centro del mapa y la direccion */
                 searchBox.addListener('places_changed', function () {
                     var places = searchBox.getPlaces();
                     if (places.length == 0) {
@@ -83,18 +97,24 @@
                     }
                 });
 
+                /* cuando mueven el mapa obtiene la direccion */
                 google.maps.event.addListener(map, 'dragend', function () {
                     geoCode();
                 });
 
+                /* boton de salvar locacion
+                    latlng: latitud y longitud elegida
+                    addr: direccion elegida
+                */
                 $$('#save-location-btn').click(x => {
                     let latlng = { lat: map.getCenter().lat(), lng: map.getCenter().lng() };
-                    let addr = $$('#direction').val();
-                    console.log(latlng);
-                    console.log(addr);                    
-                    
+                    let addr = $$('#direction').val();   
+                    sessionStorage.latlng = JSON.stringify(latlng);
+                    sessionStorage.addr = JSON.stringify(addr);     
+                    app.views.main.router.navigate('/memories/create');
                 })
 
+                /* funcion para centrar en tu ubicacion */
                 function currentLocation(params) {
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
@@ -107,6 +127,7 @@
                     }
                 }
 
+                /* funcion para obtener direccion a partir de lat lng */
                 function geoCode(params) {
                     let latlng = { lat: map.getCenter().lat(), lng: map.getCenter().lng() };
                     geocoder.geocode({ 'location': latlng }, function (results, status) {
