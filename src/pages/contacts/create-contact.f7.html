@@ -85,9 +85,12 @@
 	import croppie from "croppie";
 	export default {
 		on: {
-			pageInit: function (e, page) {
+			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
+
+				var loggedUser = await app.methods.getLocalValue('loggedUser');
+
 				var c;
 				var username = "";
 				var email="";
@@ -98,14 +101,14 @@
 				var editMemories="";
 				var isMinor="";
 				
-				$$("#create-cont-name").val("Test4123");
-				$$("#create-cont-email").val("Test4123@123.com");
-				$$("#create-cont-mobile").val("123456789123");
-				$$("#create-cont-relation").val("Hijuesu");
+				// $$("#create-cont-name").val("Test4123");
+				// $$("#create-cont-email").val("Test4123@123.com");
+				// $$("#create-cont-mobile").val("123456789123");
+				// $$("#create-cont-relation").val("Hijuesu");
 				// $$("#create-cont-birthday").val();
-				$$("#create-cont-is-admin").val();
-				$$("#create-cont-edit-memories").val();
-				$$("#create-cont-is-minor").val("off");
+				// $$("#create-cont-is-admin").val();
+				// $$("#create-cont-edit-memories").val();
+				// $$("#create-cont-is-minor").val("off");
 				
 				//upload photo
 				$$(".img-btn").on("click", function () {
@@ -146,10 +149,6 @@
 					mobile =       $$("#create-cont-mobile").val();
 					relation =     $$("#create-cont-relation").val();
 					birthday =     $$("#create-cont-birthday").val();
-					// isAdmin =      $$("#create-cont-is-admin").val();
-					isAdmin =      $$("#create-cont-is-admin").prop('checked');
-					editMemories = $$("#create-cont-edit-memories").prop('checked');
-					isMinor =      $$("#create-cont-is-minor").prop('checked');
 					
 					if (!c)
 					{
@@ -220,7 +219,8 @@
 								});
 								
 								console.log("Inserting contact to newly created temp contact");
-								assignRelation(res2.data.user, relation, isAdmin, isMinor, editMemories);
+								// assignRelation(res2.data.user, relation, isAdmin, isMinor, editMemories);
+								assignRelation(loggedUser, res2.data.user, relation, false, false, false);
 								app.preloader.hide();
 								
 							})
@@ -237,11 +237,11 @@
 							let user = JSON.parse(res.data)[0];
 							console.log(`result wasn't empty!\r\nassigning user\r\n${user}`)
 							console.log(user)
-							// assignRelation(res.data, "asd@asd.com", relation, isAdmin);
 							try {
 								
 								console.log("Inserting contact to existing contact");
-								assignRelation(user, relation, isAdmin, isMinor, editMemories);
+								// assignRelation(user, relation, isAdmin, isMinor, editMemories);
+								assignRelation(loggedUser, user, relation, false, false, false);
 								app.preloader.hide();
 								
 							} catch (error) {
@@ -256,8 +256,10 @@
 					})
 				});
 				
-				function assignRelation(contactUser, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories)
+				function assignRelation(targetUser, contactUser, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories)
 				{
+
+
 					console.log("user");
 					console.log(contactUser);
 					console.log("relation");
@@ -268,18 +270,17 @@
 					console.log(contactEditMemories);
 					console.log("isMinor");
 					console.log(contactIsMinor);
-					app.request.promise.get(`${app.data.server}/contacts/?owner=${12}&contact=${contactUser.id}`)
+					app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUser.id}&contact=${contactUser.id}`)
 					.then(function(res){
 						// console.log("right after get");
 						// console.log(res);
 						if (res.data === "[]")
 						{
 							// console.log('Already has contact');
-							//start by setting it to id 37
 							app.request.promise.postJSON(`${app.data.server}/contacts`,{
 								"relation": contactRelation,
 								"owner": {
-									"id": 12
+									"id": targetUser.id
 								},
 								"contact":{
 									"id": contactUser.id

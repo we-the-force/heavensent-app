@@ -174,7 +174,7 @@
 				var app = self.$app;
 				
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
-				console.log(loggedUser);
+				// console.log(loggedUser);
 				updateControls();
 				
 				$$("#sign-out-btn").on("click", async function(e){
@@ -190,24 +190,30 @@
 				
 				function updateControls()
 				{
+					console.log("Updating controls");
 					if (loggedUser != null)
 					{
+						// console.log(loggedUser);
+						// console.log("IsNull?")
+						// console.log(loggedUser == null);
 						// document.getElementById("logged-user-name").innerHTML("Asd");
 						var currentMembership = loggedUser.currentMembership;
 						// console.log("Current membership");
 						// console.log(currentMembership);
 						if(currentMembership === null)
 						{
+							// console.log(currentMembership);
 							currentMembership = "No Membership";
 						}
 						else
 						{
+							// console.log(currentMembership);
 							currentMembership = loggedUser.currentMembership.plan.name + " membership";
 						}
 						
 						// console.log("Setting stuff");
-						console.log("user-name instances");
-						console.log($$("#logged-user-name"));
+						// console.log("user-name instances");
+						// console.log($$("#logged-user-name"));
 						$$("#side-logged-user-name")[0].textContent = loggedUser.username;
 						$$("#side-logged-user-membership")[0].textContent = currentMembership;
 						$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
@@ -224,24 +230,11 @@
 					}
 					else
 					{
-						currentMembership = loggedUser.currentMembership.plan.name + " membership";
+						currentMembership = "No membership";
+						$$("#side-logged-user-name")[0].textContent = "No user";
+						$$("#side-logged-user-membership")[0].textContent = "No membership";
+						$$("#side-logged-user-picture")[0].src = ``;
 					}
-					
-					console.log("Setting stuff");
-					
-					$$("#side-logged-user-name")[0].textContent = loggedUser.username;
-					$$("#side-logged-user-membership")[0].textContent = currentMembership;
-					$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
-					
-					console.log("Changing href");
-					console.log($$("#app-plan-button")[0].href);
-					$$("#app-plan-button")[0].href = `/membership/view/user/${loggedUser.id}`;
-					console.log("Changed???");
-					console.log($$("#app-plan-button")[0].href);
-
-					// "http://localhost:1337/uploads/profile_8818aa9129.png" 
-					// loggedUser.profilePicture.url;
-					// $$("#logged-user-name")[0].outerText("ASd");
 				} 
 			},
 		},

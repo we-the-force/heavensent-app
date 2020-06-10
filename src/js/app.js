@@ -89,18 +89,18 @@ var app = new Framework7({
         },
         async userIsValid()
         {
-            console.log("!! Entering UserIsValid() !!")
+            // console.log("!! Entering UserIsValid() !!")
             var currentUser = await this.methods.getLocalValue('loggedUser');
-            console.log(currentUser);
+            // console.log(currentUser);
             if (currentUser != null)
             {
                 if (currentUser.confirmed)
                 {
-                    console.log("Valid");
+                    console.log("User Is Valid");
                     return true;
                 }
             }
-            console.log("not valid");
+            console.log("User Is Not Valid");
             return false;
         },
         updateUsername(e) {
