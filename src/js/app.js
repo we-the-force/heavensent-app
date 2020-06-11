@@ -2,6 +2,11 @@ import $$ from 'dom7';
 import localforage from "localforage";
 import Framework7 from 'framework7/framework7.esm.bundle.js';
 
+/*
+    Hacer que si un usuario no tiene admin, que lo redirija a la ventana del admin despues de avisarle que no tiene admin y asi
+*/
+
+
 // Import F7 Styles
 import 'framework7/css/framework7.bundle.css';
 
@@ -31,11 +36,11 @@ var app = new Framework7({
     methods: {
         //Los datos a cambiar van a ser todos los del usuario.
         async getLocalValue(key) {
-            let result = -1;
+            let result = null;
             await localforage.getItem(key).then(function (lsValue) {
                 result = lsValue;
             }).catch(function (glvError) {
-                result = -1;
+                result = null;
             })
             return result;
         },
@@ -96,6 +101,14 @@ var app = new Framework7({
             }
             console.log("User Is Not Valid [userIsValid()]");
             return false;
+        },
+        async loadContacts()
+        {
+            // if ()
+        },
+        async clearContacts()
+        {
+
         },
         updateUsername(e) {
             this.username = e.target.value;
