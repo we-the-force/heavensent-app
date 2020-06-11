@@ -320,9 +320,10 @@
                         '<img src="" alt="">' +
                         '</div>');
                     let cont = cover.attr('src') == '' ? cover : photo;
-                    console.log(cont);
 
                     if (this.files && this.files[0]) {
+                        files.push(this.files[0]);
+                        
                         var reader = new FileReader();
                         reader.onload = e => {
                             $$('.media-cont .cover img').attr('src', e.target.result);
