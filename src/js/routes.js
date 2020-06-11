@@ -128,13 +128,13 @@ var routes = [{
 {
     name: 'invite-admin',
     path: '/admin/invite',
-    beforeEnter: checkAuth,
+    /* beforeEnter: checkAuth, */
     component: InviteAdmin,
 },
 {
     name: 'view-family',
     path: '/family/view',
-    beforeEnter: checkAuth,
+    /* beforeEnter: checkAuth, */
     component: ViewFamily,
 },
 {
