@@ -128,7 +128,7 @@ var routes = [{
 {
     name: 'invite-admin',
     path: '/admin/invite',
-    beforeEnter: checkAuth,
+    /* beforeEnter: checkAuth, */
     component: InviteAdmin,
 },
 {
@@ -140,19 +140,19 @@ var routes = [{
 {
     name: 'create-memory',
     path: '/memories/create',
-    beforeEnter: checkAuth,
+    /* beforeEnter: checkAuth, */
     component: CreateMemory,
 },
 {
     name: 'home-memories',
     path: '/memories/home',
-    beforeEnter: checkAuth,
+    /* beforeEnter: checkAuth, */
     component: HomeMemories,
 },
 {
     name: 'birthday-memories',
     path: '/memories/birthday',
-    beforeEnter: checkAuth,
+    /* beforeEnter: checkAuth, */
     component: BirthdayMemory,
 },
 {

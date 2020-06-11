@@ -81,7 +81,7 @@
                 });
 
                 /* cuando cambian el input cambia el centro del mapa y la direccion */
-                searchBox.addListener('places_changed', function () {
+                searchBox.addListener('places_changed', () => {
                     var places = searchBox.getPlaces();
                     if (places.length == 0) {
                         return;
@@ -98,7 +98,7 @@
                 });
 
                 /* cuando mueven el mapa obtiene la direccion */
-                google.maps.event.addListener(map, 'dragend', function () {
+                google.maps.event.addListener(map, 'dragend', () => {
                     geoCode();
                 });
 

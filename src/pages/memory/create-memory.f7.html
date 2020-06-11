@@ -88,17 +88,20 @@
                     </div>
                 </div>
                 <div class="btns-cont center add" id="b_02">
-                    <a id="add-media" href="" class="add-btn">
+                    <label id="add-media" href="" class="add-btn">
                         <i class="icons material-icons">add</i>
-                    </a>
+                        <input type="file" id="file-inp" class="none"
+                            accept=".doc,.docx,.pdf,audio/*,video/*,image/*,media_type">
+                    </label>
                 </div>
             </div>
             <div class="contacts-title">Add contacts
             </div>
             <div class="contacts-cont">
                 <div class="contacts">
-                    <!-- <div class="person">
-                    </div> -->
+                    <div class="person none">
+                        <!-- cuando no hay contactos agregados quitar la clase none -->
+                    </div>
                     <div class="person">
                         <span class="material-icons close">close</span>
                         <img src="../../static/img/envy.jpg" alt="">
@@ -130,25 +133,42 @@
                         location</a>
                 </div>
                 <div class="location-map none">
-                    <div class="map"></div>
+                    <div class="map" id="map-static"></div>
                     <div class="map-info">
                         <div class="address">
                             <h1 class="title">Address</h1>
                             <p class="addr">6th Ave 1274b</p>
                         </div>
-                        <div class="edit-addr"></div>
+                        <a href="/memories/location" class="edit-btn addr">
+                            <i class="icons material-icons">edit</i>
+                        </a>
                     </div>
                 </div>
             </div>
             <div class="date-title">Deliver date
-                <a id="edit-date" href="" class="add-btn none">
+                <!-- quitar none cuando este moestrando informacion o agregar none cuando no haya info -->
+                <a href="" class="edit-btn deliver popup-open" data-popup=".popup-deliver">
                     <i class="icons material-icons">edit</i>
                 </a>
             </div>
+            <!-- aggrega la clase none alboton cuando se vaya a mostrar informacion y quitar none de el div deliver info -->
             <div class="deliver-cont">
-                <div class="btns-cont center date-btn" id="b_05">
+                <div class="btns-cont center date-btn none" id="b_05">
                     <a id="add-deliver-date" class="button color-blue round large popup-open"
                         data-popup=".popup-deliver">Aggregate</a>
+                </div>
+                <div class="deliver-info">
+                    <div class="info-cont">
+                        <div class="date-info">
+                            <p class="title">Date:</p>
+                            <p class="val">09/22/2020</p>
+                        </div>
+                        <div class="time-info">
+                            <p class="title">Time:</p>
+                            <p class="val">07:15</p>
+                        </div>
+                    </div>
+                    <div class="footer-deliver">The memory will repeat itself every year until 08/22/2024</div>
                 </div>
             </div>
             <div class="btns-cont center create" id="b_04">
@@ -163,8 +183,8 @@
         <div class="popup popup-deliver">
             <div class="immediately-cont">
                 <h1>Send immediately</h1>
-                <label class="toggle toggle-init">
-                    <input id="immediately-toggle" type="checkbox">
+                <label class="toggle toggle-init" id="immediately-toggle">
+                    <input type="checkbox">
                     <span class="toggle-icon"></span>
                 </label>
             </div>
@@ -173,15 +193,15 @@
                 <ul>
                     <li class="item-content item-input two-inputs">
                         <div class="item-inner">
-                            <label for="date" class="label">Date</label>
+                            <label for="deliver-date" class="label">Date</label>
                             <div class="item-input-wrap">
-                                <input type="date" id="date" required validate />
+                                <input type="date" class="pop-deliver-inputs" id="deliver-date" required validate />
                             </div>
                         </div>
                         <div class="item-inner">
-                            <label for="time" class="label">Time</label>
+                            <label for="deliver-date" class="label">Time</label>
                             <div class="item-input-wrap">
-                                <input type="time" id="time" required validate />
+                                <input type="time" class="pop-deliver-inputs" id="deliver-time" required validate />
                             </div>
                         </div>
                     </li>
@@ -213,7 +233,7 @@
                         <li class="item-content item-input">
                             <div class="item-inner">
                                 <div class="item-input-wrap">
-                                    <input type="date" id="date-end" required validate />
+                                    <input type="date" id="date-end" class="pop-deliver-inputs" required validate />
                                 </div>
                             </div>
                         </li>
@@ -248,9 +268,7 @@
     import $$ from "dom7";
     export default {
         on: {
-            pageInit: function (e, page) {
-                var self = this;
-                var app = self.$app;
+            pageBeforeIn: function (e, page) {
                 var latlng = sessionStorage.latlng;
                 var addr = sessionStorage.addr
                 if (latlng && addr) {
@@ -258,8 +276,21 @@
                     addr = JSON.parse(addr);
                     $$('.location-cont .location-btn').addClass('none');
                     $$('.location-cont .location-map').removeClass('none');
+                    $$('.location-cont .map-info .address .addr').text(addr);
+                    let marker = $$('<div class="centerMarker"></div>');
+                    var map_2 = new google.maps.Map(document.getElementById("map-static"), {
+                        zoom: 14,
+                        center: latlng,
+                        disableDefaultUI: true,
+                        gestureHandling: 'none'
+                    });
+                    marker.addClass('centerMarker').appendTo(map_2.getDiv());
                 }
-
+            },
+            pageInit: function (e, page) {
+                var self = this;
+                var app = self.$app;
+                var files = [];
 
                 $$('.popover-repeat .popover-close').click(function (el) {
                     $$(this).parent().parent().find('.checked').removeClass('checked');
@@ -275,8 +306,32 @@
                 });
 
                 $$('.popup-deliver .btns-cont#date').click(x => {
-                    console.log('ahoy data');
+                    var toggle = app.toggle.get('#immediately-toggle');
+                    console.log($$('#deliver-date').val());
+                    console.log($$('#deliver-time').val());
+                    console.log(toggle.checked); /* toggle value */
                     /* guarda datos y proyecta en la pantalla */
+                });
+
+                /* pendiente */
+                $$('#file-inp').change(function name(val) {
+                    let cover = $$('.media-cont .cover img');
+                    let photo = $$('<div class="media fill">' +
+                        '<img src="" alt="">' +
+                        '</div>');
+                    let cont = cover.attr('src') == '' ? cover : photo;
+                    console.log(cont);
+
+                    if (this.files && this.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = e => {
+                            $$('.media-cont .cover img').attr('src', e.target.result);
+                        }
+
+                        reader.readAsDataURL(this.files[0]); // convert to base64 string
+                    }
+
+
                 });
             },
         },
