@@ -37,7 +37,7 @@
 
         .item-inner
             flex-direction unset
-            padding 20px 8px 20px 0px
+            padding 15px 8px 15px 0px
 
         .item-input-wrap
             height 46px
@@ -51,6 +51,10 @@
             input
                 font-template(300, 16px, 24px)
                 color Grey_dark_2
+
+                &::-webkit-inner-spin-button, &::-webkit-calendar-picker-indicator
+                    opacity 0
+                    -webkit-appearance none
 
             i
                 color #d2d2d2

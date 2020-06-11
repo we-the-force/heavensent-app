@@ -2,10 +2,8 @@
     &#invite-admin
         background Grey_light_1
 
-    .page-content
-        &#invite-admin
-            flex-cont(column, center, unset)
-            overflow-y hidden
+        .page-content
+            flex-cont(column, flex-start, unset)
 
             .sqr_bck
                 deg = 35deg
@@ -15,25 +13,32 @@
                     top -90px
                     right -275px
                     z-index -1
-                
-                &#sqr2
-                    sqr(290px, deg)
-                    bottom -85px
-                    left -265px
-                    z-index -1
 
-                &#sqr3
-                    sqr(290px, deg)
-                    bottom -290px
-                    left -15px
-                    z-index -1
+            .footer
+                overflow hidden
+                position relative
+                padding-top 350px
+                margin -315px -15px -15px -15px
+                z-index -1
 
-            .header-cont
-                flex-grow 0
+                .sqr_bck
+                    deg = -40deg
+
+                    &#sqr2
+                        sqr(290px, deg)
+                        bottom -85px
+                        left -265px
+                        z-index -1
+
+                    &#sqr3
+                        sqr(290px, deg)
+                        bottom -290px
+                        left -15px
+                        z-index -1
 
             .logo-cont
-                flex-grow 2
                 flex-cont(column, center, center)
+                padding 45px 0px 10px 0px
 
                 .mail
                     position relative
@@ -44,15 +49,11 @@
                         right -15px
 
             .text-cont
-                flex-grow 0
-                padding 0px 40px
+                padding 20px 40px
                 flex-cont(column, center, center)
 
                 .text
                     margin 0px
 
-            .inputs
-                flex-grow 0
-
             .btns-cont
-                flex-grow 2
+                padding 30px 0px
