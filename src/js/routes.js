@@ -55,11 +55,23 @@ async function isLoggedIn(to, from, resolve, reject)
 {
     var router = this;
     var app = router.app;
-    var valid = await app.methods.userIsValid();
+    var user = await app.methods.getLocalValue('loggedUser');
+    var valid = (await app.methods.userIsValid());
     if (valid)
     {
         reject();
-        router.navigate('/memories/home');
+        if (!await app.methods.userHasAdmin())
+        {
+            app.dialog.alert(`Your account has no admin associated with it, please fill out your admin information.`);
+            router.navigate({
+                name: 'invite-admin',
+                params: { userID: user.id }
+            })
+        }
+        else
+        {
+            router.navigate('/memories/home');
+        }
     }
     else
     {
@@ -127,8 +139,7 @@ var routes = [{
 },
 {
     name: 'invite-admin',
-    path: '/admin/invite',
-    beforeEnter: checkAuth,
+    path: '/admin/invite/user/:userID',
     component: InviteAdmin,
 },
 {

@@ -29,8 +29,8 @@ var app = new Framework7({
     theme: 'auto', // Automatic theme detection
 
     data: {
-        server: 'http://167.172.156.126:1337'
-        // server: 'http://localhost:1337'
+        // server: 'http://167.172.156.126:1337'
+        server: 'http://localhost:1337'
     },
 
     methods: {
@@ -60,15 +60,22 @@ var app = new Framework7({
             var app = this;
             var currentLocalUser = await app.methods.getLocalValue('loggedUser');
             let result = false;
-            this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult){
-                var user = JSON.parse(getResult.data);
-                result = await app.methods.setLocalValueToKey(user, 'loggedUser');
-                console.log("Update User Result:" + result + " [updateCurrentUser()]");
-            }).catch(function (error){
-                console.log("Error updating current user!!! [updateCurrentUser()]");
-                console.log(error);
-                result = false;
-            });
+            if (currentLocalUser != null)
+            {
+                await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult){
+                    var user = JSON.parse(getResult.data);
+                    result = await app.methods.setLocalValueToKey(user, 'loggedUser');
+                    console.log("Update User Result:" + result + " [updateCurrentUser()]");
+                }).catch(function (error){
+                    console.log("Error updating current user!!! [updateCurrentUser()]");
+                    console.log(error);
+                    result = false;
+                });
+            }
+            else
+            {
+                console.log("Couldn't update current user; user was null [updateCurrentUser()]")
+            }
             return result;
         },
         async clearCurrentUser()
@@ -102,13 +109,58 @@ var app = new Framework7({
             console.log("User Is Not Valid [userIsValid()]");
             return false;
         },
+        async userHasAdmin()
+        {
+            //Call userIsValid before this always.
+            var currentUser = await this.methods.getLocalValue('loggedUser');
+            var result = false;
+            if (currentUser != null)
+            {
+                console.log("Requesting JSON");
+                console.log(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`);
+                console.log(currentUser);
+                await this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`).then(async function(res){
+                    console.log("user has something? [userHasAdmin()]");
+                    console.log(res.data);
+                    let hasAdmins = (res.data.length > 0);
+                    console.log(hasAdmins);
+                    if (hasAdmins)
+                    {
+                        console.log(`user has at least 1 admin (${res.data.length}) [userHasAdmin()]`);
+                        result = true;
+                    }
+                    else
+                    {
+                        console.log("Had no admins [userHasAdmin()]")
+                        result = false;
+                    }
+                })
+            }
+            else
+            {
+                console.log("Had no loggedUser [userHasAdmin()]");
+                result = false;
+            }
+            return result;
+        },
         async loadContacts()
         {
-            // if ()
+            var currentUser = await this.methods.getLocalValue('loggedUser');
+            var contacts = [];
+            if (currentUser != null)
+            {
+                this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}`).then(async function(res){
+                    console.log("user has something? [userHasAdmin()]");
+                    console.log(res);
+                    return await this.methods.setLocalValueToKey(res, 'loggedUserContacts');
+                    // return true;
+                })
+            }
+            return false;
         },
         async clearContacts()
         {
-
+            await this.methods.setLocalValueToKey([], 'loggedUserContacts');
         },
         updateUsername(e) {
             this.username = e.target.value;

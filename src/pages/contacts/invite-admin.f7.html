@@ -34,23 +34,23 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="invite-admin-name" placeholder="Admin Name" required validate />
+								<input type="text" id="admin-name" placeholder="Admin Name" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="email" placeholder="Admin Email" required validate />
+								<input type="email" id="admin-email" placeholder="Admin Email" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="invite-admin-relation" placeholder="Admin relationship" required
-									validate />
-									<a class="popup-open" href="#" data-popup=".popup-admin-relation">
+								<input type="text" id="admin-relation" placeholder="Admin relationship" required
+								validate />
+								<a class="popup-open" href="#" data-popup=".popup-admin-relation">
 									<i class="info icons material-icons">info</i>
 								</a>
 							</div>
@@ -99,7 +99,159 @@
 	import $$ from "dom7";
 	export default {
 		on: {
-			pageInit: function (e, page) { },
+			pageInit: async function (e, page) { 
+				var self = this;
+				var app = self.$app;
+				
+				var userID = app.views.main.router.currentRoute.params.userID;
+				
+				console.log(userID);
+				
+				$$("#invite-admin-btn").on('click', async function(e){
+					//CREATE ADMIN THING
+
+					var adminName = $$("#admin-name").val();
+					var adminEmail = $$("#admin-email").val();
+					var adminRelation = $$("#admin-relation").val();
+					var adminCouldEdit = $$("#admin-edit").prop('checked');
+
+					if (!validateText(adminName, 'Please, enter your admin\'s name.', 'Your admin\'s name may not have spaces before or after the text.')) {
+						console.log("username not valid [pageInit.invite-admin-btn.onClick]");
+						return false;
+					}
+					if (!validateEmail(adminEmail)) {
+						app.dialog.alert('Please enter a valid email');
+						return false;
+					}
+					if (!validateText(adminRelation, 'Plase enter your and your admin\'s relationship.', 'Your answer may not have spaces before or after the text', false)) {
+						return false;
+					}
+
+					//Admin exists?
+					await app.request.promise.get(`${app.data.server}/users/?email=${adminEmail.toLowerCase()}`)
+					.then(async function (adminCheckRes) {
+						if (adminCheckRes.data === "[]") {
+							//Admin account doesn't exist
+							console.log(`admin email doesn't exist, creating admin account (${adminEmail}) [pageInit.create-btn.onClick]`);
+							app.request.promise.postJSON(`${app.data.server}/auth/local/register`, {
+								"username": adminName,
+								"password": makeid(10),
+								"email": adminEmail,
+							})
+							.then(function (adminAccRes) {
+								//Add to contacts as admin
+								assignRelation(userID, adminAccRes.data.user, adminRelation, true, adminCouldEdit)
+							})
+							.catch(function (adminAccError) {
+								app.preloader.hide();
+								console.log("Error creating admin [pageInit.invite-admin-btn.onClick]");
+								console.log(adminAccError);
+								let adminError = JSON.parse(adminAccError.xhr.response);
+								console.log("There was an error adding the admin [pageInit.create-btn.onClick]")
+								console.log(adminAccError.xhr);
+								app.dialog.alert(`There was an error adding the admin account!       \r\n${adminError.message[0].messages[0].message}`);
+							})
+						}
+						else {
+							//Admin account exists
+							//Add to contact as admin
+							console.log(`Admin email did exist, adding admin account (${adminEmail}) [pageInit.create-btn.onClick]`);
+							let adminUser = JSON.parse(adminCheckRes.data)[0];
+							assignRelation(userID, adminUser, adminRelation, true, adminCouldEdit);
+						}
+					})
+				})
+				
+				function assignRelation(targetUserId, contactUser, contactRelation, contactIsAdmin, contactEditMemories) {
+					console.log("targetUserId [pageInit.assignRelation]");
+					console.log(targetUserId);
+					console.log("adminUser [pageInit.assignRelation]");
+					console.log(contactUser);
+					console.log("relation [pageInit.assignRelation]");
+					console.log(contactRelation);
+					console.log("isAdmin [pageInit.assignRelation]");
+					console.log(contactIsAdmin);
+					console.log("editMemories [pageInit.assignRelation]");
+					console.log(contactEditMemories);
+					app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUserId}&contact=${contactUser.id}`)
+					.then(function (res) {
+						if (res.data === "[]") {
+							app.request.promise.postJSON(`${app.data.server}/contacts`, {
+								"relation": contactRelation,
+								"owner": {
+									"id": targetUserId
+								},
+								"contact": {
+									"id": contactUser.id
+								},
+								"isAdmin": contactIsAdmin,
+								"isMinor": false,
+								"editMemories": contactEditMemories
+							})
+							.then(function (assignRelRes) {
+								console.log("response assignRelation [pageInit.assignRelation]");
+								console.log(assignRelRes);
+							})
+							.catch(function (assignRelErr) {
+								console.log("error addignRelation [pageInit.assignRelation]");
+								console.log(assignRelErr);
+							})
+						}
+						else {
+							app.dialog.alert('You already have that user as a contact!');
+						}
+					});
+				}
+
+				function validateEmail(mail) {
+					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+						return (true)
+					}
+					// alert("You have entered an invalid email address!")
+					return (false)
+				}
+				
+				function validateText(text, emptyText, trimmedText, checkTrimmed = true) {
+					if (isTextEmptyOrWhitespace(text)) {
+						app.dialog.alert(emptyText);
+						return false;
+					}
+					else {
+						if (checkTrimmed) {
+							if (!isTextTrimmed(text)) {
+								app.dialog.alert(trimmedText);
+								return false;
+							}
+						}
+						return true;
+					}
+				}
+				
+				function isTextValid(value) {
+					return !isTextEmptyOrWhitespace(value) && isTextTrimmed(value);
+				}
+				
+				function isTextEmptyOrWhitespace(value) {
+					if (!value || !value.trim()) {
+						return true;
+					}
+					return false;
+				}
+				
+				function isTextTrimmed(value) {
+					return (value == value.trim());
+				}
+
+				function makeid(length) {
+					var result = '';
+					var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+					var charactersLength = characters.length;
+					for (var i = 0; i < length; i++) {
+						result += characters.charAt(Math.floor(Math.random() * charactersLength));
+					}
+					return result;
+				}
+			},
 		},
 	};
 </script>
