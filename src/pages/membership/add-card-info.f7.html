@@ -103,11 +103,13 @@
 							await app.methods.updateCurrentUser();
 							// console.log(`/membership/view/user/${queryID}`);
 							// app.views.main.router.navigate({ path: '/membership/select/user/' + queryID });
-							app.views.main.router.navigate({ 
-								name: 'view-membership',
-								params: { userID: queryID },
-							});
-							
+							// app.views.main.router.navigate({ 
+							// 	name: 'view-membership',
+							// 	params: { userID: queryID },
+							// });
+
+							//If no errors present
+							app.views.main.router.navigate('/memories/home');
 						})
 					})
 				});
