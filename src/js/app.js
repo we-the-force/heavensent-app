@@ -20,6 +20,7 @@ import routes from './routes.js';
 
 // Import main app component
 import App from '../app.f7.html';
+import io from 'socket.io-client';
 
 var app = new Framework7({
     root: '#app', // App root element
@@ -180,6 +181,11 @@ var app = new Framework7({
     // App routes
     routes: routes,
 
+    // Global Methods
+    methods: {
+
+    },
+
     // Register service worker
     serviceWorker: Framework7.device.cordova ? {} : {
         path: '/service-worker.js',
@@ -204,6 +210,7 @@ var app = new Framework7({
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
             }
+            
 
         },
     },
