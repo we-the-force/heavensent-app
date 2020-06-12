@@ -35,8 +35,8 @@
 				<a class="button round color-white face">Login with Facebook</a>
 			</div>
 			<div class="btns-cont two">
-				<a class="button round color-white small" href="/signup/step1">Sing up</a>
-				<!-- <a class="button round color-white small" href="/membership/select">Sing up</a> -->
+				<!-- <a class="button round color-white small" href="/signup/step1">Sing up</a> -->
+				<a class="button round color-white small" href="/UserAgreement">Sing up</a>
 				<a id="login-btn" class="button round color-blue small">Login</a>
 			</div>
 			<div class="btns-cont center pass">
@@ -54,12 +54,18 @@
 				var self = this;
 				var app = self.$app;
 				
+				await app.methods.updateCurrentUser();
 				var localUser = await app.methods.getLocalValue('loggedUser');
 				if (localUser != null)
 				{
-					app.request.promise.get(`${app.data.server}/users/${localUser.id}`).then(function(getResult){
+					app.request.promise.get(`${app.data.server}/users/${localUser.id}`).then(async function(getResult){
 						let user = JSON.parse(getResult.data);
-						if (!user.confirmed)
+						
+						if (user.confirmed)
+						{
+							
+						}
+						else
 						{
 							app.dialog.alert(`That user is no longer confirmed! Please check your email or contact an admin`);
 						}
@@ -133,12 +139,30 @@
 						}
 						else
 						{
-							console.log("localForage [pageInit.login-btn.onClick]");
+							console.log("Setting logged user to localStorage [pageInit.login-btn.onClick]");
 							if (await app.methods.setLocalValueToKey(user, 'loggedUser'))
 							{
-								console.log("Successfully logged in [pageInit.login-btn.onClick]");
-								console.log(await app.methods.getLocalValue('loggedUser'))
-								app.views.main.router.navigate({ name: "home-memories" });
+								let hasAdmin = await app.methods.userHasAdmin();
+								console.log("Has admin? [pageInit.login-btn.onClick]");
+								console.log(hasAdmin);
+								if (hasAdmin)
+								{
+									console.log("Successfully logged in [pageInit.login-btn.onClick]");
+									console.log(await app.methods.getLocalValue('loggedUser'))
+									app.views.main.router.navigate({ name: "home-memories" });
+								}
+								else
+								{
+									app.dialog.alert('Your account has no admin assigned to it currently, please fill out your admin info.');
+							app.views.main.router.navigate({
+								name: 'invite-admin',
+								params: { userID: user.id }
+							})
+								}
+							}
+							else
+							{
+								console.log("Couldn't set the user");
 							}
 						}
 					})

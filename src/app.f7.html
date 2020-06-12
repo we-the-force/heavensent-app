@@ -16,20 +16,20 @@
 					<p id="side-logged-user-membership">Membership</p>
 				</div>
 			</div>
-
+			
 			<div class="btns-cont">
 				<a href="/memories/home" class="btn-panel panel-close active">Profile</a>
 				<a id="app-plan-button" href="/membership/view/user/18" class="btn-panel panel-close ">Plan</a>
 				<!-- herdcoded -->
 				<a href="#" class="btn-panel panel-close ">Donate</a>
 			</div>
-
+			
 			<div class="footer">
 				<a href="/UserAgreement" class="btn-end panel-close terms">Terms & Conditions</a>
 				<a href="/" class="btn-end panel-close sign-out" id="sign-out-btn">Sign Out</a>
 			</div>
 		</div>
-
+		
 		<!-- Right panel with reveal effect-->
 		<!-- <div class="panel panel-right panel-reveal theme-dark">
 			<div class="view">
@@ -46,10 +46,10 @@
 				</div>
 			</div>
 		</div> -->
-
+		
 		<!-- Your main view, should have "view-main" class -->
 		<div class="view view-main view-init safe-areas" data-url="/"></div>
-
+		
 		<!-- Popup -->
 		<!-- <div class="popup" id="my-popup">
 			<div class="view">
@@ -71,7 +71,7 @@
 				</div>
 			</div>
 		</div> -->
-
+		
 		<!-- Login Screen -->
 		<!-- <div class="login-screen" id="my-login-screen">
 			<div class="view">
@@ -138,8 +138,8 @@
 </template>
 <script>
 	import $$ from "dom7";
-	 export default {
-		/* data() {
+	export default {
+		data() {
 			return {
 				user: {
 					firstName: "John",
@@ -204,7 +204,10 @@
 						
 						$$("#side-logged-user-name")[0].textContent = loggedUser.username;
 						$$("#side-logged-user-membership")[0].textContent = currentMembership;
-						$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+						if (loggedUser.profilePicture != null)
+						{
+							$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+						}
 						
 						$$("#app-plan-button")[0].href = `/membership/view/user/${loggedUser.id}`;
 					}
@@ -217,6 +220,6 @@
 					}
 				} 
 			},
-		}, */
+		},
 	}; 
 </script>

@@ -625,7 +625,14 @@
 				
 				console.log("home-memories pageInit [pageInit]");
 
+				await app.methods.updateCurrentUser();
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
+
+				if (loggedUser == null)
+				{
+					app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
+					app.views.main.router.navigate('/');
+				}
 				updateControls();
 				
 				
@@ -645,7 +652,10 @@
 						
 						$$("#logged-user-name")[0].textContent = loggedUser.username;
 						$$("#logged-user-membership")[0].textContent = currentMembership;
-						$$("#logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+						if(loggedUser.profilePicture != null)
+						{
+							$$("#logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+						}
 					}
 					else
 					{
