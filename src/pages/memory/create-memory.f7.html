@@ -62,7 +62,7 @@
                     </label>
                 </div>
                 <div class="progress-cont">
-                    <p class="bar"><span data-progress="70" class="progressbar" id="space-progressbar"></span></p>
+                    <p class="bar"><span data-progress="0" class="progressbar" id="space-progressbar"></span></p>
                     <p class="desc">Available space 100MB our of 100MB</p>
                 </div>
                 <div class="media-cont">
@@ -261,6 +261,16 @@
                 </div>
             </div>
         </div>
+        <div class="popover popover-opt">
+            <div class="popover-inner">
+                <div class="list">
+                    <ul>
+                        <li><a class="list-button item-link" href="#">Edit</a></li>
+                        <li><a class="list-button item-link" href="#">Delete</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -291,6 +301,7 @@
                 var self = this;
                 var app = self.$app;
                 var files = [];
+                var mb = 0;
 
                 $$('.popover-repeat .popover-close').click(function (el) {
                     $$(this).parent().parent().find('.checked').removeClass('checked');
@@ -315,24 +326,41 @@
 
                 /* pendiente */
                 $$('#file-inp').change(function name(val) {
-                    let cover = $$('.media-cont .cover img');
-                    let photo = $$('<div class="media fill">' +
+                    let reader = new FileReader();
+                    let cover = $$('.media-cont .cover');
+                    let medias = $$('.media-cont .medias');
+                    let newfile = $$('<div class="media fill">' +
+                        '<span class="material-icons close">close</span>'+
                         '<img src="" alt="">' +
                         '</div>');
-                    let cont = cover.attr('src') == '' ? cover : photo;
-
                     if (this.files && this.files[0]) {
-                        files.push(this.files[0]);
-                        
-                        var reader = new FileReader();
-                        reader.onload = e => {
-                            $$('.media-cont .cover img').attr('src', e.target.result);
+                        if (!cover.hasClass('no-pseudo')) {
+                            cover.addClass('no-pseudo');
+                            reader.onload = e => {
+                                $$('.media-cont .cover img').attr('src', e.target.result);
+                            }
+                        } else {
+                            if (!medias.find('.media:last-child').hasClass('fill')) {
+                                medias.empty();
+                                medias.addClass('f_start');
+                            }
+                            reader.onload = e => {
+                                newfile.children().attr('src', e.target.result);
+                                newfile.appendTo(medias);
+                            }
                         }
 
-                        reader.readAsDataURL(this.files[0]); // convert to base64 string
+                        if ((mb + this.files[0].size) <= 100000000) {
+                            reader.readAsDataURL(this.files[0]);
+                            files.push(this.files[0]);
+                            mb += this.files[0].size;
+                            let progress = mb / 1000000;
+                            app.progressbar.set('#space-progressbar', progress);
+                            $$('.progress-cont .desc').text('Available space '+(100 - progress)+'MB our of 100MB')
+                        } else {
+                            app.dialog.alert('No space available');
+                        } 
                     }
-
-
                 });
             },
         },
