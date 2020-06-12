@@ -88,9 +88,9 @@
 			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
-
+				
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
-
+				
 				var c;
 				var username = "";
 				var email="";
@@ -136,7 +136,7 @@
 					}
 				});
 				
-				$$("#create-member-btn").on("click", function (e) {
+				$$("#create-member-btn").on("click", async function (e) {
 					console.log("create-member-btn click");
 					console.log(app.data.server);
 					e.preventDefault();
@@ -177,7 +177,7 @@
 					app.preloader.show("blue");
 					
 					app.request.promise.get(`${app.data.server}/users/?email=${email.toLowerCase()}`)
-					.then(function (res){
+					.then(async function (res){
 						if (res.data === "[]")
 						{
 							console.log(`result was empty\r\nCreating user\r\n${res.data}`);
@@ -186,15 +186,13 @@
 								"password": " ",
 								"email": email,
 							})
-							.then(function(res2){
+							.then(async function(res2){
 								console.log(`User created successfully\r\n\r\n${res2.data}`);
 								console.log(res2);
 								console.log("res.data")
 								console.log(res2.data);
-								console.log(res2.data.user);
-								console.log(res2.data.user.id);
 								
-								app.request({
+								await app.request({
 									url: app.data.server + '/users/' + res2.data.user.id,
 									method: 'PUT',
 									data: {
@@ -202,14 +200,14 @@
 										"birthday": birthday,
 									}
 								});
-								c.result('blob', 'png').then(blob =>{
+								c.result('blob', 'png').then(async blob =>{
 									const data = new FormData();
 									data.append("files", blob, 'profile.png');
 									data.append("refId", res2.data.user.id);
 									data.append("ref", "user");
 									data.append('source', 'users-permissions');
 									data.append('field', 'profilePicture');
-									app.request({
+									await app.request({
 										url: app.data.server + '/upload',
 										method: "POST",
 										crossDomain: true,
@@ -220,12 +218,23 @@
 								
 								console.log("Inserting contact to newly created temp contact");
 								// assignRelation(res2.data.user, relation, isAdmin, isMinor, editMemories);
-								assignRelation(loggedUser, res2.data.user, relation, false, false, false);
+								let assignResult = await assignRelation(loggedUser, res2.data.user, relation, false, false, false);
 								app.preloader.hide();
-								
+								console.log("assignResult from temp user");
+								console.log(assignResult);
+								if (assignResult.result)
+								{
+									app.dialog.alert("Contact added successfully!");
+									// app.views.main.router.navigate({name: 'invite-admin'})
+									app.views.main.router.navigate('/memories/home');
+								}
+								else
+								{
+									app.dialog.alert("couldn't add contact! " + assignResult.message);
+								}
 							})
 							.catch(function(err){
-								console.log(`An error occurred`);
+								console.log(`An error occurred [create-member-btn.onClick]`);
 								console.log(err);
 								app.preloader.hide();
 								var obj = JSON.parse(err.xhr.response);
@@ -235,31 +244,42 @@
 						else
 						{
 							let user = JSON.parse(res.data)[0];
-							console.log(`result wasn't empty!\r\nassigning user\r\n${user}`)
+							console.log(`result wasn't empty!\r\nassigning user\r\n${user} [create-member-btn.onClick]`)
 							console.log(user)
 							try {
 								
-								console.log("Inserting contact to existing contact");
+								console.log("Inserting contact to existing contact [create-member-btn.onClick]");
 								// assignRelation(user, relation, isAdmin, isMinor, editMemories);
-								assignRelation(loggedUser, user, relation, false, false, false);
+								let assignResult = await assignRelation(loggedUser, user, relation, false, false, false);
 								app.preloader.hide();
+								console.log("assignResult from existing user");
+								console.log(assignResult);
+								if (assignResult.result)
+								{
+									app.dialog.alert("Contact added successfully!");
+									app.views.main.router.navigate('/memories/home');
+								}
+								else
+								{
+									app.dialog.alert("couldn't add contact! " + assignResult.message);
+								}
 								
 							} catch (error) {
-								console.log("Error assigning contact");
+								console.log("Error assigning contact [create-member-btn.onClick]");
 								console.log(error);
+								app.dialog.alert("Couldn't assign contact! " + error);
 							}
 						}
 					})
 					.catch(function (err){
 						console.log("Error error");
 						console.log(err);
+						app.dialog.alert("Error creating or assignin the contact! " + err);
 					})
 				});
 				
-				function assignRelation(targetUser, contactUser, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories)
+				async function assignRelation(targetUser, contactUser, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories)
 				{
-
-
 					console.log("user");
 					console.log(contactUser);
 					console.log("relation");
@@ -270,14 +290,19 @@
 					console.log(contactEditMemories);
 					console.log("isMinor");
 					console.log(contactIsMinor);
-					app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUser.id}&contact=${contactUser.id}`)
-					.then(function(res){
+					
+					let result = {
+						result: false,
+						message: ""
+					};
+					await app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUser.id}&contact=${contactUser.id}`)
+					.then(async function(res){
 						// console.log("right after get");
 						// console.log(res);
 						if (res.data === "[]")
 						{
 							// console.log('Already has contact');
-							app.request.promise.postJSON(`${app.data.server}/contacts`,{
+							await app.request.promise.postJSON(`${app.data.server}/contacts`,{
 								"relation": contactRelation,
 								"owner": {
 									"id": targetUser.id
@@ -290,20 +315,28 @@
 								"editMemories": contactEditMemories
 							})
 							.then(function (res){
-								// console.log("response assignRelation");
-								// console.log(res);
+								console.log("response assignRelation");
+								console.log(res);
+								result.result = true;
+								result.message = "Contact added successfully";
 							})
 							.catch(function(err){
 								console.log("error addignRelation");
 								console.log(err);
+								result.result = false;
+								result.message = err;
 							})
 						}
 						else
 						{
 							// console.log('doesnt have contact');
-							app.dialog.alert('You already have that user as a contact!');
+							result.result = false;
+							result.message = "You already have that user as a contact";
 						}
 					});
+					console.log("return of assignContact")
+					console.log(result);
+					return result;
 				}
 				
 				function userHasContact(user, contact)
