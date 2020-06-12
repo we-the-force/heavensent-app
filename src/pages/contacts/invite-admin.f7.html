@@ -69,7 +69,9 @@
 				</ul>
 			</div>
 			<div class="btns-cont center">
-				<a id="invite-admin-btn" href="/UserAgreement" class="button color-blue round small">Invite</a>
+				<!-- <a id="invite-admin-btn" href="/UserAgreement" class="button color-blue round small">Invite</a> -->
+				<!-- <a id="invite-admin-btn" href="/" class="button color-blue round small">Invite</a> -->
+				<a id="invite-admin-btn" class="button color-blue round small">Invite</a>
 			</div>
 			<div class="footer">
 				<div class="sqr_bck" id="sqr2"></div>
@@ -138,9 +140,9 @@
 								"password": makeid(10),
 								"email": adminEmail,
 							})
-							.then(function (adminAccRes) {
+							.then(async function (adminAccRes) {
 								//Add to contacts as admin
-								assignRelation(userID, adminAccRes.data.user, adminRelation, true, adminCouldEdit)
+								await assignRelation(userID, adminAccRes.data.user, adminRelation, true, adminCouldEdit)
 							})
 							.catch(function (adminAccError) {
 								app.preloader.hide();
@@ -157,12 +159,15 @@
 							//Add to contact as admin
 							console.log(`Admin email did exist, adding admin account (${adminEmail}) [pageInit.create-btn.onClick]`);
 							let adminUser = JSON.parse(adminCheckRes.data)[0];
-							assignRelation(userID, adminUser, adminRelation, true, adminCouldEdit);
+							await assignRelation(userID, adminUser, adminRelation, true, adminCouldEdit);
 						}
 					})
+					app.dialog.alert("We've sent you an email, please confirm your account by clicking the link we've emailed you");
+					await app.methods.clearCurrentUser();
+					app.views.main.router.navigate('/');
 				})
 				
-				function assignRelation(targetUserId, contactUser, contactRelation, contactIsAdmin, contactEditMemories) {
+				async function assignRelation(targetUserId, contactUser, contactRelation, contactIsAdmin, contactEditMemories) {
 					console.log("targetUserId [pageInit.assignRelation]");
 					console.log(targetUserId);
 					console.log("adminUser [pageInit.assignRelation]");
@@ -173,10 +178,10 @@
 					console.log(contactIsAdmin);
 					console.log("editMemories [pageInit.assignRelation]");
 					console.log(contactEditMemories);
-					app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUserId}&contact=${contactUser.id}`)
-					.then(function (res) {
+					await app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUserId}&contact=${contactUser.id}`)
+					.then(async function (res) {
 						if (res.data === "[]") {
-							app.request.promise.postJSON(`${app.data.server}/contacts`, {
+							await app.request.promise.postJSON(`${app.data.server}/contacts`, {
 								"relation": contactRelation,
 								"owner": {
 									"id": targetUserId

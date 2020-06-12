@@ -41,7 +41,17 @@ async function checkAuth(to, from, resolve, reject)
     var valid = await app.methods.userIsValid();
     if (valid)
     {
-        resolve();
+        if (await app.methods.userHasAdmin())
+        {
+            console.log("user had admin [checkAuth()]")
+            resolve();
+        }
+        else
+        {
+            reject();
+            this.navigate('/');
+            return;
+        }
     }
     else
     {
@@ -151,19 +161,19 @@ var routes = [{
 {
     name: 'create-memory',
     path: '/memories/create',
-    /* beforeEnter: checkAuth, */
+    beforeEnter: checkAuth,
     component: CreateMemory,
 },
 {
     name: 'home-memories',
     path: '/memories/home',
-    /* beforeEnter: checkAuth, */
+    beforeEnter: checkAuth,
     component: HomeMemories,
 },
 {
     name: 'birthday-memories',
     path: '/memories/birthday',
-    /* beforeEnter: checkAuth, */
+    beforeEnter: checkAuth, 
     component: BirthdayMemory,
 },
 {

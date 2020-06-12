@@ -35,7 +35,8 @@
 				<a class="button round color-white face">Login with Facebook</a>
 			</div>
 			<div class="btns-cont two">
-				<a class="button round color-white small" href="/signup/step1">Sing up</a>
+				<!-- <a class="button round color-white small" href="/signup/step1">Sing up</a> -->
+				<a class="button round color-white small" href="/UserAgreement">Sing up</a>
 				<a id="login-btn" class="button round color-blue small">Login</a>
 			</div>
 			<div class="btns-cont center pass">
@@ -152,7 +153,11 @@
 								}
 								else
 								{
-									app.dialog.alert('User has no admin, send to admin');
+									app.dialog.alert('Your account has no admin assigned to it currently, please fill out your admin info.');
+							app.views.main.router.navigate({
+								name: 'invite-admin',
+								params: { userID: user.id }
+							})
 								}
 							}
 							else

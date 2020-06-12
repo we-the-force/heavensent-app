@@ -204,7 +204,10 @@
 						
 						$$("#side-logged-user-name")[0].textContent = loggedUser.username;
 						$$("#side-logged-user-membership")[0].textContent = currentMembership;
-						$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+						if (loggedUser.profilePicture != null)
+						{
+							$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+						}
 						
 						$$("#app-plan-button")[0].href = `/membership/view/user/${loggedUser.id}`;
 					}

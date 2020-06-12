@@ -29,8 +29,8 @@ var app = new Framework7({
     theme: 'auto', // Automatic theme detection
 
     data: {
-        // server: 'http://167.172.156.126:1337'
-        server: 'http://localhost:1337'
+        server: 'http://167.172.156.126:1337'
+        // server: 'http://localhost:1337'
     },
 
     methods: {
@@ -66,9 +66,10 @@ var app = new Framework7({
                     var user = JSON.parse(getResult.data);
                     result = await app.methods.setLocalValueToKey(user, 'loggedUser');
                     console.log("Update User Result:" + result + " [updateCurrentUser()]");
-                }).catch(function (error){
+                }).catch(async function (error){
                     console.log("Error updating current user!!! [updateCurrentUser()]");
                     console.log(error);
+                    await app.methods.clearCurrentUser();
                     result = false;
                 });
             }
