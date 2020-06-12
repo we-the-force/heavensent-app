@@ -111,12 +111,12 @@
 				
 				$$("#invite-admin-btn").on('click', async function(e){
 					//CREATE ADMIN THING
-
+					
 					var adminName = $$("#admin-name").val();
 					var adminEmail = $$("#admin-email").val();
 					var adminRelation = $$("#admin-relation").val();
 					var adminCouldEdit = $$("#admin-edit").prop('checked');
-
+					
 					if (!validateText(adminName, 'Please, enter your admin\'s name.', 'Your admin\'s name may not have spaces before or after the text.')) {
 						console.log("username not valid [pageInit.invite-admin-btn.onClick]");
 						return false;
@@ -128,8 +128,10 @@
 					if (!validateText(adminRelation, 'Plase enter your and your admin\'s relationship.', 'Your answer may not have spaces before or after the text', false)) {
 						return false;
 					}
-
+					
 					//Admin exists?
+					app.preloader.show("blue");
+					
 					await app.request.promise.get(`${app.data.server}/users/?email=${adminEmail.toLowerCase()}`)
 					.then(async function (adminCheckRes) {
 						if (adminCheckRes.data === "[]") {
@@ -162,6 +164,7 @@
 							await assignRelation(userID, adminUser, adminRelation, true, adminCouldEdit);
 						}
 					})
+					app.preloader.hide();
 					app.dialog.alert("We've sent you an email, please confirm your account by clicking the link we've emailed you");
 					await app.methods.clearCurrentUser();
 					app.views.main.router.navigate('/');
@@ -205,9 +208,13 @@
 						else {
 							app.dialog.alert('You already have that user as a contact!');
 						}
+					}).catch(async function(err){
+						app.preloader.hide();
+						console.log("Error in assignContact!");
+						console.log(err);
 					});
 				}
-
+				
 				function validateEmail(mail) {
 					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
 						return (true)
@@ -246,7 +253,7 @@
 				function isTextTrimmed(value) {
 					return (value == value.trim());
 				}
-
+				
 				function makeid(length) {
 					var result = '';
 					var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

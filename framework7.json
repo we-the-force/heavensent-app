@@ -5,7 +5,7 @@
     "pwa",
     "cordova"
   ],
-  "name": "Heaven Sent",
+  "name": "HeavenSent",
   "framework": "core",
   "template": "split-view",
   "bundler": "webpack",

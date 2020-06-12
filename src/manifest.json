@@ -1,7 +1,7 @@
 {
-  "name": "Heaven Sent",
-  "short_name": "Heaven Sent",
-  "description": "Heaven Sent",
+  "name": "HeavenSent",
+  "short_name": "HeavenSent",
+  "description": "HeavenSent",
   "lang": "en-US",
   "start_url": "/",
   "display": "standalone",

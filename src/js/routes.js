@@ -39,6 +39,7 @@ async function checkAuth(to, from, resolve, reject)
     var router = this;
     var app = router.app;
     var valid = await app.methods.userIsValid();
+    
     if (valid)
     {
         if (await app.methods.userHasAdmin())
@@ -59,6 +60,73 @@ async function checkAuth(to, from, resolve, reject)
         this.navigate('/');
         return;
         // resolve('/asd/');
+    }
+}
+async function isMembershipValid(to, from, resolve, reject)
+{
+    var router = this;
+    var app = router.app;
+    var valid = await app.methods.userIsValid();
+    console.log("");
+    console.log("");
+    console.log("checkAuth start");
+    console.log("To");
+    console.log(to);
+    console.log("From");
+    console.log(from);
+
+    if (await app.methods.userHasValidMembership())
+    {
+        console.log("user has valid membership [checkAuth()]");
+        resolve();
+    }
+    else
+    {
+        /*
+        if you're not coming from select-membership
+        from.name != "select-membership"
+        */
+        let isEmpty = true;
+        for(var prop in from) {
+            if(from.hasOwnProperty(prop))
+            isEmpty = false;
+        }
+        
+        var user = await app.methods.getLocalValue('loggedUser');
+        if (to.name === "select-membership")
+        {
+            console.log("Was going to sleect-membership, letting it go to select-membership");
+            resolve();
+        }
+        else if (!isEmpty)
+        {
+            console.log("from isn't empty! [checkAuth]")
+            if (from.name != "select-membership" && to.name != "select-membership")
+            {
+                console.log("you're not (coming from select-memberhip and going to select-membership) [checkAuth()]");
+                resolve();
+            }
+            else
+            {
+                console.log("Youre either coming from or going to selet-membership [checkAuth()]");
+                reject();
+                await router.navigate({
+                    name: 'select-membership',
+                    params: { userID: user.id }
+                })
+            }
+        }
+        else
+        {
+            console.log("from was empty, redirecting to select-membership");
+            from = to;
+            console.log(from);
+            reject();
+            router.navigate({
+                name: 'select-membership',
+                params: { userID: user.id }
+            })
+        }
     }
 }
 async function isLoggedIn(to, from, resolve, reject)
@@ -90,7 +158,6 @@ async function isLoggedIn(to, from, resolve, reject)
         resolve();
     }
 }
-
 
 var routes = [{
     name: 'login',
@@ -132,19 +199,19 @@ var routes = [{
 {
     name: 'import-contacts',
     path: '/contact/import',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth],
     component: ImportContacts,
 },
 {
     name: 'create-contact',
     path: '/contact/create',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth],
     component: CreateContact,
 },
 {
     name: 'create-guardian',
     path: '/guardian/create',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth],
     component: CreateGuardian,
 },
 {
@@ -155,25 +222,25 @@ var routes = [{
 {
     name: 'view-family',
     path: '/family/view',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth, isMembershipValid],
     component: ViewFamily,
 },
 {
     name: 'create-memory',
     path: '/memories/create',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth, isMembershipValid],
     component: CreateMemory,
 },
 {
     name: 'home-memories',
     path: '/memories/home',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth, isMembershipValid],
     component: HomeMemories,
 },
 {
     name: 'birthday-memories',
     path: '/memories/birthday',
-    beforeEnter: checkAuth, 
+    beforeEnter: [checkAuth, isMembershipValid], 
     component: BirthdayMemory,
 },
 {
@@ -184,37 +251,37 @@ var routes = [{
 {
     name: 'memory-dashboard',
     path: '/memory-dashboard/',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth, isMembershipValid],
     component: MemoryDashboard,
 },/*  */
 {
     name: 'memory-notification',
     path: '/memory-notification/',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth, isMembershipValid],
     component: MemoryNotification,
 },/*  */
 {
     name: 'view-memory',
     path: '/view-memory/',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth, isMembershipValid],
     component: MemoryView,
 },/*  */
 {
     name: 'select-membership',
     path: '/membership/select/user/:userID',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth],
     component: SelectMembership,
 },
 {
     name: 'card-info',
     path: '/membership/card/user/:userID/plan/:planName',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth],
     component: AddCardInfo,
 },
 {
     name: 'view-membership',
     path: '/membership/view/user/:userID',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth],
     async: function(routeTo, routeFrom, resolve, reject){
         var router = this;
         var app = router.app;
@@ -295,19 +362,19 @@ var routes = [{
     {
         name: 'payment-confirm-membership',
         path: '/membership/confirmed',
-        beforeEnter: checkAuth,
+        beforeEnter: [checkAuth],
         component: PaymentConfirmMembership,
     },
     {
         name: 'fundations-single',
         path: '/fundations-single/',
-        beforeEnter: checkAuth,
+        beforeEnter: [checkAuth],
         component: FundationsSingle,
     },
     {
         name: 'about',
         path: '/about/',
-        beforeEnter: checkAuth,
+        beforeEnter: [checkAuth],
         async: function (routeTo, routeFrom, resolve, reject) {
             // Router instance
             var router = this;
