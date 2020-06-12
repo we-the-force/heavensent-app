@@ -10,10 +10,11 @@
 						</a>
 						<div class="title-sub">
 							<h1 id="logged-user-name" class="title capitalize">Jacob Ethan</h1>
-							<p  id="logged-user-membership" class="subtitle capitalize">Membership</p>
+							<p id="logged-user-membership" class="subtitle capitalize">Membership</p>
 						</div>
 						<a href="" class="avatar-fab">
-							<img id="logged-user-picture" src="../../static/img/chris_evans_crop1569801286473.png" alt="">
+							<img id="logged-user-picture" src="../../static/img/chris_evans_crop1569801286473.png"
+								alt="">
 						</a>
 					</div>
 				</div>
@@ -29,8 +30,9 @@
 					<i class="icons material-icons">add</i>
 				</a>
 			</div>
-			
-			<div data-space-between="25" data-slides-per-view="3.3" class="swiper-container swiper-init contacts-swiper">
+
+			<div data-space-between="25" data-slides-per-view="3.3"
+				class="swiper-container swiper-init contacts-swiper">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide">
 						<div class="person-cont">
@@ -120,7 +122,7 @@
 					<div class="swiper-slide">
 						<div class="card simple memory" id="colagge">
 							<img src="../../static/img/sqrs.png" alt="" srcset=""
-							style="margin-left: 4px; margin-top: 2px;">
+								style="margin-left: 4px; margin-top: 2px;">
 							<div class="card-content">
 								<p> Colagge </p>
 							</div>
@@ -137,7 +139,8 @@
 				</div>
 			</div>
 			<div class="scheduled-title">Scheduled</div>
-			<div data-space-between="10" data-slides-per-view="1.1"	class="swiper-container swiper-init sheduled-swiper">
+			<div data-space-between="10" data-slides-per-view="1.1"
+				class="swiper-container swiper-init sheduled-swiper">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide">
 						<div class="card complete v1">
@@ -526,7 +529,10 @@
 									<div class="btns-cont card-opened-fade-out">
 										<a href="#" class="btn-card">Give now</a>
 									</div>
-									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
 								</div>
 							</div>
 						</div>
@@ -544,7 +550,10 @@
 									<div class="btns-cont card-opened-fade-out">
 										<a href="#" class="btn-card">Give now</a>
 									</div>
-									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
 								</div>
 							</div>
 						</div>
@@ -562,7 +571,10 @@
 									<div class="btns-cont card-opened-fade-out">
 										<a href="#" class="btn-card">Give now</a>
 									</div>
-									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
 								</div>
 							</div>
 						</div>
@@ -580,7 +592,10 @@
 									<div class="btns-cont card-opened-fade-out">
 										<a href="#" class="btn-card">Give now</a>
 									</div>
-									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
 								</div>
 							</div>
 						</div>
@@ -620,45 +635,55 @@
 	export default {
 		on: {
 			pageInit: async function (e, page) {
-				var self =this;
+				var self = this;
 				var app = self.$app;
-				
+
+				$$('.card.memory').click(function (val) {
+					console.log($$(this).attr('id'));
+					switch ($$(this).attr('id')) {
+						case 'new':
+							app.views.main.router.navigate('/memories/create');
+							break;
+						case 'birthday':
+							app.views.main.router.navigate('/memories/birthday');
+							break;
+						case 'colagge':
+							break;
+						case 'special':
+							break;
+					}
+				});
+
 				console.log("home-memories pageInit [pageInit]");
-
-				await app.methods.updateCurrentUser();
-				var loggedUser = await app.methods.getLocalValue('loggedUser');
-
-				if (loggedUser == null)
-				{
-					app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
-					app.views.main.router.navigate('/');
-				}
-				updateControls();
+				/* 
+								await app.methods.updateCurrentUser();
+								var loggedUser = await app.methods.getLocalValue('loggedUser');
 				
-				
-				function updateControls()
-				{
-					if (loggedUser != null)
-					{
+								if (loggedUser == null)
+								{
+									app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
+									app.views.main.router.navigate('/');
+								}
+								updateControls();
+								 */
+
+				function updateControls() {
+					if (loggedUser != null) {
 						var currentMembership = loggedUser.currentMembership;
-						if(currentMembership === null)
-						{
+						if (currentMembership === null) {
 							currentMembership = "No Membership";
 						}
-						else
-						{
+						else {
 							currentMembership = loggedUser.currentMembership.plan.name + " membership";
 						}
-						
+
 						$$("#logged-user-name")[0].textContent = loggedUser.username;
 						$$("#logged-user-membership")[0].textContent = currentMembership;
-						if(loggedUser.profilePicture != null)
-						{
+						if (loggedUser.profilePicture != null) {
 							$$("#logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
 						}
 					}
-					else
-					{
+					else {
 						console.log("User was null, not updating anything [pageInit.updateControls]");
 					}
 				}
