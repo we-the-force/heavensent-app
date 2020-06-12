@@ -126,6 +126,12 @@
                                 color blue_dark
                                 font-template(500, 18px, 24px)
 
+                                &::-webkit-inner-spin-button, &::-webkit-calendar-picker-indicator
+                                    position absolute
+                                    opacity 0
+                                    width 100%
+                                    -webkit-appearance none
+
                         .label
                             padding-left 10px
                             font-template(500, 18px, 24px)
@@ -149,7 +155,7 @@
                     padding 0px
 
                     .select
-                        i,p
+                        i, p
                             color blue_dark
 
         .end-repeat-cont
@@ -165,6 +171,8 @@
 
         .btns-cont
             margin-top 20px
+            &.grey
+                filter: grayscale(1);
 
 .popover
     border-radius 11px
