@@ -1,4 +1,4 @@
-# Heaven Sent
+# HeavenSent
 
 ## Framework7 CLI Options
 
@@ -12,7 +12,7 @@ Framework7 app created with following options:
     "pwa",
     "cordova"
   ],
-  "name": "Heaven Sent",
+  "name": "HeavenSent",
   "framework": "core",
   "template": "split-view",
   "bundler": "webpack",

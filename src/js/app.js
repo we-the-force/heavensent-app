@@ -25,12 +25,12 @@ var app = new Framework7({
     root: '#app', // App root element
     component: App, // App main component
     id: 'io.wetheforce.heavensent', // App bundle ID
-    name: 'Heaven Sent', // App name
+    name: 'HeavenSent', // App name
     theme: 'auto', // Automatic theme detection
 
     data: {
-        server: 'http://167.172.156.126:1337'
-        // server: 'http://localhost:1337'
+        // server: 'http://167.172.156.126:1337'
+        server: 'http://localhost:1337'
     },
 
     methods: {
@@ -65,7 +65,7 @@ var app = new Framework7({
                 await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult){
                     var user = JSON.parse(getResult.data);
                     result = await app.methods.setLocalValueToKey(user, 'loggedUser');
-                    console.log("Update User Result:" + result + " [updateCurrentUser()]");
+                    // console.log("Update User Result:" + result + " [updateCurrentUser()]");
                 }).catch(async function (error){
                     console.log("Error updating current user!!! [updateCurrentUser()]");
                     console.log(error);
@@ -96,9 +96,7 @@ var app = new Framework7({
         },
         async userIsValid()
         {
-            // console.log("!! Entering UserIsValid() !!")
             var currentUser = await this.methods.getLocalValue('loggedUser');
-            // console.log(currentUser);
             if (currentUser != null)
             {
                 if (currentUser.confirmed)
@@ -117,22 +115,21 @@ var app = new Framework7({
             var result = false;
             if (currentUser != null)
             {
-                console.log("Requesting JSON");
-                console.log(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`);
-                console.log(currentUser);
+                // console.log("Requesting JSON");
+                // console.log(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`);
                 await this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`).then(async function(res){
-                    console.log("user has something? [userHasAdmin()]");
-                    console.log(res.data);
+                    // console.log("user has something? [userHasAdmin()]");
+                    // console.log(res.data);
                     let hasAdmins = (res.data.length > 0);
-                    console.log(hasAdmins);
+                    // console.log(hasAdmins);
                     if (hasAdmins)
                     {
-                        console.log(`user has at least 1 admin (${res.data.length}) [userHasAdmin()]`);
+                        // console.log(`user has at least 1 admin (${res.data.length}) [userHasAdmin()]`);
                         result = true;
                     }
                     else
                     {
-                        console.log("Had no admins [userHasAdmin()]")
+                        // console.log("Had no admins [userHasAdmin()]")
                         result = false;
                     }
                 })
@@ -144,6 +141,35 @@ var app = new Framework7({
             }
             return result;
         },
+        async userHasValidMembership()
+        {
+            var currentUser = await this.methods.getLocalValue('loggedUser');
+            // console.log("user has valid membership? [userHasValidMembership()]");
+            var result = false;
+
+            if (currentUser.currentMembership != null)
+            {
+                // console.log("current membership wasn't null [userHasValidMembership()]");
+                // console.log(currentUser.currentMembership);
+                if (currentUser.currentMembership.isActive)
+                {
+                    console.log("current user's membership is active! [userHasValidMembership()]");
+                    result = true;
+                }
+                else
+                {
+                    console.log("current user's membership was inactive unu [userHasValidMembership()]");
+                    result = false;
+                }
+            }
+            else
+            {
+                console.log("current membership is null!!! [userHasValidMembership()]");
+                result = false;
+            }
+
+            return result;
+        },
         async loadContacts()
         {
             var currentUser = await this.methods.getLocalValue('loggedUser');
@@ -151,8 +177,8 @@ var app = new Framework7({
             if (currentUser != null)
             {
                 this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}`).then(async function(res){
-                    console.log("user has something? [userHasAdmin()]");
-                    console.log(res);
+                    // console.log("user has something? [userHasAdmin()]");
+                    // console.log(res);
                     return await this.methods.setLocalValueToKey(res, 'loggedUserContacts');
                     // return true;
                 })
