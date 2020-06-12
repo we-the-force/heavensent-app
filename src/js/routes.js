@@ -133,6 +133,7 @@ async function isLoggedIn(to, from, resolve, reject)
 {
     var router = this;
     var app = router.app;
+    await app.methods.updateCurrentUser();
     var user = await app.methods.getLocalValue('loggedUser');
     var valid = (await app.methods.userIsValid());
     if (valid)
