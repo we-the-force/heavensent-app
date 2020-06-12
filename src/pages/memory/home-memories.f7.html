@@ -655,17 +655,16 @@
 				});
 
 				console.log("home-memories pageInit [pageInit]");
-				/* 
-								await app.methods.updateCurrentUser();
-								var loggedUser = await app.methods.getLocalValue('loggedUser');
-				
-								if (loggedUser == null)
-								{
-									app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
-									app.views.main.router.navigate('/');
-								}
-								updateControls();
-								 */
+
+				await app.methods.updateCurrentUser();
+				var loggedUser = await app.methods.getLocalValue('loggedUser');
+
+				if (loggedUser == null) {
+					app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
+					app.views.main.router.navigate('/');
+				}
+				updateControls();
+
 
 				function updateControls() {
 					if (loggedUser != null) {
