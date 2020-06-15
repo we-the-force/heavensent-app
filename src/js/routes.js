@@ -45,6 +45,7 @@ async function checkAuth(to, from, resolve, reject)
         if (await app.methods.userHasAdmin())
         {
             console.log("user had admin [checkAuth()]")
+            // await isMembershipValid(to, from, resolve, reject);
             resolve();
         }
         else
@@ -66,15 +67,14 @@ async function isMembershipValid(to, from, resolve, reject)
 {
     var router = this;
     var app = router.app;
-    var valid = await app.methods.userIsValid();
-    console.log("");
-    console.log("");
-    console.log("checkAuth start");
-    console.log("To");
-    console.log(to);
-    console.log("From");
-    console.log(from);
-
+    // console.log("");
+    // console.log("");
+    // console.log("checkAuth start");
+    // console.log("To");
+    // console.log(to);
+    // console.log("From");
+    // console.log(from);
+    
     if (await app.methods.userHasValidMembership())
     {
         console.log("user has valid membership [checkAuth()]");
@@ -230,13 +230,45 @@ var routes = [{
     name: 'create-memory',
     path: '/memories/create',
     beforeEnter: [checkAuth, isMembershipValid],
-    component: CreateMemory,
+    async: async function(routeTo, routeFrom, resolve, reject){
+        var router = this;
+        var app = router.app;
+        var currentUser = await app.methods.getLocalValue('loggedUser');
+        console.log("create-memories async function");
+        console.log(currentUser.currentMembership);
+        
+        resolve({
+            component: CreateMemory,
+        },
+        {
+            context: {
+                CurrentPlan: currentUser.currentMembership,
+            }
+        })
+    }
+    // component: CreateMemory,
 },
 {
     name: 'home-memories',
     path: '/memories/home',
     beforeEnter: [checkAuth, isMembershipValid],
-    component: HomeMemories,
+    async: async function(routeTo, routeFrom, resolve, reject){
+        var router = this;
+        var app = router.app;
+        var server = app.data.server;
+        var contacts = await app.methods.getLocalValue('loggedUserContacts');
+        // console.log(`Async function to home-memories, server: ${server}`);
+        resolve({
+            component: HomeMemories,
+        },
+        {
+            context: {
+                Server: server,
+                Contacts: contacts,
+            }
+        });
+    }
+    // component: HomeMemories,
 },
 {
     name: 'birthday-memories',

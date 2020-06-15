@@ -5,7 +5,7 @@
 			<div class="navbar-inner sliding">
 				<div class="header-cont">
 					<div class="header">
-						<a href="" class="back-btn back">
+						<a id="membership-select-back" href="" class="back-btn back">
 							<i class="icons material-icons">chevron_left</i>
 						</a>
 						<h1 class="title">Select Package</h1>
@@ -130,7 +130,7 @@
 	export default {
 		// auth/local/register
 		on: {
-			pageInit: function (e, page) {
+			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
 				
@@ -154,6 +154,18 @@
 					}
 				});
 				
+				$$("#membership-select-back").click(async function (val){
+					if (await app.methods.userHasValidMembership())
+					{
+
+					}
+					else
+					{
+						await app.methods.clearCurrentUser();
+						app.views.main.router.navigate('/');
+					}
+				})
+
 				function changeConfirmButtonHref(extraRef)
 				{
 					// console.log($$("#confirm-plan-btn"));

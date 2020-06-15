@@ -148,16 +148,30 @@
 								if (hasAdmin)
 								{
 									console.log("Successfully logged in [pageInit.login-btn.onClick]");
-									console.log(await app.methods.getLocalValue('loggedUser'))
-									app.views.main.router.navigate({ name: "home-memories" });
+									// console.log(await app.methods.getLocalValue('loggedUser'))
+									
+									if (await app.methods.userHasValidMembership())
+									{
+										console.log("User has a valid membership! [pageInit.login-btn.onClick]");
+										app.views.main.router.navigate({ name: "home-memories" });
+									}
+									else
+									{
+										console.log("User doesn't have a valid membership! [pageInit.login-btn.onClick]");
+										await app.views.main.router.navigate({
+											name: 'select-membership',
+											params: { userID: user.id }
+										})
+									}
+									
 								}
 								else
 								{
 									app.dialog.alert('Your account has no admin assigned to it currently, please fill out your admin info.');
-							app.views.main.router.navigate({
-								name: 'invite-admin',
-								params: { userID: user.id }
-							})
+									app.views.main.router.navigate({
+										name: 'invite-admin',
+										params: { userID: user.id }
+									})
 								}
 							}
 							else
