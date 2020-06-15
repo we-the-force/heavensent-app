@@ -5,7 +5,7 @@
             <div class="navbar-inner sliding">
                 <div class="header-cont">
                     <div class="header">
-                        <a href="" class="back-btn back">
+                        <a href="/memories/home" class="back-btn">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
                         <h1 class="title">Birthday Memory</h1>
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="item-content item-input with-label">
+                    <!-- <li class="item-content item-input with-label">
                         <label for="notes" class="note-title">Note</label>
                         <div class="item-inner">
                             <div class="item-input-wrap textarea">
@@ -41,37 +41,28 @@
                                 <span class="contador">0/140</span>
                             </div>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
-            <div class="btns-cont center" id="b_01">
+            <!-- <div class="btns-cont center" id="b_01">
                 <a id="add-note-btn" class="button color-blue round large">Add note</a>
-            </div>
+            </div> -->
             <div class="upload-title">Upload files</div>
             <div class="upload-cont">
-                <div class="ondemand-cont">
-                    <div class="ondemand">
-                        <h1>On Demand</h1>
-                        <a class="popup-open" href="#" data-popup=".popup-demand">
-                            <i class="info icons material-icons">info</i>
-                        </a>
-                    </div>
-                    <label class="toggle toggle-init">
-                        <input id="on-demand-toggle" type="checkbox">
-                        <span class="toggle-icon"></span>
-                    </label>
-                </div>
+               
                 <div class="progress-cont">
-                    <p class="bar"><span data-progress="70" class="progressbar" id="space-progressbar"></span></p>
+                    <p class="bar"><span data-progress="0" class="progressbar" id="space-progressbar"></span></p>
                     <p class="desc">Available space 100MB our of 100MB</p>
                 </div>
                 <div class="media-cont">
-                    <div class="cover">
+                    <label class="cover" for="add-cover">
                         <img src="" alt="">
                         <a class="edit popover-open" data-popover=".popover-opt">
                             <span class="material-icons">more_horiz</span>
                         </a>
-                    </div>
+                        <input type="file" id="add-cover" class="none"
+                            accept=".doc,.docx,.pdf,audio/*,video/*,image/*,media_type">
+                    </label>
                     <div class="medias">
                         <div class="media">
                             <span class="material-icons">mic</span>
@@ -88,21 +79,48 @@
                     </div>
                 </div>
                 <div class="btns-cont center add" id="b_02">
-                    <a id="add-media" href="" class="add-btn">
+                    <label id="add-media" href="" class="add-btn">
                         <i class="icons material-icons">add</i>
-                    </a>
+                        <input type="file" id="file-inp" class="none"
+                            accept=".doc,.docx,.pdf,audio/*,video/*,image/*,media_type">
+                    </label>
                 </div>
             </div>
             <div class="date-title">Deliver date
-                <a id="edit-date" href="" class="add-btn none">
+                <a href="" class="edit-btn deliver popup-open none" data-popup=".popup-deliver">
                     <i class="icons material-icons">edit</i>
                 </a>
             </div>
             <div class="deliver-cont">
-                <div class="btns-cont center date-btn" id="b_03">
+                <div class="btns-cont center date-btn">
                     <a id="add-deliver-date" class="button color-blue round large popup-open"
-                        data-popup=".popup-deliver">Aggregate</a>
+                        data-popup=".popup-deliver">Set date to deliver</a>
                 </div>
+                <div class="deliver-info none">
+                    <div class="info-cont">
+                        <div class="date-info">
+                            <p class="title">Date:</p>
+                            <p class="val">09/22/2020</p>
+                        </div>
+                        <div class="time-info">
+                            <p class="title">Time:</p>
+                            <p class="val">07:15</p>
+                        </div>
+                    </div>
+                    <div class="footer-deliver">The memory will repeat itself every year until 08/22/2024</div>
+                </div>
+            </div>
+            <div class="ondemand-cont">
+                <div class="ondemand">
+                    <h1>On Demand</h1>
+                    <a class="popup-open" href="#" data-popup=".popup-demand">
+                        <i class="info icons material-icons">info</i>
+                    </a>
+                </div>
+                <label class="toggle toggle-init">
+                    <input id="on-demand-toggle" type="checkbox">
+                    <span class="toggle-icon"></span>
+                </label>
             </div>
             <div class="btns-cont center create" id="b_04">
                 <a id="add-deliver-date" class="button color-white round large">Create memory</a>
