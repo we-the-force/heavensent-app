@@ -2,11 +2,6 @@ import $$ from 'dom7';
 import localforage from "localforage";
 import Framework7 from 'framework7/framework7.esm.bundle.js';
 
-/*
-    Hacer que si un usuario no tiene admin, que lo redirija a la ventana del admin despues de avisarle que no tiene admin y asi
-*/
-
-
 // Import F7 Styles
 import 'framework7/css/framework7.bundle.css';
 
@@ -27,12 +22,12 @@ var app = new Framework7({
     id: 'io.wetheforce.heavensent', // App bundle ID
     name: 'HeavenSent', // App name
     theme: 'auto', // Automatic theme detection
-
+    
     data: {
         server: 'http://167.172.156.126:1337'
         // server: 'http://localhost:1337'
     },
-
+    
     methods: {
         //Los datos a cambiar van a ser todos los del usuario.
         async getLocalValue(key) {
@@ -40,11 +35,18 @@ var app = new Framework7({
             await localforage.getItem(key).then(function (lsValue) {
                 result = lsValue;
             }).catch(function (glvError) {
+                console.log("Error getting value [getLocalValue()]");
+                console.log(glvError);
                 result = null;
             })
             return result;
         },
         async setLocalValueToKey(value, key) {
+            // console.log("Setting local value [setLocalValueToKey]");
+            // console.log("Value");
+            // console.log(value);
+            // console.log("Key");
+            // console.log(key);
             let result = false;
             await localforage.setItem(key, value).then(function (value) {
                 result = true;
@@ -65,6 +67,8 @@ var app = new Framework7({
                 await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult){
                     var user = JSON.parse(getResult.data);
                     result = await app.methods.setLocalValueToKey(user, 'loggedUser');
+                    await app.methods.loadContacts();
+                    await app.methods.loadCurrentMembership();
                     // console.log("Update User Result:" + result + " [updateCurrentUser()]");
                 }).catch(async function (error){
                     console.log("Error updating current user!!! [updateCurrentUser()]");
@@ -82,6 +86,7 @@ var app = new Framework7({
         async clearCurrentUser()
         {
             var app=this;
+            console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
             let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
             return result;
         },
@@ -146,7 +151,7 @@ var app = new Framework7({
             var currentUser = await this.methods.getLocalValue('loggedUser');
             // console.log("user has valid membership? [userHasValidMembership()]");
             var result = false;
-
+            
             if (currentUser.currentMembership != null)
             {
                 // console.log("current membership wasn't null [userHasValidMembership()]");
@@ -167,27 +172,50 @@ var app = new Framework7({
                 console.log("current membership is null!!! [userHasValidMembership()]");
                 result = false;
             }
-
+            
             return result;
         },
         async loadContacts()
         {
-            var currentUser = await this.methods.getLocalValue('loggedUser');
+            var app=this;
+            var currentUser = await app.methods.getLocalValue('loggedUser');
             var contacts = [];
+            var result = false;
             if (currentUser != null)
             {
                 this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}`).then(async function(res){
-                    // console.log("user has something? [userHasAdmin()]");
-                    // console.log(res);
-                    return await this.methods.setLocalValueToKey(res, 'loggedUserContacts');
+                    // console.log("user has something? [loadContacts()]");result = await app.methods.setLocalValueToKey(res.data, 'loggedUserContacts');
+                    // console.log(res.data);
+                    result = await app.methods.setLocalValueToKey(res.data, 'loggedUserContacts');
                     // return true;
                 })
             }
-            return false;
+            return result;
         },
         async clearContacts()
         {
             await this.methods.setLocalValueToKey([], 'loggedUserContacts');
+        },
+        async loadCurrentMembership()
+        {
+            var app=this;
+            var currentUser = await app.methods.getLocalValue('loggedUser');
+            var membership = null;
+            var result = false;
+
+            if (currentUser != null)
+            {
+                if (await app.methods.userHasValidMembership())
+                {
+                    // result = await app.methods.setLocalValueToKey(res.data, 'loggedUserMembership');
+                }
+                else
+                {
+                    console.log("User had no valid membership [loadCurrentMembership()]");
+                }
+            }
+
+            return result;
         },
         updateUsername(e) {
             this.username = e.target.value;
@@ -205,7 +233,7 @@ var app = new Framework7({
     },
     // App routes
     routes: routes,
-
+    
     // Register service worker
     serviceWorker: Framework7.device.cordova ? {} : {
         path: '/service-worker.js',
@@ -230,7 +258,7 @@ var app = new Framework7({
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
             }
-
+            
         },
     },
 });

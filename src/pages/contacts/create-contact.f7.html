@@ -225,6 +225,7 @@
 								if (assignResult.result)
 								{
 									app.dialog.alert("Contact added successfully!");
+									await app.methods.updateCurrentUser();
 									// app.views.main.router.navigate({name: 'invite-admin'})
 									app.views.main.router.navigate('/memories/home');
 								}
