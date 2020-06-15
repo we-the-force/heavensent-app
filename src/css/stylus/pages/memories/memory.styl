@@ -23,7 +23,7 @@
             .upload-title
                 font-template(500, 20px, 24px)
                 color Grey_dark_3
-                padding 0px 20px
+                padding 20px 20px 15px 20px
 
             .btns-cont
                 padding 5px 0px 50px 0px
@@ -44,27 +44,6 @@
 
             .upload-cont
                 flex-cont(column, unset, stretch)
-
-                .ondemand-cont
-                    padding 18px 8px
-                    flex-cont(row, space-between, center)
-
-                    .ondemand
-                        padding-left 20px
-                        flex-cont(row, unset, center)
-
-                        h1
-                            margin 0px
-                            font-template(normal, 18px, 16px)
-                            color Grey_dark_2
-
-                        a
-                            margin-left 10px
-                            flex-cont(row, center, center)
-
-                            i
-                                font-size 20px
-                                color Grey_light_3
 
                 .btns-cont
                     .none
@@ -92,6 +71,27 @@
                     text-align center
                     margin 0px
 
+            .ondemand-cont
+                padding 18px 8px
+                flex-cont(row, space-between, center)
+
+                .ondemand
+                    padding-left 20px
+                    flex-cont(row, unset, center)
+
+                    h1
+                        margin 0px
+                        font-template(normal, 18px, 16px)
+                        color Grey_dark_2
+
+                    a
+                        margin-left 10px
+                        flex-cont(row, center, center)
+
+                        i
+                            font-size 20px
+                            color Grey_light_3
+
             .media-cont
                 flex-cont(column, center, stretch)
                 padding 20px 5px 15px 5px
@@ -101,6 +101,10 @@
                     height 170px
                     margin-bottom 34px
                     background Grey_light_2
+                    background-image url('../static/img/cover_upload.png')
+                    background-repeat no-repeat
+                    background-position center
+                    background-size 140px 107px
                     box-shadow 0px 2px 15px rgba(0, 0, 0, 0.05)
                     border-radius 8px
                     position relative
@@ -112,32 +116,21 @@
                         border-radius 8px
 
                     a
-                        position absolute
-                        top 5px
-                        right 10px
-                        flex-cont(row, center, center)
-                        z-index 2
+                        display none
 
-                        span
-                            color Grey_dark_3
+                    input.none
+                        display none
 
-                    &.no-pseudo
-                        &:before
-                            content none
-
+                    &.edit
                         a
-                            span
-                                color white
+                            position absolute
+                            top 5px
+                            right 10px
+                            flex-cont(row, center, center)
+                            z-index 2
 
-                    &:before
-                        content 'Cover'
-                        position absolute
-                        top 50%
-                        left 50%
-                        transform translate(-50%, -50%)
-                        font-template(500, 14px, 24px)
-                        color Grey_light_3
-                        z-index 0
+                            span
+                                color blue_dark
 
                 .medias
                     flex-cont(row, space-between, center)
@@ -154,6 +147,9 @@
                         span
                             font-size 24px
                             color Grey_light_3
+
+                        &.none
+                            display none
 
                     &.f_start
                         justify-content flex-start
@@ -193,6 +189,9 @@
                     &.none
                         display none
 
+                .date-btn
+                    margin 0px 12px 20px 12px
+
                 .deliver-info
                     padding 10px 19px 0px 19px
                     flex-cont(column, unset, stretch)
@@ -213,7 +212,7 @@
                                 font-template(500, 18px, 24px)
                                 color Grey_dark_1
                                 margin 5px 0px
-                    
+
                     &.none
                         display none
 

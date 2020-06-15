@@ -1,0 +1,174 @@
+<template>
+    <div class="page" id="add-contacts">
+        <div class="artwork"></div>
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="back-btn back">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <!-- cambia el titulo dependiendo de la pantalla -->
+                        <h1 class="title">Mario's Family</h1>
+                        <!-- quita la clase none del boton que debe estar y pon la clase none en donde no debe estar -->
+                        <a href="" class="add-btn">
+                            <i class="icons material-icons">add</i>
+                        </a>
+                    </div>
+                </div>
+                <div class="subnavbar">
+                    <form class="searchbar">
+                        <div class="searchbar-inner">
+                            <div class="searchbar-input-wrap">
+                                <input type="search" placeholder="Search" />
+                                <i class="searchbar-icon"></i>
+                                <span class="input-clear-button"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="sqr_bck" id="sqr1"></div>
+            <div class="sqr_bck" id="sqr2"></div>
+            <div class="sqr_bck" id="sqr3"></div>
+            <div id="family-list" class="family-cont list searchbar-found media-list">
+                <ul>
+                    <li>
+                        <label class="item-checkbox item-content" data-id="1">
+                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
+                            <div class="item-media"><img src="../../static/img/136128.png" width="44" /></div>
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">Rosa</div>
+                                </div>
+                                <div class="item-text">Niece</div>
+                            </div>
+                        </label>
+                    </li>
+                    <li>
+                        <label href="#" class="item-checkbox item-content" data-id="2">
+                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
+                            <div class="item-media"><img src="../../static/img/chris_evans_crop1569801286473.png"
+                                    width="44" /></div>
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">Nathan</div>
+                                </div>
+                                <div class="item-text">Nephew</div>
+                            </div>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="item-checkbox item-content" data-id="3">
+                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
+                            <div class="item-media"><img src="../../static/img/Jason_Momoa_by_Gage_Skidmore_2.png"
+                                    width="44" /></div>
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">Sam</div>
+                                </div>
+                                <div class="item-text">Son</div>
+                            </div>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="item-checkbox item-content" data-id="4">
+                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
+                            <div class="item-media"><img src="../../static/img/136128.png" width="44" /></div>
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">Keira</div>
+                                </div>
+                                <div class="item-text">Daughter</div>
+                            </div>
+                        </label>
+                    </li>
+                    <li>
+                        <label href="#" class="item-checkbox item-content" data-id="5">
+                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
+                            <div class="item-media"><img src="../../static/img/active.png" width="44" /></div>
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">Johana</div>
+                                </div>
+                                <div class="item-text">Cousin</div>
+                            </div>
+                        </label>
+                    </li>
+                    <li>
+                        <label href="#" class="item-checkbox item-content" data-id="6">
+                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
+                            <div class="item-media"><img src="../../static/img/active.png" width="44" /></div>
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">Johana</div>
+                                </div>
+                                <div class="item-text">Cousin</div>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="btns-cont center">
+                <a href="#" id="add-contact-btn" class="button round color-blue large">Add to memory</a>
+            </div>
+
+            <div class="block searchbar-not-found">
+                <div class="block-inner">Nothing found</div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import $$ from "dom7";
+    export default {
+        on: {
+            pageInit: function (e, page) {
+                var self = this;
+                var app = self.$app;
+
+                $$('.chckbx').change(function (val) {
+                    $$(this).parent().parent().toggleClass('checked');
+                });
+
+                $$('#add-contact-btn').click(function (params) {
+                    let contacts = [];
+                    $$('input[type=checkbox]:checked').each(function (val) {
+                        let contact = {};
+                        contact.id = $$(this).parent().data('id');
+                        contact.img = $$(this).next().children('img').attr('src');
+                        contacts.push(contact);
+                    });
+
+                    if (sessionStorage.contacts) {
+                        //trae los contactos ya agregados antes
+                        let contacts_2 = JSON.parse(sessionStorage.contacts);
+                        //los junta con los que se seleccionaron ahora
+                        let merge = contacts_2.concat(contacts);
+                        //hace magia para que los que se repiten no salgan 2 veces
+                        let unique = merge.map(e => e['id']).map((e, i, final) => final.indexOf(e) === i && i).filter((e) => merge[e]).map(e => merge[e]);
+                        //los guarda en session storage
+                        sessionStorage.contacts = JSON.stringify(unique);
+                    } else {
+                        sessionStorage.contacts = JSON.stringify(contacts);
+                    }
+
+                    app.views.main.router.navigate(app.views.main.router.previousRoute.url);
+                });
+
+                var searchbar = app.searchbar.create({
+                    el: ".searchbar",
+                    searchContainer: ".list",
+                    searchIn: ".item-title, .item-text",
+                    on: {
+                        search(sb, query, previousQuery) {
+                            console.log(query, previousQuery);
+                        },
+                    },
+                });
+            },
+        },
+    };
+</script>

@@ -33,7 +33,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="item-content item-input with-label">
+                    <!-- <li class="item-content item-input with-label">
                         <label for="notes" class="note-title">Note</label>
                         <div class="item-inner">
                             <div class="item-input-wrap textarea">
@@ -41,37 +41,28 @@
                                 <span class="contador">0/140</span>
                             </div>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
-            <div class="btns-cont center" id="b_01">
+            <!-- <div class="btns-cont center" id="b_01">
                 <a id="add-note-btn" class="button color-blue round large">Add note</a>
-            </div>
+            </div> -->
             <div class="upload-title">Upload files</div>
             <div class="upload-cont">
-                <div class="ondemand-cont">
-                    <div class="ondemand">
-                        <h1>On Demand</h1>
-                        <a class="popup-open" href="#" data-popup=".popup-demand">
-                            <i class="info icons material-icons">info</i>
-                        </a>
-                    </div>
-                    <label class="toggle toggle-init">
-                        <input id="on-demand-toggle" type="checkbox">
-                        <span class="toggle-icon"></span>
-                    </label>
-                </div>
+
                 <div class="progress-cont">
                     <p class="bar"><span data-progress="0" class="progressbar" id="space-progressbar"></span></p>
                     <p class="desc">Available space 100MB our of 100MB</p>
                 </div>
                 <div class="media-cont">
-                    <div class="cover">
+                    <label class="cover" for="add-cover">
                         <img src="" alt="">
                         <a class="edit popover-open" data-popover=".popover-opt">
                             <span class="material-icons">more_horiz</span>
                         </a>
-                    </div>
+                        <input type="file" id="add-cover" class="none"
+                            accept=".doc,.docx,.pdf,audio/*,video/*,image/*,media_type">
+                    </label>
                     <div class="medias">
                         <div class="media">
                             <span class="material-icons">mic</span>
@@ -99,10 +90,10 @@
             </div>
             <div class="contacts-cont">
                 <div class="contacts">
-                    <div class="person none">
+                    <div class="person no_contact">
                         <!-- cuando no hay contactos agregados quitar la clase none -->
                     </div>
-                    <div class="person">
+                    <!-- <div class="person">
                         <span class="material-icons close">close</span>
                         <img src="../../static/img/envy.jpg" alt="">
                     </div>
@@ -117,10 +108,10 @@
                     <div class="person">
                         <span class="material-icons close">close</span>
                         <img src="../../static/img/kim.jpeg" alt="">
-                    </div>
+                    </div> -->
                 </div>
                 <div class="btns-cont center add" id="b_03">
-                    <a id="add-contact" href="" class="add-btn">
+                    <a id="add-contact" href="/memories/contacts" class="add-btn">
                         <i class="icons material-icons">add</i>
                     </a>
                 </div>
@@ -155,7 +146,7 @@
             <div class="deliver-cont">
                 <div class="btns-cont center date-btn" id="b_05">
                     <a id="add-deliver-date" class="button color-blue round large popup-open"
-                        data-popup=".popup-deliver">Aggregate</a>
+                        data-popup=".popup-deliver">Set date to deliver</a>
                 </div>
                 <div class="deliver-info none">
                     <div class="info-cont">
@@ -170,6 +161,18 @@
                     </div>
                     <div class="footer-deliver">The memory will repeat itself every year until 08/22/2024</div>
                 </div>
+            </div>
+            <div class="ondemand-cont">
+                <div class="ondemand">
+                    <h1>On Demand</h1>
+                    <a class="popup-open" href="#" data-popup=".popup-demand">
+                        <i class="info icons material-icons">info</i>
+                    </a>
+                </div>
+                <label class="toggle toggle-init">
+                    <input id="on-demand-toggle" type="checkbox">
+                    <span class="toggle-icon"></span>
+                </label>
             </div>
             <div class="btns-cont center create" id="b_04">
                 <a id="add-deliver-date" class="button color-white round large">Create memory</a>
@@ -261,18 +264,19 @@
                 </div>
             </div>
         </div>
-        <div class="popover popover-opt">
+        <div class="popover popover-opt space-on-left">
+            <div class="popover-angle none"></div>
             <div class="popover-inner">
                 <div class="list">
                     <ul>
                         <li>
                             <label for="file-cover">
-                            <i class="list-button item-link" href="#" id="edit">Edit</i>
-                            <input type="file" id="file-cover" class="none"
-                                accept=".doc,.docx,.pdf,audio/*,video/*,image/*,media_type">
+                                <i class="list-button item-link popover-close" href="#" id="edit">Edit</i>
+                                <input type="file" id="file-cover" class="none"
+                                    accept=".doc,.docx,.pdf,audio/*,video/*,image/*,media_type">
                             </label>
                         </li>
-                        <li><a class="list-button item-link" href="#" id="delete">Delete</a></li>
+                        <li><a class="list-button item-link popover-close" href="#" id="delete">Delete</a></li>
                     </ul>
                 </div>
             </div>
@@ -286,7 +290,7 @@
         on: {
             pageBeforeIn: function (e, page) {
                 var latlng = sessionStorage.latlng;
-                var addr = sessionStorage.addr
+                var addr = sessionStorage.addr;
                 if (latlng && addr) {
                     latlng = JSON.parse(latlng);
                     addr = JSON.parse(addr);
@@ -306,8 +310,23 @@
             pageInit: function (e, page) {
                 var self = this;
                 var app = self.$app;
+                var cover;
                 var files = [];
                 var mb = 0;
+
+                let contacts = sessionStorage.contacts;
+                if (contacts) {
+                    contacts = JSON.parse(contacts);
+                    $$('.contacts-cont .contacts .person.contact').remove();
+                    contacts.length > 0 ? $$('.contacts-cont .contacts .person.no_contact').addClass('none') : $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
+                    contacts.forEach(el => {
+                        let contact = $$('<div class="person contact" data-id="' + el.id + '">' +
+                            '<span class="material-icons close">close</span>' +
+                            '<img src="' + el.img + '" alt="">' +
+                            '</div>')
+                        contact.appendTo($$('.contacts-cont .contacts'));
+                    });
+                }
 
                 $$('.popover-repeat .popover-close').click(function (el) {
                     $$(this).parent().parent().find('.checked').removeClass('checked');
@@ -330,57 +349,130 @@
                     /* guarda datos y proyecta en la pantalla */
                 });
 
-                $$('.popover-opt .list-button').click(function (val) {
-                    if ($$(this).attr('id') == 'edit') {
 
-                    } else if ($$(this).attr('id') == 'delete') {
+                $$('.person.contact .close').click(function (val) {
+                    contacts.splice(contacts.indexOf(contacts.find(x => x.id == $$(this).parent().data('id'))),1);
+                    sessionStorage.contacts = JSON.stringify(contacts);
+                    $$(this).parent().remove();
+                    if(contacts.length == 0) $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
+                });
 
+                /* cover img */
+                $$('.popover-opt .list-button#delete').click(function (val) {
+                    let cover_cont = $$('.media-cont .cover');
+                    cover = null;
+                    cover_cont.children('img').attr('src', '');
+                    cover_cont.removeClass('edit');
+                    $$('#add-cover').off('click');
+                });
+
+                /* change cover img */
+                $$('#file-cover').change(function (val) {
+                    let reader = new FileReader();
+                    let cover_cont = $$('.media-cont .cover');
+                    if (this.files && this.files[0]) {
+                        reader.onload = e => {
+                            cover_cont.addClass('edit');
+                            cover_cont.children('img').attr('src', e.target.result);
+                        }
+                        let newmb = mb - cover.size;
+                        if ((newmb + this.files[0].size) <= 100000000) {
+                            reader.readAsDataURL(this.files[0]);
+                            mb -= cover.size;
+                            cover = this.files[0];
+                            mb += cover.size;
+                            progressBar(mb);
+                        } else {
+                            app.dialog.alert('No space available');
+                        }
                     }
                 });
 
-                $$('#file-inp').change(function (val) {
+                /* add cover img */
+                $$('#add-cover').change(function (val) {
                     let reader = new FileReader();
-                    let cover = $$('.media-cont .cover');
+                    let cover_cont = $$('.media-cont .cover');
+                    if (this.files && this.files[0]) {
+                        reader.onload = e => {
+                            cover_cont.addClass('edit');
+                            cover_cont.children('img').attr('src', e.target.result);
+                        }
+                        if ((mb + this.files[0].size) <= 100000000) {
+                            reader.readAsDataURL(this.files[0]);
+                            cover = this.files[0];
+                            mb += cover.size;
+                            progressBar(mb);
+                        } else {
+                            app.dialog.alert('No space available');
+                        }
+                    }
+                    $$(this).click(function (event) {
+                        event.preventDefault();
+                    });
+                });
+
+                /* add file */
+                $$('#file-inp').change(async function (val) {
+                    let reader = new FileReader();
                     let medias = $$('.media-cont .medias');
                     let newfile = $$('<div class="media fill">' +
                         '<span class="material-icons close">close</span>' +
                         '<img src="" alt="">' +
                         '</div>');
                     if (this.files && this.files[0]) {
-                        if (!cover.hasClass('no-pseudo')) {
-                            cover.addClass('no-pseudo');
-                            reader.onload = e => {
-                                $$('.media-cont .cover img').attr('src', e.target.result);
-                            }
-                        } else {
+                        /* si hay archivos */
+                        reader.onload = e => {
                             if (!medias.find('.media:last-child').hasClass('fill')) {
-                                medias.empty();
+                                /* si no hay nada agrega unas clases */
+                                medias.find('.media').addClass('none');
                                 medias.addClass('f_start');
                             }
-                            reader.onload = e => {
-                                newfile.children('img').attr('src', e.target.result);
-                                newfile.appendTo(medias);
+                            /* funcion que ejecuta cuando lee el archivo */
+                            newfile.children('img').attr('src', e.target.result);
+                            newfile.appendTo(medias);
 
-                                $$('.media-cont .media.fill .close').off('click');
-                                $$('.media-cont .media.fill .close').click(function (val) {
-                                    files.splice($$(this).parent().index() + 1, 1);
-                                    $$(this).parent().remove();
-                                });
-                            }
+                            $$('.media-cont .media.fill .close').off('click');
+                            $$('.media-cont .media.fill .close').click(function (val) {
+                                /* 
+                                    cuando eliminas un archivo 
+                                    lo borra del array
+                                    baja la barra de progreso
+                                    elimina el html
+                                */
+                                mb -= files[$$(this).parent().index() - 4].size;
+                                progressBar(mb)
+                                files.splice($$(this).parent().index() - 4, 1);
+                                $$(this).parent().remove();
+                                if (!medias.find('.media:last-child').hasClass('fill')) {
+                                    /* cuando no hay archivos regresa al estado original */
+                                    medias.find('.media').removeClass('none');
+                                    medias.removeClass('f_start');
+                                }
+                            });
                         }
 
                         if ((mb + this.files[0].size) <= 100000000) {
+                            /* 
+                                si no pasa el maximo de tamaño
+                                lee el archivo
+                                agrega al array
+                                aumenta la barra de progreso
+                             */
+                            reader.readAsDataURL(this.files[0]);
                             files.push(this.files[0]);
                             mb += this.files[0].size;
-                            let progress = mb / 1000000;
-                            app.progressbar.set('#space-progressbar', progress);
-                            $$('.progress-cont .desc').text('Available space ' + (100 - progress) + 'MB our of 100MB');
-                            reader.readAsDataURL(this.files[0]);
+                            progressBar(mb);
                         } else {
                             app.dialog.alert('No space available');
                         }
                     }
                 });
+
+                function progressBar(mb) {/* funcion de barra de progreso */
+                    let progress = mb / 1000000;
+                    app.progressbar.set('#space-progressbar', progress);
+                    $$('.progress-cont .desc').text('Available space ' + (100 - progress) + 'MB our of 100MB');
+                }
             },
         },
     }
