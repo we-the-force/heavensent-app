@@ -38,7 +38,7 @@
 			
 			<div class="btns-cont center">
 				<!-- <a href="/signup/confirm" class="button round color-blue small">Accept</a> -->
-				<a href="/signup/step1" class="button round color-blue small">Accept</a>
+				<a id="agreement-accept-btn" href="/signup/step1" class="button round color-blue small">Accept</a>
 			</div>
 			<div class="footer">
 				<div class="sqr_bck" id="sqr1"></div>
@@ -51,7 +51,32 @@
 	import $$ from "dom7";
 	export default {
 		on: {
-			pageInit: function (e, page) {},
+			pageInit: async function (e, page) {
+				var self = this;
+				var app = self.$app;
+
+				if (isUserValidAndHasMembership())
+				{
+					$$("#agreement-accept-btn")[0].href = '/memories/home';
+				}
+				else
+				{
+					$$("#agreement-accept-btn")[0].href = '/signup/step1';
+				}
+
+				async function isUserValidAndHasMembership()
+				{
+					let isValid = false;
+					let hasMembership = false;
+					let result = false;
+
+					isValid = await app.methods.userIsValid();
+					hasMembership = await app.methods.userHasValidMembership();
+					result = isValid && hasMembership;
+
+					return result;
+				}
+			},
 		},
 	};
 </script>

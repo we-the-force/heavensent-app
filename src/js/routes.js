@@ -10,6 +10,7 @@ import CreateGuardian from '../pages/guardian/create-guardian.f7.html';
 import SignupConfirm from '../pages/signup/signup-confirm.f7.html';
 import ImportContacts from '../pages/contacts/import-contacts.f7.html';
 import InviteAdmin from '../pages/contacts/invite-admin.f7.html';
+import EditContact from '../pages/contacts/edit-contact.f7.html';
 
 import CreateMemory from '../pages/memory/create-memory.f7.html';
 import BirthdayMemory from '../pages/memory/birthday-memory.f7.html';
@@ -208,6 +209,12 @@ var routes = [{
     path: '/contact/create',
     beforeEnter: [checkAuth],
     component: CreateContact,
+},
+{
+    name: 'edit-contact',
+    path: '/contact/edit',
+    beforeEnter: [checkAuth],
+    component: EditContact,
 },
 {
     name: 'create-guardian',
