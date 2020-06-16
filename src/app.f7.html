@@ -173,18 +173,21 @@
 				var self = this;
 				var app = self.$app;
 				
+				console.log("--app.f7.html pageInit");
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
+				console.log(loggedUser);
 				updateControls();
 				
 				$$("#sign-out-btn").on("click", async function(e){
 					e.preventDefault();
-					
-					console.log("Logging out [pageInit.sign-out-btn.onClick]");
-					if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
-					{
-						console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
-						app.views.main.router.navigate({ name: "login" });
-					}
+					await app.methods.clearCurrentUser();
+					await app.views.main.router.navigate('/');
+					// console.log("Logging out [pageInit.sign-out-btn.onClick]");
+					// if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
+					// {
+					// 	console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
+					// 	app.views.main.router.navigate({ name: "login" });
+					// }
 				})
 				
 				function updateControls()

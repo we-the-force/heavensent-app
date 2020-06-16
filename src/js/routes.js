@@ -10,6 +10,7 @@ import CreateGuardian from '../pages/guardian/create-guardian.f7.html';
 import SignupConfirm from '../pages/signup/signup-confirm.f7.html';
 import ImportContacts from '../pages/contacts/import-contacts.f7.html';
 import InviteAdmin from '../pages/contacts/invite-admin.f7.html';
+import EditContact from '../pages/contacts/edit-contact.f7.html';
 
 import CreateMemory from '../pages/memory/create-memory.f7.html';
 import BirthdayMemory from '../pages/memory/birthday-memory.f7.html';
@@ -52,14 +53,14 @@ async function checkAuth(to, from, resolve, reject)
         else
         {
             reject();
-            this.navigate('/');
+            await this.navigate('/');
             return;
         }
     }
     else
     {
         reject();
-        this.navigate('/');
+        await this.navigate('/');
         return;
         // resolve('/asd/');
     }
@@ -78,7 +79,7 @@ async function isMembershipValid(to, from, resolve, reject)
     
     if (await app.methods.userHasValidMembership())
     {
-        console.log("user has valid membership [checkAuth()]");
+        console.log("user has valid membership [isMembershipValid()]");
         resolve();
     }
     else
@@ -94,39 +95,52 @@ async function isMembershipValid(to, from, resolve, reject)
         }
         
         var user = await app.methods.getLocalValue('loggedUser');
-        if (to.name === "select-membership")
+        if (user != null)
         {
-            console.log("Was going to sleect-membership, letting it go to select-membership");
-            resolve();
-        }
-        else if (!isEmpty)
-        {
-            console.log("from isn't empty! [checkAuth]")
-            if (from.name != "select-membership" && to.name != "select-membership")
+            if (to.name === "select-membership")
             {
-                console.log("you're not (coming from select-memberhip and going to select-membership) [checkAuth()]");
+                console.log("Was going to sleect-membership, letting it go to select-membership [isMembershipValid()]");
                 resolve();
+            }
+            else if (!isEmpty)
+            {
+                console.log("from isn't empty! [isMembershipValid()]")
+                if (from.name != "select-membership" && to.name != "select-membership")
+                {
+                    console.log("you're not (coming from select-memberhip and going to select-membership) [isMembershipValid()]");
+                    resolve();
+                }
+                else
+                {
+                    console.log("Youre either coming from or going to selet-membership  [isMembershipValid()]");
+                    reject();
+                    await router.navigate({
+                        name: 'select-membership',
+                        params: { 
+                            userID: user.id,
+                            clearOnBack: "1"
+                        }
+                    })
+                }
             }
             else
             {
-                console.log("Youre either coming from or going to selet-membership [checkAuth()]");
+                console.log("from was empty, redirecting to select-membership");
+                from = to;
+                console.log(from);
                 reject();
                 await router.navigate({
                     name: 'select-membership',
-                    params: { userID: user.id }
+                    params: { 
+                        userID: user.id,
+                        clearOnBack: "1"
+                    }
                 })
             }
         }
         else
         {
-            console.log("from was empty, redirecting to select-membership");
-            from = to;
-            console.log(from);
-            reject();
-            router.navigate({
-                name: 'select-membership',
-                params: { userID: user.id }
-            })
+            console.log("user was null, return to login [isMembershipValid()]");
         }
     }
 }
@@ -134,8 +148,10 @@ async function isLoggedIn(to, from, resolve, reject)
 {
     var router = this;
     var app = router.app;
+    console.log("-Entering isLoggedIn, updating user");
     await app.methods.updateCurrentUser();
     var user = await app.methods.getLocalValue('loggedUser');
+    console.log(user);
     var valid = (await app.methods.userIsValid());
     if (valid)
     {
@@ -143,14 +159,29 @@ async function isLoggedIn(to, from, resolve, reject)
         if (!await app.methods.userHasAdmin())
         {
             app.dialog.alert(`Your account has no admin associated with it, please fill out your admin information.`);
-            router.navigate({
+            await router.navigate({
                 name: 'invite-admin',
                 params: { userID: user.id }
             })
         }
         else
         {
-            router.navigate('/memories/home');
+            if (!await app.methods.userHasValidMembership())
+            {
+                console.log("membership wasn't valid, going to select-membership [isLoggedIn()]");
+                await router.navigate({
+                    name: 'select-membership',
+                    params: { 
+                        userID: user.id,
+                        clearOnBack: "1"
+                    }
+                })
+            }
+            else
+            {
+                console.log("Going to memories/home [isLoggedIn()]");
+                await router.navigate('/memories/home');
+            }
         }
     }
     else
@@ -209,6 +240,35 @@ var routes = [{
     path: '/contact/create',
     beforeEnter: [checkAuth],
     component: CreateContact,
+},
+{
+    name: 'edit-contact',
+    path: '/contact/edit/contact/:contactId',
+    beforeEnter: [checkAuth],
+    async: async function(routeTo, routeFrom, resolve, reject){
+        var router = this;
+        var app = router.app;
+        // var currentUser = await app.methods.getLocalValue()
+        var contactId = routeTo.params.contactId;
+        
+        await app.request.promise.json(`${app.data.server}/users/${contactId}`).then(function(res){
+            // Do the resolve depending on if the user exists and such.
+            // Send the whole thingie or something like that.
+            
+            // console.log("inside async [routes.edit-contact.async]");
+            // console.log(res.data);
+            
+            resolve({
+                component: EditContact,
+            },
+            {
+                context: {
+                    ContactInfo: res.data,
+                }
+            });
+        })
+    }
+    // component: EditContact,
 },
 {
     name: 'create-guardian',
@@ -305,7 +365,7 @@ var routes = [{
 },/*  */
 {
     name: 'select-membership',
-    path: '/membership/select/user/:userID',
+    path: '/membership/select/user/:userID/clear/:clearOnBack',
     beforeEnter: [checkAuth],
     component: SelectMembership,
 },

@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		<div class="page-content" id="home-memories">
-			<div class="sqr_bck" id="sqr1"></div>
+			<div class="sqr_bck" data-papitas id="sqr1"></div>
 			<div class="sqr_bck" id="sqr2"></div>
 			<div class="sqr_bck" id="sqr3"></div>
 			<div class="contacts-cont">
@@ -37,7 +37,7 @@
 				{{#each Contacts}}
 				<div class="swiper-slide">
 					<div class="person-cont">
-						<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
+						<a href="#" class="avatar-person popover-open" data-user="{{contact.id}}" data-popover=".popover-person">
 							<img src="{{@root.Server}}{{contact.profilePicture.url}}" alt="" srcset="">
 						</a>
 						<p class="name-person">{{contact.username}}</p>
@@ -633,8 +633,8 @@
 					<div class="popover-inner">
 						<div class="list">
 							<ul>
-								<li><a class="list-button item-link" href="#">Edit profile</a></li>
-								<li><a class="list-button item-link" href="#">Create Memory</a></li>
+								<li><a id="edit-contact-btn" class="list-button item-link popover-close" href="#">Edit profile</a></li>
+								<li><a class="list-button item-link popover-close" href="#">Create Memory</a></li>
 							</ul>
 						</div>
 					</div>
@@ -650,7 +650,7 @@
 						var self = this;
 						var app = self.$app;
 						
-						console.log("home-memories pageInit [pageInit]");
+						console.log("home-memories pageInit [pageInit], updating user");
 						
 						await app.methods.updateCurrentUser();
 						await app.methods.loadContacts();
@@ -662,7 +662,11 @@
 						}
 						updateControls();
 						
-						
+						$$('.avatar-person').on('click', function(val){
+							console.log($$(this).prop("dataset").user);
+							$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
+							console.log($$('.popover-person'));
+						})
 						
 						$$('.card.memory').click(function (val) {
 							console.log($$(this).attr('id'));

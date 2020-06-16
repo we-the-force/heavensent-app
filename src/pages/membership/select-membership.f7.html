@@ -5,7 +5,8 @@
 			<div class="navbar-inner sliding">
 				<div class="header-cont">
 					<div class="header">
-						<a id="membership-select-back" href="" class="back-btn back">
+						<!-- <a id="membership-select-back" href="" class="back-btn back"> -->
+						<a id="membership-select-back" href="" class="back-btn">
 							<i class="icons material-icons">chevron_left</i>
 						</a>
 						<h1 class="title">Select Package</h1>
@@ -135,11 +136,18 @@
 				var app = self.$app;
 				
 				var queryID = app.views.main.router.currentRoute.params.userID;
-				console.log("La wea");
+				var clearOnBack = app.views.main.router.currentRoute.params.clearOnBack;
+
+				
+				console.log("select-membership pageInit");
 				console.log(queryID);
 				var selectedPlan = "basic";
+				
+				console.log("**Previous Path**")
+				console.log(app.views.main.router.previousRoute.route);
 
 				changeConfirmButtonHref(selectedPlan);
+
 				$$(".button-plan").click(function (val) {
 					let el = $$(this);
 					console.log(el);
@@ -157,12 +165,18 @@
 				$$("#membership-select-back").click(async function (val){
 					if (await app.methods.userHasValidMembership())
 					{
-
+						console.log("membership was valid, not clearing it c:");
+						await app.views.main.router.navigate(`/membership/view/user/${queryID}`);
 					}
 					else
 					{
+						val.preventDefault();
+						console.log("membership not valid, clearing user");
 						await app.methods.clearCurrentUser();
-						app.views.main.router.navigate('/');
+						console.log("user should now be null!!");
+						console.log(await app.methods.getLocalValue('loggedUser'));
+						console.log("Going to login now");
+						await app.views.main.router.navigate('/');
 					}
 				})
 

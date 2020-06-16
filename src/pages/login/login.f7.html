@@ -54,6 +54,7 @@
 				var self = this;
 				var app = self.$app;
 				
+				console.log("---pageBeforeIn, updating user")
 				await app.methods.updateCurrentUser();
 				var localUser = await app.methods.getLocalValue('loggedUser');
 				if (localUser != null)
@@ -160,7 +161,10 @@
 										console.log("User doesn't have a valid membership! [pageInit.login-btn.onClick]");
 										await app.views.main.router.navigate({
 											name: 'select-membership',
-											params: { userID: user.id }
+											params: { 
+												userID: user.id,
+												clearOnBack: "1"
+											}
 										})
 									}
 									
@@ -168,7 +172,7 @@
 								else
 								{
 									app.dialog.alert('Your account has no admin assigned to it currently, please fill out your admin info.');
-									app.views.main.router.navigate({
+									await app.views.main.router.navigate({
 										name: 'invite-admin',
 										params: { userID: user.id }
 									})
