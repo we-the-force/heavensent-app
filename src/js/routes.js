@@ -16,6 +16,7 @@ import CreateMemory from '../pages/memory/create-memory.f7.html';
 import BirthdayMemory from '../pages/memory/birthday-memory.f7.html';
 import HomeMemories from '../pages/memory/home-memories.f7.html';
 import LocationMemory from '../pages/memory/add-location.f7.html';
+import ContactsMemory from '../pages/memory/add-contacts.f7.html';
 
 import MemoryDashboard from '../pages/recipient/dashboard.f7.html';
 import MemoryView from '../pages/recipient/view-memory.f7.html';
@@ -287,6 +288,11 @@ var routes = [{
     name: 'location-memories',
     path: '/memories/location',
     component: LocationMemory,
+},
+{
+    name: 'contacts-memories',
+    path: '/memories/contacts',
+    component: ContactsMemory,
 },
 {
     name: 'memory-dashboard',

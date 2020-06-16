@@ -180,6 +180,9 @@
     border 1px solid #EBEBEB
     padding 0px 17px
 
+    .none
+        display none
+
     &.popover-opt
         width 120px
         height 85px
@@ -206,6 +209,8 @@
                     padding 0px 5px
                     font-template(500, 18px, 41px)
                     color Grey_dark_1
+        &.space-on-left
+            transform: translateX(-15%)
 
     &.popover-repeat
         --f7-popover-width 190px
@@ -234,3 +239,8 @@
                     text-decoration none
                     position absolute
                     right 10px
+
+
+.ios
+    .popover-opt.space-on-left
+        transform: translateX(-30%)
