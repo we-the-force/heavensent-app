@@ -169,8 +169,8 @@
                         <i class="info icons material-icons">info</i>
                     </a>
                 </div>
-                <label class="toggle toggle-init">
-                    <input id="on-demand-toggle" type="checkbox">
+                <label class="toggle toggle-init" id="on-demand-toggle">
+                    <input type="checkbox">
                     <span class="toggle-icon"></span>
                 </label>
             </div>
@@ -243,9 +243,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="footer">The memory will repeat itself every year until 08/22/2024</div>
+            <div class="footer">The memory will repeat itself every year until <div>--/--/----</div>
+            </div>
             <div class="btns-cont center" id="date">
-                <a id="accept-deliver-date" class="button color-blue round small popup-close">Accept</a>
+                <a id="accept-deliver-date" class="button color-blue grey round small" disabled="true">Accept</a>
             </div>
         </div>
         <div class="popover popover-repeat">
@@ -289,8 +290,19 @@
     export default {
         on: {
             pageBeforeIn: function (e, page) {
+                var self = this;
+                var app = self.$app;
                 var latlng = sessionStorage.latlng;
                 var addr = sessionStorage.addr;
+                var title = sessionStorage.title;
+                var desc = sessionStorage.desc;
+                var on_demand = sessionStorage.on_demand;
+                var immediately = sessionStorage.immediately;
+                var date = sessionStorage.date;
+                var time = sessionStorage.time;
+                var repeat = sessionStorage.repeat;
+                var date_end = sessionStorage.date_end;
+                var footer = sessionStorage.footer;
                 if (latlng && addr) {
                     latlng = JSON.parse(latlng);
                     addr = JSON.parse(addr);
@@ -306,15 +318,53 @@
                     });
                     marker.addClass('centerMarker').appendTo(map_2.getDiv());
                 }
+                if (title) {
+                    $$('input#title').val(JSON.parse(title));
+                }
+                if (desc) {
+                    $$('textarea#description').val(JSON.parse(desc));
+                }
+                if (on_demand) {
+                    app.toggle.get('#on-demand-toggle').checked = JSON.parse(on_demand);
+                }
+                if (date && time && repeat) {
+                    $$('.date-title .edit-btn').removeClass('none');
+                    $$('.deliver-cont .btns-cont').addClass('none');
+                    $$('.deliver-cont .deliver-info').removeClass('none');
+                    app.toggle.get('#immediately-toggle').checked = JSON.parse(sessionStorage.immediately);
+                    $$('#deliver-date').val(JSON.parse(sessionStorage.date));
+                    $$('#deliver-time').val(JSON.parse(sessionStorage.time));
+                    $$('#select-repeat p').text(JSON.parse(sessionStorage.repeat))
+                    if (JSON.parse(sessionStorage.date_end) != "") {
+                        $$('#date-end').val(JSON.parse(sessionStorage.date_end))
+                    } else {
+                        /* disable and grey */
+                        $$('#date-end.pop-deliver-inputs').addClass('grey');
+                        $$('#date-end.pop-deliver-inputs').prop("disabled", true);
+                    }
+                    $$('.deliver-cont .deliver-info .footer-deliver').text(JSON.parse(sessionStorage.footer));
+                    $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date));
+                    $$('.deliver-cont .deliver-info .time-info .val').text(JSON.parse(sessionStorage.time));
+                }
             },
             pageInit: function (e, page) {
                 var self = this;
                 var app = self.$app;
-                var cover;
                 var files = [];
                 var mb = 0;
+                var cover = sessionStorage.cover;
+                var contacts = sessionStorage.contacts;
+                console.log(page.route.context.CurrentPlan);
 
-                let contacts = sessionStorage.contacts;
+                /* si hay un cover guardado lo coloca */
+                if (cover && cover != 'null') {
+                    cover = JSON.parse(sessionStorage.cover);
+                    mb = JSON.parse(sessionStorage.mb);
+                    $$('.media-cont .cover img').attr('src', cover);
+                    $$('.media-cont .cover img').parent().addClass('edit');
+                    progressBar(mb)
+                }
+                /* si hay contactos guardados los coloca */
                 if (contacts) {
                     contacts = JSON.parse(contacts);
                     $$('.contacts-cont .contacts .person.contact').remove();
@@ -327,13 +377,33 @@
                         contact.appendTo($$('.contacts-cont .contacts'));
                     });
                 }
+                if (sessionStorage.date && sessionStorage.time && sessionStorage.repeat) {
+                    $$('#accept-deliver-date').prop('disabled', false);
+                    $$('#accept-deliver-date').removeClass('grey');
+                    $$('#accept-deliver-date').addClass('popup-close');
+                    $$('#accept-deliver-date').off('click').click(x => deliverAccept());
+                }
 
+                /* habilita deshabilita end repetition dependiendo de lo que selecciones en repeat */
                 $$('.popover-repeat .popover-close').click(function (el) {
+                    let input_end = $$('#date-end.pop-deliver-inputs');
                     $$(this).parent().parent().find('.checked').removeClass('checked');
                     $$(this).addClass('checked');
                     $$('.popup-deliver .select p').text($$(this).text());
+
+                    if ($$(this).hasClass('never')) {
+                        input_end.addClass('grey');
+                        input_end.prop("disabled", true);
+                        $$('.pop-deliver-inputs').trigger('change');
+                        $$('.popup-deliver .footer').text('The memory will never repeat');
+                    } else {
+                        input_end.removeClass('grey');
+                        input_end.prop("disabled", false);
+                        $$('.popup-deliver .footer').html('The memory will repeat itself ' + $$(this).text() + ' until <div>--/--/----</div>');
+                    }
                 })
 
+                /* cuenta palabras de los text area */
                 $$('textarea').on('input:notempty', function (val) {
                     $$(this).next().text($$(this).val().length + '/140');
                 });
@@ -341,20 +411,46 @@
                     $$(this).next().text('0/140');
                 });
 
-                $$('.popup-deliver .btns-cont#date').click(x => {
-                    var toggle = app.toggle.get('#immediately-toggle');
-                    console.log($$('#deliver-date').val());
-                    console.log($$('#deliver-time').val());
-                    console.log(toggle.checked); /* toggle value */
-                    /* guarda datos y proyecta en la pantalla */
+                /* verifica que los inputs necesarios esten llenos en el popover */
+                $$('.pop-deliver-inputs').change(function (e) {
+                    var inputs = $$('.pop-deliver-inputs:not(.grey)');
+                    var nonempty = inputs.filter(function () {
+                        return this.value != ''
+                    });
+                    if (nonempty.length == inputs.length) {
+                        $$('#accept-deliver-date').prop('disabled', false);
+                        $$('#accept-deliver-date').removeClass('grey');
+                        $$('#accept-deliver-date').addClass('popup-close');
+                        $$('#accept-deliver-date').off('click').click(x => deliverAccept());
+                    }
                 });
 
+                /* agrega fecha en el footer */
+                $$('.pop-deliver-inputs#date-end').change(function (e) {
+                    $$('.popup-deliver .footer').children('div').text($$(this).val());
+                });
 
+                /* guarda el valor del toggle cuando cambia */
+                $$('#on-demand-toggle').on('toggle:change', function (val) {
+                    sessionStorage.on_demand = JSON.stringify(app.toggle.get(this).checked);
+                });
+
+                /* guarda el valor del  titulo por si cambia la pantalla*/
+                $$('input#title').on('input:notempty', function (params) {
+                    sessionStorage.title = JSON.stringify($$(this).val());
+                });
+
+                /* guarda los valores de la descripcion si cambia de pantalla */
+                $$('textarea#description').on('input:notempty', function (params) {
+                    sessionStorage.desc = JSON.stringify($$(this).val());
+                });
+
+                /* elimina un contacto */
                 $$('.person.contact .close').click(function (val) {
-                    contacts.splice(contacts.indexOf(contacts.find(x => x.id == $$(this).parent().data('id'))),1);
+                    contacts.splice(contacts.indexOf(contacts.find(x => x.id == $$(this).parent().data('id'))), 1);
                     sessionStorage.contacts = JSON.stringify(contacts);
                     $$(this).parent().remove();
-                    if(contacts.length == 0) $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
+                    if (contacts.length == 0) $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
                 });
 
                 /* cover img */
@@ -364,6 +460,7 @@
                     cover_cont.children('img').attr('src', '');
                     cover_cont.removeClass('edit');
                     $$('#add-cover').off('click');
+                    coverSessionstorage(cover);
                 });
 
                 /* change cover img */
@@ -374,6 +471,7 @@
                         reader.onload = e => {
                             cover_cont.addClass('edit');
                             cover_cont.children('img').attr('src', e.target.result);
+                            coverSessionstorage(e.target.result);
                         }
                         let newmb = mb - cover.size;
                         if ((newmb + this.files[0].size) <= 100000000) {
@@ -384,6 +482,7 @@
                             progressBar(mb);
                         } else {
                             app.dialog.alert('No space available');
+
                         }
                     }
                 });
@@ -396,6 +495,7 @@
                         reader.onload = e => {
                             cover_cont.addClass('edit');
                             cover_cont.children('img').attr('src', e.target.result);
+                            coverSessionstorage(e.target.result);
                         }
                         if ((mb + this.files[0].size) <= 100000000) {
                             reader.readAsDataURL(this.files[0]);
@@ -467,6 +567,31 @@
                         }
                     }
                 });
+
+                function deliverAccept() {
+                    $$('.date-title .edit-btn').removeClass('none');
+                    $$('.deliver-cont .btns-cont').addClass('none');
+                    $$('.deliver-cont .deliver-info').removeClass('none');
+                    let immediately = app.toggle.get('#immediately-toggle').checked;
+                    let date = $$('#deliver-date').val();
+                    let time = $$('#deliver-time').val();
+                    let repeat = $$('#select-repeat p').text();
+                    let date_end = $$('#date-end').val();
+                    $$('.deliver-cont .deliver-info .footer-deliver').text($$('.popup-deliver .footer').text());
+                    $$('.deliver-cont .deliver-info .date-info .val').text(date);
+                    $$('.deliver-cont .deliver-info .time-info .val').text(time);
+                    sessionStorage.immediately = JSON.stringify(immediately);
+                    sessionStorage.date = JSON.stringify(date);
+                    sessionStorage.time = JSON.stringify(time);
+                    sessionStorage.repeat = JSON.stringify(repeat);
+                    sessionStorage.date_end = JSON.stringify(date_end);
+                    sessionStorage.footer = JSON.stringify($$('.popup-deliver .footer').text());
+                }
+
+                function coverSessionstorage(val) {
+                    sessionStorage.cover = JSON.stringify(val);
+                    sessionStorage.mb = JSON.stringify(mb);
+                }
 
                 function progressBar(mb) {/* funcion de barra de progreso */
                     let progress = mb / 1000000;

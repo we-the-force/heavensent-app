@@ -235,8 +235,6 @@ var routes = [{
         var router = this;
         var app = router.app;
         var currentUser = await app.methods.getLocalValue('loggedUser');
-        console.log("create-memories async function");
-        console.log(currentUser.currentMembership);
         
         resolve({
             component: CreateMemory,
