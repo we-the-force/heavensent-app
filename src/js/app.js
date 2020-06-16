@@ -42,11 +42,14 @@ var app = new Framework7({
             return result;
         },
         async setLocalValueToKey(value, key) {
-            // console.log("Setting local value [setLocalValueToKey]");
-            // console.log("Value");
-            // console.log(value);
-            // console.log("Key");
-            // console.log(key);
+            if (value != null && key === "loggedUser")
+            {
+                console.log("Setting local value [setLocalValueToKey]");
+                console.log("---Value---");
+                console.log(value);
+                // console.log("Key");
+                // console.log(key);
+            }
             let result = false;
             await localforage.setItem(key, value).then(function (value) {
                 result = true;
@@ -60,15 +63,17 @@ var app = new Framework7({
         async updateCurrentUser()
         {
             var app = this;
+            console.log("updating current user");
             var currentLocalUser = await app.methods.getLocalValue('loggedUser');
+            console.log(currentLocalUser);
             let result = false;
             if (currentLocalUser != null)
             {
                 await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult){
                     var user = JSON.parse(getResult.data);
+                    console.log("currentLocalUser wasn't null, setting value to loggedUser");
                     result = await app.methods.setLocalValueToKey(user, 'loggedUser');
                     await app.methods.loadContacts();
-                    await app.methods.loadCurrentMembership();
                     // console.log("Update User Result:" + result + " [updateCurrentUser()]");
                 }).catch(async function (error){
                     console.log("Error updating current user!!! [updateCurrentUser()]");
@@ -88,6 +93,7 @@ var app = new Framework7({
             var app=this;
             console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
             let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
+            await app.methods.setLocalValueToKey([], 'loggedUserContacts')
             return result;
         },
         async userIsEmpty()
@@ -151,25 +157,32 @@ var app = new Framework7({
             var currentUser = await this.methods.getLocalValue('loggedUser');
             // console.log("user has valid membership? [userHasValidMembership()]");
             var result = false;
-            
-            if (currentUser.currentMembership != null)
+            if (currentUser != null)
             {
-                // console.log("current membership wasn't null [userHasValidMembership()]");
-                // console.log(currentUser.currentMembership);
-                if (currentUser.currentMembership.isActive)
+                if (currentUser.currentMembership != null)
                 {
-                    console.log("current user's membership is active! [userHasValidMembership()]");
-                    result = true;
+                    // console.log("current membership wasn't null [userHasValidMembership()]");
+                    // console.log(currentUser.currentMembership);
+                    if (currentUser.currentMembership.isActive)
+                    {
+                        // console.log("current user's membership is active! [userHasValidMembership()]");
+                        result = true;
+                    }
+                    else
+                    {
+                        // console.log("current user's membership was inactive unu [userHasValidMembership()]");
+                        result = false;
+                    }
                 }
                 else
                 {
-                    console.log("current user's membership was inactive unu [userHasValidMembership()]");
+                    // console.log("current membership is null!!! [userHasValidMembership()]");
                     result = false;
                 }
             }
             else
             {
-                console.log("current membership is null!!! [userHasValidMembership()]");
+                // console.log("current user is null!!! [userHasValidMembership()]");
                 result = false;
             }
             
@@ -195,27 +208,6 @@ var app = new Framework7({
         async clearContacts()
         {
             await this.methods.setLocalValueToKey([], 'loggedUserContacts');
-        },
-        async loadCurrentMembership()
-        {
-            var app=this;
-            var currentUser = await app.methods.getLocalValue('loggedUser');
-            var membership = null;
-            var result = false;
-
-            if (currentUser != null)
-            {
-                if (await app.methods.userHasValidMembership())
-                {
-                    // result = await app.methods.setLocalValueToKey(res.data, 'loggedUserMembership');
-                }
-                else
-                {
-                    console.log("User had no valid membership [loadCurrentMembership()]");
-                }
-            }
-
-            return result;
         },
         updateUsername(e) {
             this.username = e.target.value;

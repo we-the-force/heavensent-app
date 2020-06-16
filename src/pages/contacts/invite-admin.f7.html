@@ -167,7 +167,7 @@
 					app.preloader.hide();
 					app.dialog.alert("We've sent you an email, please confirm your account by clicking the link we've emailed you");
 					await app.methods.clearCurrentUser();
-					app.views.main.router.navigate('/');
+					await app.views.main.router.navigate('/');
 				})
 				
 				async function assignRelation(targetUserId, contactUser, contactRelation, contactIsAdmin, contactEditMemories) {

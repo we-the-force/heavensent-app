@@ -224,10 +224,10 @@
 								console.log(assignResult);
 								if (assignResult.result)
 								{
-									app.dialog.alert("Contact added successfully!");
+									app.dialog.alert("Contact added successfully!, updating user");
 									await app.methods.updateCurrentUser();
 									// app.views.main.router.navigate({name: 'invite-admin'})
-									app.views.main.router.navigate('/memories/home');
+									await app.views.main.router.navigate('/memories/home');
 								}
 								else
 								{
@@ -258,7 +258,7 @@
 								if (assignResult.result)
 								{
 									app.dialog.alert("Contact added successfully!");
-									app.views.main.router.navigate('/memories/home');
+									await app.views.main.router.navigate('/memories/home');
 								}
 								else
 								{

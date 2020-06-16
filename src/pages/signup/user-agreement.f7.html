@@ -55,12 +55,14 @@
 				var self = this;
 				var app = self.$app;
 
-				if (isUserValidAndHasMembership())
+				if (await isUserValidAndHasMembership())
 				{
+					console.log("valid user and membership, going to home [pageInit]");
 					$$("#agreement-accept-btn")[0].href = '/memories/home';
 				}
 				else
 				{
+					console.log("not a valid user/membership, going to step1 [pageInit]");
 					$$("#agreement-accept-btn")[0].href = '/signup/step1';
 				}
 

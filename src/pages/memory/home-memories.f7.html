@@ -633,8 +633,8 @@
 					<div class="popover-inner">
 						<div class="list">
 							<ul>
-								<li><a id="edit-contact-btn" class="list-button item-link" href="#">Edit profile</a></li>
-								<li><a class="list-button item-link" href="#">Create Memory</a></li>
+								<li><a id="edit-contact-btn" class="list-button item-link popover-close" href="#">Edit profile</a></li>
+								<li><a class="list-button item-link popover-close" href="#">Create Memory</a></li>
 							</ul>
 						</div>
 					</div>
@@ -650,7 +650,7 @@
 						var self = this;
 						var app = self.$app;
 						
-						console.log("home-memories pageInit [pageInit]");
+						console.log("home-memories pageInit [pageInit], updating user");
 						
 						await app.methods.updateCurrentUser();
 						await app.methods.loadContacts();
@@ -663,10 +663,9 @@
 						updateControls();
 						
 						$$('.avatar-person').on('click', function(val){
-							console.log("Ay me picaron");
-							console.log($$(this));
 							console.log($$(this).prop("dataset").user);
-							$$('#edit-contact-btn')[0].href = "/contact/edit/?contact=" + $$(this).prop("dataset").user;
+							$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
+							console.log($$('.popover-person'));
 						})
 						
 						$$('.card.memory').click(function (val) {
