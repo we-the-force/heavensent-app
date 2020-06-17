@@ -353,20 +353,17 @@ var routes = [{
 },
 {
     name: 'memory-dashboard',
-    path: '/memory-dashboard/',
-    beforeEnter: [checkAuth, isMembershipValid],
+    path: '/memories/dashboard',
     component: MemoryDashboard,
 },/*  */
 {
     name: 'memory-notification',
-    path: '/memory-notification/',
-    beforeEnter: [checkAuth, isMembershipValid],
+    path: '/memories/notification',
     component: MemoryNotification,
 },/*  */
 {
     name: 'view-memory',
-    path: '/view-memory/',
-    beforeEnter: [checkAuth, isMembershipValid],
+    path: '/memories/view',
     component: MemoryView,
 },/*  */
 {

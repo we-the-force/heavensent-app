@@ -1,135 +1,182 @@
-    <!-- Screen D1 -->
-    <template>
-        <div class="page">
-            <div class="navbar">
-                <div class="navbar-bg"></div>
-                <div class="navbar-inner sliding">
-                    <div class="left">
-                        <a href="#" class="link">
-                            <!-- <i class="icon icon-back"></i> -->
-                            <span class="material-icons">dehaze</span>
+<!-- Screen D1 -->
+<template>
+    <div class="page" id="memories-dashboard">
+        <div class="artwork"></div>
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="menu-btn">
+                            <i class="icons material-icons">menu</i>
                         </a>
+                        <h1 class="title">Memories</h1>
+                        <div class="none"></div>
                     </div>
-                    <div clas="title">Memories</div>
-                </div>
-            </div>
-            <div class="page-content">
-                <p>,</p>
-                <!-- <div class="swiper-container" style="height: 100px;">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            Slide1
-                            <img src="http://via.placeholder.com/330x200.png?text=placeholder" alt="">
-                            
-                        </div>
-                        <div class="swiper-slide">Slide2</div>
-                        <div class="swiper-slide">Slide3</div>
-                    </div>
-                </div> -->
-                <div data-space-between="10" data-slides-per-view="auto" data-centered-slides="true" class="swiper-container swiper-init demo-swiper demo-swiper-auto">
-                    <div class="swiper-wrapper">
-                        <!-- Slide 1 -->
-                        <div id="memory-a-slide" class="swiper-slide">
-                            <div class="card demo-card-header-pic">
-                                <h1>Jacob Ethan Goodbye</h1>
-                                <h6 style="color:gray">Sent by Jacob Ethan</h6>
-                                <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end"></div>
-                                <div class="card-content card-content-padding">
-                                    <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
-                                </div>
-                                <!-- <div class="card-footer"><a href="#" class="link">Like</a><a href="#" class="link">Read more</a></div> -->
-                                <div class="row">
-                                    <div class="col">
-                                        <a id="memory-a-comment-btn" class="button">
-                                            <span class="material-icons">textsms</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a id="memory-a-image-btn" class="button">
-                                            <span class="material-icons">insert_photo</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a id="memory-a-video-btn" class="button">
-                                            <span class="material-icons">videocam</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a id="memory-a-audio-btn" class="button">
-                                            <span class="material-icons">mic</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a id="memory-a-location-btn" class="button">
-                                            <span class="material-icons">location_on</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a id="memory-a-play-btn" class="button">
-                                            <span class="material-icons">play_circle_filled</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="btns-cont center pass">
-                                    <a id="memory-a-see-btn" class="button color-blue small round" href="">See</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Slide 2 -->
-                        <div id="memory-b-slide" class="swiper-slide">
-                            <div class="card demo-card-header-pic">
-                                <h1>Ethan Jacob Goodbye</h1>
-                                <h6 style="color:gray">Sent by Ethan Jacob</h6>
-                                <div style="background-image:url(https://cdn.framework7.io/placeholder/people-1000x600-6.jpg)" class="card-header align-items-flex-end"></div>
-                                <div class="card-content card-content-padding">
-                                    <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
-                                </div>
-                                <!-- <div class="card-footer"><a href="#" class="link">Like</a><a href="#" class="link">Read more</a></div> -->
-                                <div class="row">
-                                    <div class="col">
-                                        <a id="memory-b-comment-btn" class="button">
-                                            <span class="material-icons">textsms</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a id="memory-b-image-btn" class="button">
-                                            <span class="material-icons">insert_photo</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a id="memory-b-video-btn" class="button">
-                                            <span class="material-icons">videocam</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a id="memory-b-audio-btn" class="button">
-                                            <span class="material-icons">mic</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a id="memory-b-location-btn" class="button">
-                                            <span class="material-icons">location_on</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a id="memory-b-play-btn" class="button">
-                                            <span class="material-icons">play_circle_filled</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="btns-cont center pass">
-                                    <a id="memory-b-see-btn" class="button color-blue small round" href="">See</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="btns-cont center pass">
-                    <a id="donate-btn" class="button color-white small round" href="">Create memories</a>
                 </div>
             </div>
         </div>
-    </template>
-    <script>
-        
-    </script>
+        <div class="page-content">
+            <div class="sqr_bck" id="sqr1"></div>
+            <div class="sqr_bck" id="sqr2"></div>
+            <div class="sqr_bck" id="sqr3"></div>
+            <div data-space-between="10" data-slides-per-view="auto" data-centered-slides="true"
+                class="swiper-container swiper-init demo-swiper demo-swiper-auto">
+                <div class="swiper-wrapper">
+                    <!-- Slide 1 -->
+                    <div id="memory-a-slide" class="swiper-slide">
+                        <div class="card demo-card-header-pic">
+                            <h1>Jacob Ethan Goodbye</h1>
+                            <h6 style="color:gray">Sent by Jacob Ethan</h6>
+                            <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)"
+                                class="card-header align-items-flex-end"></div>
+                            <div class="card-content card-content-padding">
+                                <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non
+                                    felis. Phasellus quis nibh hendrerit...</p>
+                            </div>
+                            <!-- <div class="card-footer"><a href="#" class="link">Like</a><a href="#" class="link">Read more</a></div> -->
+                            <div class="row">
+                                <div class="col">
+                                    <a id="memory-a-comment-btn" class="button">
+                                        <span class="material-icons">textsms</span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a id="memory-a-image-btn" class="button">
+                                        <span class="material-icons">insert_photo</span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a id="memory-a-video-btn" class="button">
+                                        <span class="material-icons">videocam</span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a id="memory-a-audio-btn" class="button">
+                                        <span class="material-icons">mic</span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a id="memory-a-location-btn" class="button">
+                                        <span class="material-icons">location_on</span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a id="memory-a-play-btn" class="button">
+                                        <span class="material-icons">play_circle_filled</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="btns-cont center pass">
+                                <a id="memory-a-see-btn" class="button color-blue small round" href="">See</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div id="memory-b-slide" class="swiper-slide">
+                        <div class="card demo-card-header-pic">
+                            <h1>Ethan Jacob Goodbye</h1>
+                            <h6 style="color:gray">Sent by Ethan Jacob</h6>
+                            <div style="background-image:url(https://cdn.framework7.io/placeholder/people-1000x600-6.jpg)"
+                                class="card-header align-items-flex-end"></div>
+                            <div class="card-content card-content-padding">
+                                <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non
+                                    felis. Phasellus quis nibh hendrerit...</p>
+                            </div>
+                            <!-- <div class="card-footer"><a href="#" class="link">Like</a><a href="#" class="link">Read more</a></div> -->
+                            <div class="row">
+                                <div class="col">
+                                    <a id="memory-b-comment-btn" class="button">
+                                        <span class="material-icons">textsms</span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a id="memory-b-image-btn" class="button">
+                                        <span class="material-icons">insert_photo</span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a id="memory-b-video-btn" class="button">
+                                        <span class="material-icons">videocam</span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a id="memory-b-audio-btn" class="button">
+                                        <span class="material-icons">mic</span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a id="memory-b-location-btn" class="button">
+                                        <span class="material-icons">location_on</span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a id="memory-b-play-btn" class="button">
+                                        <span class="material-icons">play_circle_filled</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="btns-cont center pass">
+                                <a id="memory-b-see-btn" class="button color-blue small round" href="">See</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">
+								<div class="title-card">
+									<h1>Good trip</h1>
+								</div>
+								<a href="#" class="edit popover-open" data-popover=".popover-opt">
+									<span class="material-icons">more_horiz</span>
+								</a>
+							</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="icons">
+									<a href="#">
+										<span class="material-icons active">comment</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">image</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">videocam</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">mic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">pin_drop</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">play_circle_filled</span>
+									</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="contacts">
+									<img src="../../static/img/ramona.jpeg" alt="" class="person">
+									<img src="../../static/img/envy.jpg" alt="" class="person">
+									<img src="../../static/img/wallace.jpeg" alt="" class="person">
+									<div class="person plus">
+										<p>+5</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+            </div>
+            <div class="btns-cont center create">
+                <a id="create-memories" class="button color-white round large">Create memories</a>
+            </div>
+            <div class="footer">
+                <div class="sqr_bck" id="sqr4"></div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+
+</script>

@@ -14,14 +14,14 @@
 						</div>
 						<a href="" class="avatar-fab">
 							<img id="logged-user-picture" src="../../static/img/chris_evans_crop1569801286473.png"
-							alt="">
+								alt="">
 						</a>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="page-content" id="home-memories">
-			<div class="sqr_bck" data-papitas id="sqr1"></div>
+			<div class="sqr_bck" id="sqr1"></div>
 			<div class="sqr_bck" id="sqr2"></div>
 			<div class="sqr_bck" id="sqr3"></div>
 			<div class="contacts-cont">
@@ -30,24 +30,25 @@
 					<i class="icons material-icons">add</i>
 				</a>
 			</div>
-			
+
 			<div data-space-between="25" data-slides-per-view="3.3"
-			class="swiper-container swiper-init contacts-swiper">
-			<div class="swiper-wrapper">
-				{{#each Contacts}}
-				<div class="swiper-slide">
-					<div class="person-cont">
-						<a href="#" class="avatar-person popover-open" data-user="{{id}}" data-popover=".popover-person">
-							{{#js_if "this.profilePicture != ''"}}
-							<img src="{{@root.Server}}{{picture}}" alt="" srcset="">
-							{{else}}
-							<img src="" alt="" srcset="">
-						</a>
-						<p class="name-person">{{name}}</p>
+				class="swiper-container swiper-init contacts-swiper">
+				<div class="swiper-wrapper">
+					{{#each Contacts}}
+					<div class="swiper-slide">
+						<div class="person-cont">
+							<a href="#" class="avatar-person popover-open" data-user="{{id}}"
+								data-popover=".popover-person">
+								{{#js_if "this.profilePicture != ''"}}
+								<img src="{{@root.Server}}{{picture}}" alt="" srcset="">
+								{{else}}
+								<img src="" alt="" srcset="">
+							</a>
+							<p class="name-person">{{name}}</p>
+						</div>
 					</div>
-				</div>
-				{{/each}}
-				<!-- <div class="swiper-slide">
+					{{/each}}
+					<!-- <div class="swiper-slide">
 					<div class="person-cont">
 						<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
 							<img src="../../static/img/wallace.jpeg" alt="" srcset="">
@@ -113,462 +114,441 @@
 						<p class="name-person">Gideon</p>
 					</div>
 				</div> -->
-			</div>
-		</div>
-		<div class="create-title">Create</div>
-		<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init create-swiper">
-			<div class="swiper-wrapper">
-				<div class="swiper-slide">
-					<div class="card simple memory" id="new">
-						<img src="../../static/img/Pluma_card.png" alt="" srcset="">
-						<div class="card-content">
-							<p> New Memory </p>
-						</div>
-					</div>
-				</div>
-				<div class="swiper-slide">
-					<div class="card simple memory" id="birthday">
-						<img src="../../static/img/Regalo_card.png" alt="" srcset="">
-						<div class="card-content">
-							<p> Birthday Memory </p>
-						</div>
-					</div>
-				</div>
-				<div class="swiper-slide">
-					<div class="card simple memory" id="colagge">
-						<img src="../../static/img/sqrs.png" alt="" srcset=""
-						style="margin-left: 4px; margin-top: 2px;">
-						<div class="card-content">
-							<p> Colagge </p>
-						</div>
-					</div>
-				</div>
-				<div class="swiper-slide">
-					<div class="card simple memory" id="special">
-						<img src="../../static/img/Pluma_card_tail.png" alt="" srcset="">
-						<div class="card-content">
-							<p> Especial Memory </p>
-						</div>
-					</div>
 				</div>
 			</div>
-		</div>
-		<div class="scheduled-title">Scheduled</div>
-		<div data-space-between="10" data-slides-per-view="1.1"
-		class="swiper-container swiper-init sheduled-swiper">
-		<div class="swiper-wrapper">
-			<div class="swiper-slide">
-				<div class="card complete v1">
-					<div class="card-header">
-						<div class="title-card">
-							<h1>Good trip</h1>
-							<p>04/18/2020</p>
-						</div>
-						<a href="#" class="edit popover-open" data-popover=".popover-opt">
-							<span class="material-icons">more_horiz</span>
-						</a>
-					</div>
-					<div class="card-content">
-						<img src="../../static/img/cover.png" alt="" srcset="">
-						<div class="icons">
-							<a href="#">
-								<span class="material-icons">comment</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">image</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">videocam</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">mic</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">pin_drop</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">play_circle_filled</span>
-							</a>
+			<div class="create-title">Create</div>
+			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init create-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="card simple memory" id="new">
+							<img src="../../static/img/Pluma_card.png" alt="" srcset="">
+							<div class="card-content">
+								<p> New Memory </p>
+							</div>
 						</div>
 					</div>
-					<div class="card-footer">
-						<div class="contacts">
-							<img src="../../static/img/ramona.jpeg" alt="" class="person">
-							<img src="../../static/img/envy.jpg" alt="" class="person">
-							<img src="../../static/img/wallace.jpeg" alt="" class="person">
-							<div class="person plus">
-								<p>+5</p>
+					<div class="swiper-slide">
+						<div class="card simple memory" id="birthday">
+							<img src="../../static/img/Regalo_card.png" alt="" srcset="">
+							<div class="card-content">
+								<p> Birthday Memory </p>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card simple memory" id="colagge">
+							<img src="../../static/img/sqrs.png" alt="" srcset=""
+								style="margin-left: 4px; margin-top: 2px;">
+							<div class="card-content">
+								<p> Colagge </p>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card simple memory" id="special">
+							<img src="../../static/img/Pluma_card_tail.png" alt="" srcset="">
+							<div class="card-content">
+								<p> Especial Memory </p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="swiper-slide">
-				<div class="card complete v1">
-					<div class="card-header">
-						<div class="title-card">
-							<h1>Good trip</h1>
-							<p>04/18/2020</p>
-						</div>
-						<a href="#" class="edit popover-open" data-popover=".popover-opt">
-							<span class="material-icons">more_horiz</span>
-						</a>
-					</div>
-					<div class="card-content">
-						<img src="../../static/img/cover.png" alt="" srcset="">
-						<div class="icons">
-							<a href="#">
-								<span class="material-icons">comment</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">image</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">videocam</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">mic</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">pin_drop</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">play_circle_filled</span>
-							</a>
-						</div>
-					</div>
-					<div class="card-footer">
-						<div class="contacts">
-							<img src="../../static/img/ramona.jpeg" alt="" class="person">
-							<img src="../../static/img/envy.jpg" alt="" class="person">
-							<img src="../../static/img/wallace.jpeg" alt="" class="person">
-							<div class="person plus">
-								<p>+5</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="swiper-slide">
-				<div class="card complete v1">
-					<div class="card-header">
-						<div class="title-card">
-							<h1>Good trip</h1>
-							<p>04/18/2020</p>
-						</div>
-						<a href="#" class="edit popover-open" data-popover=".popover-opt">
-							<span class="material-icons">more_horiz</span>
-						</a>
-					</div>
-					<div class="card-content">
-						<img src="../../static/img/cover.png" alt="" srcset="">
-						<div class="icons">
-							<a href="#">
-								<span class="material-icons">comment</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">image</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">videocam</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">mic</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">pin_drop</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">play_circle_filled</span>
-							</a>
-						</div>
-					</div>
-					<div class="card-footer">
-						<div class="contacts">
-							<img src="../../static/img/ramona.jpeg" alt="" class="person">
-							<img src="../../static/img/envy.jpg" alt="" class="person">
-							<img src="../../static/img/wallace.jpeg" alt="" class="person">
-							<div class="person plus">
-								<p>+5</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="swiper-slide">
-				<div class="card complete v1">
-					<div class="card-header">
-						<div class="title-card">
-							<h1>Good trip</h1>
-							<p>04/18/2020</p>
-						</div>
-						<a href="#" class="edit popover-open" data-popover=".popover-opt">
-							<span class="material-icons">more_horiz</span>
-						</a>
-					</div>
-					<div class="card-content">
-						<img src="../../static/img/cover.png" alt="" srcset="">
-						<div class="icons">
-							<a href="#">
-								<span class="material-icons">comment</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">image</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">videocam</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">mic</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">pin_drop</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">play_circle_filled</span>
-							</a>
-						</div>
-					</div>
-					<div class="card-footer">
-						<div class="contacts">
-							<img src="../../static/img/ramona.jpeg" alt="" class="person">
-							<img src="../../static/img/envy.jpg" alt="" class="person">
-							<img src="../../static/img/wallace.jpeg" alt="" class="person">
-							<div class="person plus">
-								<p>+5</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="later-title">Send later</div>
-	<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init later-swiper">
-		<div class="swiper-wrapper">
-			<div class="swiper-slide">
-				<div class="card complete v1">
-					<div class="card-header">
-						<div class="title-card">
-							<h1>Good trip</h1>
-						</div>
-						<a href="#" class="edit popover-open" data-popover=".popover-opt">
-							<span class="material-icons">more_horiz</span>
-						</a>
-					</div>
-					<div class="card-content">
-						<img src="../../static/img/cover.png" alt="" srcset="">
-						<div class="icons">
-							<a href="#">
-								<span class="material-icons active">comment</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">image</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">videocam</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">mic</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">pin_drop</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">play_circle_filled</span>
-							</a>
-						</div>
-					</div>
-					<div class="card-footer">
-						<div class="contacts">
-							<img src="../../static/img/ramona.jpeg" alt="" class="person">
-							<img src="../../static/img/envy.jpg" alt="" class="person">
-							<img src="../../static/img/wallace.jpeg" alt="" class="person">
-							<div class="person plus">
-								<p>+5</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="swiper-slide">
-				<div class="card complete v1">
-					<div class="card-header">
-						<div class="title-card">
-							<h1>Good trip</h1>
-						</div>
-						<a href="#" class="edit popover-open" data-popover=".popover-opt">
-							<span class="material-icons">more_horiz</span>
-						</a>
-					</div>
-					<div class="card-content">
-						<img src="../../static/img/cover.png" alt="" srcset="">
-						<div class="icons">
-							<a href="#">
-								<span class="material-icons active">comment</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">image</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">videocam</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">mic</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">pin_drop</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">play_circle_filled</span>
-							</a>
-						</div>
-					</div>
-					<div class="card-footer">
-						<div class="contacts">
-							<img src="../../static/img/ramona.jpeg" alt="" class="person">
-							<img src="../../static/img/envy.jpg" alt="" class="person">
-							<img src="../../static/img/wallace.jpeg" alt="" class="person">
-							<div class="person plus">
-								<p>+5</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="swiper-slide">
-				<div class="card complete v1">
-					<div class="card-header">
-						<div class="title-card">
-							<h1>Good trip</h1>
-						</div>
-						<a href="#" class="edit popover-open" data-popover=".popover-opt">
-							<span class="material-icons">more_horiz</span>
-						</a>
-					</div>
-					<div class="card-content">
-						<img src="../../static/img/cover.png" alt="" srcset="">
-						<div class="icons">
-							<a href="#">
-								<span class="material-icons active">comment</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">image</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">videocam</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">mic</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">pin_drop</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">play_circle_filled</span>
-							</a>
-						</div>
-					</div>
-					<div class="card-footer">
-						<div class="contacts">
-							<img src="../../static/img/ramona.jpeg" alt="" class="person">
-							<img src="../../static/img/envy.jpg" alt="" class="person">
-							<img src="../../static/img/wallace.jpeg" alt="" class="person">
-							<div class="person plus">
-								<p>+5</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="swiper-slide">
-				<div class="card complete v1">
-					<div class="card-header">
-						<div class="title-card">
-							<h1>Good trip</h1>
-						</div>
-						<a href="#" class="edit popover-open" data-popover=".popover-opt">
-							<span class="material-icons">more_horiz</span>
-						</a>
-					</div>
-					<div class="card-content">
-						<img src="../../static/img/cover.png" alt="" srcset="">
-						<div class="icons">
-							<a href="#">
-								<span class="material-icons active">comment</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">image</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">videocam</span>
-							</a>
-							<a href="#">
-								<span class="material-icons">mic</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">pin_drop</span>
-							</a>
-							<a href="#">
-								<span class="material-icons active">play_circle_filled</span>
-							</a>
-						</div>
-					</div>
-					<div class="card-footer">
-						<div class="contacts">
-							<img src="../../static/img/ramona.jpeg" alt="" class="person">
-							<img src="../../static/img/envy.jpg" alt="" class="person">
-							<img src="../../static/img/wallace.jpeg" alt="" class="person">
-							<div class="person plus">
-								<p>+5</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="donate-title">Donate</div>
-	<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init donate-swiper">
-		<div class="swiper-wrapper">
-			<div class="swiper-slide">
-				<div class="card card-expandable">
-					<div class="card-content">
-						<div class="bg-video">
-							<div class="sqr_bck" id="sqr6"></div>
-							<div class="sqr_bck" id="sqr7"></div>
-							<div class="sqr_bck" id="sqr8"></div>
-							<span class="material-icons play card-opened-fade-out">play_circle_outline</span>
-						</div>
-						<div class="card-content-padding">
-							<div class="btns-cont card-opened-fade-out">
-								<a href="#" class="btn-card">Give now</a>
-							</div>
-							<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
-								elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-								ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
-								amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="swiper-slide">
-					<div class="card card-expandable">
-						<div class="card-content">
-							<div class="bg-video">
-								<div class="sqr_bck" id="sqr6"></div>
-								<div class="sqr_bck" id="sqr7"></div>
-								<div class="sqr_bck" id="sqr8"></div>
-								<span class="material-icons play card-opened-fade-out">play_circle_outline</span>
-							</div>
-							<div class="card-content-padding">
-								<div class="btns-cont card-opened-fade-out">
-									<a href="#" class="btn-card">Give now</a>
+			<div class="scheduled-title">Scheduled</div>
+			<div data-space-between="10" data-slides-per-view="1.1"
+				class="swiper-container swiper-init sheduled-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">
+								<div class="title-card">
+									<h1>Good trip</h1>
+									<p>04/18/2020</p>
 								</div>
-								<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
-									elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-									ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
-									amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+								<a href="#" class="edit popover-open" data-popover=".popover-opt">
+									<span class="material-icons">more_horiz</span>
+								</a>
+							</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="icons">
+									<a href="#">
+										<span class="material-icons">comment</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">image</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">videocam</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">mic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">pin_drop</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">play_circle_filled</span>
+									</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="contacts">
+									<img src="../../static/img/ramona.jpeg" alt="" class="person">
+									<img src="../../static/img/envy.jpg" alt="" class="person">
+									<img src="../../static/img/wallace.jpeg" alt="" class="person">
+									<div class="person plus">
+										<p>+5</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">
+								<div class="title-card">
+									<h1>Good trip</h1>
+									<p>04/18/2020</p>
+								</div>
+								<a href="#" class="edit popover-open" data-popover=".popover-opt">
+									<span class="material-icons">more_horiz</span>
+								</a>
+							</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="icons">
+									<a href="#">
+										<span class="material-icons">comment</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">image</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">videocam</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">mic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">pin_drop</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">play_circle_filled</span>
+									</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="contacts">
+									<img src="../../static/img/ramona.jpeg" alt="" class="person">
+									<img src="../../static/img/envy.jpg" alt="" class="person">
+									<img src="../../static/img/wallace.jpeg" alt="" class="person">
+									<div class="person plus">
+										<p>+5</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">
+								<div class="title-card">
+									<h1>Good trip</h1>
+									<p>04/18/2020</p>
+								</div>
+								<a href="#" class="edit popover-open" data-popover=".popover-opt">
+									<span class="material-icons">more_horiz</span>
+								</a>
+							</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="icons">
+									<a href="#">
+										<span class="material-icons">comment</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">image</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">videocam</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">mic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">pin_drop</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">play_circle_filled</span>
+									</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="contacts">
+									<img src="../../static/img/ramona.jpeg" alt="" class="person">
+									<img src="../../static/img/envy.jpg" alt="" class="person">
+									<img src="../../static/img/wallace.jpeg" alt="" class="person">
+									<div class="person plus">
+										<p>+5</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">
+								<div class="title-card">
+									<h1>Good trip</h1>
+									<p>04/18/2020</p>
+								</div>
+								<a href="#" class="edit popover-open" data-popover=".popover-opt">
+									<span class="material-icons">more_horiz</span>
+								</a>
+							</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="icons">
+									<a href="#">
+										<span class="material-icons">comment</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">image</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">videocam</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">mic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">pin_drop</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">play_circle_filled</span>
+									</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="contacts">
+									<img src="../../static/img/ramona.jpeg" alt="" class="person">
+									<img src="../../static/img/envy.jpg" alt="" class="person">
+									<img src="../../static/img/wallace.jpeg" alt="" class="person">
+									<div class="person plus">
+										<p>+5</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="later-title">Send later</div>
+			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init later-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">
+								<div class="title-card">
+									<h1>Good trip</h1>
+								</div>
+								<a href="#" class="edit popover-open" data-popover=".popover-opt">
+									<span class="material-icons">more_horiz</span>
+								</a>
+							</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="icons">
+									<a href="#">
+										<span class="material-icons active">comment</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">image</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">videocam</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">mic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">pin_drop</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">play_circle_filled</span>
+									</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="contacts">
+									<img src="../../static/img/ramona.jpeg" alt="" class="person">
+									<img src="../../static/img/envy.jpg" alt="" class="person">
+									<img src="../../static/img/wallace.jpeg" alt="" class="person">
+									<div class="person plus">
+										<p>+5</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">
+								<div class="title-card">
+									<h1>Good trip</h1>
+								</div>
+								<a href="#" class="edit popover-open" data-popover=".popover-opt">
+									<span class="material-icons">more_horiz</span>
+								</a>
+							</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="icons">
+									<a href="#">
+										<span class="material-icons active">comment</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">image</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">videocam</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">mic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">pin_drop</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">play_circle_filled</span>
+									</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="contacts">
+									<img src="../../static/img/ramona.jpeg" alt="" class="person">
+									<img src="../../static/img/envy.jpg" alt="" class="person">
+									<img src="../../static/img/wallace.jpeg" alt="" class="person">
+									<div class="person plus">
+										<p>+5</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">
+								<div class="title-card">
+									<h1>Good trip</h1>
+								</div>
+								<a href="#" class="edit popover-open" data-popover=".popover-opt">
+									<span class="material-icons">more_horiz</span>
+								</a>
+							</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="icons">
+									<a href="#">
+										<span class="material-icons active">comment</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">image</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">videocam</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">mic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">pin_drop</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">play_circle_filled</span>
+									</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="contacts">
+									<img src="../../static/img/ramona.jpeg" alt="" class="person">
+									<img src="../../static/img/envy.jpg" alt="" class="person">
+									<img src="../../static/img/wallace.jpeg" alt="" class="person">
+									<div class="person plus">
+										<p>+5</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="card complete v1">
+							<div class="card-header">
+								<div class="title-card">
+									<h1>Good trip</h1>
+								</div>
+								<a href="#" class="edit popover-open" data-popover=".popover-opt">
+									<span class="material-icons">more_horiz</span>
+								</a>
+							</div>
+							<div class="card-content">
+								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="icons">
+									<a href="#">
+										<span class="material-icons active">comment</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">image</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">videocam</span>
+									</a>
+									<a href="#">
+										<span class="material-icons">mic</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">pin_drop</span>
+									</a>
+									<a href="#">
+										<span class="material-icons active">play_circle_filled</span>
+									</a>
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="contacts">
+									<img src="../../static/img/ramona.jpeg" alt="" class="person">
+									<img src="../../static/img/envy.jpg" alt="" class="person">
+									<img src="../../static/img/wallace.jpeg" alt="" class="person">
+									<div class="person plus">
+										<p>+5</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="donate-title">Donate</div>
+			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init donate-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="card card-expandable">
+							<div class="card-content">
+								<div class="bg-video">
+									<div class="sqr_bck" id="sqr6"></div>
+									<div class="sqr_bck" id="sqr7"></div>
+									<div class="sqr_bck" id="sqr8"></div>
+									<span class="material-icons play card-opened-fade-out">play_circle_outline</span>
+								</div>
+								<div class="card-content-padding">
+									<div class="btns-cont card-opened-fade-out">
+										<a href="#" class="btn-card">Give now</a>
+									</div>
+									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
 								</div>
 							</div>
 						</div>
@@ -590,129 +570,151 @@
 										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
 										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
 										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<div class="card card-expandable">
-								<div class="card-content">
-									<div class="bg-video">
-										<div class="sqr_bck" id="sqr6"></div>
-										<div class="sqr_bck" id="sqr7"></div>
-										<div class="sqr_bck" id="sqr8"></div>
-										<span class="material-icons play card-opened-fade-out">play_circle_outline</span>
-									</div>
-									<div class="card-content-padding">
-										<div class="btns-cont card-opened-fade-out">
-											<a href="#" class="btn-card">Give now</a>
-										</div>
-										<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
-											elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-											ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
-											amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="footer">
-						<div class="sqr_bck" id="sqr4"></div>
-						<div class="sqr_bck" id="sqr5"></div>
-					</div>
-				</div>
-				<div class="popover popover-opt">
-					<div class="popover-inner">
-						<div class="list">
-							<ul>
-								<li><a class="list-button item-link" href="#">Edit</a></li>
-								<li><a class="list-button item-link" href="#">Delete</a></li>
-							</ul>
+					<div class="swiper-slide">
+						<div class="card card-expandable">
+							<div class="card-content">
+								<div class="bg-video">
+									<div class="sqr_bck" id="sqr6"></div>
+									<div class="sqr_bck" id="sqr7"></div>
+									<div class="sqr_bck" id="sqr8"></div>
+									<span class="material-icons play card-opened-fade-out">play_circle_outline</span>
+								</div>
+								<div class="card-content-padding">
+									<div class="btns-cont card-opened-fade-out">
+										<a href="#" class="btn-card">Give now</a>
+									</div>
+									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="popover popover-person">
-					<div class="popover-inner">
-						<div class="list">
-							<ul>
-								<li><a id="edit-contact-btn" class="list-button item-link popover-close" href="#">Edit profile</a></li>
-								<li><a class="list-button item-link popover-close" href="#">Create Memory</a></li>
-							</ul>
+					<div class="swiper-slide">
+						<div class="card card-expandable">
+							<div class="card-content">
+								<div class="bg-video">
+									<div class="sqr_bck" id="sqr6"></div>
+									<div class="sqr_bck" id="sqr7"></div>
+									<div class="sqr_bck" id="sqr8"></div>
+									<span class="material-icons play card-opened-fade-out">play_circle_outline</span>
+								</div>
+								<div class="card-content-padding">
+									<div class="btns-cont card-opened-fade-out">
+										<a href="#" class="btn-card">Give now</a>
+									</div>
+									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</template>
-		<script>
-			import $$ from "dom7";
-			import localforage from "localforage";
-			export default {
-				on: {
-					pageInit: async function (e, page) {
-						var self = this;
-						var app = self.$app;
-						
-						console.log("home-memories pageInit [pageInit], updating user");
-						
-						await app.methods.updateCurrentUser();
-						await app.methods.loadContacts();
-						var loggedUser = await app.methods.getLocalValue('loggedUser');
-						
-						if (loggedUser == null) {
-							app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
-							app.views.main.router.navigate('/');
+			<div class="footer">
+				<div class="sqr_bck" id="sqr4"></div>
+				<div class="sqr_bck" id="sqr5"></div>
+			</div>
+		</div>
+		<div class="popover popover-opt">
+			<div class="popover-inner">
+				<div class="list">
+					<ul>
+						<li><a class="list-button item-link" href="#">Edit</a></li>
+						<li><a class="list-button item-link" href="#">Delete</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="popover popover-person">
+			<div class="popover-inner">
+				<div class="list">
+					<ul>
+						<li><a id="edit-contact-btn" class="list-button item-link popover-close" href="#">Edit
+								profile</a></li>
+						<li><a class="list-button item-link popover-close" href="#">Create Memory</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+<script>
+	import $$ from "dom7";
+	import localforage from "localforage";
+	export default {
+		on: {
+			pageInit: async function (e, page) {
+				var self = this;
+				var app = self.$app;
+
+				console.log("home-memories pageInit [pageInit], updating user");
+
+				await app.methods.updateCurrentUser();
+				await app.methods.loadContacts();
+				var loggedUser = await app.methods.getLocalValue('loggedUser');
+
+				if (loggedUser == null) {
+					app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
+					app.views.main.router.navigate('/');
+				}
+				updateControls();
+
+				$$('.avatar-person').on('click', function (val) {
+					console.log($$(this).prop("dataset").user);
+					$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
+					console.log($$('.popover-person'));
+				})
+
+				$$('.card.memory').click(function (val) {
+					console.log($$(this).attr('id'));
+					switch ($$(this).attr('id')) {
+						case 'new':
+							app.views.main.router.navigate('/memories/create');
+							break;
+						case 'birthday':
+							app.views.main.router.navigate('/memories/birthday');
+							break;
+						case 'colagge':
+							break;
+						case 'special':
+							break;
+					}
+				});
+
+				function updateControls() {
+					if (loggedUser != null) {
+						var currentMembership = loggedUser.currentMembership;
+						if (currentMembership === null) {
+							currentMembership = "No Membership";
 						}
-						updateControls();
-						
-						$$('.avatar-person').on('click', function(val){
-							console.log($$(this).prop("dataset").user);
-							$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
-							console.log($$('.popover-person'));
-						})
-						
-						$$('.card.memory').click(function (val) {
-							console.log($$(this).attr('id'));
-							switch ($$(this).attr('id')) {
-								case 'new':
-								app.views.main.router.navigate('/memories/create');
-								break;
-								case 'birthday':
-								app.views.main.router.navigate('/memories/birthday');
-								break;
-								case 'colagge':
-								break;
-								case 'special':
-								break;
-							}
-						});
-						
-						function updateControls() {
-							if (loggedUser != null) {
-								var currentMembership = loggedUser.currentMembership;
-								if (currentMembership === null) {
-									currentMembership = "No Membership";
-								}
-								else {
-									currentMembership = loggedUser.currentMembership.plan.name + " membership";
-								}
-								
-								$$("#logged-user-name")[0].textContent = loggedUser.username;
-								$$("#logged-user-membership")[0].textContent = currentMembership;
-								if (loggedUser.profilePicture != null) {
-									$$("#logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
-								}
-							}
-							else {
-								console.log("User was null, not updating anything [pageInit.updateControls]");
-							}
+						else {
+							currentMembership = loggedUser.currentMembership.plan.name + " membership";
 						}
-					},
-				},
-			};
-		</script>
-		<style>
-			.capitalize {
-				text-transform: capitalize;
-			}
-		</style>
+
+						$$("#logged-user-name")[0].textContent = loggedUser.username;
+						$$("#logged-user-membership")[0].textContent = currentMembership;
+						if (loggedUser.profilePicture != null) {
+							$$("#logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+						}
+					}
+					else {
+						console.log("User was null, not updating anything [pageInit.updateControls]");
+					}
+				}
+			},
+		},
+	};
+</script>
+<style>
+	.capitalize {
+		text-transform: capitalize;
+	}
+</style>
