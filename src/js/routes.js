@@ -323,9 +323,29 @@ var routes = [{
         {
             context: {
                 Server: server,
-                Contacts: contacts,
+                Contacts: getContacts(contacts),
             }
         });
+
+        /*
+        {
+            id: 1,
+            name: username,
+            profilepicture
+        }
+        */
+        function getContacts(baseRelation)
+        {
+            let contactsObject = [];
+            baseRelation.forEach(relation => {
+                contactsObject.push({
+                    id: relation.contact.id,
+                    name: relation.contact.username,
+                    picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : ''
+                });
+            });
+            return contactsObject;
+        }
     }
     // component: HomeMemories,
 },

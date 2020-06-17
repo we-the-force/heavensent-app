@@ -37,10 +37,13 @@
 				{{#each Contacts}}
 				<div class="swiper-slide">
 					<div class="person-cont">
-						<a href="#" class="avatar-person popover-open" data-user="{{contact.id}}" data-popover=".popover-person">
-							<img src="{{@root.Server}}{{contact.profilePicture.url}}" alt="" srcset="">
+						<a href="#" class="avatar-person popover-open" data-user="{{id}}" data-popover=".popover-person">
+							{{#js_if "this.profilePicture != ''"}}
+							<img src="{{@root.Server}}{{picture}}" alt="" srcset="">
+							{{else}}
+							<img src="" alt="" srcset="">
 						</a>
-						<p class="name-person">{{contact.username}}</p>
+						<p class="name-person">{{name}}</p>
 					</div>
 				</div>
 				{{/each}}
