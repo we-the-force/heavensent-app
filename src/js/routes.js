@@ -69,13 +69,6 @@ async function isMembershipValid(to, from, resolve, reject)
 {
     var router = this;
     var app = router.app;
-    // console.log("");
-    // console.log("");
-    // console.log("checkAuth start");
-    // console.log("To");
-    // console.log(to);
-    // console.log("From");
-    // console.log(from);
     
     if (await app.methods.userHasValidMembership())
     {
@@ -316,7 +309,8 @@ var routes = [{
         var app = router.app;
         var server = app.data.server;
         var contacts = await app.methods.getLocalValue('loggedUserContacts');
-        // console.log(`Async function to home-memories, server: ${server}`);
+        console.log(contacts);
+        console.log(`Async function to home-memories, server: ${server}`);
         resolve({
             component: HomeMemories,
         },
