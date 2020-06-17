@@ -5,7 +5,7 @@
             <div class="navbar-inner sliding">
                 <div class="header-cont">
                     <div class="header">
-                        <a href="/memories/home" class="back-btn">
+                        <a class="back-btn">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
                         <h1 class="title">Create Memory</h1>
@@ -52,7 +52,8 @@
 
                 <div class="progress-cont">
                     <p class="bar"><span data-progress="0" class="progressbar" id="space-progressbar"></span></p>
-                    <p class="desc">Available space 100MB our of 100MB</p>
+                    <div class="desc">Available space <div id="prog">100</div>MB out of <div id="total">100</div>MB
+                    </div>
                 </div>
                 <div class="media-cont">
                     <label class="cover" for="add-cover">
@@ -60,8 +61,7 @@
                         <a class="edit popover-open" data-popover=".popover-opt">
                             <span class="material-icons">more_horiz</span>
                         </a>
-                        <input type="file" id="add-cover" class="none"
-                            accept=".doc,.docx,.pdf,audio/*,video/*,image/*,media_type">
+                        <input type="file" id="add-cover" class="none" accept="image/*">
                     </label>
                     <div class="medias">
                         <div class="media">
@@ -81,8 +81,7 @@
                 <div class="btns-cont center add" id="b_02">
                     <label id="add-media" href="" class="add-btn">
                         <i class="icons material-icons">add</i>
-                        <input type="file" id="file-inp" class="none"
-                            accept=".doc,.docx,.pdf,audio/*,video/*,image/*,media_type">
+                        <input type="file" id="file-inp" class="none" accept="video/*,image/*">
                     </label>
                 </div>
             </div>
@@ -120,7 +119,7 @@
             </div>
             <div class="location-cont">
                 <div class="btns-cont center location-btn" id="b_04">
-                    <a id="add-deliver-date" href="/memories/location" class="button color-blue round large">Add
+                    <a id="add-location-btn" href="/memories/location" class="button color-blue round large">Add
                         location</a>
                 </div>
                 <div class="location-map none">
@@ -175,7 +174,7 @@
                 </label>
             </div>
             <div class="btns-cont center create" id="b_04">
-                <a id="add-deliver-date" class="button color-white round large">Create memory</a>
+                <a id="create-btn-memory" class="button color-white round large">Create memory</a>
             </div>
         </div>
         <div class="popup popup-demand">
@@ -273,8 +272,7 @@
                         <li>
                             <label for="file-cover">
                                 <i class="list-button item-link popover-close" href="#" id="edit">Edit</i>
-                                <input type="file" id="file-cover" class="none"
-                                    accept=".doc,.docx,.pdf,audio/*,video/*,image/*,media_type">
+                                <input type="file" id="file-cover" class="none" accept="image/*">
                             </label>
                         </li>
                         <li><a class="list-button item-link popover-close" href="#" id="delete">Delete</a></li>
@@ -289,20 +287,70 @@
     import $$ from "dom7";
     export default {
         on: {
-            pageBeforeIn: function (e, page) {
+            pageInit: function (e, page) {
                 var self = this;
                 var app = self.$app;
+
                 var latlng = sessionStorage.latlng;
                 var addr = sessionStorage.addr;
                 var title = sessionStorage.title;
                 var desc = sessionStorage.desc;
-                var on_demand = sessionStorage.on_demand;
                 var immediately = sessionStorage.immediately;
                 var date = sessionStorage.date;
                 var time = sessionStorage.time;
                 var repeat = sessionStorage.repeat;
                 var date_end = sessionStorage.date_end;
                 var footer = sessionStorage.footer;
+                var on_demand = sessionStorage.on_demand;
+
+                var files = [];
+                var mb = 0;
+                var cover /* = sessionStorage.cover */;
+                var contacts = sessionStorage.contacts;
+                var maxmb = page.route.context.CurrentPlan.plan.memoryQuota;
+                var maxbytes = maxmb * 1000000;
+                var plan = page.route.context.CurrentPlan.plan.name;
+                var toggle_immediately = app.toggle.create({
+                    el: '#immediately-toggle'
+                });
+                var toggle_demand = app.toggle.create({
+                    el: '#on-demand-toggle'
+                });
+                sessionStorage.on_demand = JSON.stringify(toggle_demand.checked);
+
+                $$('.progress-cont .desc').find('#total').text(maxmb);
+                $$('.progress-cont .desc').find('#prog').text(maxmb);
+
+                switch (plan) {
+                    case "basic":
+                        $$('.location-cont #add-location-btn').removeAttr('href');
+                        $$('.location-cont').addClass('none');
+                        $$('.location-title').addClass('none');
+                        $$('.ondemand-cont').addClass('none');
+                        $$('.media-cont #add-media input').attr("accept", "image/*");
+                        break;
+                    case "standard":
+                        $$('.location-cont #add-location-btn').removeAttr('href');
+                        $$('.location-cont').addClass('none');
+                        $$('.location-title').addClass('none');
+                        $$('.ondemand-cont').addClass('none');
+                        break;
+                    case "premium":
+
+                        break;
+                    default:
+                        break;
+                }
+                /* si hay un cover guardado lo coloca */
+                /* if (cover && cover != 'null') {
+                    cover = new Image();
+                    cover.src = JSON.parse(sessionStorage.cover);
+                    mb = JSON.parse(sessionStorage.mb);
+                    $$('.media-cont .cover img').attr('src', cover.src);
+                    $$('.media-cont .cover img').parent().addClass('edit');
+                    progressBar(mb)
+                } */
+
                 if (latlng && addr) {
                     latlng = JSON.parse(latlng);
                     addr = JSON.parse(addr);
@@ -318,20 +366,21 @@
                     });
                     marker.addClass('centerMarker').appendTo(map_2.getDiv());
                 }
+                if (on_demand) {
+                    toggle_demand.checked = JSON.parse(on_demand);
+                }
                 if (title) {
                     $$('input#title').val(JSON.parse(title));
                 }
                 if (desc) {
                     $$('textarea#description').val(JSON.parse(desc));
                 }
-                if (on_demand) {
-                    app.toggle.get('#on-demand-toggle').checked = JSON.parse(on_demand);
-                }
+
                 if (date && time && repeat) {
                     $$('.date-title .edit-btn').removeClass('none');
                     $$('.deliver-cont .btns-cont').addClass('none');
                     $$('.deliver-cont .deliver-info').removeClass('none');
-                    app.toggle.get('#immediately-toggle').checked = JSON.parse(sessionStorage.immediately);
+                    toggle_immediately.checked = JSON.parse(sessionStorage.immediately);
                     $$('#deliver-date').val(JSON.parse(sessionStorage.date));
                     $$('#deliver-time').val(JSON.parse(sessionStorage.time));
                     $$('#select-repeat p').text(JSON.parse(sessionStorage.repeat))
@@ -346,25 +395,9 @@
                     $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date));
                     $$('.deliver-cont .deliver-info .time-info .val').text(JSON.parse(sessionStorage.time));
                 }
-            },
-            pageInit: function (e, page) {
-                var self = this;
-                var app = self.$app;
-                var files = [];
-                var mb = 0;
-                var cover = sessionStorage.cover;
-                var contacts = sessionStorage.contacts;
-                console.log(page.route.context.CurrentPlan);
 
-                /* si hay un cover guardado lo coloca */
-                if (cover && cover != 'null') {
-                    cover = JSON.parse(sessionStorage.cover);
-                    mb = JSON.parse(sessionStorage.mb);
-                    $$('.media-cont .cover img').attr('src', cover);
-                    $$('.media-cont .cover img').parent().addClass('edit');
-                    progressBar(mb)
-                }
                 /* si hay contactos guardados los coloca */
+
                 if (contacts) {
                     contacts = JSON.parse(contacts);
                     $$('.contacts-cont .contacts .person.contact').remove();
@@ -399,6 +432,7 @@
                     } else {
                         input_end.removeClass('grey');
                         input_end.prop("disabled", false);
+                        $$('.pop-deliver-inputs').trigger('change');
                         $$('.popup-deliver .footer').html('The memory will repeat itself ' + $$(this).text() + ' until <div>--/--/----</div>');
                     }
                 })
@@ -422,6 +456,10 @@
                         $$('#accept-deliver-date').removeClass('grey');
                         $$('#accept-deliver-date').addClass('popup-close');
                         $$('#accept-deliver-date').off('click').click(x => deliverAccept());
+                    } else {
+                        $$('#accept-deliver-date').prop('disabled', true);
+                        $$('#accept-deliver-date').addClass('grey');
+                        $$('#accept-deliver-date').removeClass('popup-close');
                     }
                 });
 
@@ -453,14 +491,16 @@
                     if (contacts.length == 0) $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
                 });
 
-                /* cover img */
+                /* delete cover img */
                 $$('.popover-opt .list-button#delete').click(function (val) {
                     let cover_cont = $$('.media-cont .cover');
+                    mb -= cover.size;
+                    progressBar(mb)
                     cover = null;
                     cover_cont.children('img').attr('src', '');
                     cover_cont.removeClass('edit');
                     $$('#add-cover').off('click');
-                    coverSessionstorage(cover);
+                    /* coverSessionstorage(cover); */
                 });
 
                 /* change cover img */
@@ -471,10 +511,10 @@
                         reader.onload = e => {
                             cover_cont.addClass('edit');
                             cover_cont.children('img').attr('src', e.target.result);
-                            coverSessionstorage(e.target.result);
+                            /* coverSessionstorage(e.target.result); */
                         }
                         let newmb = mb - cover.size;
-                        if ((newmb + this.files[0].size) <= 100000000) {
+                        if ((newmb + this.files[0].size) <= maxbytes) {
                             reader.readAsDataURL(this.files[0]);
                             mb -= cover.size;
                             cover = this.files[0];
@@ -495,9 +535,9 @@
                         reader.onload = e => {
                             cover_cont.addClass('edit');
                             cover_cont.children('img').attr('src', e.target.result);
-                            coverSessionstorage(e.target.result);
+                            /* coverSessionstorage(e.target.result); */
                         }
-                        if ((mb + this.files[0].size) <= 100000000) {
+                        if ((mb + this.files[0].size) <= maxbytes) {
                             reader.readAsDataURL(this.files[0]);
                             cover = this.files[0];
                             mb += cover.size;
@@ -506,7 +546,7 @@
                             app.dialog.alert('No space available');
                         }
                     }
-                    $$(this).click(function (event) {
+                    $$(this).on('click', function (event) {
                         event.preventDefault();
                     });
                 });
@@ -550,8 +590,7 @@
                                 }
                             });
                         }
-
-                        if ((mb + this.files[0].size) <= 100000000) {
+                        if ((mb + this.files[0].size) <= maxbytes) {
                             /* 
                                 si no pasa el maximo de tamaño
                                 lee el archivo
@@ -566,6 +605,36 @@
                             app.dialog.alert('No space available');
                         }
                     }
+                });
+
+                $$('.back-btn').click(e => {
+                    sessionStorage.clear();
+                    app.views.main.router.navigate('/memories/home');
+                });
+
+                /* aqui guarda la memoria */
+                $$('#create-btn-memory').click(e => {
+                    let ss = sessionStorage;
+                    /* datos que sean completamente necesarios */
+                    let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
+                    if (check) {
+                        console.log(JSON.parse(ss.title));
+                        console.log(JSON.parse(ss.desc));
+                        console.log(cover);
+                        console.log(files);
+                        console.log(JSON.parse(ss.contacts));
+                        console.log(JSON.parse(ss.latlng));
+                        console.log(JSON.parse(ss.addr));
+                        console.log(JSON.parse(ss.immediately));
+                        console.log(JSON.parse(ss.date));
+                        console.log(JSON.parse(ss.time));
+                        console.log(JSON.parse(ss.repeat));
+                        console.log(JSON.parse(ss.date_end));
+                        console.log(JSON.parse(ss.on_demand));
+                    }
+
+                    sessionStorage.clear();
+                    app.views.main.router.navigate('/memories/home');
                 });
 
                 function deliverAccept() {
@@ -588,15 +657,16 @@
                     sessionStorage.footer = JSON.stringify($$('.popup-deliver .footer').text());
                 }
 
-                function coverSessionstorage(val) {
+                /* function coverSessionstorage(val) {
                     sessionStorage.cover = JSON.stringify(val);
                     sessionStorage.mb = JSON.stringify(mb);
                 }
-
+ */
                 function progressBar(mb) {/* funcion de barra de progreso */
                     let progress = mb / 1000000;
-                    app.progressbar.set('#space-progressbar', progress);
-                    $$('.progress-cont .desc').text('Available space ' + (100 - progress) + 'MB our of 100MB');
+                    let porcent_prog = (progress * 100) / maxmb;
+                    app.progressbar.set('#space-progressbar', porcent_prog);
+                    $$('.progress-cont .desc #prog').text((maxmb - progress));
                 }
             },
         },

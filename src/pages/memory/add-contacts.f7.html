@@ -35,7 +35,7 @@
             <div class="sqr_bck" id="sqr3"></div>
             <div id="family-list" class="family-cont list searchbar-found media-list">
                 <ul>
-                    <li>
+                    <!-- <li>
                         <label class="item-checkbox item-content" data-id="1">
                             <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
                             <div class="item-media"><img src="../../static/img/136128.png" width="44" /></div>
@@ -108,7 +108,7 @@
                                 <div class="item-text">Cousin</div>
                             </div>
                         </label>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <div class="btns-cont center">
@@ -125,9 +125,27 @@
     import $$ from "dom7";
     export default {
         on: {
-            pageInit: function (e, page) {
+            pageInit: async function (e, page) {
                 var self = this;
                 var app = self.$app;
+                var contacts = await app.methods.getLocalValue('loggedUserContacts');
+                if (contacts) {
+                    contacts.forEach(element => {
+                        let picture = element.contact.profilePicture != null ? app.data.server + element.contact.profilePicture.url : "";
+                        $$('<li>' +
+                            '<label class="item-checkbox item-content" data-id="' + element.id + '">' +
+                            '<input type="checkbox" class="chckbx" name="contact-checkbox" value="" />' +
+                            '<div class="item-media"><img src="' + picture + '" width="44" /></div>' +
+                            '<div class="item-inner">' +
+                            '<div class="item-title-row">' +
+                            '<div class="item-title">' + element.contact.username + '</div>' +
+                            '</div>' +
+                            '<div class="item-text">' + element.relation + '</div>' +
+                            '</div>' +
+                            '</label>' +
+                            '</li>').appendTo('.family-cont ul');
+                    });
+                }
 
                 $$('.chckbx').change(function (val) {
                     $$(this).parent().parent().toggleClass('checked');
