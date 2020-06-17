@@ -5,7 +5,7 @@
             <div class="navbar-inner sliding">
                 <div class="header-cont">
                     <div class="header">
-                        <a href="/memories/home" class="back-btn">
+                        <a class="back-btn">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
                         <h1 class="title">Create Memory</h1>
@@ -81,8 +81,7 @@
                 <div class="btns-cont center add" id="b_02">
                     <label id="add-media" href="" class="add-btn">
                         <i class="icons material-icons">add</i>
-                        <input type="file" id="file-inp" class="none"
-                            accept="video/*,image/*">
+                        <input type="file" id="file-inp" class="none" accept="video/*,image/*">
                     </label>
                 </div>
             </div>
@@ -175,7 +174,7 @@
                 </label>
             </div>
             <div class="btns-cont center create" id="b_04">
-                <a id="add-deliver-date" class="button color-white round large">Create memory</a>
+                <a id="create-btn-memory" class="button color-white round large">Create memory</a>
             </div>
         </div>
         <div class="popup popup-demand">
@@ -317,18 +316,18 @@
                 var toggle_demand = app.toggle.create({
                     el: '#on-demand-toggle'
                 });
+                sessionStorage.on_demand = JSON.stringify(toggle_demand.checked);
 
                 $$('.progress-cont .desc').find('#total').text(maxmb);
                 $$('.progress-cont .desc').find('#prog').text(maxmb);
-                console.log(plan);
-                
+
                 switch (plan) {
                     case "basic":
                         $$('.location-cont #add-location-btn').removeAttr('href');
                         $$('.location-cont').addClass('none');
                         $$('.location-title').addClass('none');
                         $$('.ondemand-cont').addClass('none');
-                        $$('.media-cont #add-media input').attr("accept","image/*");
+                        $$('.media-cont #add-media input').attr("accept", "image/*");
                         break;
                     case "standard":
                         $$('.location-cont #add-location-btn').removeAttr('href');
@@ -368,7 +367,7 @@
                     marker.addClass('centerMarker').appendTo(map_2.getDiv());
                 }
                 if (on_demand) {
-                    /* app.toggle.get('#on-demand-toggle').checked = JSON.parse(on_demand); */
+                    toggle_demand.checked = JSON.parse(on_demand);
                 }
                 if (title) {
                     $$('input#title').val(JSON.parse(title));
@@ -606,6 +605,36 @@
                             app.dialog.alert('No space available');
                         }
                     }
+                });
+
+                $$('.back-btn').click(e => {
+                    sessionStorage.clear();
+                    app.views.main.router.navigate('/memories/home');
+                });
+
+                /* aqui guarda la memoria */
+                $$('#create-btn-memory').click(e => {
+                    let ss = sessionStorage;
+                    /* datos que sean completamente necesarios */
+                    let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
+                    if (check) {
+                        console.log(JSON.parse(ss.title));
+                        console.log(JSON.parse(ss.desc));
+                        console.log(cover);
+                        console.log(files);
+                        console.log(JSON.parse(ss.contacts));
+                        console.log(JSON.parse(ss.latlng));
+                        console.log(JSON.parse(ss.addr));
+                        console.log(JSON.parse(ss.immediately));
+                        console.log(JSON.parse(ss.date));
+                        console.log(JSON.parse(ss.time));
+                        console.log(JSON.parse(ss.repeat));
+                        console.log(JSON.parse(ss.date_end));
+                        console.log(JSON.parse(ss.on_demand));
+                    }
+
+                    sessionStorage.clear();
+                    app.views.main.router.navigate('/memories/home');
                 });
 
                 function deliverAccept() {

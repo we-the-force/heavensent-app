@@ -326,7 +326,20 @@ var routes = [{
     name: 'birthday-memories',
     path: '/memories/birthday',
     beforeEnter: [checkAuth, isMembershipValid],
-    component: BirthdayMemory,
+    async: async function (routeTo, routeFrom, resolve, reject) {
+        var router = this;
+        var app = router.app;
+        var currentUser = await app.methods.getLocalValue('loggedUser');
+
+        resolve({
+            component: BirthdayMemory,
+        },
+            {
+                context: {
+                    CurrentPlan: currentUser.currentMembership,
+                }
+            })
+    }
 },
 {
     name: 'location-memories',
