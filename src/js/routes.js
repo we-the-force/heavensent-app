@@ -36,109 +36,93 @@ import DynamicRoutePage from '../pages/dynamic-route.f7.html';
 import RequestAndLoad from '../pages/request-and-load.f7.html';
 import NotFoundPage from '../pages/404.f7.html';
 
-async function checkAuth(to, from, resolve, reject)
-{
+async function checkAuth(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
     var valid = await app.methods.userIsValid();
-    
-    if (valid)
-    {
-        if (await app.methods.userHasAdmin())
-        {
+
+    if (valid) {
+        if (await app.methods.userHasAdmin()) {
             console.log("user had admin [checkAuth()]")
             // await isMembershipValid(to, from, resolve, reject);
             resolve();
         }
-        else
-        {
+        else {
             reject();
             await this.navigate('/');
             return;
         }
     }
-    else
-    {
+    else {
         reject();
         await this.navigate('/');
         return;
         // resolve('/asd/');
     }
 }
-async function isMembershipValid(to, from, resolve, reject)
-{
+async function isMembershipValid(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
-    
-    if (await app.methods.userHasValidMembership())
-    {
+
+    if (await app.methods.userHasValidMembership()) {
         console.log("user has valid membership [isMembershipValid()]");
         resolve();
     }
-    else
-    {
+    else {
         /*
         if you're not coming from select-membership
         from.name != "select-membership"
         */
         let isEmpty = true;
-        for(var prop in from) {
-            if(from.hasOwnProperty(prop))
-            isEmpty = false;
+        for (var prop in from) {
+            if (from.hasOwnProperty(prop))
+                isEmpty = false;
         }
-        
+
         var user = await app.methods.getLocalValue('loggedUser');
-        if (user != null)
-        {
-            if (to.name === "select-membership")
-            {
+        if (user != null) {
+            if (to.name === "select-membership") {
                 console.log("Was going to sleect-membership, letting it go to select-membership [isMembershipValid()]");
                 resolve();
             }
-            else if (!isEmpty)
-            {
+            else if (!isEmpty) {
                 console.log("from isn't empty! [isMembershipValid()]")
-                if (from.name != "select-membership" && to.name != "select-membership")
-                {
+                if (from.name != "select-membership" && to.name != "select-membership") {
                     console.log("you're not (coming from select-memberhip and going to select-membership) [isMembershipValid()]");
                     resolve();
                 }
-                else
-                {
+                else {
                     console.log("Youre either coming from or going to selet-membership  [isMembershipValid()]");
                     reject();
                     await router.navigate({
                         name: 'select-membership',
-                        params: { 
+                        params: {
                             userID: user.id,
                             clearOnBack: "1"
                         }
                     })
                 }
             }
-            else
-            {
+            else {
                 console.log("from was empty, redirecting to select-membership");
                 from = to;
                 console.log(from);
                 reject();
                 await router.navigate({
                     name: 'select-membership',
-                    params: { 
+                    params: {
                         userID: user.id,
                         clearOnBack: "1"
                     }
                 })
             }
         }
-        else
-        {
+        else {
             console.log("user was null, return to login [isMembershipValid()]");
         }
     }
 }
-async function isLoggedIn(to, from, resolve, reject)
-{
+async function isLoggedIn(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
     console.log("-Entering isLoggedIn, updating user");
@@ -146,39 +130,33 @@ async function isLoggedIn(to, from, resolve, reject)
     var user = await app.methods.getLocalValue('loggedUser');
     console.log(user);
     var valid = (await app.methods.userIsValid());
-    if (valid)
-    {
+    if (valid) {
         reject();
-        if (!await app.methods.userHasAdmin())
-        {
+        if (!await app.methods.userHasAdmin()) {
             app.dialog.alert(`Your account has no admin associated with it, please fill out your admin information.`);
             await router.navigate({
                 name: 'invite-admin',
                 params: { userID: user.id }
             })
         }
-        else
-        {
-            if (!await app.methods.userHasValidMembership())
-            {
+        else {
+            if (!await app.methods.userHasValidMembership()) {
                 console.log("membership wasn't valid, going to select-membership [isLoggedIn()]");
                 await router.navigate({
                     name: 'select-membership',
-                    params: { 
+                    params: {
                         userID: user.id,
                         clearOnBack: "1"
                     }
                 })
             }
-            else
-            {
+            else {
                 console.log("Going to memories/home [isLoggedIn()]");
                 await router.navigate('/memories/home');
             }
         }
     }
-    else
-    {
+    else {
         console.log("User was not valid [isLoggedIn()]");
         console.log(valid);
         resolve();
@@ -238,27 +216,27 @@ var routes = [{
     name: 'edit-contact',
     path: '/contact/edit/contact/:contactId',
     beforeEnter: [checkAuth],
-    async: async function(routeTo, routeFrom, resolve, reject){
+    async: async function (routeTo, routeFrom, resolve, reject) {
         var router = this;
         var app = router.app;
         // var currentUser = await app.methods.getLocalValue()
         var contactId = routeTo.params.contactId;
-        
-        await app.request.promise.json(`${app.data.server}/users/${contactId}`).then(function(res){
+
+        await app.request.promise.json(`${app.data.server}/users/${contactId}`).then(function (res) {
             // Do the resolve depending on if the user exists and such.
             // Send the whole thingie or something like that.
-            
+
             // console.log("inside async [routes.edit-contact.async]");
             // console.log(res.data);
-            
+
             resolve({
                 component: EditContact,
             },
-            {
-                context: {
-                    ContactInfo: res.data,
-                }
-            });
+                {
+                    context: {
+                        ContactInfo: res.data,
+                    }
+                });
         })
     }
     // component: EditContact,
@@ -284,19 +262,19 @@ var routes = [{
     name: 'create-memory',
     path: '/memories/create',
     beforeEnter: [checkAuth, isMembershipValid],
-    async: async function(routeTo, routeFrom, resolve, reject){
+    async: async function (routeTo, routeFrom, resolve, reject) {
         var router = this;
         var app = router.app;
         var currentUser = await app.methods.getLocalValue('loggedUser');
-        
+
         resolve({
             component: CreateMemory,
         },
-        {
-            context: {
-                CurrentPlan: currentUser.currentMembership,
-            }
-        })
+            {
+                context: {
+                    CurrentPlan: currentUser.currentMembership,
+                }
+            })
     }
     // component: CreateMemory,
 },
@@ -304,7 +282,7 @@ var routes = [{
     name: 'home-memories',
     path: '/memories/home',
     beforeEnter: [checkAuth, isMembershipValid],
-    async: async function(routeTo, routeFrom, resolve, reject){
+    async: async function (routeTo, routeFrom, resolve, reject) {
         var router = this;
         var app = router.app;
         var server = app.data.server;
@@ -314,12 +292,12 @@ var routes = [{
         resolve({
             component: HomeMemories,
         },
-        {
-            context: {
-                Server: server,
-                Contacts: getContacts(contacts),
-            }
-        });
+            {
+                context: {
+                    Server: server,
+                    Contacts: getContacts(contacts),
+                }
+            });
 
         /*
         {
@@ -328,16 +306,17 @@ var routes = [{
             profilepicture
         }
         */
-        function getContacts(baseRelation)
-        {
+        function getContacts(baseRelation) {
             let contactsObject = [];
-            baseRelation.forEach(relation => {
-                contactsObject.push({
-                    id: relation.contact.id,
-                    name: relation.contact.username,
-                    picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : ''
+            if (baseRelation) {
+                baseRelation.forEach(relation => {
+                    contactsObject.push({
+                        id: relation.contact.id,
+                        name: relation.contact.username,
+                        picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : ''
+                    });
                 });
-            });
+            }
             return contactsObject;
         }
     }
@@ -346,7 +325,7 @@ var routes = [{
 {
     name: 'birthday-memories',
     path: '/memories/birthday',
-    beforeEnter: [checkAuth, isMembershipValid], 
+    beforeEnter: [checkAuth, isMembershipValid],
     component: BirthdayMemory,
 },
 {
@@ -393,132 +372,120 @@ var routes = [{
     name: 'view-membership',
     path: '/membership/view/user/:userID',
     beforeEnter: [checkAuth],
-    async: function(routeTo, routeFrom, resolve, reject){
+    async: function (routeTo, routeFrom, resolve, reject) {
         var router = this;
         var app = router.app;
         var userID = routeTo.params.userID;
-        
+
         app.preloader.show();
-        
+
         console.log("Move to view [view-membership.async]");
         console.log(`${app.data.server}/users/${userID} [view-membership.async]`);
         app.request.promise.json(`${app.data.server}/users/${userID}`)
-        .then(function(res){
-            console.log("Current membership: [view-membership.json]")
-            console.log(res.data.currentMembership);
-            app.preloader.hide();
-            resolve(
-                {
-                    component: ViewMembership,
-                },
-                {
-                    context: {
-                        UserName: GetUserName(res.data),
-                        PlanName: GetPlanName(res.data.currentMembership),
-                        PlanPrice: GetPlanPrice(res.data.currentMembership),
-                        BillingDate: GetNextPayDate(res.data.currentMembership),
-                    }
-                }
-                );
-            });
-            
-            function GetUserName(user)
-            {
-                if (user === null)
-                {
-                    return "No user!";
-                }
-                else
-                {
-                    return user.username;
-                }
-            }
-            function GetPlanName(plan)
-            {
-                if (plan === null)
-                {
-                    return "None";
-                }
-                else
-                {
-                    console.log("Plan: [view-membership.async.getPlanName]");
-                    console.log(plan);
-                    return plan.plan.name;
-                }
-            }
-            function GetPlanPrice(plan)
-            {
-                if (plan === null)
-                {
-                    return "--.--";
-                }
-                else
-                {
-                    return plan.plan.costPerMonth;
-                }
-            }
-            function GetNextPayDate(plan)
-            {
-                if (plan === null)
-                {
-                    return "----------";
-                }
-                else
-                {
-                    return plan.nextBillingDate;
-                }
-            }
-        }
-    },
-    {
-        name: 'payment-confirm-membership',
-        path: '/membership/confirmed',
-        beforeEnter: [checkAuth],
-        component: PaymentConfirmMembership,
-    },
-    {
-        name: 'fundations-single',
-        path: '/fundations-single/',
-        beforeEnter: [checkAuth],
-        component: FundationsSingle,
-    },
-    {
-        name: 'about',
-        path: '/about/',
-        beforeEnter: [checkAuth],
-        async: function (routeTo, routeFrom, resolve, reject) {
-            // Router instance
-            var router = this;
-            
-            // App instance
-            var app = router.app;
-            
-            // Show Preloader
-            app.preloader.show();
-            
-            // User ID from request
-            var userId = routeTo.params.userId;
-            
-            // Simulate Ajax Request
-            setTimeout(function () {
-                // We got user data from request
-                var user = {
-                    firstName: 'Vladimir',
-                    lastName: 'Kharlampidi',
-                    about: 'Hello, i am creator of Framework7! Hope you like it!',
-                    links: [{
-                        title: 'Framework7 Website',
-                        url: 'http://framework7.io',
+            .then(function (res) {
+                console.log("Current membership: [view-membership.json]")
+                console.log(res.data.currentMembership);
+                app.preloader.hide();
+                resolve(
+                    {
+                        component: ViewMembership,
                     },
                     {
-                        title: 'Framework7 Forum',
-                        url: 'http://forum.framework7.io',
-                    },
+                        context: {
+                            UserName: GetUserName(res.data),
+                            PlanName: GetPlanName(res.data.currentMembership),
+                            PlanPrice: GetPlanPrice(res.data.currentMembership),
+                            BillingDate: GetNextPayDate(res.data.currentMembership),
+                        }
+                    }
+                );
+            });
+
+        function GetUserName(user) {
+            if (user === null) {
+                return "No user!";
+            }
+            else {
+                return user.username;
+            }
+        }
+        function GetPlanName(plan) {
+            if (plan === null) {
+                return "None";
+            }
+            else {
+                console.log("Plan: [view-membership.async.getPlanName]");
+                console.log(plan);
+                return plan.plan.name;
+            }
+        }
+        function GetPlanPrice(plan) {
+            if (plan === null) {
+                return "--.--";
+            }
+            else {
+                return plan.plan.costPerMonth;
+            }
+        }
+        function GetNextPayDate(plan) {
+            if (plan === null) {
+                return "----------";
+            }
+            else {
+                return plan.nextBillingDate;
+            }
+        }
+    }
+},
+{
+    name: 'payment-confirm-membership',
+    path: '/membership/confirmed',
+    beforeEnter: [checkAuth],
+    component: PaymentConfirmMembership,
+},
+{
+    name: 'fundations-single',
+    path: '/fundations-single/',
+    beforeEnter: [checkAuth],
+    component: FundationsSingle,
+},
+{
+    name: 'about',
+    path: '/about/',
+    beforeEnter: [checkAuth],
+    async: function (routeTo, routeFrom, resolve, reject) {
+        // Router instance
+        var router = this;
+
+        // App instance
+        var app = router.app;
+
+        // Show Preloader
+        app.preloader.show();
+
+        // User ID from request
+        var userId = routeTo.params.userId;
+
+        // Simulate Ajax Request
+        setTimeout(function () {
+            // We got user data from request
+            var user = {
+                firstName: 'Vladimir',
+                lastName: 'Kharlampidi',
+                about: 'Hello, i am creator of Framework7! Hope you like it!',
+                links: [{
+                    title: 'Framework7 Website',
+                    url: 'http://framework7.io',
+                },
+                {
+                    title: 'Framework7 Forum',
+                    url: 'http://forum.framework7.io',
+                },
                 ]
             };
             // Hide Preloader
             app.preloader.hide();
-            
+
             // Resolve route to load page
             resolve({
                 component: RequestAndLoad,
@@ -544,16 +511,16 @@ var routes = [{
         // Router instance
         var router = this;
         console.log(router);
-        
+
         // App instance
         var app = router.app;
-        
+
         // Show Preloader
         app.preloader.show();
-        
+
         // User ID from request
         var userId = routeTo.params.userId;
-        
+
         // Simulate Ajax Request
         setTimeout(function () {
             // We got user data from request
@@ -569,21 +536,21 @@ var routes = [{
                     title: 'Framework7 Forum',
                     url: 'http://forum.framework7.io',
                 },
-            ]
-        };
-        // Hide Preloader
-        app.preloader.hide();
-        
-        // Resolve route to load page
-        resolve({
-            component: RequestAndLoad,
-        }, {
-            context: {
-                user: user,
-            }
-        });
-    }, 1000);
-},
+                ]
+            };
+            // Hide Preloader
+            app.preloader.hide();
+
+            // Resolve route to load page
+            resolve({
+                component: RequestAndLoad,
+            }, {
+                context: {
+                    user: user,
+                }
+            });
+        }, 1000);
+    },
 },
 {
     path: '(.*)',
