@@ -138,13 +138,24 @@
 							//Admin account doesn't exist
 							console.log(`admin email doesn't exist, creating admin account (${adminEmail}) [pageInit.create-btn.onClick]`);
 							app.request.promise.postJSON(`${app.data.server}/auth/local/register`, {
-								"username": adminName,
+								"username": adminEmail,
 								"password": makeid(10),
 								"email": adminEmail,
 							})
 							.then(async function (adminAccRes) {
+								var createdAdmin = adminAccRes.data.user;
+								console.log("User created, adding extra data [pageInit.create-btn.onClick]");
+								await app.request({
+									url: app.data.server + '/users/' + createdAdmin.id,
+									method: 'PUT',
+									data: {
+										"name": adminName,
+									}
+								});
+								createdAdmin.name = adminName;
+								console.log("Calling assignRelation [pageInit.create-btn.onClick]");
 								//Add to contacts as admin
-								await assignRelation(userID, adminAccRes.data.user, adminRelation, true, adminCouldEdit)
+								await assignRelation(userID, createdAdmin, adminRelation, true, adminCouldEdit)
 							})
 							.catch(function (adminAccError) {
 								app.preloader.hide();
@@ -171,19 +182,19 @@
 				})
 				
 				async function assignRelation(targetUserId, contactUser, contactRelation, contactIsAdmin, contactEditMemories) {
-					console.log("targetUserId [pageInit.assignRelation]");
-					console.log(targetUserId);
-					console.log("adminUser [pageInit.assignRelation]");
-					console.log(contactUser);
-					console.log("relation [pageInit.assignRelation]");
-					console.log(contactRelation);
-					console.log("isAdmin [pageInit.assignRelation]");
-					console.log(contactIsAdmin);
-					console.log("editMemories [pageInit.assignRelation]");
-					console.log(contactEditMemories);
-					await app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUserId}&contact=${contactUser.id}`)
-					.then(async function (res) {
+					// console.log("targetUserId [pageInit.assignRelation]");
+					// console.log(targetUserId);
+					// console.log("adminUser [pageInit.assignRelation]");
+					// console.log(contactUser);
+					// console.log("relation [pageInit.assignRelation]");
+					// console.log(contactRelation);
+					// console.log("isAdmin [pageInit.assignRelation]");
+					// console.log(contactIsAdmin);
+					// console.log("editMemories [pageInit.assignRelation]");
+					// console.log(contactEditMemories);
+					await app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUserId}&contact=${contactUser.id}`).then(async function (res) {
 						if (res.data === "[]") {
+							console.log("user didn't already have a relationship with that other user");
 							await app.request.promise.postJSON(`${app.data.server}/contacts`, {
 								"relation": contactRelation,
 								"owner": {
@@ -194,14 +205,15 @@
 								},
 								"isAdmin": contactIsAdmin,
 								"isMinor": false,
-								"editMemories": contactEditMemories
+								"editMemories": contactEditMemories,
+								"nickname": contactUser.name,
 							})
 							.then(function (assignRelRes) {
 								console.log("response assignRelation [pageInit.assignRelation]");
 								console.log(assignRelRes);
 							})
 							.catch(function (assignRelErr) {
-								console.log("error addignRelation [pageInit.assignRelation]");
+								console.log("error assignRelation [pageInit.assignRelation]");
 								console.log(assignRelErr);
 							})
 						}
