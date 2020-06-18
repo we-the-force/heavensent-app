@@ -699,7 +699,7 @@
 							currentMembership = loggedUser.currentMembership.plan.name + " membership";
 						}
 
-						$$("#logged-user-name")[0].textContent = loggedUser.username;
+						$$("#logged-user-name")[0].textContent = loggedUser.name != undefined ? loggedUser.name : loggedUser.username;
 						$$("#logged-user-membership")[0].textContent = currentMembership;
 						if (loggedUser.profilePicture != null) {
 							$$("#logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;

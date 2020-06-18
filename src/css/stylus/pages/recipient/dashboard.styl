@@ -4,31 +4,37 @@
 
         .page-content
             /* temp */
-            flex-cont(column, unset, unset)
+            flex-cont(column, flex-start, center)
 
-            .swiper-container
+            .memories-swiper
+                width 100%
                 flex-grow 1
+                overflow visible
+                padding 20px 0px
 
+                .swiper-slide
+                    width auto
+                    transform unset
             /* ------------- */
             .sqr_bck
                 deg = -37.5deg
 
                 &#sqr1
-                    sqr(290px, deg)
-                    top -55px
-                    right -270px
+                    sqr(310px, deg)
+                    top -300px
+                    right -105px
                     z-index -1
 
                 &#sqr2
-                    sqr(400px, deg)
-                    bottom -110px
-                    left -345px
+                    sqr(310px, deg)
+                    top 15px
+                    right -260px
                     z-index -1
 
                 &#sqr3
-                    sqr(290px, deg)
-                    bottom -50px
-                    right -200px
+                    sqr(310px, deg)
+                    top 90px
+                    left -270px
                     z-index -1
 
             .footer
@@ -39,10 +45,11 @@
                 z-index -1
 
                 .sqr_bck
-                    deg = -40deg
-
                     &#sqr4
-                        sqr(290px, -15deg)
+                        sqr(400px, 20deg)
                         bottom -250px
-                        left -190px
+                        left -285px
                         z-index -1
+
+            .btns-cont
+                margin 30px 0px
