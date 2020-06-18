@@ -222,7 +222,7 @@ var routes = [{
         // var currentUser = await app.methods.getLocalValue()
         var contactId = routeTo.params.contactId;
 
-        await app.request.promise.json(`${app.data.server}/users/${contactId}`).then(function (res) {
+        await app.request.promise.json(`${app.data.server}/contacts/${contactId}`).then(function (res) {
             // Do the resolve depending on if the user exists and such.
             // Send the whole thingie or something like that.
 
@@ -311,7 +311,7 @@ var routes = [{
             if (baseRelation) {
                 baseRelation.forEach(relation => {
                     contactsObject.push({
-                        id: relation.contact.id,
+                        id: relation.id,
                         name: (relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username,
                         picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : ''
                     });

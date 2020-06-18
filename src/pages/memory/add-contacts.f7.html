@@ -130,10 +130,11 @@
                 var app = self.$app;
                 var contacts = await app.methods.getLocalValue('loggedUserContacts');
                 if (contacts) {
+                    //TODO
                     contacts.forEach(element => {
                         let picture = element.contact.profilePicture != null ? app.data.server + element.contact.profilePicture.url : "";
                         $$('<li>' +
-                            '<label class="item-checkbox item-content" data-id="' + element.id + '">' +
+                            '<label class="item-checkbox item-content" data-id="' + element.contact.id + '">' +
                             '<input type="checkbox" class="chckbx" name="contact-checkbox" value="" />' +
                             '<div class="item-media"><img src="' + picture + '" width="44" /></div>' +
                             '<div class="item-inner">' +
