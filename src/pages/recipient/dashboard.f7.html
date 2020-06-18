@@ -58,7 +58,7 @@
                                 <div class="btns-cont center">
                                     <a class="button color-blue round small">See</a>
                                 </div>
-							</div>
+                            </div>
                         </div>
                     </div>
 
@@ -97,7 +97,7 @@
                                 <div class="btns-cont center">
                                     <a class="button color-blue round small">See</a>
                                 </div>
-							</div>
+                            </div>
                         </div>
                     </div>
                     <div class="swiper-slide">
@@ -135,7 +135,7 @@
                                 <div class="btns-cont center">
                                     <a class="button color-blue round small">See</a>
                                 </div>
-							</div>
+                            </div>
                         </div>
                     </div>
                     <div class="swiper-slide">
@@ -173,7 +173,7 @@
                                 <div class="btns-cont center">
                                     <a class="button color-blue round small">See</a>
                                 </div>
-							</div>
+                            </div>
                         </div>
                     </div>
                     <div class="swiper-slide">
@@ -211,10 +211,10 @@
                                 <div class="btns-cont center">
                                     <a class="button color-blue round small">See</a>
                                 </div>
-							</div>
+                            </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
             <div class="btns-cont center create">
@@ -227,5 +227,14 @@
     </div>
 </template>
 <script>
-
+    import $$ from "dom7";
+    import localforage from "localforage";
+    export default {
+        on: {
+            pageInit: async function (e, page) {
+                var self = this;
+                var app = self.$app;
+            }
+        }
+    }
 </script>

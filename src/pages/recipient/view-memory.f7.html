@@ -27,9 +27,11 @@
             <p class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                 labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</p>
             <div class="tabbar">
-                <a href="#comments" class="memory-tab tab-link tab-link-active" id="comment"><span class="material-icons">comments</span></a>
+                <a href="#comments" class="memory-tab tab-link tab-link-active" id="comment"><span
+                        class="material-icons">comments</span></a>
                 <a href="#images" class="memory-tab tab-link" id="image"><span class="material-icons">image</span></a>
-                <a href="#videos" class="memory-tab tab-link" id="video"><span class="material-icons">videocam</span></a>
+                <a href="#videos" class="memory-tab tab-link" id="video"><span
+                        class="material-icons">videocam</span></a>
                 <a href="#audios" class="memory-tab tab-link" id="audio"><span class="material-icons">mic</span></a>
             </div>
             <div class="tabs-animated-wrap">
@@ -177,5 +179,14 @@
     </div>
 </template>
 <script>
-
+    import $$ from "dom7";
+    import localforage from "localforage";
+    export default {
+        on: {
+            pageInit: async function (e, page) {
+                var self = this;
+                var app = self.$app;
+            }
+        }
+    }
 </script>

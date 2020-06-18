@@ -1,64 +1,74 @@
 <template>
-    <div class="page">
+    <div class="page" id="notification-memory">
+        <div class="artwork"></div>
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="back-btn">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1></h1>
+                        <a href="" class="none">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="page-content">
-            <div class="left">
-                <a href="#" class="link back">
-                    <i class="icon icon-back"></i>
-                    <span class="if-not-md">Back</span>
-                </a>
-            </div>
-            <div>
-                <h1>Mario shared a memory with you!</h1>
-            </div>
-            <div class="card demo-card-header-pic">
-                <h3>Jacob Ethan Goodbye</h1>
-                    <h6 style="color:gray">Sent by Jacob Ethan</h6>
-                    <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg); height: 200px;" class="card-header align-items-flex-end"></div>
-                    <div class="card-content card-content-padding">
-                        <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
+            <div class="sqr_bck" id="sqr1"></div>
+            <div class="sqr_bck" id="sqr2"></div>
+            <h1 class="title">Mario shared a memory with you!</h1>
+            <div class="card complete v_notification_memory">
+                <div class="card-header">
+                    <div class="title-card">
+                        <h1>Jacob Ethan Goodbye</h1>
+                        <p class="sender">Sent by: Jacob Ethan</p>
                     </div>
-                    <!-- <div class="card-footer"><a href="#" class="link">Like</a><a href="#" class="link">Read more</a></div> -->
-                    <div class="row">
-                        <div class="col">
-                            <a id="memory-comment-btn" class="button">
-                                <span class="material-icons">textsms</span>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a id="memory-image-btn" class="button">
-                                <span class="material-icons">insert_photo</span>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a id="memory-video-btn" class="button">
-                                <span class="material-icons">videocam</span>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a id="memory-audio-btn" class="button">
-                                <span class="material-icons">mic</span>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a id="memory-location-btn" class="button">
-                                <span class="material-icons">location_on</span>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a id="memory-play-btn" class="button">
-                                <span class="material-icons">play_circle_filled</span>
-                            </a>
-                        </div>
+                    <a href="#" class="info popover-open" data-popover=".popover-info">
+                        <span class="material-icons">info</span>
+                    </a>
+                </div>
+                <div class="card-content">
+                    <div class="cover">
+                        <img src="../../static/img/background.jpg" alt="">
+                    </div>
+                    <div class="icons">
+                        <span class="material-icons">comment</span>
+                        <span class="material-icons">image</span>
+                        <span class="material-icons">videocam</span>
+                        <span class="material-icons grey">mic</span>
+                        <span class="material-icons grey">pin_drop</span>
+                        <span class="material-icons">play_circle_filled</span>
                     </div>
                 </div>
-                <div>
-                    <h6 style="color:gray">Your memory will be available on <span id="availability-date">12/31/2020</span></h6>
-                </div>
-                <div class="btns-cont center pass">
-                    <a id="remind-btn" class="button color-blue small round" href="">Remind me</a>
-                </div>
             </div>
-        </template>
-        <script>
-            
-        </script>
+            <p class="desc">Your memory will be available on 12/31/2020</p>
+            <div class="btns-cont center location" id="location-btn">
+                <a class="button color-white round small">Location</a>
+            </div>
+            <div class="btns-cont center view" id="view">
+                <a class="button color-blue round large">View memory</a>
+            </div>
+            <div class="btns-cont center remind" id="remind">
+                <a class="button color-blue round large">Remind me</a>
+            </div>
+
+            <div class="footer">
+                <div class="sqr_bck" id="sqr3"></div>
+                <div class="sqr_bck" id="sqr4"></div>
+            </div>
+        </div>
+</template>
+<script>
+    import $$ from "dom7";
+    import localforage from "localforage";
+    export default {
+        on: {
+            pageInit: async function (e, page) {
+                var self = this;
+                var app = self.$app;
+            }
+        }
+    }
+</script>
