@@ -303,7 +303,7 @@ var routes = [{
         {
             id: 1,
             name: username,
-            profilepicture
+            profilepicture: url or ''
         }
         */
         function getContacts(baseRelation) {
@@ -312,7 +312,7 @@ var routes = [{
                 baseRelation.forEach(relation => {
                     contactsObject.push({
                         id: relation.contact.id,
-                        name: relation.contact.username,
+                        name: (relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username,
                         picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : ''
                     });
                 });
