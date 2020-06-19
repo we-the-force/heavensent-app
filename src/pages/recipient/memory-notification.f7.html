@@ -44,13 +44,13 @@
                 </div>
             </div>
             <p class="desc">Your memory will be available on 12/31/2020</p>
-            <div class="btns-cont center location" id="location-btn">
+            <div class="btns-cont center location none" id="location-btn">
                 <a class="button color-white round small">Location</a>
             </div>
-            <div class="btns-cont center view" id="view">
+            <div class="btns-cont center view-memory none" id="view-memory">
                 <a class="button color-blue round large">View memory</a>
             </div>
-            <div class="btns-cont center remind" id="remind">
+            <div class="btns-cont center remind none" id="remind">
                 <a class="button color-blue round large">Remind me</a>
             </div>
 
@@ -68,6 +68,26 @@
             pageInit: async function (e, page) {
                 var self = this;
                 var app = self.$app;
+                var pageID = page.route.params.pageID
+                switch (pageID) {
+                    case "1":
+                        $$('#remind').removeClass('none');
+                        break;
+
+                    case "2":
+                        $$('.desc').text('Your memory will be available on this')
+                        $$('#remind').removeClass('none');
+                        $$('#location-btn').removeClass('none');
+                        break;
+
+                    case "3":
+                        $$('.desc').addClass('none');
+                        $$('#view-memory').removeClass('none');
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
     }
