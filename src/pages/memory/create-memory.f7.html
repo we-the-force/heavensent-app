@@ -220,7 +220,7 @@
                                     <a id="select-repeat" class="select color-white round small popover-open"
                                     data-popover=".popover-repeat">
                                     <i class="material-icons">keyboard_arrow_down</i>
-                                    <p> Every Year</p>
+                                    <p id="select-repeat-value"> Every Year</p>
                                 </a>
                             </div>
                         </div>
@@ -253,13 +253,15 @@
         <div class="list">
             <ul>
                 <li><a class="list-btn never popover-close" href="#">Never</a></li>
-                <li><a class="list-btn every_day popover-close" href="#">Every day</a></li>
+                <!-- <li><a class="list-btn every_day popover-close" href="#">Every day</a></li> -->
                 <li><a class="list-btn weekly popover-close" href="#">Weekly</a></li>
-                <li><a class="list-btn biweekly popover-close" href="#">Biweekly</a></li>
-                <li><a class="list-btn each_month popover-close" href="#">Each month </a></li>
-                <li><a class="list-btn every_3_months popover-close" href="#">Every 3 months</a></li>
-                <li><a class="list-btn every_6_months popover-close" href="#">Every 6 months</a></li>
-                <li><a class="list-btn every_year popover-close checked" href="#">Every year</a></li>
+                <!-- <li><a class="list-btn biweekly popover-close" href="#">Biweekly</a></li> -->
+                <!-- <li><a class="list-btn each_month popover-close" href="#">Each month </a></li> -->
+                <li><a class="list-btn each_month popover-close" href="#">Monthly</a></li>
+                <!-- <li><a class="list-btn every_3_months popover-close" href="#">Every 3 months</a></li> -->
+                <!-- <li><a class="list-btn every_6_months popover-close" href="#">Every 6 months</a></li> -->
+                <!-- <li><a class="list-btn every_year popover-close checked" href="#">Every year</a></li> -->
+                <li><a class="list-btn every_year popover-close checked" href="#">Yearly</a></li>
             </ul>
         </div>
     </div>
@@ -290,9 +292,9 @@
             pageInit: async function (e, page) {
                 var self = this;
                 var app = self.$app;
-
+                
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
-
+                
                 
                 var latlng = sessionStorage.latlng;
                 var addr = sessionStorage.addr;
@@ -628,8 +630,10 @@
                         /* aqui guarda la memoria */
                         $$('#create-btn-memory').click(async e => {
                             let ss = sessionStorage;
-                            
+                            console.log("Create-btn-memory.click");
                             let immediately = $$("#send-immediately-toggle").prop("checked");
+                            let repeat = $$("#select-repeat-value")[0].innerText;
+                            console.log(repeat);
                             let date = $$("#deliver-date").val();
                             console.log(immediately);
                             
@@ -638,23 +642,23 @@
                             /* datos que sean completamente necesarios */
                             let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
                             if (result.valid) {
-                                console.log("Title");
-                                console.log((ss.title));
-                                console.log("Desc");
-                                console.log((ss.desc));
-                                console.log("Cover");
-                                console.log(cover);
-                                console.log("Files");
-                                console.log(files);
-                                console.log("Contacts");
-                                console.log((ss.contacts));
-                                console.log("Latling");
-                                console.log((ss.latlng));
+                                // console.log("Title");
+                                // console.log((ss.title));
+                                // console.log("Desc");
+                                // console.log((ss.desc));
+                                // console.log("Cover");
+                                // console.log(cover);
+                                // console.log("Files");
+                                // console.log(files);
+                                // console.log("Contacts");
+                                // console.log((ss.contacts));
+                                // console.log("Latling");
+                                // console.log((ss.latlng));
                                 // console.log(JSON.parse(ss.addr));
-                                console.log("Immediately");
-                                console.log((immediately));
-                                console.log("Date");
-                                console.log(date);
+                                // console.log("Immediately");
+                                // console.log((immediately));
+                                // console.log("Date");
+                                // console.log(date);
                                 // console.log("Time");
                                 // console.log(JSON.parse(ss.time));
                                 // console.log("Repeat");
@@ -664,42 +668,30 @@
                                 // console.log("on_demand");
                                 // console.log(JSON.parse(ss.on_demand));
                                 
+                                uploadFiles();
+
                                 //CREATE MEMORY
-                                let auxMemory = {
-                                    "title": ss.title,
-                                    "description": ss.desc,
-                                    "owners": [loggedUser.id],
-                                    "recipients": "asd",
-                                    "reminderType": "location",
-                                    "reminder": {},
-                                    "sent": false
-                                }
-                                // await app.request.promise.postJSON(`${app.data.server}/memories`,{
-                                //     "title": ss.title,
-                                //     "owner": {
-                                //         "id": targetUser.id
-                                //     },
-                                //     "contact":{
-                                //         "id": contactUser.id
-                                //     },
-                                //     "isAdmin": contactIsAdmin,
-                                //     "isMinor": contactIsMinor,
-                                //     "editMemories": contactEditMemories
-                                // })
-                                // .then(function (res){
-                                //     console.log("response assignRelation");
-                                //     console.log(res);
-                                //     result.result = true;
-                                //     result.message = "Contact added successfully";
+                                // app.preloader.show("blue");
+                                // await app.request.promise.postJSON(`${app.data.server}/memories`,result.memory).then(async function (res){
+                                //     console.log("");
+                                //     console.log("response memory");
+                                //     var createdMemory = res.data;
+                                //     console.log(createdMemory);
+                                    
+                                //     //UPLOAD COVER
+                                //     await uploadCover(result.memoryFiles.cover, createdMemory.id);
+                                    
+                                //     //UPLOAD OTHER FILES
+                                //     await uploadFiles();
+                                    
                                 // })
                                 // .catch(function(err){
-                                //     console.log("error addignRelation");
+                                //     app.preloader.hide();
+                                //     console.log("error adding memory!");
                                 //     console.log(err);
-                                //     result.result = false;
-                                //     result.message = err;
                                 // })
-                                console.log("* * * * Uploading * * * *");
-                                
+                                // console.log("* * * * Uploading * * * *");
+                                app.preloader.hide();
                                 
                                 // sessionStorage.clear();
                                 // app.views.main.router.navigate('/memories/home');
@@ -713,15 +705,62 @@
                             
                         });
                         
-                        function validateFields(title, desc, cover, files, contacts, latlng, immediately, date, time, repeat, date_end, on_demand)
+                        async function uploadCover(cover, memoryRefId)
+                        {
+                            const data = new FormData();
+                            // data.append("files", file);
+                            data.append("files", cover, 'profile.png');
+                            data.append("refId", memoryRefId);
+                            data.append("ref", "memory");
+                            data.append('field', 'cover');
+                            // data.append('source', 'users-permissions');
+                            console.log("Post cover request [upload cover]");
+                            await app.request({
+                                url: app.data.server + '/upload',
+                                method: "POST",
+                                crossDomain: true,
+                                contentType: "multipart/form-data",
+                                data: data
+                            });
+                        }
+                        
+                        async function uploadFiles(files, memoryRefId)
+                        {
+                            console.log(files);
+                        }
+                        
+                        function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand)
                         {
                             // console.log("Starting validateFields");
                             var result = {
                                 valid: true,
                                 errors: 0,
                                 message: "",
-                                object: {},
+                                memory: {
+                                    "title": "",
+                                    "description": "",
+                                    "cover": "",
+                                    "media": [],
+                                    "owners": [{ "id": loggedUser.id }],
+                                    "recipients": [],
+                                    "reminderType": "none",
+                                    "reminder": {
+                                        "date": "",
+                                        "time": "",
+                                        "repeat": "",
+                                        "locationLat": "",
+                                        "locationLng": ""
+                                    },
+                                    "sent": false
+                                },
+                                memoryFiles: {
+                                    "cover": "",
+                                    "media": []
+                                }
                             };
+                            
+                            console.log("");
+                            var contacts = getContacts(oldContacts);
                             
                             // console.log("Checking title [validateFields]");
                             // console.log(title);
@@ -731,6 +770,12 @@
                                 result.valid = false;
                                 result.message += "No title";
                                 result.errors++;
+                            }
+                            else
+                            {
+                                console.log("Title:");
+                                console.log(title);
+                                result.memory.title = title.substring(1, title.length-1);
                             }
                             
                             // console.log("Checking desc [validateFields]");
@@ -742,6 +787,10 @@
                                 result.message += result.errors > 0 ? ", no description" : "No description";
                                 result.errors++;
                             }
+                            else
+                            {
+                                result.memory.description = desc.substring(1, desc.length-1);
+                            }
                             
                             // console.log("Checking cover [validateFields]");
                             // console.log(cover);
@@ -751,6 +800,10 @@
                                 result.valid = false;
                                 result.message += result.errors > 0 ? ", no cover" : "No cover";
                                 result.errors++;
+                            }
+                            else
+                            {
+                                result.memoryFiles.cover = cover;
                             }
                             
                             // console.log("Checking files [validateFields]");
@@ -762,25 +815,43 @@
                                 result.message += result.errors > 0 ? ", no files" : "No files";
                                 result.errors++;
                             }
+                            else
+                            {
+                                result.memoryFiles.media = files;
+                            }
                             
                             // console.log("Checking contacts [validateFields]");
                             // console.log(contacts);
-                            // console.log(!contacts);
-                            if (!contacts)
+                            // console.log(!(contacts.length > 0));
+                            if (!(contacts.length > 0))
                             {
                                 result.valid = false;
                                 result.message += result.errors > 0 ? ", no contacts" : "No contacts";
                                 result.errors++;
                             }
+                            else
+                            {
+                                result.memory.recipients = contacts;
+                            }
                             
                             // console.log("Checking latlng [validateFields]");
                             // console.log(latlng);
                             // console.log(!latlng);
-                            if (!latlng && plan != "basic")
+                            if (plan != "basic")
                             {
-                                result.valid = false;
-                                result.message += result.errors > 0 ? ", no location" : "No location";
-                                result.errors++;
+                                if (!latlng)
+                                {
+                                    result.valid = false;
+                                    result.message += result.errors > 0 ? ", no location" : "No location";
+                                    result.errors++;
+                                }
+                                else
+                                {
+                                    let newLatlng = JSON.parse(latlng);
+                                    result.memory.reminderType = "location";
+                                    result.memory.reminder.locationLat = newLatlng.lat.toString();
+                                    result.memory.reminder.locationLng = newLatlng.lng.toString();
+                                }
                             }
                             
                             //Send date
@@ -792,18 +863,109 @@
                                 // console.log("Checking date [validateFields]");
                                 // console.log(date);
                                 // console.log(!date);
-                                if (!date)
+                                if (!latlng)
                                 {
-                                    result.valid = false;
-                                    result.message += result.errors > 0 ? ", no date" : "No date";
-                                    result.errors++;
-                                    
-                                    //do other checks.
+                                    //Date is a must!
+                                    if (!date)
+                                    {
+                                        result.valid = false;
+                                        result.message += result.errors > 0 ? ", no date" : "No date";
+                                        result.errors++;
+                                    }
+                                    else
+                                    {
+                                        if (result.memory.reminderType === "none")
+                                        {
+                                            result.memory.reminderType = "date"
+                                        }
+                                        result.memory.reminder.date = date;
+                                    }
+                                    if (!time)
+                                    {
+                                        result.valid = false;
+                                        result.message += result.errors > 0 ? ", no time" : "No time";
+                                        result.errors++;
+                                    }
+                                    else
+                                    {
+                                        result.memory.reminder.time = time + ":00";
+                                    }
+                                    if (!repeat)
+                                    {
+                                        result.valid = false;
+                                        result.message += result.errors > 0 ? ", no repeat" : "No repeat";
+                                        result.errors++;
+                                    }
+                                    else
+                                    {
+                                        result.memory.reminder.repeat = repeat.toLowerCase().substring(1, repeat.length-1);
+                                    }
+                                }
+                                else
+                                {
+                                    var today = new Date();
+                                    if (!date)
+                                    {
+                                        result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
+                                    }
+                                    else
+                                    {
+                                        result.memory.reminderType = "date"
+                                        result.memory.reminder.date = date;
+                                    }
+                                    if (!time)
+                                    {
+                                        result.memory.reminder.time = `${today.getHours()}:${today.getMinutes()}:00`;
+                                    }
+                                    else
+                                    {
+                                        result.memory.reminder.time = time.substring(1, time.length-1) + ":00";
+                                    }
+                                    if (!repeat)
+                                    {
+                                        result.memory.reminder.repeat = "not";
+                                    }
+                                    else
+                                    {
+                                        result.memory.reminder.repeat = repeat.substring(1, repeat.length-1);
+                                    }
                                 }
                             }
+                            else
+                            {
+                                console.log("Immediately!");
+                                let today = new Date();
+                                result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
+                                result.memory.reminder.time = `${today.getHours()}:${today.getMinutes()}:00`;
+                                result.memory.reminder.repeat = repeat.toLowerCase().substring(1, repeat.length-1);
+                            }
                             
+                            if (plan == "premium")
+                            {
+                                // result.memory.onDemand = on_demand;
+                            }
+                            else
+                            {
+                                // result.memory.onDemand = false;
+                            }
+                            
+                            console.log("Resulting memory [validateMemory]");
+                            console.log(result.memory);
+                            console.log(result.memoryFiles);
                             //title, desc, cover, files, contacts, latlng, addr, immediately, date, time, repeat, date_end, on_demand
                             return result;
+                        }
+                        
+                        function getContacts(contactString)
+                        {
+                            let contactObject = JSON.parse(contactString);
+                            var arrayObject = [];
+                            for (let i = 0; i  < contactObject.length; i++)
+                            {
+                                arrayObject.push({"id": contactObject[i].id});
+                            }
+                            console.log(arrayObject);
+                            return arrayObject;
                         }
                         
                         function deliverAccept() {
