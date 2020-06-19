@@ -47,10 +47,65 @@
                     bottom -110px
                     right -50px
 
+    &.popup-share
+        width 95%
+        height fit-content
+        position absolute
+        top 50%
+        left 50%
+        padding 14px
+
+        .background
+            border-radius 10px
+            position absolute
+            overflow hidden
+            top 0px
+            left 0px
+            height 100%
+            width 100%
+            z-index -2
+
+            .sqr_bck
+                deg = -36deg
+
+                &#sqr1
+                    sqr(200px, -25deg)
+                    border-radius 15px
+                    top -165px
+                    right 10px
+
+                &#sqr2
+                    sqr(200px, deg)
+                    border-radius 15px
+                    bottom -50px
+                    left -130px
+
+                &#sqr3
+                    sqr(200px, -25deg)
+                    border-radius 15px
+                    top 10px
+                    right -150px
+
+        .pop-header
+            flex-cont(row, space-evenly, center)
+            border-bottom 1px solid #F0F0F0
+            a
+                flex-cont(column, center, center)
+                p
+                    font-template(500, 9px, 11px)
+                    color Grey_dark_2
+                    margin 5px 0px 10px 0px 
+
+        .pop-cont
+            width 95%
+            margin 18px auto
+
     &.modal-in
         display flex !important
         flex-cont(column, center, center)
         transform translate(-50%, -50%)
+        &.popup-share
+            flex-cont(column, flex-start, stretch)
 
     &.modal-out
         transform translate(-50%, 100%)
@@ -168,12 +223,13 @@
             padding 10px
             font-template(normal, 14px, 16px)
             color Grey_light_3
-            border-bottom: 0.4px solid #d2d2d2
+            border-bottom 0.4px solid #d2d2d2
 
         .btns-cont
             margin-top 20px
+
             &.grey
-                filter: grayscale(1);
+                filter grayscale(1)
 
 .popover
     border-radius 11px
@@ -187,6 +243,7 @@
     &.popover-opt
         width 120px
         height 85px
+
         .none
             display none
 
@@ -210,8 +267,9 @@
                     padding 0px 5px
                     font-template(500, 18px, 41px)
                     color Grey_dark_1
+
         &.space-on-left
-            transform: translateX(-15%)
+            transform translateX(-15%)
 
     &.popover-repeat
         --f7-popover-width 190px
@@ -241,7 +299,47 @@
                     position absolute
                     right 10px
 
+    &.popover-info
+        width 245px
+        height 215px
+
+        .popover-inner
+            flex-cont(row, center, center)
+            height 100%
+
+            .list
+                width 50%
+                height 100%
+                margin 0px
+
+                ul
+                    height 100%
+                    flex-cont(column, space-evenly, flex-start)
+
+                    li
+                        flex-cont(row, center, center)
+                        font-template(500, 14px, 16px)
+                        color Grey_dark_2
+
+                        &.content
+                            color Grey_dark_1
+
+                        span
+                            margin-right 14px
+                            color Grey_dark_1
+
+                            &.grey-light
+                                color Grey_light_2
+
+                            &.blue
+                                color blue_dark
+
+        &.space-on-left
+            transform translateX(-10%)
 
 .ios
     .popover-opt.space-on-left
-        transform: translateX(-30%)
+        transform translateX(-30%)
+
+    .popover-info.space-on-left
+        transform translateX(-20%)
