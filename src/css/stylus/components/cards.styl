@@ -9,6 +9,45 @@
         height 100px
         width 280px
 
+        &.prev
+            width 100%
+            height 230px
+            margin 0px
+
+            .card-header
+                .title-card
+                    width 100%
+                    padding-top 20px
+
+                    h1
+                        font-template(500, 20px, 23px)
+                        color Grey_dark_3
+                        margin 0px
+                        text-align center
+
+                    p
+                        margin 0px
+                        font-template(normal, 10px, 12px)
+                        color Grey_light_3
+                        text-align center
+
+                &:after
+                    content none
+
+            .card-content
+                .cover
+                    width 100%
+                    height 155px
+                    border-radius 8px
+                    padding 7px
+                    box-sizing border-box
+
+                    img
+                        object-fit cover
+                        width 100%
+                        height 100%
+                        border-radius 8px
+
     &.complete
         &.v1
             width 272px
@@ -83,6 +122,144 @@
                                 margin 0px
                                 font-template(500, 11px, 13px)
                                 color Grey_dark_1
+
+        &.v_dashboard_memory
+            width 300px
+            height 500px
+            margin auto
+
+            .card-header
+                .info
+                    position absolute
+                    top 10px
+                    right 7px
+
+                    span
+                        color Grey_light_3
+                        font-size 20px
+
+                .title-card
+                    width 100%
+                    padding-top 20px
+
+                    h1
+                        font-template(500, 20px, 23px)
+                        color Grey_dark_3
+                        margin 0px
+                        text-align center
+
+                    p
+                        margin 0px
+                        font-template(normal, 10px, 12px)
+                        color Grey_light_3
+                        text-align center
+
+                &:after
+                    content none
+
+            .card-content
+                padding-top 4px
+
+                .cover
+                    width 284px
+                    height 155px
+                    box-shadow 0px 2.73529px 9.11765px rgba(0, 0, 0, 0.15)
+                    border-radius 8px
+                    margin 0px auto
+
+                    img
+                        object-fit cover
+                        width 100%
+                        height 100%
+                        border-radius 8px
+
+                .desc
+                    text-align center
+                    font-template(normal, 14px, 16px)
+                    color Grey_dark_2
+                    margin 16px 8px
+
+                .icons
+                    padding 25px 8px
+                    flex-cont(row, space-evenly, center)
+
+                    span
+                        font-size 24px
+                        color blue_light
+
+                        &.grey
+                            color Grey_light_2
+
+            .card-footer
+                justify-content center
+                padding 20px 8px
+
+                .btns-cont
+                    margin 0px !important
+
+                &:before
+                    content none
+
+        &.v_notification_memory
+            width 305px
+            height 300px
+            margin auto
+
+            .card-header
+                .info
+                    position absolute
+                    top 10px
+                    right 7px
+
+                    span
+                        color Grey_light_3
+                        font-size 20px
+
+                .title-card
+                    width 100%
+                    padding-top 20px
+
+                    h1
+                        font-template(500, 20px, 23px)
+                        color Grey_dark_3
+                        margin 0px
+                        text-align center
+
+                    p
+                        margin 0px
+                        font-template(normal, 10px, 12px)
+                        color Grey_light_3
+                        text-align center
+
+                &:after
+                    content none
+
+            .card-content
+                padding-top 4px
+
+                .cover
+                    width 284px
+                    height 155px
+                    box-shadow 0px 2.73529px 9.11765px rgba(0, 0, 0, 0.15)
+                    border-radius 8px
+                    margin 0px auto
+
+                    img
+                        object-fit cover
+                        width 100%
+                        height 100%
+                        border-radius 8px
+
+                .icons
+                    padding 25px 8px
+                    flex-cont(row, space-evenly, center)
+
+                    span
+                        font-size 24px
+                        color blue_light
+
+                        &.grey
+                            color Grey_light_2
 
     &.card-expandable
         border none

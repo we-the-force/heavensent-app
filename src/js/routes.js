@@ -358,7 +358,7 @@ var routes = [{
 },/*  */
 {
     name: 'memory-notification',
-    path: '/memories/notification',
+    path: '/memories/notification/:pageID',
     component: MemoryNotification,
 },/*  */
 {

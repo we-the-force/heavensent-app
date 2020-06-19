@@ -1,97 +1,218 @@
 <!-- Screen D2 -->
 <template>
-    <div class="page">
+    <div class="page" id="view-memory">
+        <div class="artwork"></div>
         <div class="navbar">
-            <div class="navbar-bg"></div>
             <div class="navbar-inner sliding">
-                <div class="left">
-                    <a href="#" class="link back">
-                        <i class="icon icon-back"></i>
-                        <span class="if-not-md">Back</span>
-                    </a>
-                </div>
-                <div class="right">
-                    <a href="" class="link">
-                        <span class="material-icons">share</span>
-                    </a>
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="back-btn">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title"></h1>
+                        <a href="" class="share-btn popup-open" data-popup=".popup-share">
+                            <i class="icons material-icons">share</i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="page-content">
-            <p>,</p>
-            <div class="card demo-card-header-pic">
-                <h1>Jacob Ethan Goodbye</h1>
-                <h6 style="color:gray">Sent by Jacob Ethan</h6>
-                <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg); height: 200px;" class="card-header align-items-flex-end"></div>
-                <div class="card-content card-content-padding">
-                    <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
+            <div class="sqr_bck" id="sqr1"></div>
+            <div class="sqr_bck" id="sqr2"></div>
+            <h1 class="title">Jacob Ethan Goodbye</h1>
+            <div class="cover">
+                <img src="../../static/img/background.jpg" alt="">
+            </div>
+            <p class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</p>
+            <div class="tabbar">
+                <a href="#comments" class="memory-tab tab-link tab-link-active" id="comment"><span
+                        class="material-icons">comments</span></a>
+                <a href="#images" class="memory-tab tab-link" id="image"><span class="material-icons">image</span></a>
+                <a href="#videos" class="memory-tab tab-link" id="video"><span
+                        class="material-icons">videocam</span></a>
+                <a href="#audios" class="memory-tab tab-link" id="audio"><span class="material-icons">mic</span></a>
+            </div>
+            <div class="tabs-animated-wrap">
+                <div class="tabs">
+                    <div id="comments" class="tab tab-active">
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/envy.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/ramona.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="images" class="tab">
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="videos" class="tab">
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="audios" class="tab">
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img src="../../static/img/paisaje.jpeg" alt="">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- <div class="card-footer"><a href="#" class="link">Like</a><a href="#" class="link">Read more</a></div> -->
-                <div class="row">
-                    <div class="col">
-                        <a id="memory-a-comment-btn" class="button">
-                            <span class="material-icons">textsms</span>
-                        </a>
-                    </div>
-                    <div class="col">
-                        <a id="memory-a-image-btn" class="button">
-                            <span class="material-icons">insert_photo</span>
-                        </a>
-                    </div>
-                    <div class="col">
-                        <a id="memory-a-video-btn" class="button">
-                            <span class="material-icons">videocam</span>
-                        </a>
-                    </div>
-                    <div class="col">
-                        <a id="memory-a-audio-btn" class="button">
-                            <span class="material-icons">mic</span>
-                        </a>
-                    </div>
-                </div>
-                <div>
-                    <div class="row">
-                        <div class="col">
-                            <a href="" class="link">
-                                <img src="http://via.placeholder.com/70x70.png?text=image" alt="">
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="" class="link">
-                                <img src="http://via.placeholder.com/70x70.png?text=image" alt="">
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="" class="link">
-                                <img src="http://via.placeholder.com/70x70.png?text=image" alt="">
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="" class="link">
-                                <img src="http://via.placeholder.com/70x70.png?text=image" alt="">
-                            </a>
+            </div>
+            <div class="footer">
+                <div class="sqr_bck" id="sqr3"></div>
+                <div class="sqr_bck" id="sqr4"></div>
+            </div>
+
+        </div>
+
+        <div class="popup popup-share">
+            <div class="background">
+                <div class="sqr_bck" id="sqr1"></div>
+                <div class="sqr_bck" id="sqr2"></div>
+                <div class="sqr_bck" id="sqr3"></div>
+            </div>
+            <div class="pop-header">
+                <a class="sms">
+                    <img src="../../static/icons/sms.png" alt="">
+                    <p>Message</p>
+                </a>
+                <a class="face">
+                    <img src="../../static/icons/face.png" alt="">
+                    <p>Facebook</p>
+                </a>
+                <a class="whats">
+                    <img src="../../static/icons/whats.png" alt="">
+                    <p>What’sApp</p>
+                </a>
+                <a class="twit">
+                    <img src="../../static/icons/twitter.png" alt="">
+                    <p>Twitter</p>
+                </a>
+            </div>
+            <div class="pop-cont">
+                <div class="card simple prev">
+                    <div class="card-header">
+                        <div class="title-card">
+                            <h1>Jacob Ethan Goodbye</h1>
+                            <p class="sender">Sent by: Jacob Ethan</p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <a href="" class="link">
-                                <img src="http://via.placeholder.com/70x70.png?text=image" alt="">
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="" class="link">
-                                <img src="http://via.placeholder.com/70x70.png?text=image" alt="">
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="" class="link">
-                                <img src="http://via.placeholder.com/70x70.png?text=image" alt="">
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="" class="link">
-                                <img src="http://via.placeholder.com/70x70.png?text=image" alt="">
-                            </a>
+                    <div class="card-content">
+                        <div class="cover">
+                            <img src="../../static/img/background.jpg" alt="">
                         </div>
                     </div>
                 </div>
@@ -100,5 +221,60 @@
     </div>
 </template>
 <script>
-    
+    import $$ from "dom7";
+    import localforage from "localforage";
+    export default {
+        on: {
+            pageInit: async function (e, page) {
+                var self = this;
+                var app = self.$app;
+                var media = [];
+                $$('.tab-active').children().each((i, el) => {
+                    media.push($$(el).find('img').attr('src'));
+                });
+
+                $$('.tab-active img').off('click').click(function (el) {
+                    let index = $$(this).parent().parent().index();
+                    galleryFunc(index);
+                });
+
+                $$('.tab').on('tab:show', function (params) {
+                    let page = $$(this);
+                    media = [];
+
+                    page.children().each((i, el) => {
+                        media.push($$(el).find('img').attr('src'));
+                    });
+
+                    $$('.tab-active img').off('click').click(function (el) {
+                        let index = $$(this).parent().parent().index();
+                        galleryFunc(index);
+                    });
+                });
+
+                function galleryFunc(index) {
+                    let gallery = app.photoBrowser.create({
+                        photos: media,
+                        theme: 'dark',
+                        type: 'page',
+                        toolbar: false,
+                    });
+                    gallery.open(index);
+                    gallery.view.$el.find('.photo-browser-page').find('.navbar').html('<div class="navbar-inner sliding">' +
+                        '<div class="header-cont">' +
+                        '<div class="header">' +
+                        '<a href="" class="back-btn back">' +
+                        '<i class="icons material-icons">chevron_left</i>' +
+                        '</a>' +
+                        '<h1 class="title">Jacob Ethan Goodbye</h1>' +
+                        '<a href="" class="share-btn popup-open" data-popup=".popup-share">' +
+                        '<i class="icons material-icons">share</i>' +
+                        '</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>');
+                }
+            }
+        }
+    }
 </script>
