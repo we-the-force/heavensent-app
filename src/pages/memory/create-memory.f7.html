@@ -668,9 +668,7 @@
                                 // console.log("on_demand");
                                 // console.log(JSON.parse(ss.on_demand));
                                 
-                                uploadFiles();
-
-                                //CREATE MEMORY
+                                // CREATE MEMORY
                                 // app.preloader.show("blue");
                                 // await app.request.promise.postJSON(`${app.data.server}/memories`,result.memory).then(async function (res){
                                 //     console.log("");
@@ -678,11 +676,12 @@
                                 //     var createdMemory = res.data;
                                 //     console.log(createdMemory);
                                     
+                                //     console.log("* * * * Uploading * * * *");
                                 //     //UPLOAD COVER
                                 //     await uploadCover(result.memoryFiles.cover, createdMemory.id);
                                     
                                 //     //UPLOAD OTHER FILES
-                                //     await uploadFiles();
+                                //     await uploadFiles(result.memoryFiles.media, createdMemory.id);
                                     
                                 // })
                                 // .catch(function(err){
@@ -690,8 +689,12 @@
                                 //     console.log("error adding memory!");
                                 //     console.log(err);
                                 // })
-                                // console.log("* * * * Uploading * * * *");
-                                app.preloader.hide();
+                                // app.preloader.hide();
+
+                                await app.request.promise.get(`${app.data.server}/memories/20`).then(function(res){
+                                    console.log("AAAAAAH EL MEMORY 20")
+                                    console.log(res);
+                                })
                                 
                                 // sessionStorage.clear();
                                 // app.views.main.router.navigate('/memories/home');
@@ -724,9 +727,42 @@
                             });
                         }
                         
+                        
                         async function uploadFiles(files, memoryRefId)
                         {
                             console.log(files);
+                            const data = new FormData();
+                            for (let i = 0; i < files.length; i++)
+                            {
+                                console.log(`--Appending data ${files[i].name.replace(/ /g,"_")}`);
+                                // data.append(`files.${memoryRefId}_file${i}`, files[i], files[i].name.replace(/ /g,"_"));
+                                data.append(`files`, files[i], files[i].name.replace(/ /g,"_"));
+                            }
+                            // data.append(`files.${memoryRefId}_file${0}`, files[0], files[0].name.replace(/ /g,"_"));
+                            // data.append(`files`, files, `${memoryRefId}_files`);
+                            console.log(data);
+                            data.append("refId", memoryRefId);
+                            data.append("ref", "memory");
+                            data.append('field', 'media');
+                            console.log("Post media request [upload cover]");
+                            
+                            try
+                            {
+                                await app.request({
+                                    url: app.data.server + '/upload',
+                                    method: "POST",
+                                    crossDomain: true,
+                                    contentType: "multipart/form-data",
+                                    data: data
+                                });
+
+
+                            }
+                            catch(err)
+                            {
+                                console.log("ERROR UPLOADING MEDIA");
+                                console.log(err);
+                            }
                         }
                         
                         function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand)
@@ -888,7 +924,7 @@
                                     }
                                     else
                                     {
-                                        result.memory.reminder.time = time + ":00";
+                                        result.memory.reminder.time = time + ":00.000";
                                     }
                                     if (!repeat)
                                     {
@@ -915,11 +951,11 @@
                                     }
                                     if (!time)
                                     {
-                                        result.memory.reminder.time = `${today.getHours()}:${today.getMinutes()}:00`;
+                                        result.memory.reminder.time = `${today.getHours()}:${today.getMinutes()}:00.000`;
                                     }
                                     else
                                     {
-                                        result.memory.reminder.time = time.substring(1, time.length-1) + ":00";
+                                        result.memory.reminder.time = time.substring(1, time.length-1) + ":00.000";
                                     }
                                     if (!repeat)
                                     {
@@ -936,7 +972,7 @@
                                 console.log("Immediately!");
                                 let today = new Date();
                                 result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
-                                result.memory.reminder.time = `${today.getHours()}:${today.getMinutes()}:00`;
+                                result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
                                 result.memory.reminder.repeat = repeat.toLowerCase().substring(1, repeat.length-1);
                             }
                             
