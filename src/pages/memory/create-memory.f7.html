@@ -669,32 +669,32 @@
                                 // console.log(JSON.parse(ss.on_demand));
                                 
                                 // CREATE MEMORY
-                                // app.preloader.show("blue");
-                                // await app.request.promise.postJSON(`${app.data.server}/memories`,result.memory).then(async function (res){
-                                //     console.log("");
-                                //     console.log("response memory");
-                                //     var createdMemory = res.data;
-                                //     console.log(createdMemory);
+                                app.preloader.show("blue");
+                                await app.request.promise.postJSON(`${app.data.server}/memories`,result.memory).then(async function (res){
+                                    console.log("");
+                                    console.log("response memory");
+                                    var createdMemory = res.data;
+                                    console.log(createdMemory);
                                     
-                                //     console.log("* * * * Uploading * * * *");
-                                //     //UPLOAD COVER
-                                //     await uploadCover(result.memoryFiles.cover, createdMemory.id);
+                                    console.log("* * * * Uploading * * * *");
+                                    //UPLOAD COVER
+                                    await uploadCover(result.memoryFiles.cover, createdMemory.id);
                                     
-                                //     //UPLOAD OTHER FILES
-                                //     await uploadFiles(result.memoryFiles.media, createdMemory.id);
+                                    //UPLOAD OTHER FILES
+                                    await uploadFiles(result.memoryFiles.media, createdMemory.id);
                                     
-                                // })
-                                // .catch(function(err){
-                                //     app.preloader.hide();
-                                //     console.log("error adding memory!");
-                                //     console.log(err);
-                                // })
-                                // app.preloader.hide();
-
-                                await app.request.promise.get(`${app.data.server}/memories/20`).then(function(res){
-                                    console.log("AAAAAAH EL MEMORY 20")
-                                    console.log(res);
                                 })
+                                .catch(function(err){
+                                    app.preloader.hide();
+                                    console.log("error adding memory!");
+                                    console.log(err);
+                                })
+                                app.preloader.hide();
+
+                                // await app.request.promise.get(`${app.data.server}/memories/20`).then(function(res){
+                                //     console.log("AAAAAAH EL MEMORY 20")
+                                //     console.log(res);
+                                // })
                                 
                                 // sessionStorage.clear();
                                 // app.views.main.router.navigate('/memories/home');
