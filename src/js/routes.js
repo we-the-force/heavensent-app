@@ -322,6 +322,7 @@ var routes = [{
                     let auxMemory = {
                         id: null,
                         name: null,
+                        deliveryDate: null,
                         cover: null,
                         contacts: {
                             count: 0,
@@ -333,6 +334,7 @@ var routes = [{
                     
                     auxMemory.id = memory.id;
                     auxMemory.name = memory.title;
+                    auxMemory.deliveryDate = memory.reminder.date;
                     auxMemory.cover = memory.cover != null ? memory.cover.url : "";
                     auxMemory.contacts.count = memory.recipients.length;
                     memory.recipients.forEach(contact => {
