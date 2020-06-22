@@ -313,6 +313,8 @@
                 var cover /* = sessionStorage.cover */;
                 var contacts = sessionStorage.contacts;
                 var maxmb = page.route.context.CurrentPlan.plan.memoryQuotaMB;
+                console.log("- - - plan - - -");
+                console.log(page.route.context.CurrentPlan);
                 var maxbytes = maxmb * 1000000;
                 var plan = page.route.context.CurrentPlan.plan.name;
                 var toggle_immediately = app.toggle.create({
@@ -669,35 +671,38 @@
                                 // console.log(JSON.parse(ss.on_demand));
                                 
                                 // CREATE MEMORY
-                                // app.preloader.show("blue");
-                                // await app.request.promise.postJSON(`${app.data.server}/memories`,result.memory).then(async function (res){
-                                //     console.log("");
-                                //     console.log("response memory");
-                                //     var createdMemory = res.data;
-                                //     console.log(createdMemory);
+                                app.preloader.show("blue");
+                                await app.request.promise.postJSON(`${app.data.server}/memories`,result.memory).then(async function (res){
+                                    console.log("");
+                                    console.log("response memory");
+                                    var createdMemory = res.data;
+                                    console.log(createdMemory);
                                     
-                                //     console.log("* * * * Uploading * * * *");
-                                //     //UPLOAD COVER
-                                //     await uploadCover(result.memoryFiles.cover, createdMemory.id);
+                                    console.log("* * * * Uploading * * * *");
+                                    //UPLOAD COVER
+                                    await uploadCover(result.memoryFiles.cover, createdMemory.id);
                                     
-                                //     //UPLOAD OTHER FILES
-                                //     await uploadFiles(result.memoryFiles.media, createdMemory.id);
+                                    //UPLOAD OTHER FILES
+                                    if (await uploadFiles(result.memoryFiles.media, createdMemory.id))
+                                    {
+                                        app.preloader.hide();
+                                        app.dialog.alert("The memory has been created successfully!");
+                                        sessionStorage.clear();
+                                        app.views.main.router.navigate('/memories/home');
+                                    }
+                                    else
+                                    {
+                                        app.dialog.alert("Error uploading files, memory wasn't created!");
+                                    }
                                     
-                                // })
-                                // .catch(function(err){
-                                //     app.preloader.hide();
-                                //     console.log("error adding memory!");
-                                //     console.log(err);
-                                // })
-                                // app.preloader.hide();
-
-                                await app.request.promise.get(`${app.data.server}/memories/20`).then(function(res){
-                                    console.log("AAAAAAH EL MEMORY 20")
-                                    console.log(res);
                                 })
-                                
-                                // sessionStorage.clear();
-                                // app.views.main.router.navigate('/memories/home');
+                                .catch(function(err){
+                                    app.preloader.hide();
+                                    console.log("error adding memory!");
+                                    console.log(err);
+                                    app.dialog.alert("There was an unexpected error when trying to create the memory!");
+                                })
+                                app.preloader.hide();
                             }
                             else
                             {
@@ -732,6 +737,7 @@
                         {
                             console.log(files);
                             const data = new FormData();
+                            var result = false;
                             for (let i = 0; i < files.length; i++)
                             {
                                 console.log(`--Appending data ${files[i].name.replace(/ /g,"_")}`);
@@ -755,19 +761,21 @@
                                     contentType: "multipart/form-data",
                                     data: data
                                 });
-
+                                result = true;
 
                             }
                             catch(err)
                             {
                                 console.log("ERROR UPLOADING MEDIA");
                                 console.log(err);
+                                result = false;
                             }
+                            return result;
                         }
                         
                         function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand)
                         {
-                            // console.log("Starting validateFields");
+                            console.log("Starting validateFields");
                             var result = {
                                 valid: true,
                                 errors: 0,
@@ -796,7 +804,11 @@
                             };
                             
                             console.log("");
-                            var contacts = getContacts(oldContacts);
+                            var contacts = undefined;
+                            if (oldContacts != undefined)
+                            {
+                                contacts = getContacts(oldContacts);
+                            }
                             
                             // console.log("Checking title [validateFields]");
                             // console.log(title);
@@ -859,7 +871,7 @@
                             // console.log("Checking contacts [validateFields]");
                             // console.log(contacts);
                             // console.log(!(contacts.length > 0));
-                            if (!(contacts.length > 0))
+                            if (!contacts || !(contacts.length > 0))
                             {
                                 result.valid = false;
                                 result.message += result.errors > 0 ? ", no contacts" : "No contacts";
@@ -873,7 +885,7 @@
                             // console.log("Checking latlng [validateFields]");
                             // console.log(latlng);
                             // console.log(!latlng);
-                            if (plan != "basic")
+                            if (plan === "premium")
                             {
                                 if (!latlng)
                                 {
@@ -924,7 +936,7 @@
                                     }
                                     else
                                     {
-                                        result.memory.reminder.time = time + ":00.000";
+                                        result.memory.reminder.time = time.substring(1, time.length-1) + ":00.000";
                                     }
                                     if (!repeat)
                                     {
@@ -994,6 +1006,8 @@
                         
                         function getContacts(contactString)
                         {
+                            console.log("getContacts");
+                            console.log(contactString);
                             let contactObject = JSON.parse(contactString);
                             var arrayObject = [];
                             for (let i = 0; i  < contactObject.length; i++)
