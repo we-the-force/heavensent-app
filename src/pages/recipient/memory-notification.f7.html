@@ -114,6 +114,32 @@
                 var self = this;
                 var app = self.$app;
                 var pageID = page.route.params.pageID
+
+                /*----------------------------------- temp fill data --------------------------------------*/
+                var memory = {};
+                memory.name = "nombre";
+                memory.owner = "owner";
+                memory.cover = "../../static/img/background.jpg";
+                memory.text = true; /* checa si hay comentarios o text */
+                memory.images = true; /* checa si hay imagenes */
+                memory.video = true; /* checa so hay videos */
+                memory.audio = false; /* checa si hay audios */
+                memory.location = false; /* checa si hay ubicacion */
+                memory.ondemand = true; /* checa si on demand esta activo */
+                $$('.title-card h1').text(memory.name);
+                $$('.title-card p').text(memory.owner);
+                $$('.card-content .cover img').attr('src', memory.cover);
+                $$('.card-content .icons').empty();
+                $$('<span class="material-icons ' + (memory.text == false ? "grey" : "") + '">comment</span>' +
+                    '<span class="material-icons ' + (memory.images == false ? "grey" : "") + '">image</span>' +
+                    '<span class="material-icons ' + (memory.video == false ? "grey" : "") + '">videocam</span>' +
+                    '<span class="material-icons ' + (memory.audio == false ? "grey" : "") + '">mic</span>' +
+                    '<span class="material-icons ' + (memory.location == false ? "grey" : "") + '">pin_drop</span>' +
+                    '<span class="material-icons ' + (memory.ondemand == false ? "grey" : "") + '">play_circle_filled</span>'
+                ).appendTo('.card-content .icons');
+
+                /* ----------------------------- end fill data ----------------------------------- */
+
                 switch (pageID) {
                     case "1":
                         $$('#remind').removeClass('none');
