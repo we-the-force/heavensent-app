@@ -796,7 +796,11 @@
                             };
                             
                             console.log("");
-                            var contacts = getContacts(oldContacts);
+                            var contacts = undefined;
+                            if (oldContacts != undefined)
+                            {
+                                contacts = getContacts(oldContacts);
+                            }
                             
                             // console.log("Checking title [validateFields]");
                             // console.log(title);
