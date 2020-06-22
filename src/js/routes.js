@@ -302,9 +302,11 @@ var routes = [{
             let contactsObject = [];
             if (baseRelation) {
                 baseRelation.forEach(relation => {
+                    console.log("Checking relation:");
+                    console.log(relation);
                     contactsObject.push({
                         id: relation.id,
-                        name: (relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username,
+                        name: (relation.nickname != null && relation.nickname.trim() != "") ? relation.nickname : ((relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username),
                         picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : ''
                     });
                 });
