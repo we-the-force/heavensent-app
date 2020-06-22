@@ -681,23 +681,26 @@
                                     await uploadCover(result.memoryFiles.cover, createdMemory.id);
                                     
                                     //UPLOAD OTHER FILES
-                                    await uploadFiles(result.memoryFiles.media, createdMemory.id);
+                                    if (await uploadFiles(result.memoryFiles.media, createdMemory.id))
+                                    {
+                                        app.preloader.hide();
+                                        app.dialog.alert("The memory has been created successfully!");
+                                        sessionStorage.clear();
+                                        app.views.main.router.navigate('/memories/home');
+                                    }
+                                    else
+                                    {
+                                        app.dialog.alert("Error uploading files, memory wasn't created!");
+                                    }
                                     
                                 })
                                 .catch(function(err){
                                     app.preloader.hide();
                                     console.log("error adding memory!");
                                     console.log(err);
+                                    app.dialog.alert("There was an unexpected error when trying to create the memory!");
                                 })
                                 app.preloader.hide();
-
-                                // await app.request.promise.get(`${app.data.server}/memories/20`).then(function(res){
-                                //     console.log("AAAAAAH EL MEMORY 20")
-                                //     console.log(res);
-                                // })
-                                
-                                // sessionStorage.clear();
-                                // app.views.main.router.navigate('/memories/home');
                             }
                             else
                             {
@@ -732,6 +735,7 @@
                         {
                             console.log(files);
                             const data = new FormData();
+                            var result = false;
                             for (let i = 0; i < files.length; i++)
                             {
                                 console.log(`--Appending data ${files[i].name.replace(/ /g,"_")}`);
@@ -755,19 +759,21 @@
                                     contentType: "multipart/form-data",
                                     data: data
                                 });
-
+                                result = true;
 
                             }
                             catch(err)
                             {
                                 console.log("ERROR UPLOADING MEDIA");
                                 console.log(err);
+                                result = false;
                             }
+                            return result;
                         }
                         
                         function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand)
                         {
-                            // console.log("Starting validateFields");
+                            console.log("Starting validateFields");
                             var result = {
                                 valid: true,
                                 errors: 0,
@@ -863,7 +869,7 @@
                             // console.log("Checking contacts [validateFields]");
                             // console.log(contacts);
                             // console.log(!(contacts.length > 0));
-                            if (!(contacts.length > 0))
+                            if (!contacts || !(contacts.length > 0))
                             {
                                 result.valid = false;
                                 result.message += result.errors > 0 ? ", no contacts" : "No contacts";
@@ -877,7 +883,7 @@
                             // console.log("Checking latlng [validateFields]");
                             // console.log(latlng);
                             // console.log(!latlng);
-                            if (plan != "basic")
+                            if (plan === "premium")
                             {
                                 if (!latlng)
                                 {
@@ -928,7 +934,7 @@
                                     }
                                     else
                                     {
-                                        result.memory.reminder.time = time + ":00.000";
+                                        result.memory.reminder.time = time.substring(1, time.length-1) + ":00.000";
                                     }
                                     if (!repeat)
                                     {
