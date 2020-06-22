@@ -155,7 +155,7 @@
 								createdAdmin.name = adminName;
 								console.log("Calling assignRelation [pageInit.create-btn.onClick]");
 								//Add to contacts as admin
-								await assignRelation(userID, createdAdmin, adminRelation, true, adminCouldEdit)
+								await assignRelation(userID, createdAdmin, adminName, adminRelation, true, adminCouldEdit)
 							})
 							.catch(function (adminAccError) {
 								app.preloader.hide();
@@ -172,7 +172,7 @@
 							//Add to contact as admin
 							console.log(`Admin email did exist, adding admin account (${adminEmail}) [pageInit.create-btn.onClick]`);
 							let adminUser = JSON.parse(adminCheckRes.data)[0];
-							await assignRelation(userID, adminUser, adminRelation, true, adminCouldEdit);
+							await assignRelation(userID, adminUser, adminName, adminRelation, true, adminCouldEdit);
 						}
 					})
 					app.preloader.hide();
@@ -181,7 +181,7 @@
 					await app.views.main.router.navigate('/');
 				})
 				
-				async function assignRelation(targetUserId, contactUser, contactRelation, contactIsAdmin, contactEditMemories) {
+				async function assignRelation(targetUserId, contactUser, contactNickname, contactRelation, contactIsAdmin, contactEditMemories) {
 					// console.log("targetUserId [pageInit.assignRelation]");
 					// console.log(targetUserId);
 					// console.log("adminUser [pageInit.assignRelation]");
@@ -206,7 +206,7 @@
 								"isAdmin": contactIsAdmin,
 								"isMinor": false,
 								"editMemories": contactEditMemories,
-								"nickname": contactUser.name,
+								"nickname": contactNickname,
 							})
 							.then(function (assignRelRes) {
 								console.log("response assignRelation [pageInit.assignRelation]");

@@ -182,7 +182,7 @@
 						{
 							console.log(`result was empty\r\nCreating user\r\n${res.data}`);
 							app.request.promise.postJSON(`${app.data.server}/auth/local/register`,{
-								"username": username,
+								"username": email,
 								"password": " ",
 								"email": email,
 							})
@@ -198,6 +198,7 @@
 									data: {
 										"mobile": mobile,
 										"birthday": birthday,
+										"name": username,
 									}
 								});
 								c.result('blob', 'png').then(async blob =>{
@@ -217,8 +218,7 @@
 								});
 								
 								console.log("Inserting contact to newly created temp contact");
-								// assignRelation(res2.data.user, relation, isAdmin, isMinor, editMemories);
-								let assignResult = await assignRelation(loggedUser, res2.data.user, relation, false, false, false);
+								let assignResult = await assignRelation(loggedUser, res2.data.user, username, relation, false, false, false);
 								app.preloader.hide();
 								console.log("assignResult from temp user");
 								console.log(assignResult);
@@ -250,8 +250,7 @@
 							try {
 								
 								console.log("Inserting contact to existing contact [create-member-btn.onClick]");
-								// assignRelation(user, relation, isAdmin, isMinor, editMemories);
-								let assignResult = await assignRelation(loggedUser, user, relation, false, false, false);
+								let assignResult = await assignRelation(loggedUser, user, username, relation, false, false, false);
 								app.preloader.hide();
 								console.log("assignResult from existing user");
 								console.log(assignResult);
@@ -279,10 +278,12 @@
 					})
 				});
 				
-				async function assignRelation(targetUser, contactUser, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories)
+				async function assignRelation(targetUser, contactUser, contactNickname, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories)
 				{
 					console.log("user");
 					console.log(contactUser);
+					console.log("nickname");
+					console.log(contactNickname);
 					console.log("relation");
 					console.log(contactRelation);
 					console.log("isAdmin");
@@ -313,7 +314,8 @@
 								},
 								"isAdmin": contactIsAdmin,
 								"isMinor": contactIsMinor,
-								"editMemories": contactEditMemories
+								"editMemories": contactEditMemories,
+								"nickname": contactNickname
 							})
 							.then(function (res){
 								console.log("response assignRelation");
