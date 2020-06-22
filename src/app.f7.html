@@ -178,7 +178,7 @@
 				console.log(loggedUser);
 				updateControls();
 				
-				$$("#sign-out-btn").on("click", async function(e){
+				$$("#sign-out-btn").off("click").on("click", async function(e){
 					e.preventDefault();
 					await app.methods.clearCurrentUser();
 					await app.views.main.router.navigate('/');
