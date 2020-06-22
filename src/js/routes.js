@@ -298,14 +298,6 @@ var routes = [{
                     Contacts: getContacts(contacts),
                 }
             });
-
-        /*
-        {
-            id: 1,
-            name: username,
-            profilepicture: url or ''
-        }
-        */
         function getContacts(baseRelation) {
             let contactsObject = [];
             if (baseRelation) {
