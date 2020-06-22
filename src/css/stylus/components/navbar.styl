@@ -1,17 +1,34 @@
+navbar-temp()
+    background unset
+    height 70px
+    transition all 0.3s ease-in-out
+
+    &.bg-white
+        background Grey_light_1
+
+    &.navbar-hidden-statusbar
+        transform translateY(-70px)
+
+    &.navbar-photo-browser
+        background Grey_light_1
+
 .page
-    .navbar + .page-content
-        padding-top 70px
-
     .navbar
-        background unset
-        height 70px
-        transition all 0.3s ease-in-out
+        navbar-temp()
 
-        &.bg-white
-            background Grey_light_1
+.md
+    .page
+        :not(.navbar) + .page-content
+            padding-top 15px
 
-        &.navbar-hidden-statusbar
-            transform translateY(-70px)
+.ios
+    .navbars
+        .navbar
+            navbar-temp()
 
-        &.navbar-photo-browser
-            background Grey_light_1
+            &.navbar-previous
+                display none
+
+        &.navbar-hidden + .page-current
+            .page-content
+                padding-top 15px

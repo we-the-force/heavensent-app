@@ -229,6 +229,71 @@
                 var self = this;
                 var app = self.$app;
                 var media = [];
+
+                /* -------------------------- temp fill data -------------------------------------*/
+                var memory = {};
+                memory.name = "Jacob Ethan Goodbye";
+                memory.owner = "owner";
+                memory.cover = "../../static/img/background.jpg";
+                memory.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris";
+                /* repetir docs con imagenes, videos, audios, y comentarios */
+                memory.docs = ["../../static/img/paisaje.jpeg", "../../static/img/envy.jpg", "../../static/img/ramona.jpeg"]; /* llenar array condocumentos */
+
+                $$('.page-content .title').text(memory.name); /* llenar titulo */
+                $$('.cover img').attr('src', memory.cover); /* llenar cover */
+                $$('.desc').text(memory.description); /* llenar descripcion */
+                $$('.popup-share .pop-cont .title-card h1').text(memory.name); /* tarjeta de compartir */
+                $$('.popup-share .pop-cont .title-card p').text(memory.owner);
+                $$('.popup-share .pop-cont .cover img').attr('src', memory.cover); /* tarjeta de compartir */
+
+                /* limpiar fotos */
+                $$('.tabs #comments').empty();
+                $$('.tabs #images').empty();
+                $$('.tabs #videos').empty();
+                $$('.tabs #audios').empty();
+
+                memory.docs.forEach(el => {                    
+                    $$('.tabs #comments').append(
+                        '<div class="item">' +
+                        '<div class="image">' +
+                        '<img src="'+el+'" alt="">' +
+                        '</div>' +
+                        '</div>'
+                    );
+                });
+
+                memory.docs.forEach(el => {
+                    $$('.tabs #images').append(
+                        '<div class="item">' +
+                        '<div class="image">' +
+                        '<img src="'+el+'" alt="">' +
+                        '</div>' +
+                        '</div>'
+                    );
+                });
+
+                memory.docs.forEach(el => {
+                    $$('.tabs #videos').append(
+                        '<div class="item">' +
+                        '<div class="image">' +
+                        '<img src="'+el+'" alt="">' +
+                        '</div>' +
+                        '</div>'
+                    );
+                });
+
+                memory.docs.forEach(el => {
+                    $$('.tabs #audios').append(
+                        '<div class="item">' +
+                        '<div class="image">' +
+                        '<img src="'+el+'" alt="">' +
+                        '</div>' +
+                        '</div>'
+                    );
+                });
+
+                /* --------------------------- end fill data ----------------------------------- */
+
                 $$('.tab-active').children().each((i, el) => {
                     media.push($$(el).find('img').attr('src'));
                 });

@@ -19,7 +19,7 @@
 			
 			<div class="btns-cont">
 				<a href="/memories/home" class="btn-panel panel-close active">Profile</a>
-				<a id="app-plan-button" href="/membership/view/user/18" class="btn-panel panel-close ">Plan</a>
+				<a id="app-plan-button" href="/membership/view/user/" class="btn-panel panel-close ">Plan</a>
 				<!-- herdcoded -->
 				<a href="#" class="btn-panel panel-close ">Donate</a>
 			</div>
@@ -178,7 +178,7 @@
 				console.log(loggedUser);
 				updateControls();
 				
-				$$("#sign-out-btn").on("click", async function(e){
+				$$("#sign-out-btn").off("click").on("click", async function(e){
 					e.preventDefault();
 					await app.methods.clearCurrentUser();
 					await app.views.main.router.navigate('/');

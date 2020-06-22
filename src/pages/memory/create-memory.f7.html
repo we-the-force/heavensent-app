@@ -313,6 +313,8 @@
                 var cover /* = sessionStorage.cover */;
                 var contacts = sessionStorage.contacts;
                 var maxmb = page.route.context.CurrentPlan.plan.memoryQuotaMB;
+                console.log("- - - plan - - -");
+                console.log(page.route.context.CurrentPlan);
                 var maxbytes = maxmb * 1000000;
                 var plan = page.route.context.CurrentPlan.plan.name;
                 var toggle_immediately = app.toggle.create({
@@ -1010,6 +1012,8 @@
                         
                         function getContacts(contactString)
                         {
+                            console.log("getContacts");
+                            console.log(contactString);
                             let contactObject = JSON.parse(contactString);
                             var arrayObject = [];
                             for (let i = 0; i  < contactObject.length; i++)
