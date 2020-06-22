@@ -259,9 +259,9 @@ $$(document).on('page:init', function (e) {
     $$('.page-content').off('scroll');
     $$('.page-content').scroll(function () {
         if ($$('.page-current .page-content').scrollTop() > 30) {
-            $$(this).prev().addClass('bg-white');
+            $$('.navbar').addClass('bg-white');
         } else {
-            $$(this).prev().removeClass('bg-white');
+            $$('.navbar').removeClass('bg-white');
         }
     });
 });
