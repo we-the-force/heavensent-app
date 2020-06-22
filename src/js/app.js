@@ -24,8 +24,8 @@ var app = new Framework7({
     theme: 'auto', // Automatic theme detection
     
     data: {
-        server: 'http://167.172.156.126:1337'
-        // server: 'http://localhost:1337'
+        // server: 'http://167.172.156.126:1337'
+        server: 'http://localhost:1337'
     },
     
     methods: {

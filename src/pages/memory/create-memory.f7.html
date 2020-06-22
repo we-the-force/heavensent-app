@@ -643,33 +643,7 @@
                             
                             /* datos que sean completamente necesarios */
                             let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
-                            if (result.valid) {
-                                // console.log("Title");
-                                // console.log((ss.title));
-                                // console.log("Desc");
-                                // console.log((ss.desc));
-                                // console.log("Cover");
-                                // console.log(cover);
-                                // console.log("Files");
-                                // console.log(files);
-                                // console.log("Contacts");
-                                // console.log((ss.contacts));
-                                // console.log("Latling");
-                                // console.log((ss.latlng));
-                                // console.log(JSON.parse(ss.addr));
-                                // console.log("Immediately");
-                                // console.log((immediately));
-                                // console.log("Date");
-                                // console.log(date);
-                                // console.log("Time");
-                                // console.log(JSON.parse(ss.time));
-                                // console.log("Repeat");
-                                // console.log(JSON.parse(ss.repeat));
-                                // console.log("date_end");
-                                // console.log(JSON.parse(ss.date_end));
-                                // console.log("on_demand");
-                                // console.log(JSON.parse(ss.on_demand));
-                                
+                            if (result.valid) {                                
                                 // CREATE MEMORY
                                 app.preloader.show("blue");
                                 await app.request.promise.postJSON(`${app.data.server}/memories`,result.memory).then(async function (res){
