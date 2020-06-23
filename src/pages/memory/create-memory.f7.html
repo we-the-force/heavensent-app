@@ -295,8 +295,8 @@
 
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
 
-                var latlng = sessionStorage.latlng;
-                var addr = sessionStorage.addr;
+                /* var latlng = sessionStorage.latlng;
+                var addr = sessionStorage.addr; */
                 var title = sessionStorage.title;
                 var desc = sessionStorage.desc;
                 var immediately = sessionStorage.immediately;
@@ -310,7 +310,7 @@
                 var files = [];
                 var mb = 0;
                 var cover /* = sessionStorage.cover */;
-                var contacts = sessionStorage.contacts;
+                /* var contacts = sessionStorage.contacts; */
                 var maxmb = page.route.context.CurrentPlan.plan.memoryQuotaMB;
                 console.log("- - - plan - - -");
                 console.log(page.route.context.CurrentPlan);
@@ -357,7 +357,7 @@
                     progressBar(mb)
                 } */
 
-                if (latlng && addr) {
+                /* if (latlng && addr) {
                     latlng = JSON.parse(latlng);
                     addr = JSON.parse(addr);
                     $$('.location-cont .location-btn').addClass('none');
@@ -371,7 +371,7 @@
                         gestureHandling: 'none'
                     });
                     marker.addClass('centerMarker').appendTo(map_2.getDiv());
-                }
+                } */
                 if (on_demand) {
                     toggle_demand.checked = JSON.parse(on_demand);
                 }

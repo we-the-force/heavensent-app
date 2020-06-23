@@ -1,5 +1,5 @@
 <template>
-    <div class="page" id="location-memory">
+    <div class="popup popup-location popup-tablet-fullscreen" id="location-memory">
         <div class="artwork"></div>
         <div class="navbar">
             <div class="navbar-inner sliding">
@@ -43,7 +43,7 @@
     import $$ from "dom7";
     export default {
         on: {
-            pageInit: function (e, page) {
+            popupOpen: function (e, page) {
                 var self = this;
                 var app = self.$app;
                 /* declara variables 
@@ -108,10 +108,10 @@
                 */
                 $$('#save-location-btn').click(x => {
                     let latlng = { lat: map.getCenter().lat(), lng: map.getCenter().lng() };
-                    let addr = $$('#direction').val();   
+                    let addr = $$('#direction').val();
                     sessionStorage.latlng = JSON.stringify(latlng);
-                    sessionStorage.addr = JSON.stringify(addr);     
-                    app.views.main.router.navigate('/memories/create');
+                    sessionStorage.addr = JSON.stringify(addr);
+                    app.popup.close();
                 })
 
                 /* funcion para centrar en tu ubicacion */
@@ -137,6 +137,27 @@
                             alert('Geocode was not successful for the following reason: ' + status);
                         }
                     });
+                }
+            },
+            popupClose: async function (e, page) {
+                var self = this;
+                var app = self.$app;
+                var latlng = sessionStorage.latlng;
+                var addr = sessionStorage.addr;
+                if (latlng && addr) {
+                    latlng = JSON.parse(latlng);
+                    addr = JSON.parse(addr);
+                    $$('.location-cont .location-btn').addClass('none');
+                    $$('.location-cont .location-map').removeClass('none');
+                    $$('.location-cont .map-info .address .addr').text(addr);
+                    let marker = $$('<div class="centerMarker"></div>');
+                    var map_2 = new google.maps.Map(document.getElementById("map-static"), {
+                        zoom: 14,
+                        center: latlng,
+                        disableDefaultUI: true,
+                        gestureHandling: 'none'
+                    });
+                    marker.addClass('centerMarker').appendTo(map_2.getDiv());
                 }
             },
         },

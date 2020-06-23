@@ -1,38 +1,57 @@
-.page
-    &#location-memory
-        background Grey_light_1
+.popup-location
+    background Grey_light_1
+    border-radius 0px
 
-        .page-content
-            flex-cont(column, flex-start, stretch)
+    &.modal-in
+        transform translate(0, 0) !important
 
-            .map-cont
-                height 310px
-                width auto
-                margin 0px -15px
+    &.modal-out
+        transform translate(0, 100%)
 
-                .centerMarker
-                    position absolute
-                    background url('../static/img/Pluma_map_v2.png') no-repeat
-                    background-size contain
-                    top 50%
-                    left 50%
-                    z-index 1
-                    margin-left -22px
-                    margin-top -94px
-                    height 94px
-                    width 33px
+    .page-content
+        width 100%
+        padding 70px 15px 15px 15px
+        overflow hidden
+        flex-cont(column, flex-start, stretch)
 
-                .ubi-btn
-                    position absolute
-                    bottom 13px
-                    right 17px
-                    z-index 1
+        .map-cont
+            height 310px
+            width auto
+            margin 0px -15px
 
-            .btns-cont
-                margin-top auto
-                margin-bottom 10px
+            .centerMarker
+                position absolute
+                background url('../static/img/Pluma_map_v2.png') no-repeat
+                background-size contain
+                top 50%
+                left 50%
+                z-index 1
+                margin-left -22px
+                margin-top -94px
+                height 94px
+                width 33px
+
+            .ubi-btn
+                position absolute
+                bottom 13px
+                right 17px
+                z-index 1
+
+        .btns-cont
+            margin-top auto
+            margin-bottom 10px
+
+        .inputs
+            ul
+                background unset
+
+                &:after, &:before
+                    content none
 
 .pac-container
-    z-index 10000
+    z-index 100000
+    position absolute !important
+    overflow visible
+
     &:after
         content none
