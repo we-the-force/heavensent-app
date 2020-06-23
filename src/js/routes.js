@@ -163,7 +163,18 @@ async function isLoggedIn(to, from, resolve, reject) {
     }
 }
 
-var routes = [{
+var routes = [
+/* ----------------------------------- components -------------------------------------------- */    
+{
+    name: 'contacts-memories',
+    path: '/memories/contacts',
+    popup: {
+        component: ContactsMemory,
+    }
+},
+
+/* ----------------------------------- pages -------------------------------------------- */    
+{
     name: 'login',
     path: '/',
     name: 'login',
@@ -401,11 +412,11 @@ var routes = [{
     path: '/memories/location',
     component: LocationMemory,
 },
-{
+/* {
     name: 'contacts-memories',
     path: '/memories/contacts',
     component: ContactsMemory,
-},
+}, */
 {
     name: 'memory-dashboard',
     path: '/memories/dashboard',

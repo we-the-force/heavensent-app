@@ -1,0 +1,79 @@
+.popup-contacts
+    border-radius 0px
+    background Grey_light_1
+
+    &.modal-in
+        transform translate(0, 0) !important
+
+    &.modal-out
+        transform translate(0, 100%)
+
+    .page-content
+        width 100%
+        padding-top 146px
+        padding-left 0px
+        padding-right 0px
+        overflow hidden
+        flex-cont(column, flex-start, unset)
+
+        .sqr_bck
+            deg = -10deg
+
+            &#sqr1
+                sqr(200px, deg)
+                top 55px
+                right -195px
+
+            &#sqr2
+                sqr(200px, deg)
+                bottom -135px
+                left -130px
+
+            &#sqr3
+                sqr(200px, deg)
+                bottom -170px
+                right -80px
+
+        .family-cont
+            height 100%
+            overflow-y scroll
+            margin 0px
+            border-bottom 1px solid #F0F0F0
+
+            ul
+                &:after, &:before
+                    content none
+
+                li
+                    background Grey_light_1
+                    &.checked
+                        background blue_light
+
+    .navbar
+        .subnavbar
+            background unset
+            height 76px
+            padding 0px 15px
+
+            &:after, &:before
+                content none
+
+            .searchbar:after
+                content ''
+                border-bottom 1px solid #F0F0F0
+
+            .searchbar-icon:after
+                color #bdbdbd
+
+        .header-cont
+            .back-btn
+                margin-left 8px
+
+            .close-btn, .add-btn
+                margin-right 8px
+
+    .btns-cont
+        margin 15px 0px 15px 0px
+
+    .searchbar-backdrop
+        opacity 0

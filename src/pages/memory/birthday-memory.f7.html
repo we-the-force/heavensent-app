@@ -403,51 +403,95 @@
                 $$('#file-inp').change(async function (val) {
                     let reader = new FileReader();
                     let medias = $$('.media-cont .medias');
+
                     let newfile = $$('<div class="media fill">' +
                         '<span class="material-icons close">close</span>' +
+                        '<span class="material-icons type"></span>' +
                         '<img src="" alt="">' +
                         '</div>');
                     if (this.files && this.files[0]) {
                         /* si hay archivos */
-                        reader.onload = e => {
-                            if (!medias.find('.media:last-child').hasClass('fill')) {
-                                /* si no hay nada agrega unas clases */
-                                medias.find('.media').addClass('none');
-                                medias.addClass('f_start');
-                            }
-                            /* funcion que ejecuta cuando lee el archivo */
-                            newfile.children('img').attr('src', e.target.result);
-                            newfile.appendTo(medias);
+                        let file = this.files[0];                        
+                        if (file.type.match('image')) {
+                            reader.onload = e => {
+                                if (!medias.find('.media:last-child').hasClass('fill')) {
+                                    /* si no hay nada agrega unas clases */
+                                    medias.find('.media').addClass('none');
+                                    medias.addClass('f_start');
+                                }
+                                /* funcion que ejecuta cuando lee el archivo */
+                                newfile.children('img').attr('src', e.target.result);
+                                newfile.children('.type').text('photo');
+                                newfile.appendTo(medias);
 
-                            $$('.media-cont .media.fill .close').off('click');
-                            $$('.media-cont .media.fill .close').click(function (val) {
-                                /* 
+                                $$('.media-cont .media.fill .close').off('click');
+                                $$('.media-cont .media.fill .close').click(function (val) {
+                                    /* 
                                     cuando eliminas un archivo 
                                     lo borra del array
                                     baja la barra de progreso
                                     elimina el html
-                                */
-                                mb -= files[$$(this).parent().index() - 4].size;
-                                progressBar(mb)
-                                files.splice($$(this).parent().index() - 4, 1);
-                                $$(this).parent().remove();
+                                    */
+                                    mb -= files[$$(this).parent().index() - 4].size;
+                                    progressBar(mb)
+                                    files.splice($$(this).parent().index() - 4, 1);
+                                    $$(this).parent().remove();
+                                    if (!medias.find('.media:last-child').hasClass('fill')) {
+                                        /* cuando no hay archivos regresa al estado original */
+                                        medias.find('.media').removeClass('none');
+                                        medias.removeClass('f_start');
+                                    }
+                                });
+                            }
+                        } else if (file.type.match('video')) {
+                            reader.onload = e => {
                                 if (!medias.find('.media:last-child').hasClass('fill')) {
-                                    /* cuando no hay archivos regresa al estado original */
-                                    medias.find('.media').removeClass('none');
-                                    medias.removeClass('f_start');
+                                    /* si no hay nada agrega unas clases */
+                                    medias.find('.media').addClass('none');
+                                    medias.addClass('f_start');
                                 }
-                            });
+                                var video = document.createElement('video');
+                                var timeupdate = function () {
+                                    if (snapImage()) {
+                                        video.removeEventListener('timeupdate', timeupdate);
+                                        video.pause();
+                                    }
+                                };
+                                video.addEventListener('loadeddata', function () {
+                                    if (snapImage()) {
+                                        video.removeEventListener('timeupdate', timeupdate);
+                                    }
+                                });
+                                var snapImage = function () {
+                                    var canvas = document.createElement('canvas');
+                                    canvas.width = video.videoWidth;
+                                    canvas.height = video.videoHeight;
+                                    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                                    var image = canvas.toDataURL();
+                                    var success = image.length > 0;
+                                    if (success) {
+                                        newfile.children('img').attr('src', image);
+                                        newfile.children('.type').text('videocam');
+                                        newfile.appendTo(medias);
+                                    }
+                                    return success;
+                                };
+                                video.addEventListener('timeupdate', timeupdate);
+                                video.preload = 'metadata';
+                                video.src = e.target.result;
+                                video.play();
+                            }
                         }
-                        if ((mb + this.files[0].size) <= maxbytes) {
+                        if ((mb + file.size) <= maxbytes) {
                             /* 
-                                si no pasa el maximo de tamaño
-                                lee el archivo
-                                agrega al array
-                                aumenta la barra de progreso
-                             */
-                            reader.readAsDataURL(this.files[0]);
-                            files.push(this.files[0]);
-                            mb += this.files[0].size;
+                            si no pasa el maximo de tamaño
+                            lee el archivo
+                            agrega al array
+                            aumenta la barra de progreso
+                            */
+                            reader.readAsDataURL(file);
+                            files.push(file);
+                            mb += file.size;
                             progressBar(mb);
                         } else {
                             app.dialog.alert('No space available');
@@ -491,7 +535,7 @@
                     /* coverSessionstorage(cover); */
                 });
 
-                $$('.back-btn').click(e => {
+                $$('.page .back-btn').click(e => {
                     sessionStorage.clear();
                     app.views.main.router.navigate('/memories/home');
                 })

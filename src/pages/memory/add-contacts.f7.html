@@ -1,16 +1,16 @@
 <template>
-    <div class="page" id="add-contacts">
+    <div class="popup popup-contacts popup-tablet-fullscreen" id="add-contacts">
         <div class="artwork"></div>
         <div class="navbar">
             <div class="navbar-inner sliding">
                 <div class="header-cont">
                     <div class="header">
-                        <a href="" class="back-btn back">
+                        <a href="" class="back-btn popup-close">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
-                        <!-- cambia el titulo dependiendo de la pantalla -->
+
                         <h1 class="title">Mario's Family</h1>
-                        <!-- quita la clase none del boton que debe estar y pon la clase none en donde no debe estar -->
+
                         <a href="" class="add-btn">
                             <i class="icons material-icons">add</i>
                         </a>
@@ -35,80 +35,7 @@
             <div class="sqr_bck" id="sqr3"></div>
             <div id="family-list" class="family-cont list searchbar-found media-list">
                 <ul>
-                    <!-- <li>
-                        <label class="item-checkbox item-content" data-id="1">
-                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
-                            <div class="item-media"><img src="../../static/img/136128.png" width="44" /></div>
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title">Rosa</div>
-                                </div>
-                                <div class="item-text">Niece</div>
-                            </div>
-                        </label>
-                    </li>
-                    <li>
-                        <label href="#" class="item-checkbox item-content" data-id="2">
-                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
-                            <div class="item-media"><img src="../../static/img/chris_evans_crop1569801286473.png"
-                                    width="44" /></div>
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title">Nathan</div>
-                                </div>
-                                <div class="item-text">Nephew</div>
-                            </div>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="item-checkbox item-content" data-id="3">
-                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
-                            <div class="item-media"><img src="../../static/img/Jason_Momoa_by_Gage_Skidmore_2.png"
-                                    width="44" /></div>
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title">Sam</div>
-                                </div>
-                                <div class="item-text">Son</div>
-                            </div>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="item-checkbox item-content" data-id="4">
-                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
-                            <div class="item-media"><img src="../../static/img/136128.png" width="44" /></div>
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title">Keira</div>
-                                </div>
-                                <div class="item-text">Daughter</div>
-                            </div>
-                        </label>
-                    </li>
-                    <li>
-                        <label href="#" class="item-checkbox item-content" data-id="5">
-                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
-                            <div class="item-media"><img src="../../static/img/active.png" width="44" /></div>
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title">Johana</div>
-                                </div>
-                                <div class="item-text">Cousin</div>
-                            </div>
-                        </label>
-                    </li>
-                    <li>
-                        <label href="#" class="item-checkbox item-content" data-id="6">
-                            <input type="checkbox" class="chckbx" name="contact-checkbox" value="" />
-                            <div class="item-media"><img src="../../static/img/active.png" width="44" /></div>
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title">Johana</div>
-                                </div>
-                                <div class="item-text">Cousin</div>
-                            </div>
-                        </label>
-                    </li> -->
+
                 </ul>
             </div>
             <div class="btns-cont center">
@@ -125,9 +52,10 @@
     import $$ from "dom7";
     export default {
         on: {
-            pageInit: async function (e, page) {
+            popupOpen: async function (e, page) {
                 var self = this;
                 var app = self.$app;
+
                 var contacts = await app.methods.getLocalValue('loggedUserContacts');
                 if (contacts) {
                     //TODO
@@ -174,7 +102,7 @@
                         sessionStorage.contacts = JSON.stringify(contacts);
                     }
 
-                    app.views.main.router.navigate(app.views.main.router.previousRoute.url);
+                    app.popup.close();
                 });
 
                 var searchbar = app.searchbar.create({
@@ -186,6 +114,31 @@
                             console.log(query, previousQuery);
                         },
                     },
+                });
+            }, 
+            popupClose: async function (e, page) {
+                var self = this;
+                var app = self.$app;
+                var contacts = sessionStorage.contacts;
+                
+                if (contacts) {
+                    contacts = JSON.parse(contacts);
+                    $$('.contacts-cont .contacts .person.contact').remove();
+                    contacts.length > 0 ? $$('.contacts-cont .contacts .person.no_contact').addClass('none') : $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
+                    contacts.forEach(el => {
+                        let contact = $$('<div class="person contact" data-id="' + el.id + '">' +
+                            '<span class="material-icons close">close</span>' +
+                            '<img src="' + el.img + '" alt="">' +
+                            '</div>')
+                        contact.appendTo($$('.contacts-cont .contacts'));
+                    });
+                }
+
+                $$('.person.contact .close').click(function (val) {
+                    contacts.splice(contacts.indexOf(contacts.find(x => x.id == $$(this).parent().data('id'))), 1);
+                    sessionStorage.contacts = JSON.stringify(contacts);
+                    $$(this).parent().remove();
+                    if (contacts.length == 0) $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
                 });
             },
         },

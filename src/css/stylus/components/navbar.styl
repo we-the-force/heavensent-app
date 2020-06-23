@@ -3,6 +3,9 @@ navbar-temp()
     height 70px
     transition all 0.3s ease-in-out
 
+    .navbar-inner
+        overflow visible
+
     &.bg-white
         background Grey_light_1
 
@@ -12,12 +15,13 @@ navbar-temp()
     &.navbar-photo-browser
         background Grey_light_1
 
-.page
+.page, .popup
     .navbar
+        position absolute
         navbar-temp()
 
 .md
-    .page
+    .page, .popup
         :not(.navbar) + .page-content
             padding-top 15px
 
