@@ -580,9 +580,7 @@
                         '</div>');
                     if (this.files && this.files[0]) {
                         /* si hay archivos */
-                        let file = this.files[0];
-                        console.log(file.type);
-                        
+                        let file = this.files[0];                        
                         if (file.type.match('image')) {
                             reader.onload = e => {
                                 if (!medias.find('.media:last-child').hasClass('fill')) {
@@ -616,8 +614,6 @@
                             }
                         } else if (file.type.match('video')) {
                             reader.onload = e => {
-                                console.log(e);
-                                
                                 if (!medias.find('.media:last-child').hasClass('fill')) {
                                     /* si no hay nada agrega unas clases */
                                     medias.find('.media').addClass('none');
