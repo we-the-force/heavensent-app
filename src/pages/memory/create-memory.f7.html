@@ -157,6 +157,7 @@
                             <p class="title">Time:</p>
                             <p class="val">07:15</p>
                         </div>
+                        <p class="immediatly-info none">The memory will be sent immediately</p>
                     </div>
                     <div class="footer-deliver">The memory will repeat itself every year until 08/22/2024</div>
                 </div>
@@ -191,7 +192,7 @@
                 </label>
             </div>
 
-            <div class="inputs list">
+            <div class="date_time inputs list">
                 <ul>
                     <li class="item-content item-input two-inputs">
                         <div class="item-inner">
@@ -425,23 +426,21 @@
 
                 /* habilita deshabilita end repetition dependiendo de lo que selecciones en repeat */
                 $$('.popover-repeat .popover-close').click(function (el) {
-                    let input_end = $$('#date-end.pop-deliver-inputs');
+                    /* let input_end = $$('#date-end.pop-deliver-inputs'); */
                     $$(this).parent().parent().find('.checked').removeClass('checked');
                     $$(this).addClass('checked');
                     $$('.popup-deliver .select p').text($$(this).text());
 
                     if ($$(this).hasClass('never')) {
-                        input_end.addClass('grey');
-                        input_end.prop("disabled", true);
+                        $$('.end-repeat-cont').addClass('none');
                         $$('.pop-deliver-inputs').trigger('change');
                         $$('.popup-deliver .footer').text('The memory will never repeat');
                     } else {
-                        input_end.removeClass('grey');
-                        input_end.prop("disabled", false);
+                        $$('.end-repeat-cont').removeClass('none');
                         $$('.pop-deliver-inputs').trigger('change');
                         $$('.popup-deliver .footer').html('The memory will repeat itself ' + $$(this).text() + ' until <div>--/--/----</div>');
                     }
-                })
+                });
 
                 /* cuenta palabras de los text area */
                 $$('textarea').on('input:notempty', function (val) {
@@ -469,6 +468,23 @@
                         $$('#accept-deliver-date').addClass('grey');
                         $$('#accept-deliver-date').removeClass('popup-close');
                     }
+                });
+
+                /* send immmediately toggle disable rest of popup */
+                $$('#immediately-toggle').on('toggle:change', function (val) {
+                    if(toggle_immediately.checked){
+                        $$('.popup-deliver .date_time.inputs').addClass('none');
+                        $$('immediatly-info').removeClass('none');
+                        $$('time-info').removeClass('none');
+                        $$('date-info').removeClass('none');
+                    }else{
+                        $$('time-info').addClass('none');
+                        $$('date-info').addClass('none');
+                        $$('immediatly-info').addClass('none');
+                        $$('.popup-deliver .date_time.inputs').removeClass('none');
+                    }
+                    /* validar inputs para aceptar */
+                    
                 });
 
                 /* agrega fecha en el footer */

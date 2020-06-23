@@ -143,8 +143,9 @@
             transform translate(100%, 100%)
 
     &.popup-deliver
+        max-height 500px
         width 330px
-        height 500px
+        height fit-content
         position absolute
         top 50%
         left 50%
@@ -165,6 +166,10 @@
             ul
                 &:before, &:after
                     content none
+
+                .item-input-with-error-message
+                    .item-inner
+                        padding 15px 8px 25px 0px
 
                 .item-input
                     padding-left 0px
@@ -199,9 +204,11 @@
                         &:first-child
                             width 59%
                             margin-right 4px
+            &.none
+                display none
 
         .repeat-cont, .end-repeat-cont
-            padding 0px 0px 10px 10px
+            padding 0px 0px 0px 10px
             flex-cont(row, space-between, center)
 
             .inputs
@@ -212,6 +219,9 @@
                     .select
                         i, p
                             color blue_dark
+            
+            &.none
+                display none
 
         .end-repeat-cont
             padding 10px 0px 10px 10px
