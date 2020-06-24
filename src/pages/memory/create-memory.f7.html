@@ -151,11 +151,11 @@
                     <div class="info-cont">
                         <div class="date-info">
                             <p class="title">Date:</p>
-                            <p class="val">09/22/2020</p>
+                            <p class="val"></p>
                         </div>
                         <div class="time-info">
                             <p class="title">Time:</p>
-                            <p class="val">07:15</p>
+                            <p class="val"></p>
                         </div>
                         <p class="immediatly-info none">The memory will be sent immediately</p>
                     </div>
@@ -262,7 +262,7 @@
                         <!-- <li><a class="list-btn every_3_months popover-close" href="#">Every 3 months</a></li> -->
                         <!-- <li><a class="list-btn every_6_months popover-close" href="#">Every 6 months</a></li> -->
                         <!-- <li><a class="list-btn every_year popover-close checked" href="#">Every year</a></li> -->
-                        <li><a class="list-btn every_year popover-close checked" href="#">Yearly</a></li>
+                        <li><a class="list-btn every_year popover-close" href="#">Yearly</a></li>
                     </ul>
                 </div>
             </div>
@@ -348,31 +348,6 @@
                     default:
                         break;
                 }
-                /* si hay un cover guardado lo coloca */
-                /* if (cover && cover != 'null') {
-                    cover = new Image();
-                    cover.src = JSON.parse(sessionStorage.cover);
-                    mb = JSON.parse(sessionStorage.mb);
-                    $$('.media-cont .cover img').attr('src', cover.src);
-                    $$('.media-cont .cover img').parent().addClass('edit');
-                    progressBar(mb)
-                } */
-
-                /* if (latlng && addr) {
-                    latlng = JSON.parse(latlng);
-                    addr = JSON.parse(addr);
-                    $$('.location-cont .location-btn').addClass('none');
-                    $$('.location-cont .location-map').removeClass('none');
-                    $$('.location-cont .map-info .address .addr').text(addr);
-                    let marker = $$('<div class="centerMarker"></div>');
-                    var map_2 = new google.maps.Map(document.getElementById("map-static"), {
-                        zoom: 14,
-                        center: latlng,
-                        disableDefaultUI: true,
-                        gestureHandling: 'none'
-                    });
-                    marker.addClass('centerMarker').appendTo(map_2.getDiv());
-                } */
                 if (on_demand) {
                     toggle_demand.checked = JSON.parse(on_demand);
                 }
@@ -388,35 +363,37 @@
                     $$('.deliver-cont .btns-cont').addClass('none');
                     $$('.deliver-cont .deliver-info').removeClass('none');
                     toggle_immediately.checked = JSON.parse(sessionStorage.immediately);
-                    $$('#deliver-date').val(JSON.parse(sessionStorage.date));
-                    $$('#deliver-time').val(JSON.parse(sessionStorage.time));
+                    if (toggle_immediately.checked) {
+                        $$('.popup-deliver .date_time.inputs').addClass('none');
+                        $$('#deliver-time').addClass('grey');
+                        $$('#deliver-date').addClass('grey');
+                        $$('.immediatly-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .date-info').addClass('none');
+                        $$('.deliver-cont .deliver-info .time-info').addClass('none');
+                    } else {
+                        $$('#deliver-date').val(JSON.parse(sessionStorage.date));
+                        $$('#deliver-time').val(JSON.parse(sessionStorage.time));
+                    }
                     $$('#select-repeat p').text(JSON.parse(sessionStorage.repeat))
                     if (JSON.parse(sessionStorage.date_end) != "") {
-                        $$('#date-end').val(JSON.parse(sessionStorage.date_end))
+                        $$('#date-end').val(JSON.parse(sessionStorage.date_end));
+                        /* frace al inicio */
+                        let repeat = JSON.parse(sessionStorage.footer).split(' until ');
+                        let date_foot = repeat[1];
+                        repeat = repeat[0].split(' itself ')[1];
+                        $$('.popup-deliver .footer').children('div').text(JSON.parse(sessionStorage.date_end));
+                        $$('.popup-deliver .footer').html('The memory will repeat itself ' + repeat + ' until <div>' + date_foot + '</div>');
                     } else {
                         /* disable and grey */
                         $$('#date-end.pop-deliver-inputs').addClass('grey');
-                        $$('#date-end.pop-deliver-inputs').prop("disabled", true);
+                        $$('.end-repeat-cont').addClass('none');
+                        $$('.popup-deliver .footer').text('The memory will never repeat');
                     }
                     $$('.deliver-cont .deliver-info .footer-deliver').text(JSON.parse(sessionStorage.footer));
                     $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date));
                     $$('.deliver-cont .deliver-info .time-info .val').text(JSON.parse(sessionStorage.time));
                 }
 
-                /* si hay contactos guardados los coloca */
-
-                /* if (contacts) {
-                    contacts = JSON.parse(contacts);
-                    $$('.contacts-cont .contacts .person.contact').remove();
-                    contacts.length > 0 ? $$('.contacts-cont .contacts .person.no_contact').addClass('none') : $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
-                    contacts.forEach(el => {
-                        let contact = $$('<div class="person contact" data-id="' + el.id + '">' +
-                            '<span class="material-icons close">close</span>' +
-                            '<img src="' + el.img + '" alt="">' +
-                            '</div>')
-                        contact.appendTo($$('.contacts-cont .contacts'));
-                    });
-                } */
                 if (sessionStorage.date && sessionStorage.time && sessionStorage.repeat) {
                     $$('#accept-deliver-date').prop('disabled', false);
                     $$('#accept-deliver-date').removeClass('grey');
@@ -432,22 +409,17 @@
                     $$('.popup-deliver .select p').text($$(this).text());
 
                     if ($$(this).hasClass('never')) {
+                        $$('#date-end').val("");
+                        $$('.pop-deliver-inputs#date-end').addClass('grey');
                         $$('.end-repeat-cont').addClass('none');
                         $$('.pop-deliver-inputs').trigger('change');
                         $$('.popup-deliver .footer').text('The memory will never repeat');
                     } else {
+                        $$('.pop-deliver-inputs#date-end').removeClass('grey');
                         $$('.end-repeat-cont').removeClass('none');
                         $$('.pop-deliver-inputs').trigger('change');
                         $$('.popup-deliver .footer').html('The memory will repeat itself ' + $$(this).text() + ' until <div>--/--/----</div>');
                     }
-                });
-
-                /* cuenta palabras de los text area */
-                $$('textarea').on('input:notempty', function (val) {
-                    $$(this).next().text($$(this).val().length + '/140');
-                });
-                $$('textarea').on('input:empty', function (val) {
-                    $$(this).next().text('0/140');
                 });
 
                 /* verifica que los inputs necesarios esten llenos en el popover */
@@ -472,19 +444,18 @@
 
                 /* send immmediately toggle disable rest of popup */
                 $$('#immediately-toggle').on('toggle:change', function (val) {
-                    if(toggle_immediately.checked){
+                    if (toggle_immediately.checked) {
                         $$('.popup-deliver .date_time.inputs').addClass('none');
-                        $$('immediatly-info').removeClass('none');
-                        $$('time-info').removeClass('none');
-                        $$('date-info').removeClass('none');
-                    }else{
-                        $$('time-info').addClass('none');
-                        $$('date-info').addClass('none');
-                        $$('immediatly-info').addClass('none');
+                        $$('#deliver-time').addClass('grey');
+                        $$('#deliver-date').addClass('grey');
+                        $$('.pop-deliver-inputs').trigger('change');
+                    } else {
+                        $$('#deliver-time').removeClass('grey');
+                        $$('#deliver-date').removeClass('grey');
                         $$('.popup-deliver .date_time.inputs').removeClass('none');
+                        $$('.pop-deliver-inputs').trigger('change');
                     }
-                    /* validar inputs para aceptar */
-                    
+
                 });
 
                 /* agrega fecha en el footer */
@@ -505,6 +476,14 @@
                 /* guarda los valores de la descripcion si cambia de pantalla */
                 $$('textarea#description').on('input:notempty', function (params) {
                     sessionStorage.desc = JSON.stringify($$(this).val());
+                });
+
+                /* cuenta palabras de los text area */
+                $$('textarea').on('input:notempty', function (val) {
+                    $$(this).next().text($$(this).val().length + '/140');
+                });
+                $$('textarea').on('input:empty', function (val) {
+                    $$(this).next().text('0/140');
                 });
 
                 /* elimina un contacto */
@@ -595,7 +574,7 @@
                         '</div>');
                     if (this.files && this.files[0]) {
                         /* si hay archivos */
-                        let file = this.files[0];                        
+                        let file = this.files[0];
                         if (file.type.match('image')) {
                             reader.onload = e => {
                                 if (!medias.find('.media:last-child').hasClass('fill')) {
@@ -1020,14 +999,25 @@
                     let immediately = app.toggle.get('#immediately-toggle').checked;
                     let date = $$('#deliver-date').val();
                     let time = $$('#deliver-time').val();
+                    if (immediately) {
+                        $$('.immediatly-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .date-info').addClass('none');
+                        $$('.deliver-cont .deliver-info .time-info').addClass('none');
+                        date = "";
+                        time = "";
+                    } else {
+                        $$('.immediatly-info').addClass('none');
+                        $$('.deliver-cont .deliver-info .date-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .time-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .date-info .val').text(date);
+                        $$('.deliver-cont .deliver-info .time-info .val').text(time);
+                    }
                     let repeat = $$('#select-repeat p').text();
-                    let date_end = $$('#date-end').val();
+                    let date_end = repeat == "Never" ? "" : $$('#date-end').val();
                     $$('.deliver-cont .deliver-info .footer-deliver').text($$('.popup-deliver .footer').text());
-                    $$('.deliver-cont .deliver-info .date-info .val').text(date);
-                    $$('.deliver-cont .deliver-info .time-info .val').text(time);
-                    sessionStorage.immediately = JSON.stringify(immediately);
                     sessionStorage.date = JSON.stringify(date);
                     sessionStorage.time = JSON.stringify(time);
+                    sessionStorage.immediately = JSON.stringify(immediately);
                     sessionStorage.repeat = JSON.stringify(repeat);
                     sessionStorage.date_end = JSON.stringify(date_end);
                     sessionStorage.footer = JSON.stringify($$('.popup-deliver .footer').text());
