@@ -49,7 +49,6 @@
             </div> -->
             <div class="upload-title">Upload files</div>
             <div class="upload-cont">
-
                 <div class="progress-cont">
                     <p class="bar"><span data-progress="0" class="progressbar" id="space-progressbar"></span></p>
                     <div class="desc">Available space <div id="prog">100</div>MB out of <div id="total">100</div>MB
@@ -119,7 +118,7 @@
             </div>
             <div class="location-cont">
                 <div class="btns-cont center location-btn" id="b_04">
-                    <a id="add-location-btn" href="/memories/location/" class="button color-blue round large">Add
+                    <a id="add-location-btn" href="/memories/location" class="button color-blue round large">Add
                         location</a>
                 </div>
                 <div class="location-map none">
@@ -129,7 +128,7 @@
                             <h1 class="title">Address</h1>
                             <p class="addr">6th Ave 1274b</p>
                         </div>
-                        <a href="/memories/location/" class="edit-btn addr">
+                        <a href="/memories/location" class="edit-btn addr">
                             <i class="icons material-icons">edit</i>
                         </a>
                     </div>
@@ -191,7 +190,6 @@
                     <span class="toggle-icon"></span>
                 </label>
             </div>
-
             <div class="date_time inputs list">
                 <ul>
                     <li class="item-content item-input two-inputs">
@@ -293,7 +291,6 @@
             pageInit: async function (e, page) {
                 var self = this;
                 var app = self.$app;
-
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
 
                 /* var latlng = sessionStorage.latlng;
@@ -692,18 +689,23 @@
 
                             console.log("* * * * Uploading * * * *");
                             //UPLOAD COVER
-                            await uploadCover(result.memoryFiles.cover, createdMemory.id);
+                            if (await uploadCover(result.memoryFiles.cover, createdMemory.id)) {
 
-                            //UPLOAD OTHER FILES
-                            if (await uploadFiles(result.memoryFiles.media, createdMemory.id)) {
-                                app.preloader.hide();
-                                app.dialog.alert("The memory has been created successfully!");
-                                sessionStorage.clear();
-                                app.views.main.router.navigate('/memories/home');
+                                //UPLOAD OTHER FILES
+                                if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
+                                    app.preloader.hide();
+                                    app.dialog.alert("The memory has been created successfully!");
+                                    sessionStorage.clear();
+                                    app.views.main.router.navigate('/memories/home');
+                                }
+                                else {
+                                    app.dialog.alert("Error uploading files, memory wasn't created!");
+                                }
                             }
                             else {
-                                app.dialog.alert("Error uploading files, memory wasn't created!");
+                                console.log("!!!!!! Error uploading cover !!!!!!");
                             }
+
 
                         })
                             .catch(function (err) {
@@ -719,53 +721,79 @@
                         console.log(result);
                         app.dialog.alert(`You missed one or more important fields, please fill them; ${result.message}`);
                     }
-
                 });
 
                 async function uploadCover(cover, memoryRefId) {
                     const data = new FormData();
                     // data.append("files", file);
-                    data.append("files", cover, 'profile.png');
+                    var result = false;
+                    let captionData = { caption: "asd", alternativeText: "asdasd" };
+                    data.append("files", cover, `mem-${memoryRefId}_cover.png`);
                     data.append("refId", memoryRefId);
                     data.append("ref", "memory");
                     data.append('field', 'cover');
                     // data.append('source', 'users-permissions');
                     console.log("Post cover request [upload cover]");
-                    await app.request({
-                        url: app.data.server + '/upload',
-                        method: "POST",
-                        crossDomain: true,
-                        contentType: "multipart/form-data",
-                        data: data
-                    });
+                    try {
+
+                        await app.request.promise({
+                            url: app.data.server + '/upload',
+                            method: "POST",
+                            crossDomain: true,
+                            contentType: "multipart/form-data",
+                            data: data
+                        }).then(async function (coverResult) {
+                            let resultObject = JSON.parse(coverResult.data);
+                            console.log(resultObject);
+                        });
+                        result = true;
+                    }
+                    catch (err) {
+                        console.log("ERROR UPLOADING MEDIA");
+                        console.log(err);
+                        result = false;
+                    }
+                    return result;
                 }
 
 
-                async function uploadFiles(files, memoryRefId) {
-                    console.log(files);
+                async function uploadFiles(files, captions, memoryRefId) {
+                    console.log("Uploading files");
                     const data = new FormData();
                     var result = false;
                     for (let i = 0; i < files.length; i++) {
-                        console.log(`--Appending data ${files[i].name.replace(/ /g, "_")}`);
-                        // data.append(`files.${memoryRefId}_file${i}`, files[i], files[i].name.replace(/ /g,"_"));
                         data.append(`files`, files[i], files[i].name.replace(/ /g, "_"));
                     }
-                    // data.append(`files.${memoryRefId}_file${0}`, files[0], files[0].name.replace(/ /g,"_"));
-                    // data.append(`files`, files, `${memoryRefId}_files`);
-                    console.log(data);
                     data.append("refId", memoryRefId);
                     data.append("ref", "memory");
                     data.append('field', 'media');
                     console.log("Post media request [upload cover]");
 
                     try {
-                        await app.request({
+                        let lmao = await app.request.promise({
                             url: app.data.server + '/upload',
                             method: "POST",
                             crossDomain: true,
                             contentType: "multipart/form-data",
                             data: data
+                        }).then(async function (filesResult) {
+                            console.log("- - - - Then - - - -");
+                            let resultObject = JSON.parse(filesResult.data);
+                            console.log(resultObject);
+                            for (let i = 0; i < resultObject.length; i++) {
+                                var fileCaption = captions.length > i ? captions[i] : `Test_${i}`;
+                                console.log(`File ${i}, caption: ${fileCaption}`);
+                                await app.request({
+                                    url: app.data.server + `/upload?id=${resultObject[i].id}`,
+                                    method: 'POST',
+                                    data: {
+                                        fileInfo: { caption: fileCaption }
+                                    }
+                                });
+                            }
                         });
+                        console.log("- - - Files - - -");
+                        console.log(lmao);
                         result = true;
 
                     }
