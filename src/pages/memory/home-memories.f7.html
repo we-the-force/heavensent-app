@@ -167,8 +167,10 @@
 							</div>
 							<div class="card-content">
 								{{#js_if "this.cover != ''"}}
-								<!-- <img src="../../static/img/cover.png" alt="" srcset=""> -->
-								<img src="{{@root.Server}}{{cover}}" alt="" srcset="">
+								<div class="cover">
+									<!-- <img src="../../static/img/paisaje.jpeg" alt="" srcset=""> -->
+									<img src="{{@root.Server}}{{cover}}" alt="" srcset="">
+								</div>
 								{{else}}
 								<img src="" alt="" srcset="">
 								<div class="icons">
@@ -273,7 +275,9 @@
 								</a>
 							</div>
 							<div class="card-content">
-								<img src="../../static/img/cover.png" alt="" srcset="">
+								<div class="cover">
+									<img src="../../static/img/paisaje.jpeg" alt="" srcset="">
+								</div>
 								<div class="icons">
 									<a href="#">
 										<span class="material-icons active">comment</span>
