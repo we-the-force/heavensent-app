@@ -523,7 +523,7 @@ var routes = [
     },
     {
         name: 'fundations-single',
-        path: '/fundations-single/',
+        path: '/fundations',
         beforeEnter: [checkAuth],
         component: FundationsSingle,
     },

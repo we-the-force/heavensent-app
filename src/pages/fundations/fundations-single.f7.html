@@ -1,75 +1,91 @@
 <!-- Screen E1 -->
 <template>
-    <div class="page" data-name="fundations-single">
+    <div class="page" id="fundations-single">
+        <div class="artwork"></div>
         <div class="navbar">
-            <div class="navbar-bg"></div>
             <div class="navbar-inner sliding">
-                <div class="left">
-                    <a href="#" class="link back">
-                        <i class="icon icon-back"></i>
-                        <span class="if-not-md">Back</span>
-                    </a>
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="back-btn back">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title">Donate title</h1>
+                        <a href="" class="none">
+                        </a>
+                    </div>
                 </div>
-                <div class="title">Donate title</div>
             </div>
         </div>
         <div class="page-content">
-            <p>,</p>
-            <div>
-                <img src="http://via.placeholder.com/330x200.png?text=placeholder" alt="">
+            <div class="cover-cont">
+                <img src="../../static/img/background.jpg" alt="">
             </div>
-            <div>
-                <div class="center">Description</div>
-                <div class="center">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus vel placeat eum tenetur recusandae doloremque ad aliquam fugit tempore fugiat eaque accusantium dolor, id aliquid quasi distinctio laborum perspiciatis. Deleniti!
-                </div>
+            <div class="desc-cont">
+                <h1 class="desc-title">Description</h1>
+                <p class="desc">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+                    ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                    qui officia deserunt mollit anim id est laborum.
+                </p>
             </div>
-            <!-- Los links dentro de los cards tienen un style para forzar el tamanio, por cuestiones de test. -->
-            <div data-space-between="10" data-slides-per-view="auto" data-centered-slides="true" class="swiper-container swiper-init demo-swiper demo-swiper-auto">
+            <div data-space-between="20" data-slides-per-view="1.28"  data-centered-slides="true"
+                class="swiper-container swiper-init packages-swiper">
                 <div class="swiper-wrapper">
-                    <!-- Slide 1 -->
-                    <div id="package-a-slide" class="swiper-slide">
-                        <div class="card" style="align-content: center; justify-content: center;">
-                            <a class="button" href="" id="package-a-btn" style="width: 300px; height: 300px">
-                                <div>
-                                    <img src="http://via.placeholder.com/200x150.png?text=package-info" alt="">
-                                    <br>
-                                    Package 1
-                                    <br>
-                                    Content
-                                    <br>
-                                    $0.00CAD
+                    <div class="swiper-slide" > 
+                        <div class="card simple donate" id="package1">
+                            <div class="card-content">
+                                <div class="cover">
+                                    <img src="../../static/img/pack1.jpeg" alt="">
                                 </div>
-                            </a>
+                                <p class="type">Package 1</p>
+                                <h1 class="title">Content</h1>
+                                <p class="price">$0.00 CAD</p>
+                            </div>
                         </div>
                     </div>
-                    <!-- Slide 2 -->
-                    <div id="package-a-slide" class="swiper-slide">
-                        <div class="card" style="align-content: center; justify-content: center;">
-                            <a class="button" href="" id="package-b-btn" style="width: 300px; height: 300px">
-                                <div>
-                                    <img src="http://via.placeholder.com/200x150.png?text=package-info" alt="">
-                                    <br>
-                                    Package 2
-                                    <br>
-                                    Content
-                                    <br>
-                                    $0.00CAD
+
+                    <div class="swiper-slide" >
+                        <div class="card simple donate" id="package2">
+                            <div class="card-content">
+                                <div class="cover">
+                                    <img src="../../static/img/pack2.png" alt="">
                                 </div>
-                            </a>
+                                <p class="type">Package 2</p>
+                                <h1 class="title">Content</h1>
+                                <p class="price">$0.00 CAD</p>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="swiper-slide" >
+                        <div class="card simple donate" id="package3">
+                            <div class="card-content">
+                                <div class="cover">
+                                    <img src="../../static/img/pack3.png" alt="">
+                                </div>
+                                <p class="type">Package 3</p>
+                                <h1 class="title">Choose</h1>
+                                <p class="price heart">
+                                    $0.00 CAD
+                                    <span class="material-icons">edit</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
-            <div class="btns-cont center pass">
-                <a id="donate-btn" class="button color-blue small round" href="">Give $0</a>
+            <div class="btns-cont center" id="donate">
+                <a id="donate-btn" class="button square" href=""> <span class="material-icons">favorite</span> Give $0</a>
             </div>
-            <div class="btns-cont center pass">
-                <a id="donate-btn" class="link color-blue" href="">+ Add a payment method</a>
+            <div class="btns-cont center" id="pay-method">
+                <a id="pay-method-btn" class="button link color-blue" href="">+ Add a payment method</a>
             </div>
         </div>
     </div>
 </template>
 <script>
-    
+
 </script>
