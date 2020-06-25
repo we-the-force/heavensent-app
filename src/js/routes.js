@@ -333,7 +333,10 @@ var routes = [
                 });
 
             function getMemories(baseMemories) {
-                let memoryObject = [];
+                let memoryObject = {
+                    scheduled: [],
+                    pending: []
+                };
                 if (baseMemories) {
                     baseMemories.forEach(memory => {
                         let auxMemory = {
@@ -366,7 +369,15 @@ var routes = [
                             auxMemory.contacts.urls.push(contact.profilePicture.url);
                         })
                         auxMemory.contacts.extraContacts = auxMemory.contacts.urls.length - auxMemory.contacts.limitedUrls.length;
-                        memoryObject.push(auxMemory);
+                        
+                        if (auxMemory.deliveryDate == null)
+                        {
+                            memoryObject.pending.push(auxMemory);
+                        }
+                        else
+                        {
+                            memoryObject.scheduled.push(auxMemory);
+                        }
                     })
                 }
                 console.log("Memory context generated [memories-home.getMemories]");
