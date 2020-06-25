@@ -318,15 +318,18 @@
     &.card-expandable
         border none
         margin 8px
-        height 484px
+        height 485px
         /* width 288px */
         width auto
+
+        .card-content
+            width 100%
 
         .bg-video
             position relative
             background white
             height 384px
-            width 288px
+            width auto
             overflow hidden
             flex-cont(row, center, center)
 
@@ -361,7 +364,7 @@
                     z-index 1
 
         .card-content-padding
-            width 288px
+            width auto
             height 100px
             background Grey_light_2
             box-sizing border-box
@@ -369,11 +372,13 @@
             flex-cont(column, center, center)
 
             .btns-cont
+                max-width 100%
                 flex-cont(column, center, center)
 
                 .btn-card
                     border-radius 9px
                     width 238px
+                    max-width 100%
                     height 48.3px
                     background blue_dark
                     color Grey_light_1

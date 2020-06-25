@@ -1,0 +1,18 @@
+.page#donations
+    background Grey_light_1
+
+    .page-content
+        .swiper-container
+            /* position absolute */
+            z-index 300
+            top 50%
+            transform translate(0%, -50%)
+            overflow visible
+
+            .swiper-slide
+                transform unset
+
+.ios 
+    .navbars.navbar-hidden + .page-current.page-with-card-opened 
+        .page-content 
+            padding-top 70px

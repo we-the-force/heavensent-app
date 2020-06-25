@@ -22,8 +22,8 @@ navbar-temp()
 
 .md
     .page, .popup
-        :not(.navbar) + .page-content
-            padding-top 15px
+        .navbar + .page-content
+            padding-top 70px
 
 .ios
     .navbars
@@ -33,6 +33,13 @@ navbar-temp()
             &.navbar-previous
                 display none
 
+        & + .page-current
+            .page-content
+                padding-top 70px
+
         &.navbar-hidden + .page-current
             .page-content
                 padding-top 15px
+
+        &.navbar-hidden-statusbar
+            transform translateY(-70px)

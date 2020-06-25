@@ -23,6 +23,7 @@ import MemoryView from '../pages/recipient/view-memory.f7.html';
 import MemoryNotification from '../pages/recipient/memory-notification.f7.html';
 
 import FundationsSingle from '../pages/fundations/fundations-single.f7.html';
+import Donations from '../pages/membership/donations.f7.html';
 
 import SelectMembership from '../pages/membership/select-membership.f7.html';
 import AddCardInfo from '../pages/membership/add-card-info.f7.html';
@@ -423,17 +424,22 @@ var routes = [
         name: 'memory-dashboard',
         path: '/memories/dashboard',
         component: MemoryDashboard,
-    },/*  */
+    },
     {
         name: 'memory-notification',
         path: '/memories/notification/:pageID',
         component: MemoryNotification,
-    },/*  */
+    },
     {
         name: 'view-memory',
         path: '/memories/view',
         component: MemoryView,
-    },/*  */
+    },
+    {
+        name: 'donations',
+        path: '/donations',
+        component: Donations,
+    },
     {
         name: 'select-membership',
         path: '/membership/select/user/:userID/clear/:clearOnBack',
