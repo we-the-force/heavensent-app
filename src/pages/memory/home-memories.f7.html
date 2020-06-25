@@ -451,7 +451,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- <div class="donate-title">Donate</div>
+			<div class="donate-title">Donate</div>
 			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init donate-swiper">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide">
@@ -465,7 +465,7 @@
 								</div>
 								<div class="card-content-padding">
 									<div class="btns-cont card-opened-fade-out">
-										<a href="#" class="btn-card">Give now</a>
+										<a href="#" class="btn-card card-prevent-open">Give now</a>
 									</div>
 									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
 										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -486,7 +486,7 @@
 								</div>
 								<div class="card-content-padding">
 									<div class="btns-cont card-opened-fade-out">
-										<a href="#" class="btn-card">Give now</a>
+										<a href="#" class="btn-card card-prevent-open">Give now</a>
 									</div>
 									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
 										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -507,7 +507,7 @@
 								</div>
 								<div class="card-content-padding">
 									<div class="btns-cont card-opened-fade-out">
-										<a href="#" class="btn-card">Give now</a>
+										<a href="#" class="btn-card card-prevent-open">Give now</a>
 									</div>
 									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
 										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -528,7 +528,7 @@
 								</div>
 								<div class="card-content-padding">
 									<div class="btns-cont card-opened-fade-out">
-										<a href="#" class="btn-card">Give now</a>
+										<a href="#" class="btn-card card-prevent-open">Give now</a>
 									</div>
 									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
 										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -539,7 +539,7 @@
 						</div>
 					</div>
 				</div>
-			</div> -->
+			</div>
 			<div class="footer">
 				<div class="sqr_bck" id="sqr4"></div>
 				<div class="sqr_bck" id="sqr5"></div>
@@ -615,6 +615,21 @@
 							break;
 					}
 				});
+
+				$$('.card-expandable').on('card:open', x => {
+                    let swiper = app.swiper.get('.donate-swiper');
+                    swiper.allowTouchMove = false;
+                });
+
+                $$('.card-expandable').on('card:close', x => {
+                    let swiper = app.swiper.get('.donate-swiper');
+                    swiper.allowTouchMove = true;
+                });
+
+                $$('.card-expandable .btn-card').click(x => {
+                    console.log('make somthing');
+                    
+                });
 
 				function updateControls() {
 					if (loggedUser != null) {

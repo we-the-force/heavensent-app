@@ -32,42 +32,42 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="create-cont-name" placeholder="name" required validate />
+								<input type="text" id="create-cont-name" placeholder="Name" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="create-cont-email" placeholder="email" required validate />
+								<input type="email" id="create-cont-email" placeholder="Email" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="create-cont-mobile" placeholder="mobile" required validate />
+								<input type="text" id="create-cont-mobile" placeholder="Mobile" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="create-cont-relation" placeholder="relation" required validate />
+								<input type="text" id="create-cont-relation" placeholder="Relation" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="date" id="create-cont-birthday" placeholder="birthday" required validate />
+								<input type="text" id="create-cont-birthday" placeholder="Birthday" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" required validate />
 							</div>
 						</div>
 					</li>
 					<!-- falta checar la edad -->
 				</ul>
 			</div>
-			<div class="btns-cont center">
+			<div class="btns-cont center none">
 				<a href="/guardian/create" id="create-guardian-btn" class="button color-white round large">Select / Create guardian</a>
 			</div>
 			<div class="btns-cont center">
@@ -88,6 +88,10 @@
 			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
+
+                var moment = require('moment');
+                moment.locale('es');
+                moment().format();
 				
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
 				
@@ -133,6 +137,14 @@
 					} else {
 						alert("File upload is not supported!");
 						console.log("File upload is not supported!");
+					}
+				});
+
+				$$('input#create-cont-birthday').change(function (el) {					
+					if (moment().diff(moment($$(this).val()), 'years') < 18){
+						$$('#create-guardian-btn').parent().removeClass('none');
+					}else{
+						$$('#create-guardian-btn').parent().addClass('none');
 					}
 				});
 				
