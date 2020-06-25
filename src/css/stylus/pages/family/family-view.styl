@@ -1,5 +1,5 @@
 .page
-    &#view-family,&#add-contacts
+    &#view-family, &#add-contacts
         background Grey_light_1
 
         .page-content
@@ -56,7 +56,7 @@
                 .back-btn
                     margin-left 8px
 
-                .close-btn,.add-btn
+                .close-btn, .add-btn
                     margin-right 8px
 
         .btns-cont
@@ -64,3 +64,33 @@
 
         .searchbar-backdrop
             opacity 0
+
+.ios
+    .navbar
+        .subnavbar
+            background unset
+            height 76px
+            padding 0px 15px
+
+            &:after, &:before
+                content none
+
+            .searchbar:after
+                content ''
+                border-bottom 1px solid #F0F0F0
+
+            .searchbar-icon:after
+                color #bdbdbd
+
+            .searchbar-icon
+                left 4px
+                width 24px
+                height 24px
+                margin-left 12px
+
+                &:after
+                    font-size 25px
+
+            .input-clear-button
+                right 4px
+                margin-right 12px

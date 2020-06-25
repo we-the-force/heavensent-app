@@ -1,0 +1,136 @@
+<template>
+    <div class="page" id="donations">
+        <div class="artwork"></div>
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="none">
+                        </a>
+                        <h1 class="title">Donate</h1>
+                        <a href="/memories/home" class="close-btn">
+                            <i class="icons material-icons">close</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init donate-swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="card card-expandable">
+                            <div class="card-content">
+                                <div class="bg-video">
+                                    <div class="sqr_bck" id="sqr6"></div>
+                                    <div class="sqr_bck" id="sqr7"></div>
+                                    <div class="sqr_bck" id="sqr8"></div>
+                                    <span class="material-icons play card-opened-fade-out">play_circle_outline</span>
+                                </div>
+                                <div class="card-content-padding">
+                                    <div class="btns-cont card-opened-fade-out">
+                                        <a href="#" class="btn-card card-prevent-open">Give now</a>
+                                    </div>
+                                    <p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+                                        amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card card-expandable">
+                            <div class="card-content">
+                                <div class="bg-video">
+                                    <div class="sqr_bck" id="sqr6"></div>
+                                    <div class="sqr_bck" id="sqr7"></div>
+                                    <div class="sqr_bck" id="sqr8"></div>
+                                    <span class="material-icons play card-opened-fade-out">play_circle_outline</span>
+                                </div>
+                                <div class="card-content-padding">
+                                    <div class="btns-cont card-opened-fade-out">
+                                        <a href="#" class="btn-card card-prevent-open">Give now</a>
+                                    </div>
+                                    <p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+                                        amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card card-expandable">
+                            <div class="card-content">
+                                <div class="bg-video">
+                                    <div class="sqr_bck" id="sqr6"></div>
+                                    <div class="sqr_bck" id="sqr7"></div>
+                                    <div class="sqr_bck" id="sqr8"></div>
+                                    <span class="material-icons play card-opened-fade-out">play_circle_outline</span>
+                                </div>
+                                <div class="card-content-padding">
+                                    <div class="btns-cont card-opened-fade-out">
+                                        <a href="#" class="btn-card card-prevent-open">Give now</a>
+                                    </div>
+                                    <p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+                                        amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card card-expandable">
+                            <div class="card-content">
+                                <div class="bg-video">
+                                    <div class="sqr_bck" id="sqr6"></div>
+                                    <div class="sqr_bck" id="sqr7"></div>
+                                    <div class="sqr_bck" id="sqr8"></div>
+                                    <span class="material-icons play card-opened-fade-out">play_circle_outline</span>
+                                </div>
+                                <div class="card-content-padding">
+                                    <div class="btns-cont card-opened-fade-out">
+                                        <a href="#" class="btn-card card-prevent-open">Give now</a>
+                                    </div>
+                                    <p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
+                                        amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import $$ from "dom7";
+    export default {
+        on: {
+            pageInit: async function (e, page) {
+                var self = this;
+                var app = self.$app;
+
+
+                $$('.card-expandable').on('card:open', x => {
+                    let swiper = app.swiper.get('.swiper-container');
+                    swiper.allowTouchMove = false;
+                });
+
+                $$('.card-expandable').on('card:close', x => {
+                    let swiper = app.swiper.get('.swiper-container');
+                    swiper.allowTouchMove = true;
+                });
+
+                $$('.btn-card').click(x => {
+                    console.log('make somthing');
+                    
+                });
+            },
+        },
+    };
+</script>
