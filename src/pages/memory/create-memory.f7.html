@@ -219,7 +219,7 @@
                                     <a id="select-repeat" class="select color-white round small popover-open"
                                         data-popover=".popover-repeat">
                                         <i class="material-icons">keyboard_arrow_down</i>
-                                        <p id="select-repeat-value"> Every Year</p>
+                                        <p id="select-repeat-value">Yearly</p>
                                     </a>
                                 </div>
                             </div>
@@ -695,7 +695,7 @@
                                 if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
                                     app.preloader.hide();
                                     app.dialog.alert("The memory has been created successfully!");
-                                    sessionStorage.clear();
+                                    // sessionStorage.clear();
                                     app.views.main.router.navigate('/memories/home');
                                 }
                                 else {
@@ -912,9 +912,9 @@
                     // console.log(!latlng);
                     if (plan === "premium") {
                         if (!latlng) {
-                            result.valid = false;
-                            result.message += result.errors > 0 ? ", no location" : "No location";
-                            result.errors++;
+                            // result.valid = false;
+                            // result.message += result.errors > 0 ? ", no location" : "No location";
+                            // result.errors++;
                         }
                         else {
                             let newLatlng = JSON.parse(latlng);
@@ -935,9 +935,12 @@
                         if (!latlng) {
                             //Date is a must!
                             if (!date) {
-                                result.valid = false;
-                                result.message += result.errors > 0 ? ", no date" : "No date";
-                                result.errors++;
+                                // result.valid = false;
+                                // result.message += result.errors > 0 ? ", no date" : "No date";
+                                // result.errors++;
+                                result.memory.reminderType = "none";
+                                // result.memory.reminder.date = '1900-01-01';
+                                result.memory.reminder.date = null;
                             }
                             else {
                                 if (result.memory.reminderType === "none") {
@@ -946,33 +949,38 @@
                                 result.memory.reminder.date = date;
                             }
                             if (!time) {
-                                result.valid = false;
-                                result.message += result.errors > 0 ? ", no time" : "No time";
-                                result.errors++;
+                                // result.valid = false;
+                                // result.message += result.errors > 0 ? ", no time" : "No time";
+                                // result.errors++;
+                                result.memory.reminder.time = null;
                             }
                             else {
                                 result.memory.reminder.time = time;
                             }
                             if (!repeat) {
-                                result.valid = false;
-                                result.message += result.errors > 0 ? ", no repeat" : "No repeat";
-                                result.errors++;
+                                // result.valid = false;
+                                // result.message += result.errors > 0 ? ", no repeat" : "No repeat";
+                                // result.errors++;
+                                result.memory.reminder.repeat = "not";
                             }
                             else {
-                                result.memory.reminder.repeat = repeat.toLowerCase().substring(1, repeat.length - 1);
+                                result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
                             }
                         }
                         else {
                             var today = new Date();
                             if (!date) {
-                                result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
+                                // result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
+                                result.memory.reminder.date = null;
+
                             }
                             else {
                                 result.memory.reminderType = "date"
                                 result.memory.reminder.date = date;
                             }
                             if (!time) {
-                                result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                                // result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                                result.memory.reminder.time = null;
                             }
                             else {
                                 result.memory.reminder.time = time;
@@ -981,7 +989,7 @@
                                 result.memory.reminder.repeat = "not";
                             }
                             else {
-                                result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1);
+                                result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
                             }
                         }
                     }
@@ -990,7 +998,7 @@
                         let today = new Date();
                         result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
                         result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
-                        result.memory.reminder.repeat = repeat.toLowerCase().substring(1, repeat.length - 1);
+                        result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
                     }
 
                     if (plan == "premium") {
