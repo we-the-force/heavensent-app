@@ -329,8 +329,6 @@ var routes = [
                 console.log(err);
             });
 
-            // getFundations(baseFundations);
-
             resolve({
                 component: HomeMemories,
             },
@@ -339,6 +337,7 @@ var routes = [
                         Server: server,
                         Contacts: getContacts(contacts),
                         Memories: getMemories(ownedMemories),
+                        Fundations: getFundations(baseFundations),
                     }
                 });
 
@@ -421,19 +420,25 @@ var routes = [
                 return contactsObject;
             }
 
-            // function getFundations(baseFund)
-            // {
-            //     console.log("Get Fundations");
-            //     console.log(baseFundations);
-            //     let fundations = [];
-            //     if (baseFund){
-            //         baseFund.foreach(fund => {
-            //             fundations.push()
-            //         })
-            //     }
-            // }
+            function getFundations(baseFund)
+            {
+                console.log("Get Fundations");
+                console.log(baseFundations);
+                let fundations = [];
+                if (baseFund){
+                    baseFund.forEach(fund => {
+                        fundations.push({
+                            id: fund.id,
+                            name: fund.name,
+                            cover: fund.cover ? fund.cover.url : "",
+                            desc: fund.description ? fund.description : "[-no description-]",
+                        });
+                    })
+                }
+                console.log(fundations);
+                return fundations;
+            }
         }
-        // component: HomeMemories,
     },
     {
         name: 'birthday-memories',
