@@ -332,14 +332,14 @@ var routes = [
             resolve({
                 component: HomeMemories,
             },
-                {
-                    context: {
-                        Server: server,
-                        Contacts: getContacts(contacts),
-                        Memories: getMemories(ownedMemories),
-                        Fundations: getFundations(baseFundations),
-                    }
-                });
+            {
+                context: {
+                    Server: server,
+                    Contacts: getContacts(contacts),
+                    Memories: getMemories(ownedMemories),
+                    Fundations: getFundations(baseFundations),
+                }
+            });
 
             function getMemories(baseMemories) {
                 let memoryObject = {
@@ -419,7 +419,6 @@ var routes = [
                 }
                 return contactsObject;
             }
-
             function getFundations(baseFund)
             {
                 console.log("Get Fundations");
@@ -487,7 +486,49 @@ var routes = [
     {
         name: 'donations',
         path: '/donations',
-        component: Donations,
+        beforeEnter: [checkAuth],
+        async: async function(routeTO, routeFrom, resolve, reject){
+            var router = this;
+            var app = router.app;
+            // var currentUser = await app.methods.getLocalValue('loggedUser');
+
+            var baseFundations;
+            await app.request.promise.get(`${app.data.server}/fundations`).then(function (fundationResult){
+                baseFundations = JSON.parse(fundationResult.data);
+            }).catch(function(err){
+                console.log("Error fetching fundations");
+                console.log(err);
+            });
+
+            resolve({
+                component: Donations,
+            },
+            {
+                context: {
+                    Server: app.data.server,
+                    Fundations: getFundations(baseFundations),
+                }
+            })
+
+            function getFundations(baseFund)
+            {
+                console.log("Get Fundations");
+                console.log(baseFundations);
+                let fundations = [];
+                if (baseFund){
+                    baseFund.forEach(fund => {
+                        fundations.push({
+                            id: fund.id,
+                            name: fund.name,
+                            cover: fund.cover ? fund.cover.url : "",
+                            desc: fund.description ? fund.description : "[-no description-]",
+                        });
+                    })
+                }
+                console.log(fundations);
+                return fundations;
+            }
+        }
     },
     {
         name: 'select-membership',
