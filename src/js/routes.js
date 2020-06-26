@@ -470,8 +470,62 @@ var routes = [
     }, */
     {
         name: 'memory-dashboard',
-        path: '/memories/dashboard',
-        component: MemoryDashboard,
+        path: '/memories/dashboard/user/:userID',
+        async: async function(routeTo, routeFrom, resolve, reject){
+            var router = this;
+            var app = router.app;
+            var userID = routeTo.params.userID;
+
+            var baseMemories = null;
+            await app.request.promise.get(`${app.data.server}/memories/?recipients.id=${userID}`).then(function (memResult){
+                baseMemories = JSON.parse(memResult.data);
+            }).catch(function(err){
+                console.log("Error getting memories!");
+                console.log(err);
+            })
+
+            // getMemories(baseMemories);
+
+            resolve({
+                component: MemoryDashboard,
+            },
+            {
+                context: {
+                    Server: app.data.server,
+                    Memories: getMemories(baseMemories),
+                }
+            })
+
+            function getMemories(baseMem)
+            {
+                let memObject = [];
+
+                baseMem.forEach(mem => {
+                    memObject.push(getMemory(mem));
+                })
+
+                console.log("Resulting memories");
+                console.log(memObject);
+                return memObject;
+            }
+            function getMemory(baseMem)
+            {
+                let memory = {
+                    id: baseMem.id,
+                    title: baseMem.title ? baseMem.title : "[No title]",
+                    desc: baseMem.description ? baseMem.description : "[No description]",
+                    owner: baseMem.owners[0].name,
+                    cover: baseMem.cover ? baseMem.cover.url : "",
+                    media: [],
+                    mediaThumb: [],
+                }
+                baseMem.media.forEach(media => {
+                    memory.media.push(media.url ? media.url : "");
+                });
+                return memory;
+            }
+        }
+        // component: MemoryDashboard,
     },
     {
         name: 'memory-notification',
@@ -486,33 +540,39 @@ var routes = [
             var app = router.app;
             var memoryID = routeTo.params.memoryID;
 
-            var baseMem;
+            var baseMem = null;
             await app.request.promise.get(`${app.data.server}/memories/${memoryID}`).then(function (memResult){
                 baseMem = JSON.parse(memResult.data);
+                console.log("Base memory");
                 console.log(baseMem);
             }).catch(function(err){
                 console.log("Error fetching memories!");
                 console.log(err);
+                baseMem = null;
             })
 
-
-
-            resolve({
-                component: MemoryView,
-            },
+            if (baseMem)
             {
-                context: {
-                    Server: app.data.server,
-                    Memory: getMemories(baseMem),
-                }
-            })
 
-            function getMemories(baseMem)
+                resolve({
+                    component: MemoryView,
+                },
+                {
+                    context: {
+                        Server: app.data.server,
+                        Memory: getMemory(baseMem),
+                    }
+                })
+            }
+            else
             {
-                console.log("Get Memories");
-                console.log(baseMem);
+                reject();
+            }
 
+            function getMemory(baseMem)
+            {
                 let memory = {
+                    id: baseMem.id,
                     title: baseMem.title ? baseMem.title : "[No title]",
                     desc: baseMem.description ? baseMem.description : "[No description]",
                     owner: baseMem.owners[0].name,
