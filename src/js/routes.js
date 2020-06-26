@@ -480,7 +480,7 @@ var routes = [
     },
     {
         name: 'view-memory',
-        path: '/memories/view/memory/:memoryID',
+        path: '/memory/:memoryID',
         async: async function(routeTo, routeFrom, resolve, reject){
             var router = this;
             var app = router.app;

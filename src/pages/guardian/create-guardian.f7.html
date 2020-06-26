@@ -60,7 +60,7 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="birthday" placeholder="Birthday" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" required validate />
+								<input type="date" id="birthday" placeholder="Birthday" class="aft" required validate />
 							</div>
 						</div>
 					</li>
@@ -85,6 +85,11 @@
 				var self = this;
 				var app = self.$app;
 				var c;
+
+				$$('#birthday').click(function (el) {
+					$$(this).removeClass('aft');
+				});
+
 
 				//upload photo
 				$$(".img-btn").on("click", function () {

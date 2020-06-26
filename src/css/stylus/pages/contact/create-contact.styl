@@ -77,9 +77,27 @@
                 .item-content.item-checkbox
                     width 100%
 
+                input#birthday,input#create-cont-birthday
+                    &.aft:after
+                        top 50%
+                        transform translateY(-50%)
+                        content 'Birthday'
+                        font-template(100, 16px, 24px)
+                        color Grey_dark_2
+                        background Grey_light_2
+                        width 70%
+                        height auto
+                        position absolute
+
             .btns-cont
                 flex-grow 1
                 padding 25px 0px 25px 0px
 
                 &.none
                     display none
+
+.ios
+    .page
+        &#create-contact, &#create-guardian
+            .page-content
+                display block !important
