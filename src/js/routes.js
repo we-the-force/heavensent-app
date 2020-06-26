@@ -486,28 +486,36 @@ var routes = [
             var app = router.app;
             var memoryID = routeTo.params.memoryID;
 
-            var baseMem;
+            var baseMem = null;
             await app.request.promise.get(`${app.data.server}/memories/${memoryID}`).then(function (memResult){
                 baseMem = JSON.parse(memResult.data);
+                console.log("Base memory");
                 console.log(baseMem);
             }).catch(function(err){
                 console.log("Error fetching memories!");
                 console.log(err);
+                baseMem = null;
             })
 
-
-
-            resolve({
-                component: MemoryView,
-            },
+            if (baseMem)
             {
-                context: {
-                    Server: app.data.server,
-                    Memory: getMemories(baseMem),
-                }
-            })
 
-            function getMemories(baseMem)
+                resolve({
+                    component: MemoryView,
+                },
+                {
+                    context: {
+                        Server: app.data.server,
+                        Memory: getMemory(baseMem),
+                    }
+                })
+            }
+            else
+            {
+                reject();
+            }
+
+            function getMemory(baseMem)
             {
                 console.log("Get Memories");
                 console.log(baseMem);
