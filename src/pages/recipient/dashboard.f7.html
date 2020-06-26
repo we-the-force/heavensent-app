@@ -22,13 +22,14 @@
             <div data-space-between="20" data-slides-per-view="1.1" data-centered-slides="true"
                 class="swiper-container swiper-init memories-swiper">
                 <div class="swiper-wrapper">
-
+                    {{#js_if "this.Memories.toString() != []"}}
+                    {{#each Memories}}
                     <div class="swiper-slide">
                         <div class="card complete v_dashboard_memory">
                             <div class="card-header">
                                 <div class="title-card">
-                                    <h1>Jacob Ethan Goodbye</h1>
-                                    <p class="sender">Sent by: Jacob Ethan</p>
+                                    <h1>{{title}}</h1>
+                                    <p class="sender">Sent by: {{owner}}</p>
                                 </div>
                                 <a href="#" class="info popover-open" data-popover=".popover-info">
                                     <span class="material-icons">info</span>
@@ -36,15 +37,13 @@
                             </div>
                             <div class="card-content">
                                 <div class="cover">
-                                    <img src="../../static/img/background.jpg" alt="">
+                                    {{#js_if "this.cover != ''"}}
+                                    <img src="{{@root.Server}}{{cover}}" alt="">
+                                    {{else}}
+                                    <img src="" alt="">
+                                    {{/js_if}}
                                 </div>
-                                <p class="desc">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris
-                                </p>
+                                <p class="desc">{{desc}}</p>
                                 <div class="icons">
                                     <span class="material-icons">comment</span>
                                     <span class="material-icons">image</span>
@@ -56,126 +55,17 @@
                             </div>
                             <div class="card-footer">
                                 <div class="btns-cont center">
-                                    <a class="button color-blue round small">See</a>
+                                    <a href="/memories/view/memory/{{id}}" class="button color-blue round small">See</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="swiper-slide">
-                        <div class="card complete v_dashboard_memory">
-                            <div class="card-header">
-                                <div class="title-card">
-                                    <h1>Jacob Ethan Goodbye</h1>
-                                    <p class="sender">Sent by: Jacob Ethan</p>
-                                </div>
-                                <a href="#" class="info popover-open" data-popover=".popover-info">
-                                    <span class="material-icons">info</span>
-                                </a>
-                            </div>
-                            <div class="card-content">
-                                <div class="cover">
-                                    <img src="../../static/img/background.jpg" alt="">
-                                </div>
-                                <p class="desc">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris
-                                </p>
-                                <div class="icons">
-                                    <span class="material-icons">comment</span>
-                                    <span class="material-icons">image</span>
-                                    <span class="material-icons">videocam</span>
-                                    <span class="material-icons grey">mic</span>
-                                    <span class="material-icons grey">pin_drop</span>
-                                    <span class="material-icons">play_circle_filled</span>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="btns-cont center">
-                                    <a class="button color-blue round small">See</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card complete v_dashboard_memory">
-                            <div class="card-header">
-                                <div class="title-card">
-                                    <h1>Jacob Ethan Goodbye</h1>
-                                    <p class="sender">Sent by: Jacob Ethan</p>
-                                </div>
-                                <a href="#" class="info popover-open" data-popover=".popover-info">
-                                    <span class="material-icons">info</span>
-                                </a>
-                            </div>
-                            <div class="card-content">
-                                <div class="cover">
-                                    <img src="../../static/img/background.jpg" alt="">
-                                </div>
-                                <p class="desc">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris
-                                </p>
-                                <div class="icons">
-                                    <span class="material-icons">comment</span>
-                                    <span class="material-icons">image</span>
-                                    <span class="material-icons">videocam</span>
-                                    <span class="material-icons grey">mic</span>
-                                    <span class="material-icons grey">pin_drop</span>
-                                    <span class="material-icons">play_circle_filled</span>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="btns-cont center">
-                                    <a class="button color-blue round small">See</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card complete v_dashboard_memory">
-                            <div class="card-header">
-                                <div class="title-card">
-                                    <h1>Jacob Ethan Goodbye</h1>
-                                    <p class="sender">Sent by: Jacob Ethan</p>
-                                </div>
-                                <a href="#" class="info popover-open" data-popover=".popover-info">
-                                    <span class="material-icons">info</span>
-                                </a>
-                            </div>
-                            <div class="card-content">
-                                <div class="cover">
-                                    <img src="../../static/img/background.jpg" alt="">
-                                </div>
-                                <p class="desc">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris
-                                </p>
-                                <div class="icons">
-                                    <span class="material-icons">comment</span>
-                                    <span class="material-icons">image</span>
-                                    <span class="material-icons">videocam</span>
-                                    <span class="material-icons grey">mic</span>
-                                    <span class="material-icons grey">pin_drop</span>
-                                    <span class="material-icons">play_circle_filled</span>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="btns-cont center">
-                                    <a class="button color-blue round small">See</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {{/each}}
+                    {{else}}
+                        No memories have been shared with you yet
+                        <br>
+                        [Insert message here]
+                    {{/js_if}}
                 </div>
             </div>
             <div class="btns-cont center create">
@@ -240,52 +130,52 @@
             pageInit: function (e, page) {
                 var self = this;
                 var app = self.$app;
-                var memory = {};
-                memory.name = "nombre";
-                memory.owner = "owner";
-                memory.cover = "../../static/img/background.jpg";
-                memory.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
-                memory.text = true; /* checa si hay comentarios o text */
-                memory.images = true; /* checa si hay imagenes */
-                memory.video = true; /* checa so hay videos */
-                memory.audio = false; /* checa si hay audios */
-                memory.location = false; /* checa si hay ubicacion */
-                memory.ondemand = true; /* checa si on demand esta activo */
+                // var memory = {};
+                // memory.name = "nombre";
+                // memory.owner = "owner";
+                // memory.cover = "../../static/img/background.jpg";
+                // memory.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
+                // memory.text = true; /* checa si hay comentarios o text */
+                // memory.images = true; /* checa si hay imagenes */
+                // memory.video = true; /* checa so hay videos */
+                // memory.audio = false; /* checa si hay audios */
+                // memory.location = false; /* checa si hay ubicacion */
+                // memory.ondemand = true; /* checa si on demand esta activo */
 
-                $$('<div class="swiper-slide">' +
-                    '<div class="card complete v_dashboard_memory">' +
-                    '<div class="card-header">' +
-                    '<div class="title-card">' +
-                    '<h1>' + memory.name + '</h1>' +
-                    '<p class="sender">Sent by: ' + memory.owner + '</p>' +
-                    '</div>' +
-                    '<a href="#" class="info popover-open" data-popover=".popover-info">' +
-                    '<span class="material-icons">info</span>' +
-                    '</a>' +
-                    '</div>' +
-                    '<div class="card-content">' +
-                    '<div class="cover">' +
-                    '<img src="' + memory.cover + '" alt="">' +
-                    '</div>' +
-                    '<p class="desc">' +
-                    memory.description +
-                    '</p>' +
-                    '<div class="icons">' +
-                    '<span class="material-icons ' + (memory.text == false ? "grey" : "") + '">comment</span>' +
-                    '<span class="material-icons ' + (memory.images == false ? "grey" : "") + '">image</span>' +
-                    '<span class="material-icons ' + (memory.video == false ? "grey" : "") + '">videocam</span>' +
-                    '<span class="material-icons ' + (memory.audio == false ? "grey" : "") + '">mic</span>' +
-                    '<span class="material-icons ' + (memory.location == false ? "grey" : "") + '">pin_drop</span>' +
-                    '<span class="material-icons ' + (memory.ondemand == false ? "grey" : "") + '">play_circle_filled</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="card-footer">' +
-                    '<div class="btns-cont center">' +
-                    '<a class="button color-blue round small">See</a>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>').appendTo('.swiper-wrapper');
+                // $$('<div class="swiper-slide">' +
+                //     '<div class="card complete v_dashboard_memory">' +
+                //     '<div class="card-header">' +
+                //     '<div class="title-card">' +
+                //     '<h1>' + memory.name + '</h1>' +
+                //     '<p class="sender">Sent by: ' + memory.owner + '</p>' +
+                //     '</div>' +
+                //     '<a href="#" class="info popover-open" data-popover=".popover-info">' +
+                //     '<span class="material-icons">info</span>' +
+                //     '</a>' +
+                //     '</div>' +
+                //     '<div class="card-content">' +
+                //     '<div class="cover">' +
+                //     '<img src="' + memory.cover + '" alt="">' +
+                //     '</div>' +
+                //     '<p class="desc">' +
+                //     memory.description +
+                //     '</p>' +
+                //     '<div class="icons">' +
+                //     '<span class="material-icons ' + (memory.text == false ? "grey" : "") + '">comment</span>' +
+                //     '<span class="material-icons ' + (memory.images == false ? "grey" : "") + '">image</span>' +
+                //     '<span class="material-icons ' + (memory.video == false ? "grey" : "") + '">videocam</span>' +
+                //     '<span class="material-icons ' + (memory.audio == false ? "grey" : "") + '">mic</span>' +
+                //     '<span class="material-icons ' + (memory.location == false ? "grey" : "") + '">pin_drop</span>' +
+                //     '<span class="material-icons ' + (memory.ondemand == false ? "grey" : "") + '">play_circle_filled</span>' +
+                //     '</div>' +
+                //     '</div>' +
+                //     '<div class="card-footer">' +
+                //     '<div class="btns-cont center">' +
+                //     '<a class="button color-blue round small">See</a>' +
+                //     '</div>' +
+                //     '</div>' +
+                //     '</div>' +
+                //     '</div>').appendTo('.swiper-wrapper');
             }
         }
     }

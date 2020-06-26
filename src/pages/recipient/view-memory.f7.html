@@ -5,7 +5,7 @@
             <div class="navbar-inner sliding">
                 <div class="header-cont">
                     <div class="header">
-                        <a href="" class="back-btn">
+                        <a id="view-memory-back-btn" href="" class="back-btn">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
                         <h1 class="title"></h1>
@@ -315,6 +315,11 @@
                         let index = $$(this).parent().parent().index();
                         galleryFunc(index);
                     });
+                });
+
+                $$('#view-memory-back-btn').on('click', function(params){
+                    console.log("Click!");
+                    app.views.main.router.navigate(`/memories/dashboard/user/12`);
                 });
 
                 function galleryFunc(index) {
