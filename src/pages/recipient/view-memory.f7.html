@@ -1,4 +1,3 @@
-<!-- Screen D2 -->
 <template>
     <div class="page" id="view-memory">
         <div class="artwork"></div>
@@ -230,21 +229,22 @@
                 var app = self.$app;
                 var media = [];
 
+                var memory = page.route.context.Memory;
                 /* -------------------------- temp fill data -------------------------------------*/
-                var memory = {};
-                memory.name = "Jacob Ethan Goodbye";
-                memory.owner = "owner";
-                memory.cover = "../../static/img/background.jpg";
-                memory.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris";
-                /* repetir docs con imagenes, videos, audios, y comentarios */
-                memory.docs = ["../../static/img/paisaje.jpeg", "../../static/img/envy.jpg", "../../static/img/ramona.jpeg"]; /* llenar array condocumentos */
+                // var memory = {};
+                // memory.name = "Jacob Ethan Goodbye";
+                // memory.owner = "owner";
+                // memory.cover = "../../static/img/background.jpg";
+                // memory.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris";
+                // /* repetir docs con imagenes, videos, audios, y comentarios */
+                // memory.docs = ["../../static/img/paisaje.jpeg", "../../static/img/envy.jpg", "../../static/img/ramona.jpeg"]; /* llenar array condocumentos */
 
-                $$('.page-content .title').text(memory.name); /* llenar titulo */
-                $$('.cover img').attr('src', memory.cover); /* llenar cover */
-                $$('.desc').text(memory.description); /* llenar descripcion */
-                $$('.popup-share .pop-cont .title-card h1').text(memory.name); /* tarjeta de compartir */
+                $$('.page-content .title').text(memory.title); /* llenar titulo */
+                $$('.cover img').attr('src', app.data.server+memory.cover); /* llenar cover */
+                $$('.desc').text(memory.desc); /* llenar descripcion */
+                $$('.popup-share .pop-cont .title-card h1').text(memory.title); /* tarjeta de compartir */
                 $$('.popup-share .pop-cont .title-card p').text(memory.owner);
-                $$('.popup-share .pop-cont .cover img').attr('src', memory.cover); /* tarjeta de compartir */
+                $$('.popup-share .pop-cont .cover img').attr('src', app.data.server+memory.cover); /* tarjeta de compartir */
 
                 /* limpiar fotos */
                 $$('.tabs #comments').empty();
@@ -252,41 +252,41 @@
                 $$('.tabs #videos').empty();
                 $$('.tabs #audios').empty();
 
-                memory.docs.forEach(el => {                    
+                memory.media.forEach(el => {                    
                     $$('.tabs #comments').append(
                         '<div class="item">' +
                         '<div class="image">' +
-                        '<img src="'+el+'" alt="">' +
+                        '<img src="'+app.data.server+el+'" alt="">' +
                         '</div>' +
                         '</div>'
                     );
                 });
 
-                memory.docs.forEach(el => {
+                memory.media.forEach(el => {
                     $$('.tabs #images').append(
                         '<div class="item">' +
                         '<div class="image">' +
-                        '<img src="'+el+'" alt="">' +
+                        '<img src="'+app.data.server+el+'" alt="">' +
                         '</div>' +
                         '</div>'
                     );
                 });
 
-                memory.docs.forEach(el => {
+                memory.media.forEach(el => {
                     $$('.tabs #videos').append(
                         '<div class="item">' +
                         '<div class="image">' +
-                        '<img src="'+el+'" alt="">' +
+                        '<img src="'+app.data.server+el+'" alt="">' +
                         '</div>' +
                         '</div>'
                     );
                 });
 
-                memory.docs.forEach(el => {
+                memory.media.forEach(el => {
                     $$('.tabs #audios').append(
                         '<div class="item">' +
                         '<div class="image">' +
-                        '<img src="'+el+'" alt="">' +
+                        '<img src="'+app.data.server+el+'" alt="">' +
                         '</div>' +
                         '</div>'
                     );
@@ -331,7 +331,7 @@
                         '<a href="" class="back-btn back">' +
                         '<i class="icons material-icons">chevron_left</i>' +
                         '</a>' +
-                        '<h1 class="title">Jacob Ethan Goodbye</h1>' +
+                        '<h1 class="title">'+memory.title+'</h1>' +
                         '<a href="" class="share-btn popup-open" data-popup=".popup-share">' +
                         '<i class="icons material-icons">share</i>' +
                         '</a>' +

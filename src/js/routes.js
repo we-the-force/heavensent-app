@@ -480,14 +480,60 @@ var routes = [
     },
     {
         name: 'view-memory',
-        path: '/memories/view',
-        component: MemoryView,
+        path: '/memories/view/memory/:memoryID',
+        async: async function(routeTo, routeFrom, resolve, reject){
+            var router = this;
+            var app = router.app;
+            var memoryID = routeTo.params.memoryID;
+
+            var baseMem;
+            await app.request.promise.get(`${app.data.server}/memories/${memoryID}`).then(function (memResult){
+                baseMem = JSON.parse(memResult.data);
+                console.log(baseMem);
+            }).catch(function(err){
+                console.log("Error fetching memories!");
+                console.log(err);
+            })
+
+
+
+            resolve({
+                component: MemoryView,
+            },
+            {
+                context: {
+                    Server: app.data.server,
+                    Memory: getMemories(baseMem),
+                }
+            })
+
+            function getMemories(baseMem)
+            {
+                console.log("Get Memories");
+                console.log(baseMem);
+
+                let memory = {
+                    title: baseMem.title ? baseMem.title : "[No title]",
+                    desc: baseMem.description ? baseMem.description : "[No description]",
+                    owner: baseMem.owners[0].name,
+                    cover: baseMem.cover ? baseMem.cover.url : "",
+                    media: [],
+                    mediaThumb: [],
+                }
+                baseMem.media.forEach(media => {
+                    memory.media.push(media.url ? media.url : "");
+                });
+                console.log(memory);
+                return memory;
+            }
+        }
+        // component: MemoryView,
     },
     {
         name: 'donations',
         path: '/donations',
         beforeEnter: [checkAuth],
-        async: async function(routeTO, routeFrom, resolve, reject){
+        async: async function(routeTo, routeFrom, resolve, reject){
             var router = this;
             var app = router.app;
             // var currentUser = await app.methods.getLocalValue('loggedUser');
