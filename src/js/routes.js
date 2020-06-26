@@ -359,23 +359,34 @@ var routes = [
                         auxMemory.contacts.count = memory.recipients.length;
                         memory.recipients.forEach(contact => {
                             if (auxMemory.contacts.limitedUrls.length < 3) {
-                                auxMemory.contacts.limitedUrls.push(contact.profilePicture.url);
+                                if (contact.profilePicture) {
+                                    auxMemory.contacts.limitedUrls.push(contact.profilePicture.url);
+                                } else {
+                                    auxMemory.contacts.limitedUrls.push('');
+                                }
                             }
                             else if (auxMemory.contacts.limitedUrls.length === 3) {
                                 if (auxMemory.contacts.count === 4) {
-                                    auxMemory.contacts.limitedUrls.push(contact.profilePicture.url);
+                                    if (contact.profilePicture) {
+                                        auxMemory.contacts.limitedUrls.push(contact.profilePicture.url);
+                                    } else {
+                                        auxMemory.contacts.limitedUrls.push('');
+                                    }
                                 }
                             }
-                            auxMemory.contacts.urls.push(contact.profilePicture.url);
+                            if (contact.profilePicture) {
+                                auxMemory.contacts.urls.push(contact.profilePicture.url);
+                            } else {
+                                auxMemory.contacts.urls.push('');
+                            }
+                            //auxMemory.contacts.urls.push(contact.profilePicture.url);
                         })
                         auxMemory.contacts.extraContacts = auxMemory.contacts.urls.length - auxMemory.contacts.limitedUrls.length;
-                        
-                        if (auxMemory.deliveryDate == null)
-                        {
+
+                        if (auxMemory.deliveryDate == null) {
                             memoryObject.pending.push(auxMemory);
                         }
-                        else
-                        {
+                        else {
                             memoryObject.scheduled.push(auxMemory);
                         }
                     })
