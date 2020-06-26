@@ -314,12 +314,22 @@ var routes = [
             var ownedMemories;
             await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function (memoriesResult) {
                 ownedMemories = JSON.parse(memoriesResult.data);
-                console.log("-.- memories -.-");
-                console.log(ownedMemories);
+                // console.log("-.- memories -.-");
+                // console.log(ownedMemories);
             }).catch(function (err) {
                 console.log("Error fetching memories");
                 console.log(err);
             });
+
+            var baseFundations;
+            await app.request.promise.get(`${app.data.server}/fundations`).then(function (fundationResult){
+                baseFundations = JSON.parse(fundationResult.data);
+            }).catch(function(err){
+                console.log("Error fetching fundations");
+                console.log(err);
+            });
+
+            // getFundations(baseFundations);
 
             resolve({
                 component: HomeMemories,
@@ -410,6 +420,18 @@ var routes = [
                 }
                 return contactsObject;
             }
+
+            // function getFundations(baseFund)
+            // {
+            //     console.log("Get Fundations");
+            //     console.log(baseFundations);
+            //     let fundations = [];
+            //     if (baseFund){
+            //         baseFund.foreach(fund => {
+            //             fundations.push()
+            //         })
+            //     }
+            // }
         }
         // component: HomeMemories,
     },
