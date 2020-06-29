@@ -639,6 +639,7 @@
                                 video.addEventListener('timeupdate', timeupdate);
                                 video.preload = 'metadata';
                                 video.src = e.target.result;
+                                video.muted = true;
                                 video.play();
                             }
                         }
