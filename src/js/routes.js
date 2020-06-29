@@ -44,7 +44,7 @@ async function checkAuth(to, from, resolve, reject) {
 
     if (valid) {
         if (await app.methods.userHasAdmin()) {
-            console.log("user had admin [checkAuth()]")
+            // console.log("user had admin [checkAuth()]")
             // await isMembershipValid(to, from, resolve, reject);
             resolve();
         }
@@ -66,7 +66,7 @@ async function isMembershipValid(to, from, resolve, reject) {
     var app = router.app;
 
     if (await app.methods.userHasValidMembership()) {
-        console.log("user has valid membership [isMembershipValid()]");
+        // console.log("user has valid membership [isMembershipValid()]");
         resolve();
     }
     else {
@@ -83,17 +83,17 @@ async function isMembershipValid(to, from, resolve, reject) {
         var user = await app.methods.getLocalValue('loggedUser');
         if (user != null) {
             if (to.name === "select-membership") {
-                console.log("Was going to sleect-membership, letting it go to select-membership [isMembershipValid()]");
+                // console.log("Was going to sleect-membership, letting it go to select-membership [isMembershipValid()]");
                 resolve();
             }
             else if (!isEmpty) {
-                console.log("from isn't empty! [isMembershipValid()]")
+                // console.log("from isn't empty! [isMembershipValid()]")
                 if (from.name != "select-membership" && to.name != "select-membership") {
-                    console.log("you're not (coming from select-memberhip and going to select-membership) [isMembershipValid()]");
+                    // console.log("you're not (coming from select-memberhip and going to select-membership) [isMembershipValid()]");
                     resolve();
                 }
                 else {
-                    console.log("Youre either coming from or going to selet-membership  [isMembershipValid()]");
+                    // console.log("Youre either coming from or going to selet-membership  [isMembershipValid()]");
                     reject();
                     await router.navigate({
                         name: 'select-membership',
@@ -105,9 +105,8 @@ async function isMembershipValid(to, from, resolve, reject) {
                 }
             }
             else {
-                console.log("from was empty, redirecting to select-membership");
-                from = to;
-                console.log(from);
+                // console.log("from was empty, redirecting to select-membership");
+                // console.log(from);
                 reject();
                 await router.navigate({
                     name: 'select-membership',
@@ -126,10 +125,10 @@ async function isMembershipValid(to, from, resolve, reject) {
 async function isLoggedIn(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
-    console.log("-Entering isLoggedIn, updating user");
+    // console.log("-Entering isLoggedIn, updating user");
     await app.methods.updateCurrentUser();
     var user = await app.methods.getLocalValue('loggedUser');
-    console.log(user);
+    // console.log(user);
     var valid = (await app.methods.userIsValid());
     if (valid) {
         reject();
@@ -142,7 +141,7 @@ async function isLoggedIn(to, from, resolve, reject) {
         }
         else {
             if (!await app.methods.userHasValidMembership()) {
-                console.log("membership wasn't valid, going to select-membership [isLoggedIn()]");
+                // console.log("membership wasn't valid, going to select-membership [isLoggedIn()]");
                 await router.navigate({
                     name: 'select-membership',
                     params: {
@@ -152,13 +151,13 @@ async function isLoggedIn(to, from, resolve, reject) {
                 })
             }
             else {
-                console.log("Going to memories/home [isLoggedIn()]");
+                // console.log("Going to memories/home [isLoggedIn()]");
                 await router.navigate('/memories/home');
             }
         }
     }
     else {
-        console.log("User was not valid [isLoggedIn()]");
+        // console.log("User was not valid [isLoggedIn()]");
         console.log(valid);
         resolve();
     }
@@ -309,7 +308,7 @@ var routes = [
             var currentUser = await app.methods.getLocalValue('loggedUser');
             var contacts = await app.methods.getLocalValue('loggedUserContacts');
             // console.log(contacts);
-            console.log(`Async function to home-memories, server: ${server}`);
+            // console.log(`Async function to home-memories, server: ${server}`);
 
             var ownedMemories;
             await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function (memoriesResult) {
@@ -400,8 +399,8 @@ var routes = [
                         }
                     })
                 }
-                console.log("Memory context generated [memories-home.getMemories]");
-                console.log(memoryObject);
+                // console.log("Memory context generated [memories-home.getMemories]");
+                // console.log(memoryObject);
                 return memoryObject;
             }
             function getContacts(baseRelation) {
@@ -421,8 +420,8 @@ var routes = [
             }
             function getFundations(baseFund)
             {
-                console.log("Get Fundations");
-                console.log(baseFundations);
+                // console.log("Get Fundations");
+                // console.log(baseFundations);
                 let fundations = [];
                 if (baseFund){
                     baseFund.forEach(fund => {
@@ -434,7 +433,7 @@ var routes = [
                         });
                     })
                 }
-                console.log(fundations);
+                // console.log(fundations);
                 return fundations;
             }
         }
@@ -504,8 +503,8 @@ var routes = [
                     memObject.push(getMemory(mem));
                 })
 
-                console.log("Resulting memories");
-                console.log(memObject);
+                // console.log("Resulting memories");
+                // console.log(memObject);
                 return memObject;
             }
             function getMemory(baseMem)
@@ -543,8 +542,8 @@ var routes = [
             var baseMem = null;
             await app.request.promise.get(`${app.data.server}/memories/${memoryID}`).then(function (memResult){
                 baseMem = JSON.parse(memResult.data);
-                console.log("Base memory");
-                console.log(baseMem);
+                // console.log("Base memory");
+                // console.log(baseMem);
             }).catch(function(err){
                 console.log("Error fetching memories!");
                 console.log(err);
@@ -583,7 +582,7 @@ var routes = [
                 baseMem.media.forEach(media => {
                     memory.media.push(media.url ? media.url : "");
                 });
-                console.log(memory);
+                // console.log(memory);
                 return memory;
             }
         }
@@ -618,8 +617,8 @@ var routes = [
 
             function getFundations(baseFund)
             {
-                console.log("Get Fundations");
-                console.log(baseFundations);
+                // console.log("Get Fundations");
+                // console.log(baseFundations);
                 let fundations = [];
                 if (baseFund){
                     baseFund.forEach(fund => {
@@ -631,7 +630,7 @@ var routes = [
                         });
                     })
                 }
-                console.log(fundations);
+                // console.log(fundations);
                 return fundations;
             }
         }
@@ -659,12 +658,12 @@ var routes = [
 
             app.preloader.show();
 
-            console.log("Move to view [view-membership.async]");
-            console.log(`${app.data.server}/users/${userID} [view-membership.async]`);
+            // console.log("Move to view [view-membership.async]");
+            // console.log(`${app.data.server}/users/${userID} [view-membership.async]`);
             app.request.promise.json(`${app.data.server}/users/${userID}`)
                 .then(function (res) {
-                    console.log("Current membership: [view-membership.json]")
-                    console.log(res.data.currentMembership);
+                    // console.log("Current membership: [view-membership.json]")
+                    // console.log(res.data.currentMembership);
                     app.preloader.hide();
                     resolve(
                         {
@@ -694,8 +693,8 @@ var routes = [
                     return "None";
                 }
                 else {
-                    console.log("Plan: [view-membership.async.getPlanName]");
-                    console.log(plan);
+                    // console.log("Plan: [view-membership.async.getPlanName]");
+                    // console.log(plan);
                     return plan.plan.name;
                 }
             }
@@ -790,7 +789,7 @@ var routes = [
         async: function (routeTo, routeFrom, resolve, reject) {
             // Router instance
             var router = this;
-            console.log(router);
+            // console.log(router);
 
             // App instance
             var app = router.app;
