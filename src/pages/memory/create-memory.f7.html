@@ -247,7 +247,7 @@
                 <a id="accept-deliver-date" class="button color-blue grey round small" disabled="true">Accept</a>
             </div>
         </div>
-        <div class="popover popover-repeat">
+        <div class="popover popover-repeat space-on-right">
             <div class="popover-inner">
                 <div class="list">
                     <ul>
@@ -605,6 +605,7 @@
                             }
                         } else if (file.type.match('video')) {
                             reader.onload = e => {
+
                                 if (!medias.find('.media:last-child').hasClass('fill')) {
                                     /* si no hay nada agrega unas clases */
                                     medias.find('.media').addClass('none');
@@ -612,6 +613,7 @@
                                 }
                                 var video = document.createElement('video');
                                 var timeupdate = function () {
+                                    $$('.page-content').css('background', 'aqua');
                                     if (snapImage()) {
                                         video.removeEventListener('timeupdate', timeupdate);
                                         video.pause();
@@ -633,6 +635,24 @@
                                         newfile.children('img').attr('src', image);
                                         newfile.children('.type').text('videocam');
                                         newfile.appendTo(medias);
+                                        $$('.media-cont .media.fill .close').off('click');
+                                        $$('.media-cont .media.fill .close').click(function (val) {
+                                            /* 
+                                            cuando eliminas un archivo 
+                                            lo borra del array
+                                            baja la barra de progreso
+                                            elimina el html
+                                            */
+                                            mb -= files[$$(this).parent().index() - 4].size;
+                                            progressBar(mb)
+                                            files.splice($$(this).parent().index() - 4, 1);
+                                            $$(this).parent().remove();
+                                            if (!medias.find('.media:last-child').hasClass('fill')) {
+                                                /* cuando no hay archivos regresa al estado original */
+                                                medias.find('.media').removeClass('none');
+                                                medias.removeClass('f_start');
+                                            }
+                                        });
                                     }
                                     return success;
                                 };
@@ -640,6 +660,7 @@
                                 video.preload = 'metadata';
                                 video.src = e.target.result;
                                 video.muted = true;
+                                video.playsInline = true;
                                 video.play();
                             }
                         }

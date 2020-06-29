@@ -330,7 +330,10 @@
                         toolbar: false,
                     });
                     gallery.open(index);
-                    gallery.view.$el.find('.photo-browser-page').find('.navbar').html('<div class="navbar-inner sliding">' +
+                    
+                    let nav = gallery.view.$el.find('.photo-browser-page').find('.navbar').length != 0 ? gallery.view.$el.find('.photo-browser-page').find('.navbar') : gallery.view.$el.find('.navbars').find('.navbar-photo-browser');
+                    
+                    nav.html('<div class="navbar-inner sliding">' +
                         '<div class="header-cont">' +
                         '<div class="header">' +
                         '<a href="" class="back-btn back">' +

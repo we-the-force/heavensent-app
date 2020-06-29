@@ -182,7 +182,7 @@
         &:after
             height 16px
             width 16px
-            top 3.5px
+            top 3px
             left 4px
 
     input[type='checkbox']:checked + .toggle-icon
@@ -212,5 +212,18 @@
         position absolute
         margin-bottom 0px
         margin-top 0px
-        bottom -18px
         left 17px
+        top 100%
+        white-space nowrap
+        overflow hidden
+        text-overflow ellipsis
+        width 100%
+
+    .toggle
+        input[type='checkbox']:checked + .toggle-icon
+            background none
+
+            &:before
+                transform scale(1)
+                top 0px
+                left 0px
