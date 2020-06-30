@@ -9,10 +9,20 @@
 							<i class="icons material-icons">menu</i>
 						</a>
 						<div class="title-sub">
-							<h1 id="logged-user-name" class="title capitalize">Jacob Ethan</h1>
+							<h1 id="logged-user-name" class="title capitalize"></h1>
 							<p id="logged-user-membership" class="subtitle capitalize">Membership</p>
 						</div>
-						<a href="" class="avatar-fab">
+						<a href="" class="avatar-fab item-link smart-select smart-select-init" data-open-in="popover">
+							<!-- llenar select con usuarios -->
+							<select id="users">
+								<option value="1" selected>Ramona</option> <!-- poner selected al usuario que esta actualmente -->
+								<option value="2">Envy</option>
+								<option value="3">Lisa</option>
+								<option value="4">Neil</option>
+								<option value="5">Kim</option>
+								<option value="6">Roxy</option>
+								<option value="7">Wallace</option>
+							</select>
 							<img id="logged-user-picture" src="" alt="">
 						</a>
 					</div>
@@ -271,16 +281,16 @@
 							<div class="card-footer">
 								<div class="contacts">
 									{{#each contacts.limitedUrls}}
-										{{#js_if "this != ''"}}
-											<img src="{{@root.Server}}{{this}}" alt="" class="person">
-										{{else}}
-											<img src="" alt="" class="person">
-										{{/js_if}}
+									{{#js_if "this != ''"}}
+									<img src="{{@root.Server}}{{this}}" alt="" class="person">
+									{{else}}
+									<img src="" alt="" class="person">
+									{{/js_if}}
 									{{/each}}
 									{{#js_if "this.contacts.extraContacts > 0"}}
-										<div class="person plus">
-											<p>+{{this.contacts.extraContacts}}</p>
-										</div>
+									<div class="person plus">
+										<p>+{{this.contacts.extraContacts}}</p>
+									</div>
 									{{/js_if}}
 								</div>
 							</div>
@@ -313,7 +323,8 @@
 								</div>
 								<div class="card-content-padding">
 									<div class="btns-cont card-opened-fade-out">
-										<a href="#" class="btn-card card-prevent-open" data-fundation="{{id}}">Give now</a>
+										<a href="#" class="btn-card card-prevent-open" data-fundation="{{id}}">Give
+											now</a>
 									</div>
 									<p class="card-opened-fade-in">{{desc}}</p>
 								</div>
@@ -440,6 +451,14 @@
 					$$('.header h1.title').css('font-size', '18px');
 				}
 
+				/* aqui esta este pedo */
+
+				$$('select#users').change(function (el) {
+					let select = app.smartSelect.get('.smart-select');
+					select.close(); /* cierra el popover */
+					console.log(select.getValue()); /* valor del id */
+				});
+
 				$$('.avatar-person').on('click', function (val) {
 					console.log($$(this).prop("dataset").user);
 					$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
@@ -463,19 +482,19 @@
 				});
 
 				$$('.card-expandable').on('card:open', x => {
-                    let swiper = app.swiper.get('.donate-swiper');
-                    swiper.allowTouchMove = false;
-                });
+					let swiper = app.swiper.get('.donate-swiper');
+					swiper.allowTouchMove = false;
+				});
 
-                $$('.card-expandable').on('card:close', x => {
-                    let swiper = app.swiper.get('.donate-swiper');
-                    swiper.allowTouchMove = true;
-                });
+				$$('.card-expandable').on('card:close', x => {
+					let swiper = app.swiper.get('.donate-swiper');
+					swiper.allowTouchMove = true;
+				});
 
-                $$('.card-expandable .btn-card').click(x => {
-                    console.log('make somthing');
-                    
-                });
+				$$('.card-expandable .btn-card').click(x => {
+					console.log('make somthing');
+
+				});
 
 				function updateControls() {
 					if (loggedUser != null) {

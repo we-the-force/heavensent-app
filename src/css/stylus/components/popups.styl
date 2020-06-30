@@ -89,12 +89,14 @@
         .pop-header
             flex-cont(row, space-evenly, center)
             border-bottom 1px solid #F0F0F0
+
             a
                 flex-cont(column, center, center)
+
                 p
                     font-template(500, 9px, 11px)
                     color Grey_dark_2
-                    margin 5px 0px 10px 0px 
+                    margin 5px 0px 10px 0px
 
         .pop-cont
             width 95%
@@ -104,6 +106,7 @@
         display flex !important
         flex-cont(column, center, center)
         transform translate(-50%, -50%)
+
         &.popup-share
             flex-cont(column, flex-start, stretch)
 
@@ -204,6 +207,7 @@
                         &:first-child
                             width 59%
                             margin-right 4px
+
             &.none
                 display none
 
@@ -219,7 +223,7 @@
                     .select
                         i, p
                             color blue_dark
-            
+
             &.none
                 display none
 
@@ -246,12 +250,13 @@
     background white
     border 1px solid #EBEBEB
     padding 0px 17px
+    box-sizing border-box
 
     .none
         display none
 
     &.popover-opt
-        width 90px
+        width 124px
         height 85px
 
         .none
@@ -347,16 +352,45 @@
         &.space-on-left
             transform translateX(-10%)
 
+    &.smart-select-popover
+        padding 0
+        border none
+
+        .popover-inner
+            border-radius 11px
+
+            label.item-radio
+                padding 0px
+
+                i
+                    display none
+
+                .item-inner
+                    padding-left 16px
+
+                    .item-title
+                        font-template(500, 18px, 24px)
+                        color Grey_dark_2
+
+                    &:after
+                        content none
+
+                input
+                    &:checked ~ .item-inner
+                        background blue_light
+
 .ios
     .popover-opt.space-on-left
         transform translateX(-30%)
 
     .popover-info.space-on-left
         transform translateX(-20%)
+
         .popover-angle
             display none
 
     .popover-repeat.space-on-right
         transform translateX(-15%)
+
         .popover-angle
             display none
