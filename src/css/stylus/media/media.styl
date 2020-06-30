@@ -1,4 +1,14 @@
 @media screen and (min-width 1024px) and (orientation landscape)
+    .navbars
+        right 0
+
+        .navbar
+            position absolute
+            width 70% !important
+            right 0
+            top 0
+            left unset
+
     .page
         .artwork
             background blue_light
@@ -25,13 +35,18 @@
                 .back-btn
                     visibility hidden
 
-        &#recovery, &#recovery-mail, &#recovery-new-pass
-            .sqr_bck
-                &#sqr2
-                    left calc(-345px + 30%)
+        &#create-contact, &#create-guardian
+            .footer
+                position absolute !important
+                left 0 !important
+                bottom 0 !important
+                margin-left 0px !important
+                width 100% !important
 
-                &#sqr3
-                    left calc(-200px + 30%)
+        &#home-memories
+            .donate-title, .scheduled-title, .create-title, .contacts-cont
+                width 480px
+                margin auto
 
         &#login-screen
             .sqr_bck
@@ -45,46 +60,51 @@
                     left calc(-10px + 30%)
 
         &#signup-step1
-            .sqr_bck
-                &#sqr3
-                    left calc(-200px + 30%)
-
-                &#sqr4
-                    left calc(-190px + 30%)
+            .footer
+                position absolute !important
+                left 0 !important
+                bottom 0 !important
+                margin-left 0px !important
+                width 100% !important
 
         &#invite-admin
-            .sqr_bck
-                &#sqr2
-                    left calc(-265px + 30%)
+            .footer
+                position absolute !important
+                left 0 !important
+                bottom 0 !important
+                margin-left 0px !important
+                width 100% !important
 
-                &#sqr3
-                    left calc(-15px + 30%)
+        &#add-card-info
+            .logo-cont
+                flex-grow 2 !important
 
-        &#user-agreement
-            .sqr_bck
-                &#sqr1
-                    left calc(-235px + 30%)
+            .inputs
+                ul
+                    height 100% !important
+                    flex-cont(column, space-around, stretch)
 
-        &#signup-confirm
-            .sqr_bck
-                &#sqr1
-                    left calc(-75px + 30%)
+        &#signup-confirm, &#membership-confirmed
+            .logo-cont
+                flex-grow 1.5 !important
 
-                &#sqr2
-                    left calc(-115px + 30%)
+            .btns-cont
+                flex-grow 1 !important
+                align-items flex-start !important
 
-        &#import-contacts
-            .sqr_bck
-                &#sqr1
-                    left calc(-65px + 30%)
-
-                &#sqr2
-                    left calc(-220px + 30%)
-
-        &#view-family
-            .sqr_bck
-                &#sqr2
-                    left calc(-130px + 30%)
+        &.page-with-card-opened
+            &#donations
+                .page-content
+                    overflow visible
+            &#home-memories
+                .page-content
+                    overflow-y hidden
+                    overflow-x hidden
+                .swiper-container
+                    z-index 298
+                .donate-swiper
+                    z-index 301
+                
 
 @media (min-width 480px)
     .page-content, .footer
@@ -94,6 +114,10 @@
             min-width 480px
 
         .text-cont
+            width 480px
+
+        .swiper-container
+            min-width 480px
             width 480px
 
     .navbar
@@ -107,5 +131,11 @@
 @media (max-height 585px) and (min-height 565px)
     .card-expandable
         height 465px !important
+
         .card-content-padding
             height auto !important
+
+@media (min-height 670px) and (min-width 768px)
+    .card-expandable:not(.card-tablet-fullscreen):not(.card-expandable-animate-width)
+        .card-content
+            width 100%
