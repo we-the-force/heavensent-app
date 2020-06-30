@@ -35,6 +35,47 @@
                 .back-btn
                     visibility hidden
 
+        &.page-with-card-opened
+            &#donations
+                .page-content
+                    overflow visible
+
+            &#home-memories
+                .page-content
+                    padding-left calc(30% + 15px) !important
+                    left 0 !important
+                    width 100% !important
+
+
+@media screen and (min-width 1024px)
+    .navbars
+        right 0
+
+        .navbar
+            position absolute
+            width 100%
+            right 0
+            top 0
+            left unset
+
+    .page
+        .footer
+            position absolute
+            width 100%
+            right 0
+            bottom 0
+
+        .page-content, .navbar
+            position absolute
+            width 100%
+            right 0
+            top 0
+            left unset
+
+            .header
+                .back-btn
+                    visibility hidden
+
         &#create-contact, &#create-guardian
             .footer
                 position absolute !important
@@ -91,20 +132,6 @@
             .btns-cont
                 flex-grow 1 !important
                 align-items flex-start !important
-
-        &.page-with-card-opened
-            &#donations
-                .page-content
-                    overflow visible
-            &#home-memories
-                .page-content
-                    overflow-y hidden
-                    overflow-x hidden
-                .swiper-container
-                    z-index 298
-                .donate-swiper
-                    z-index 301
-                
 
 @media (min-width 480px)
     .page-content, .footer
