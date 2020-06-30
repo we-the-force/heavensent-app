@@ -49,6 +49,51 @@
                     left 0 !important
                     width 100% !important
 
+
+
+@media (min-width 480px)
+    .page-content, .footer
+        align-items center !important
+
+        .header-cont, .logo-cont, .text-cont, .inputs, .btns-cont, .btns-cont.face, .btns-cont.two, .btns-cont.pass, .family-cont, .title-cont
+            min-width 480px
+
+        .text-cont
+            width 480px
+
+        .swiper-container
+            min-width 480px
+            width 480px
+
+    .navbar
+        justify-content center
+        display flex
+
+        .navbar-inner
+            position relative
+            width 480px
+
+@media (max-height 585px) and (min-height 565px)
+    .card-expandable
+        height 465px !important
+
+        .card-content-padding
+            height auto !important
+
+/* ---------------------------------------------------- */
+@media screen and (min-width 768px)
+    .card-expandable:not(.card-tablet-fullscreen):not(.card-expandable-animate-width)
+        .card-content
+            width 100%
+    .page
+        &#recovery,&#recovery-mail
+            .btns-cont
+                flex-grow 1 !important 
+        &#recovery-mail
+            .text-cont
+                padding 0px 40px
+
+/* ---------------------------------------------------- */
 @media screen and (min-width 1024px)
     .navbars
         right 0
@@ -135,36 +180,5 @@
                 flex-grow 1 !important
                 align-items flex-start !important
 
-@media (min-width 480px)
-    .page-content, .footer
-        align-items center !important
-
-        .header-cont, .logo-cont, .text-cont, .inputs, .btns-cont, .btns-cont.face, .btns-cont.two, .btns-cont.pass, .family-cont, .title-cont
-            min-width 480px
-
-        .text-cont
-            width 480px
-
-        .swiper-container
-            min-width 480px
-            width 480px
-
-    .navbar
-        justify-content center
-        display flex
-
-        .navbar-inner
-            position relative
-            width 480px
-
-@media (max-height 585px) and (min-height 565px)
-    .card-expandable
-        height 465px !important
-
-        .card-content-padding
-            height auto !important
-
-@media (min-height 670px) and (min-width 768px)
-    .card-expandable:not(.card-tablet-fullscreen):not(.card-expandable-animate-width)
-        .card-content
-            width 100%
+/* ------------------------------------------------------------ */
+/* @media screen and (min-width 1200px) */
