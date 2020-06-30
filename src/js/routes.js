@@ -36,6 +36,7 @@ import FormPage from '../pages/form.f7.html';
 import DynamicRoutePage from '../pages/dynamic-route.f7.html';
 import RequestAndLoad from '../pages/request-and-load.f7.html';
 import NotFoundPage from '../pages/404.f7.html';
+import ContactsListComponent from 'framework7/components/contacts-list/contacts-list';
 
 async function checkAuth(to, from, resolve, reject) {
     var router = this;
@@ -278,20 +279,83 @@ var routes = [
     },
     {
         name: 'create-memory',
-        path: '/memories/create',
+        path: '/memories/create/:memID',
         beforeEnter: [checkAuth, isMembershipValid],
         async: async function (routeTo, routeFrom, resolve, reject) {
             var router = this;
             var app = router.app;
             var currentUser = await app.methods.getLocalValue('loggedUser');
+            var userContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
 
+            var memID = routeTo.params.memID;
+            var memoryData;
+            var canEdit = false;
 
+            if (memID != -1)
+            {
+                //Estas editando una memoria y asi
+                await app.request.promise.get(`${app.data.server}/memories/${memID}`).then(async function(memResponse){
+                    memoryData = JSON.parse(memResponse.data)
+                }).catch(async function (err){
+                    console.log("Error fetching memories [create-memory]");
+                    console.log(err);
+                });
+                let ownerID;
+                await app.request.promise.get(`${app.data.server}/users/${memoryData.owners[0].id}`).then(async function(ownerRes){
+                    ownerID = JSON.parse(ownerRes.data).id;
+                    console.log("Owner: " + ownerID);
+                }).catch(async function(err){
+                    console.log("Error fetching memory owner [create-memory]");
+                    console.log(err);
+                });
+
+                userContacts.forEach(contact => {
+                    // console.log(`Current user: ${contact.owner.name}, (${contact.owner.id} === ${ownerID})`);
+                    if (contact.owner.id === ownerID)
+                    {
+                        // console.log("Encontre el cosito este como no");
+                        if (contact.contact.id === currentUser.id)
+                        {
+                            // console.log('Si es el mismo');
+                            if (contact.isAdmin)
+                            {
+                                // console.log("Este es admin como no");
+                                if (contact.editMemories)
+                                {
+                                    console.log("Sobres, el admin si puede editar memorias");
+                                    canEdit = true;
+                                }
+                                else
+                                {
+                                    // console.log("Pos no puede editar chavo");
+                                }
+                            }
+                            else
+                            {
+                                // console.log("Si eran amiguitos pero no era admin");
+                            }
+                        }
+                        else
+                        {
+                            // console.log("El user no era el mismo que pex");
+                        }
+                    }
+                });
+            }
+
+            console.log("Editing? " + (memID != -1));
+            console.log(`Can edit: ${canEdit}`);
+            console.log("Memory fetched");
+            console.log(memoryData);
             resolve({
                 component: CreateMemory,
             },
                 {
                     context: {
                         CurrentPlan: currentUser.currentMembership,
+                        CurrentMemory: memoryData,
+                        Editing: memID != -1,
+                        AdminCanEdit: canEdit,
                     }
                 })
         }
@@ -313,20 +377,20 @@ var routes = [
             // console.log(`Async function to home-memories, server: ${server}`);
 
             var ownedMemories;
-            await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function (memoriesResult) {
+            await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(async function (memoriesResult) {
                 ownedMemories = JSON.parse(memoriesResult.data);
                 // console.log("-.- memories -.-");
                 // console.log(ownedMemories);
-            }).catch(function (err) {
-                console.log("Error fetching memories");
+            }).catch(async function (err) {
+                console.log("Error fetching memories [home-memory]");
                 console.log(err);
             });
 
             var baseFundations;
-            await app.request.promise.get(`${app.data.server}/fundations`).then(function (fundationResult){
+            await app.request.promise.get(`${app.data.server}/fundations`).then(async function (fundationResult){
                 baseFundations = JSON.parse(fundationResult.data);
-            }).catch(function(err){
-                console.log("Error fetching fundations");
+            }).catch(async function(err){
+                console.log("Error fetching fundations [home-memory]");
                 console.log(err);
             });
 
@@ -539,7 +603,7 @@ var routes = [
     },
     {
         name: 'view-memory',
-        path: '/memory/:memoryID',
+        path: '/memories/view/memory/:memoryID',
         async: async function(routeTo, routeFrom, resolve, reject){
             var router = this;
             var app = router.app;
