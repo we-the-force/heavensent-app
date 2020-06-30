@@ -305,8 +305,10 @@ var routes = [
             var router = this;
             var app = router.app;
             var server = app.data.server;
+            await app.methods.updateCurrentUser();
             var currentUser = await app.methods.getLocalValue('loggedUser');
             var contacts = await app.methods.getLocalValue('loggedUserContacts');
+            var adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
             // console.log(contacts);
             // console.log(`Async function to home-memories, server: ${server}`);
 
@@ -335,6 +337,7 @@ var routes = [
                 context: {
                     Server: server,
                     Contacts: getContacts(contacts),
+                    AdminedContacts: getContacts(adminContacts),
                     Memories: getMemories(ownedMemories),
                     Fundations: getFundations(baseFundations),
                 }
@@ -404,6 +407,8 @@ var routes = [
                 return memoryObject;
             }
             function getContacts(baseRelation) {
+                console.log("Home.getContacts()");
+                console.log(baseRelation);
                 let contactsObject = [];
                 if (baseRelation) {
                     baseRelation.forEach(relation => {
@@ -416,6 +421,7 @@ var routes = [
                         });
                     });
                 }
+                console.log(contactsObject);
                 return contactsObject;
             }
             function getFundations(baseFund)
