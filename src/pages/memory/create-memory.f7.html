@@ -294,7 +294,7 @@
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
                 var editing = page.route.context.Editing;
                 var canEdit = page.route.context.AdminCanEdit;
-                console.log("Ayyy, esta editando? " + editing);
+                // console.log("Ayyy, esta editando? " + editing);
                 var memoryToEdit;
                 if (editing)
                 {
@@ -795,7 +795,7 @@
                         app.preloader.show("blue");
                         if (editing)
                         {
-                            app.dialog.alert("Ayyy editing, saving the thing");
+                            // app.dialog.alert("Ayyy editing, saving the thing");
                             await app.request({
 									url: `${app.data.server}/memories/${memoryToEdit.id}`,
 									method: 'PUT',
@@ -805,7 +805,10 @@
                                         reminder: result.memory.reminder,
                                         sent: result.memory.sent,
 									}
-								});
+                                });
+                            app.dialog.alert("The memory has been edited successfully");
+                            sessionStorage.clear();
+                            app.views.main.router.navigate("/memories/home");
                         }
                         else
                         {
@@ -953,7 +956,7 @@
                                 "repeat": "",
                                 "locationLat": "",
                                 "locationLng": "",
-                                "date_end": ""
+                                "date_end": undefined
                             },
                             "sent": false,
                             "on_demand": on_demand,
