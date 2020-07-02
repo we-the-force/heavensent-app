@@ -829,6 +829,7 @@
 
                 function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand) {
                     console.log("Starting validateFields");
+                    console.log(date_end);
                     var result = {
                         valid: true,
                         errors: 0,
@@ -846,9 +847,11 @@
                                 "time": "",
                                 "repeat": "",
                                 "locationLat": "",
-                                "locationLng": ""
+                                "locationLng": "",
+                                "date_end": ""
                             },
-                            "sent": false
+                            "sent": false,
+                            "on_demand": on_demand,
                         },
                         memoryFiles: {
                             "cover": "",
@@ -897,9 +900,12 @@
                     // console.log(cover);
                     // console.log(!cover);
                     if (!cover) {
-                        result.valid = false;
-                        result.message += result.errors > 0 ? ", no cover" : "No cover";
-                        result.errors++;
+                        if (!editing)
+                        {
+                            result.valid = false;
+                            result.message += result.errors > 0 ? ", no cover" : "No cover";
+                            result.errors++;
+                        }
                     }
                     else {
                         result.memoryFiles.cover = cover;
@@ -909,9 +915,12 @@
                     // console.log(files);
                     // console.log(!(files.length > 0));
                     if (!(files.length > 0)) {
-                        result.valid = false;
-                        result.message += result.errors > 0 ? ", no files" : "No files";
-                        result.errors++;
+                        if (!editing)
+                        {
+                            result.valid = false;
+                            result.message += result.errors > 0 ? ", no files" : "No files";
+                            result.errors++;
+                        }
                     }
                     else {
                         result.memoryFiles.media = files;
@@ -984,9 +993,20 @@
                                 // result.message += result.errors > 0 ? ", no repeat" : "No repeat";
                                 // result.errors++;
                                 result.memory.reminder.repeat = "not";
+                                result.memory.reminder.date_end = undefined;
                             }
                             else {
                                 result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                if (result.memory.reminder.repeat === "not")
+                                {
+                                    console.log("Not repeating, date_end = null");
+                                    result.memory.reminder.date_end = undefined;
+                                }
+                                else
+                                {
+                                    console.log("Check if there is an end_date");
+                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                }
                             }
                         }
                         else {
@@ -1009,9 +1029,20 @@
                             }
                             if (!repeat) {
                                 result.memory.reminder.repeat = "not";
+                                result.memory.reminder.date_end = undefined;
                             }
                             else {
                                 result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                if (result.memory.reminder.repeat === "not")
+                                {
+                                    console.log("Not repeating, date_end = null");
+                                    result.memory.reminder.date_end = undefined;
+                                }
+                                else
+                                {
+                                    console.log("Check if there is an end_date");
+                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                }
                             }
                         }
                     }
