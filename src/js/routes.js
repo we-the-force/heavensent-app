@@ -278,12 +278,13 @@ var routes = [
     },
     {
         name: 'create-memory',
-        path: '/memories/create',
+        path: '/memories/create/:memID',
         beforeEnter: [checkAuth, isMembershipValid],
         async: async function (routeTo, routeFrom, resolve, reject) {
             var router = this;
             var app = router.app;
             var currentUser = await app.methods.getLocalValue('loggedUser');
+            var userContacts= await app.methods.getLocalValue('loggedUserContacts');
 
             var memID = routeTo.params.memID;
             var memoryData;

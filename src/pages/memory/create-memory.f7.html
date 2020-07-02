@@ -324,7 +324,9 @@
                     date =          sessionStorage.date != undefined ? JSON.parse(sessionStorage.date): "";
                     time =          sessionStorage.time != undefined ? JSON.parse(sessionStorage.time):"";
                     repeat =        sessionStorage.repeat != undefined ? JSON.parse(sessionStorage.repeat):"";
-                    date_end =      sessionStorage.date_end != undefined ? JSON.parse(sessionStorage.date_end):"";
+                    console.log("sessionStorage.date_end");
+                    console.log(sessionStorage.date_end != undefined && sessionStorage.date_end.toString() != "undefined");
+                    date_end =      sessionStorage.date_end != undefined && sessionStorage.date_end.toString() != "undefined" ? JSON.parse(sessionStorage.date_end):"";
                     footer =        sessionStorage.footer != undefined ? JSON.parse(sessionStorage.footer):"";
                     on_demand =     sessionStorage.on_demand;
                 }
@@ -387,15 +389,15 @@
                     // let aux = await b64toBlob(base64);
                     // aux.size = 2;
                     // console.log(aux);
+                    
+                    // cover = memoryToEdit.cover;
+                    
+                    // addCover(null, true);
+                    date_end = memoryToEdit.date_end == undefined ? undefined : memoryToEdit.date_end;
+                    // footer = sessionStorage.footer;
+                    on_demand = memoryToEdit.on_demand ? memoryToEdit.on_demand : false;
 
                     saveToSessionStorage();
-
-                    // cover = memoryToEdit.cover;
-
-                    // addCover(null, true);
-                    // date_end = sessionStorage.date_end;
-                    // footer = sessionStorage.footer;
-                    // on_demand = sessionStorage.on_demand;
                 }
 
                 var files = [];
@@ -822,7 +824,7 @@
                                     if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
                                         app.preloader.hide();
                                         app.dialog.alert("The memory has been created successfully!");
-                                        // sessionStorage.clear();
+                                        sessionStorage.clear();
                                         app.views.main.router.navigate('/memories/home');
                                     }
                                     else {
@@ -932,6 +934,7 @@
 
                 function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand) {
                     console.log("Starting validateFields");
+                    console.log(date_end);
                     var result = {
                         valid: true,
                         errors: 0,
@@ -949,9 +952,11 @@
                                 "time": "",
                                 "repeat": "",
                                 "locationLat": "",
-                                "locationLng": ""
+                                "locationLng": "",
+                                "date_end": ""
                             },
-                            "sent": false
+                            "sent": false,
+                            "on_demand": on_demand,
                         },
                         memoryFiles: {
                             "cover": "",
@@ -1093,9 +1098,20 @@
                                 // result.message += result.errors > 0 ? ", no repeat" : "No repeat";
                                 // result.errors++;
                                 result.memory.reminder.repeat = "not";
+                                result.memory.reminder.date_end = undefined;
                             }
                             else {
                                 result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                if (result.memory.reminder.repeat === "not")
+                                {
+                                    console.log("Not repeating, date_end = null");
+                                    result.memory.reminder.date_end = undefined;
+                                }
+                                else
+                                {
+                                    console.log("Check if there is an end_date");
+                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                }
                             }
                         }
                         else {
@@ -1118,9 +1134,20 @@
                             }
                             if (!repeat) {
                                 result.memory.reminder.repeat = "not";
+                                result.memory.reminder.date_end = undefined;
                             }
                             else {
                                 result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                if (result.memory.reminder.repeat === "not")
+                                {
+                                    console.log("Not repeating, date_end = null");
+                                    result.memory.reminder.date_end = undefined;
+                                }
+                                else
+                                {
+                                    console.log("Check if there is an end_date");
+                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                }
                             }
                         }
                     }
