@@ -285,13 +285,77 @@ var routes = [
             var app = router.app;
             var currentUser = await app.methods.getLocalValue('loggedUser');
 
+            var memID = routeTo.params.memID;
+            var memoryData;
+            var canEdit = false;
+            var plan = currentUser.currentMembership;
 
+            if (memID != -1)
+            {
+                //Estas editando una memoria y asi
+                await app.request.promise.get(`${app.data.server}/memories/${memID}`).then(async function(memResponse){
+                    memoryData = JSON.parse(memResponse.data)
+                }).catch(async function (err){
+                    console.log("Error fetching memories [create-memory]");
+                    console.log(err);
+                });
+                let ownerID;
+                await app.request.promise.get(`${app.data.server}/users/${memoryData.owners[0].id}`).then(async function(ownerRes){
+                    ownerID = JSON.parse(ownerRes.data).id;
+                    plan = JSON.parse(ownerRes.data).currentMembership;
+                    console.log("Owner: " + ownerID);
+                }).catch(async function(err){
+                    console.log("Error fetching memory owner [create-memory]");
+                    console.log(err);
+                });
+
+                userContacts.forEach(contact => {
+                    // console.log(`Current user: ${contact.owner.name}, (${contact.owner.id} === ${ownerID})`);
+                    if (contact.owner.id === ownerID)
+                    {
+                        // console.log("Encontre el cosito este como no");
+                        if (contact.contact.id === currentUser.id)
+                        {
+                            // console.log('Si es el mismo');
+                            if (contact.isAdmin)
+                            {
+                                // console.log("Este es admin como no");
+                                if (contact.editMemories)
+                                {
+                                    console.log("Sobres, el admin si puede editar memorias");
+                                    canEdit = true;
+                                }
+                                else
+                                {
+                                    // console.log("Pos no puede editar chavo");
+                                }
+                            }
+                            else
+                            {
+                                // console.log("Si eran amiguitos pero no era admin");
+                            }
+                        }
+                        else
+                        {
+                            // console.log("El user no era el mismo que pex");
+                        }
+                    }
+                });
+            }
+
+            console.log("Editing? " + (memID != -1));
+            console.log(`Can edit: ${canEdit}`);
+            console.log("Memory fetched");
+            console.log(memoryData);
             resolve({
                 component: CreateMemory,
             },
                 {
                     context: {
-                        CurrentPlan: currentUser.currentMembership,
+                        CurrentPlan: plan,
+                        CurrentMemory: memoryData,
+                        Editing: memID != -1,
+                        AdminCanEdit: canEdit,
                     }
                 })
         }

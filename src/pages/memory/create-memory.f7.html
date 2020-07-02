@@ -8,7 +8,7 @@
                         <a class="back-btn">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
-                        <h1 class="title">Create Memory</h1>
+                        <h1 id="create-memory-title" class="title">Create Memory</h1>
                         <div class="none"></div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="media-cont">
                     <label class="cover" for="add-cover">
-                        <img src="" alt="">
+                        <img id="cover-thumbnail" src="" alt="">
                         <a class="edit popover-open" data-popover=".popover-opt">
                             <span class="material-icons">more_horiz</span>
                         </a>
@@ -292,18 +292,111 @@
                 var self = this;
                 var app = self.$app;
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
+                var editing = page.route.context.Editing;
+                var canEdit = page.route.context.AdminCanEdit;
+                console.log("Ayyy, esta editando? " + editing);
+                var memoryToEdit;
+                if (editing)
+                {
+                    memoryToEdit = page.route.context.CurrentMemory;
+                }
+                // Meter todos los otros cositos dependiendo de si esta editando o no y asi.
 
-                /* var latlng = sessionStorage.latlng;
-                var addr = sessionStorage.addr; */
-                var title = sessionStorage.title;
-                var desc = sessionStorage.desc;
-                var immediately = sessionStorage.immediately;
-                var date = sessionStorage.date;
-                var time = sessionStorage.time;
-                var repeat = sessionStorage.repeat;
-                var date_end = sessionStorage.date_end;
-                var footer = sessionStorage.footer;
-                var on_demand = sessionStorage.on_demand;
+                var title;
+                var desc;
+                var immediately;
+                var date;
+                var time;
+                var repeat;
+                var date_end = "";
+                var footer = "";
+                var on_demand = false;
+                var contacts
+
+
+                if (!editing)
+                {
+                    /* var latlng = sessionStorage.latlng;
+                    var addr = sessionStorage.addr; */
+                    title =         sessionStorage.title != undefined ? JSON.parse(sessionStorage.title) : "";
+                    desc =          sessionStorage.desc != undefined ?  JSON.parse(sessionStorage.desc) : "";
+                    immediately =   sessionStorage.immediately != undefined ? JSON.parse(sessionStorage.immediately) : "";
+                    date =          sessionStorage.date != undefined ? JSON.parse(sessionStorage.date): "";
+                    time =          sessionStorage.time != undefined ? JSON.parse(sessionStorage.time):"";
+                    repeat =        sessionStorage.repeat != undefined ? JSON.parse(sessionStorage.repeat):"";
+                    date_end =      sessionStorage.date_end != undefined ? JSON.parse(sessionStorage.date_end):"";
+                    footer =        sessionStorage.footer != undefined ? JSON.parse(sessionStorage.footer):"";
+                    on_demand =     sessionStorage.on_demand;
+                }
+                else
+                {
+                    console.log("Editing memory:");
+                    console.log(memoryToEdit);
+
+                    /* var latlng = sessionStorage.latlng;
+                    var addr = sessionStorage.addr; */
+                    title = memoryToEdit.title;
+                    desc = memoryToEdit.description;
+                    immediately = false;
+                    date = memoryToEdit.reminder.date;
+                    time = memoryToEdit.reminder.time;
+                    repeat = dbToFrontEndRepeat(memoryToEdit.reminder.repeat);
+                    contacts = [];
+                    memoryToEdit.recipients.forEach(contact => {
+                        contacts.push({
+                            id: contact.id,
+                            img: contact.profilePicture ? contact.profilePicture.url : ""
+                        })
+                    });
+                    sessionStorage.contacts = JSON.stringify(contacts);
+
+                    
+                    if (contacts) {
+                        $$('.contacts-cont .contacts .person.contact').remove();
+                        contacts.length > 0 ? $$('.contacts-cont .contacts .person.no_contact').addClass('none') : $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
+                        contacts.forEach(el => {
+                            let contact = $$('<div class="person contact" data-id="' + el.id + '">' +
+                                '<img src="' + app.data.server + el.img + '" alt="">' +
+                                '</div>')
+                            contact.appendTo($$('.contacts-cont .contacts'));
+                        });
+                    }
+
+                    if (repeat != "Never")
+                    {
+                        footer = `The memory will repeat itself ${repeat} until [date_end]`;
+                    }
+                    else
+                    {
+                        footer = "The memory will never repeat";
+                    }
+                    $$("#create-btn-memory")[0].innerText = "Save Memory";
+                    $$("#create-memory-title")[0].innerText = "Edit Memory";
+
+                    $$("#cover-thumbnail").attr("src", app.data.server + memoryToEdit.cover.url);
+                    $$("#add-cover").prop("disabled", true);
+
+                    let cover_cont = $$('.media-cont .cover');
+                    cover_cont.addClass("edit");
+
+                    // var base64 = await getBase64Image(document.getElementById("cover-thumbnail"));
+                    // console.log("AAAAAAAAAAAAAAAAAAAAAAAAH");
+                    // console.log(base64);
+
+                    // const b64toBlob = async (base64, type = 'image/png') => fetch(`data:${type};base64,${base64}`).then(res => res.blob())
+                    // let aux = await b64toBlob(base64);
+                    // aux.size = 2;
+                    // console.log(aux);
+
+                    saveToSessionStorage();
+
+                    // cover = memoryToEdit.cover;
+
+                    // addCover(null, true);
+                    // date_end = sessionStorage.date_end;
+                    // footer = sessionStorage.footer;
+                    // on_demand = sessionStorage.on_demand;
+                }
 
                 var files = [];
                 var mb = 0;
@@ -326,40 +419,48 @@
                 $$('.progress-cont .desc').find('#prog').text(maxmb);
 
                 switch (plan) {
-                    case "basic":
-                        $$('.location-cont #add-location-btn').removeAttr('href');
-                        $$('.location-cont').addClass('none');
-                        $$('.location-title').addClass('none');
-                        $$('.ondemand-cont').addClass('none');
-                        $$('.media-cont #add-media input').attr("accept", "image/*");
-                        break;
-                    case "standard":
-                        $$('.location-cont #add-location-btn').removeAttr('href');
-                        $$('.location-cont').addClass('none');
-                        $$('.location-title').addClass('none');
-                        $$('.ondemand-cont').addClass('none');
-                        break;
-                    case "premium":
+                        case "basic":
+                            $$('.location-cont #add-location-btn').removeAttr('href');
+                            $$('.location-cont').addClass('none');
+                            $$('.location-title').addClass('none');
+                            $$('.ondemand-cont').addClass('none');
+                            $$('.media-cont #add-media input').attr("accept", "image/*");
+                            break;
+                        case "standard":
+                            $$('.location-cont #add-location-btn').removeAttr('href');
+                            $$('.location-cont').addClass('none');
+                            $$('.location-title').addClass('none');
+                            $$('.ondemand-cont').addClass('none');
+                            break;
+                        case "premium":
 
-                        break;
-                    default:
-                        break;
+                            break;
+                        default:
+                            break;
+                    }
+
+
+                // Esconde todos los cositos que no deben ser modificados cuando se esta editando la memoria.
+                if (editing)
+                {
+                    console.log("Disabling add-contact");
+                    $$('#add-contact').css('display', 'none');
                 }
+
                 if (on_demand) {
                     toggle_demand.checked = JSON.parse(on_demand);
                 }
                 if (title) {
-                    $$('input#title').val(JSON.parse(title));
+                    $$('input#title').val(title);
                 }
                 if (desc) {
-                    $$('textarea#description').val(JSON.parse(desc));
+                    $$('textarea#description').val(desc);
                 }
-
                 if (date && time && repeat) {
                     $$('.date-title .edit-btn').removeClass('none');
                     $$('.deliver-cont .btns-cont').addClass('none');
                     $$('.deliver-cont .deliver-info').removeClass('none');
-                    toggle_immediately.checked = JSON.parse(sessionStorage.immediately);
+                    toggle_immediately.checked = immediately;
                     if (toggle_immediately.checked) {
                         $$('.popup-deliver .date_time.inputs').addClass('none');
                         $$('#deliver-time').addClass('grey');
@@ -368,17 +469,17 @@
                         $$('.deliver-cont .deliver-info .date-info').addClass('none');
                         $$('.deliver-cont .deliver-info .time-info').addClass('none');
                     } else {
-                        $$('#deliver-date').val(JSON.parse(sessionStorage.date));
-                        $$('#deliver-time').val(JSON.parse(sessionStorage.time));
+                        $$('#deliver-date').val(date);
+                        $$('#deliver-time').val(time);
                     }
-                    $$('#select-repeat p').text(JSON.parse(sessionStorage.repeat))
-                    if (JSON.parse(sessionStorage.date_end) != "") {
-                        $$('#date-end').val(JSON.parse(sessionStorage.date_end));
+                    $$('#select-repeat p').text(repeat)
+                    if (date_end != "") {
+                        $$('#date-end').val(date_end);
                         /* frace al inicio */
-                        let repeat = JSON.parse(sessionStorage.footer).split(' until ');
+                        let repeat = footer.split(' until ');
                         let date_foot = repeat[1];
                         repeat = repeat[0].split(' itself ')[1];
-                        $$('.popup-deliver .footer').children('div').text(JSON.parse(sessionStorage.date_end));
+                        $$('.popup-deliver .footer').children('div').text(date_end);
                         $$('.popup-deliver .footer').html('The memory will repeat itself ' + repeat + ' until <div>' + date_foot + '</div>');
                     } else {
                         /* disable and grey */
@@ -386,10 +487,11 @@
                         $$('.end-repeat-cont').addClass('none');
                         $$('.popup-deliver .footer').text('The memory will never repeat');
                     }
-                    $$('.deliver-cont .deliver-info .footer-deliver').text(JSON.parse(sessionStorage.footer));
-                    $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date));
-                    $$('.deliver-cont .deliver-info .time-info .val').text(JSON.parse(sessionStorage.time));
+                    $$('.deliver-cont .deliver-info .footer-deliver').text(footer);
+                    $$('.deliver-cont .deliver-info .date-info .val').text(date);
+                    $$('.deliver-cont .deliver-info .time-info .val').text(time);
                 }
+
 
                 if (sessionStorage.date && sessionStorage.time && sessionStorage.repeat) {
                     $$('#accept-deliver-date').prop('disabled', false);
@@ -505,35 +607,20 @@
 
                 /* change cover img */
                 $$('#file-cover').change(function (val) {
-                    let reader = new FileReader();
-                    let cover_cont = $$('.media-cont .cover');
-                    if (this.files && this.files[0]) {
-                        reader.onload = e => {
-                            cover_cont.addClass('edit');
-                            cover_cont.children('img').attr('src', e.target.result);
-                            /* coverSessionstorage(e.target.result); */
-                        }
-                        let newmb = mb - cover.size;
-                        if ((newmb + this.files[0].size) <= maxbytes) {
-                            reader.readAsDataURL(this.files[0]);
-                            mb -= cover.size;
-                            cover = this.files[0];
-                            mb += cover.size;
-                            progressBar(mb);
-                        } else {
-                            console.log("file-cover.change. newmb thing");
-                            console.log(newmb);
-                            app.dialog.alert('No space available');
-
-                        }
-                    }
+                    changeCover();
                 });
 
                 /* add cover img */
                 $$('#add-cover').change(function (val) {
                     let reader = new FileReader();
                     let cover_cont = $$('.media-cont .cover');
+                    // console.log("Normal add-cover change");
+                    // console.log(this);
+                    // console.log(this.files);
+                    // console.log(val);
                     if (this.files && this.files[0]) {
+                        console.log(this);
+                        console.log(this.files);
                         reader.onload = e => {
                             cover_cont.addClass('edit');
                             cover_cont.children('img').attr('src', e.target.result);
@@ -557,6 +644,8 @@
                     $$(this).on('click', function (event) {
                         event.preventDefault();
                     });
+
+                    addCover(this, editing);
                 });
 
                 /* add file */
@@ -586,8 +675,8 @@
 
                                 $$('.media-cont .media.fill .close').off('click');
                                 $$('.media-cont .media.fill .close').click(function (val) {
-                                    /* 
-                                    cuando eliminas un archivo 
+                                    /*
+                                    cuando eliminas un archivo
                                     lo borra del array
                                     baja la barra de progreso
                                     elimina el html
@@ -637,8 +726,8 @@
                                         newfile.appendTo(medias);
                                         $$('.media-cont .media.fill .close').off('click');
                                         $$('.media-cont .media.fill .close').click(function (val) {
-                                            /* 
-                                            cuando eliminas un archivo 
+                                            /*
+                                            cuando eliminas un archivo
                                             lo borra del array
                                             baja la barra de progreso
                                             elimina el html
@@ -665,7 +754,7 @@
                             }
                         }
                         if ((mb + file.size) <= maxbytes) {
-                            /* 
+                            /*
                             si no pasa el maximo de tamaño
                             lee el archivo
                             agrega al array
@@ -701,41 +790,55 @@
                     /* datos que sean completamente necesarios */
                     let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
                     if (result.valid) {
-                        // CREATE MEMORY
                         app.preloader.show("blue");
-                        await app.request.promise.postJSON(`${app.data.server}/memories`, result.memory).then(async function (res) {
-                            console.log("");
-                            console.log("response memory");
-                            var createdMemory = res.data;
-                            console.log(createdMemory);
+                        if (editing)
+                        {
+                            app.dialog.alert("Ayyy editing, saving the thing");
+                            await app.request({
+									url: `${app.data.server}/memories/${memoryToEdit.id}`,
+									method: 'PUT',
+									data: {
+                                        title: result.memory.title,
+                                        description: result.memory.description,
+                                        reminder: result.memory.reminder,
+                                        sent: result.memory.sent,
+									}
+								});
+                        }
+                        else
+                        {
+                            // CREATE MEMORY
+                            await app.request.promise.postJSON(`${app.data.server}/memories`, result.memory).then(async function (res) {
+                                console.log("");
+                                console.log("response memory");
+                                var createdMemory = res.data;
+                                console.log(createdMemory);
 
-                            console.log("* * * * Uploading * * * *");
-                            //UPLOAD COVER
-                            if (await uploadCover(result.memoryFiles.cover, createdMemory.id)) {
+                                console.log("* * * * Uploading * * * *");
+                                //UPLOAD COVER
+                                if (await uploadCover(result.memoryFiles.cover, createdMemory.id)) {
 
-                                //UPLOAD OTHER FILES
-                                if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
-                                    app.preloader.hide();
-                                    app.dialog.alert("The memory has been created successfully!");
-                                    // sessionStorage.clear();
-                                    app.views.main.router.navigate('/memories/home');
+                                    //UPLOAD OTHER FILES
+                                    if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
+                                        app.preloader.hide();
+                                        app.dialog.alert("The memory has been created successfully!");
+                                        // sessionStorage.clear();
+                                        app.views.main.router.navigate('/memories/home');
+                                    }
+                                    else {
+                                        app.dialog.alert("Error uploading files, memory wasn't created!");
+                                    }
                                 }
                                 else {
-                                    app.dialog.alert("Error uploading files, memory wasn't created!");
+                                    console.log("!!!!!! Error uploading cover !!!!!!");
                                 }
-                            }
-                            else {
-                                console.log("!!!!!! Error uploading cover !!!!!!");
-                            }
-
-
-                        })
-                            .catch(function (err) {
-                                app.preloader.hide();
-                                console.log("error adding memory!");
-                                console.log(err);
-                                app.dialog.alert("There was an unexpected error when trying to create the memory!");
+                            }).catch(function (err) {
+                                    app.preloader.hide();
+                                    console.log("error adding memory!");
+                                    console.log(err);
+                                    app.dialog.alert("There was an unexpected error when trying to create the memory!");
                             })
+                        }
                         app.preloader.hide();
                     }
                     else {
@@ -897,9 +1000,12 @@
                     // console.log(cover);
                     // console.log(!cover);
                     if (!cover) {
-                        result.valid = false;
-                        result.message += result.errors > 0 ? ", no cover" : "No cover";
-                        result.errors++;
+                        if (!editing)
+                        {
+                            result.valid = false;
+                            result.message += result.errors > 0 ? ", no cover" : "No cover";
+                            result.errors++;
+                        }
                     }
                     else {
                         result.memoryFiles.cover = cover;
@@ -909,9 +1015,12 @@
                     // console.log(files);
                     // console.log(!(files.length > 0));
                     if (!(files.length > 0)) {
-                        result.valid = false;
-                        result.message += result.errors > 0 ? ", no files" : "No files";
-                        result.errors++;
+                        if (!editing)
+                        {
+                            result.valid = false;
+                            result.message += result.errors > 0 ? ", no files" : "No files";
+                            result.errors++;
+                        }
                     }
                     else {
                         result.memoryFiles.media = files;
@@ -1081,11 +1190,167 @@
                     sessionStorage.footer = JSON.stringify($$('.popup-deliver .footer').text());
                 }
 
+                function saveToSessionStorage()
+                {
+                    sessionStorage.title        = JSON.stringify(title);
+                    sessionStorage.desc         = JSON.stringify(desc);
+                    sessionStorage.immediately  = JSON.stringify(immediately);
+                    sessionStorage.date         = JSON.stringify(date);
+                    sessionStorage.time         = JSON.stringify(time);
+                    sessionStorage.repeat       = JSON.stringify(repeat);
+                    sessionStorage.date_end     = JSON.stringify(date_end);
+                    sessionStorage.footer       = JSON.stringify(footer);
+                    sessionStorage.on_demand    = JSON.stringify(on_demand);
+                }
+
+                function changeCover()
+                {
+                    let reader = new FileReader();
+                    let cover_cont = $$('.media-cont .cover');
+                    if (this.files && this.files[0]) {
+                        reader.onload = e => {
+                            cover_cont.addClass('edit');
+                            cover_cont.children('img').attr('src', e.target.result);
+                            /* coverSessionstorage(e.target.result); */
+                        }
+                        let newmb = mb - cover.size;
+                        if ((newmb + this.files[0].size) <= maxbytes) {
+                            reader.readAsDataURL(this.files[0]);
+                            mb -= cover.size;
+                            cover = this.files[0];
+                            mb += cover.size;
+                            progressBar(mb);
+                        } else {
+                            console.log("file-cover.change. newmb thing");
+                            console.log(newmb);
+                            app.dialog.alert('No space available');
+
+                        }
+                    }
+                }
+                async function addCover(element)
+                {
+                    console.log("addCover new add-cover thing");
+                    // console.log(element);
+                    // console.log(element.files);
+                    let reader = new FileReader();
+                    let cover_cont = $$('.media-cont .cover');
+                    if (editing)
+                    {
+                        console.log(`${app.data.server}${memoryToEdit.cover.url}`);
+                        var coverFile = await fetch(`${app.data.server}${memoryToEdit.cover.url}`).then(r => r);
+                        console.log("El size como no")
+                        console.log(coverFile);
+
+                        var coverFile;
+                        await app.request.promise.get(`${app.data.server}${memoryToEdit.cover.url}`).then(async function(res){
+                            console.log("Response")
+                            console.log("res");
+                            console.log(res);
+                            console.log("res.xhr");
+                            console.log(res.xhr);
+                            console.log("res.xhr.response");
+                            console.log(res.xhr.response);
+                            console.log("res.data");
+                            console.log(res.data);
+                            coverFile = res.data;
+                        });
+                        console.log("Cover file 0");
+                        console.log(coverFile);
+
+                        console.log(await app.request.promise.get(`${app.data.server}${memoryToEdit.cover.url}`));
+
+                        
+
+                        // console.log("Cover file:");
+                        // console.log(coverFile);
+
+                        // reader.onload = e => {
+                        //     console.log(reader);
+                        //     cover_cont.addClass('edit');
+                        //     cover_cont.children('img').attr('src', e.target.result);
+                        //     /* coverSessionstorage(e.target.result); */
+                        // }
+                        // if ((mb + coverFile.size) <= maxbytes) {
+                        //     reader.readAsDataURL(element.files[0]);
+                        //     cover = element.files[0];
+                        //     mb += cover.size;
+                        //     progressBar(mb);
+                        // } else {
+                        //     console.log("add-cover.change. mb thing");
+                        //     console.log(mb);
+                        //     console.log(element.files[0].size);
+                        //     console.log("total");
+                        //     console.log(mb + element.files[0].size);
+                        //     console.log(`${mb} + ${element.files[0].size} = ${mb + element.files[0].size}, total size <= ${maxbytes}? ${((mb + element.files[0].size) <= maxbytes)}`);
+                        //     app.dialog.alert('No space available');
+                        // }
+                    }
+                    else
+                    {
+                        if (element.files && element.files[0]) {
+                            console.log("Reader");
+                            console.log(reader);
+                            reader.onload = e => {
+                                console.log(reader);
+                                cover_cont.addClass('edit');
+                                cover_cont.children('img').attr('src', e.target.result);
+                                /* coverSessionstorage(e.target.result); */
+                            }
+                            if ((mb + element.files[0].size) <= maxbytes) {
+                                reader.readAsDataURL(element.files[0]);
+                                cover = element.files[0];
+                                mb += cover.size;
+                                progressBar(mb);
+                            } else {
+                                console.log("add-cover.change. mb thing");
+                                console.log(mb);
+                                console.log(element.files[0].size);
+                                console.log("total");
+                                console.log(mb + element.files[0].size);
+                                console.log(`${mb} + ${element.files[0].size} = ${mb + element.files[0].size}, total size <= ${maxbytes}? ${((mb + element.files[0].size) <= maxbytes)}`);
+                                app.dialog.alert('No space available');
+                            }
+                        }
+                    }
+                    $$(element).on('click', function (event) {
+                        event.preventDefault();
+                    });
+                }
                 function progressBar(mb) {/* funcion de barra de progreso */
                     let progress = mb / 1000000;
                     let porcent_prog = (progress * 100) / maxmb;
                     app.progressbar.set('#space-progressbar', porcent_prog);
                     $$('.progress-cont .desc #prog').text((maxmb - progress));
+                }
+                function dbToFrontEndRepeat(repeatValue)
+                {
+                    switch (repeatValue) {
+                        case "not":
+                            return "Never";
+                        case "weekly":
+                            return "Weekly";
+                        case "monthly":
+                            return "Monthly";
+                        case "yearly":
+                            return "Yearly";
+                        default:
+                            break;
+                    }
+                }
+                async function getBase64Image(img) {
+                    var canvas = document.createElement("canvas");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    var dataURL = canvas.toDataURL("image/png");
+                    // var dataURL = await canvas.toBlob(function(blob){
+                    //     console.log("Ayy el blob");
+                    //     console.log(blob);
+                    //     return blob;
+                    // });
+                  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
                 }
             },
         },
