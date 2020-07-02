@@ -290,6 +290,7 @@ var routes = [
             var memID = routeTo.params.memID;
             var memoryData;
             var canEdit = false;
+            var plan = currentUser.currentMembership;
 
             if (memID != -1)
             {
@@ -303,6 +304,7 @@ var routes = [
                 let ownerID;
                 await app.request.promise.get(`${app.data.server}/users/${memoryData.owners[0].id}`).then(async function(ownerRes){
                     ownerID = JSON.parse(ownerRes.data).id;
+                    plan = JSON.parse(ownerRes.data).currentMembership;
                     console.log("Owner: " + ownerID);
                 }).catch(async function(err){
                     console.log("Error fetching memory owner [create-memory]");
@@ -352,7 +354,7 @@ var routes = [
             },
                 {
                     context: {
-                        CurrentPlan: currentUser.currentMembership,
+                        CurrentPlan: plan,
                         CurrentMemory: memoryData,
                         Editing: memID != -1,
                         AdminCanEdit: canEdit,
