@@ -336,6 +336,7 @@ var routes = [
             {
                 context: {
                     Server: server,
+                    CurrentUser: currentUser,
                     Contacts: getContacts(contacts),
                     AdminedContacts: getContacts(adminContacts),
                     Memories: getMemories(ownedMemories),
