@@ -337,8 +337,8 @@ var routes = [
                 context: {
                     Server: server,
                     CurrentUser: currentUser,
-                    Contacts: getContacts(contacts),
-                    AdminedContacts: getContacts(adminContacts),
+                    Contacts: getContacts(contacts, false),
+                    AdminedContacts: getContacts(adminContacts, true),
                     Memories: getMemories(ownedMemories),
                     Fundations: getFundations(baseFundations),
                 }
@@ -407,7 +407,7 @@ var routes = [
                 // console.log(memoryObject);
                 return memoryObject;
             }
-            function getContacts(baseRelation) {
+            function getContacts(baseRelation, admin) {
                 console.log("Home.getContacts()");
                 console.log(baseRelation);
                 let contactsObject = [];
@@ -417,7 +417,7 @@ var routes = [
                         // console.log(relation);
                         contactsObject.push({
                             id: relation.id,
-                            name: (relation.nickname != null && relation.nickname.trim() != "") ? relation.nickname : ((relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username),
+                            name: admin ? ((relation.owner.name != null && relation.owner.name.trim() != "") ? relation.owner.name : relation.owner.username): (relation.nickname != null && relation.nickname.trim() != "") ? relation.nickname : ((relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username),
                             picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : ''
                         });
                     });

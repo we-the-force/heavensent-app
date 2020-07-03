@@ -15,14 +15,19 @@
 						<a href="" class="avatar-fab item-link smart-select smart-select-init" data-open-in="popover">
 							<!-- llenar select con usuarios -->
 							<select id="users">
-								<option value="1" selected>Ramona</option>
+								<option value=1 selected>{{#js_if "this.CurrentUser.name != null"}} {{CurrentUser.name}} {{else}} {{CurrentUser.email}} {{/js_if}}</option>
+								{{#each AdminedContacts}}
+								<option value='{{js "@index + 1"}}'>{{name}} </option>
+								asd <br>
+								<!-- <option value="2" selected>Ramona</option> -->
+								{{/each}}
 								<!-- poner selected al usuario que esta actualmente -->
-								<option value="2">Envy</option>
-								<option value="3">Lisa</option>
-								<option value="4">Neil</option>
-								<option value="5">Kim</option>
-								<option value="6">Roxy</option>
-								<option value="7">Wallace</option>
+								<!-- <option value="2">Envy</option> -->
+								<!-- <option value="3">Lisa</option> -->
+								<!-- <option value="4">Neil</option> -->
+								<!-- <option value="5">Kim</option> -->
+								<!-- <option value="6">Roxy</option> -->
+								<!-- <option value="7">Wallace</option> -->
 							</select>
 							<img id="logged-user-picture" src="" alt="">
 						</a>
@@ -456,6 +461,7 @@
 
 				await app.methods.updateCurrentUser();
 				await app.methods.loadContacts();
+
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
 
 				if (loggedUser == null) {
