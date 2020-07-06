@@ -229,7 +229,8 @@
                 var app = self.$app;
                 var media = [];
 
-                var loggedUser = app.methods.getLocalValue('loggedUser');
+                var loggedUser = await app.methods.getLocalValue('loggedUser');
+
                 var memory = page.route.context.Memory;
                 /* -------------------------- temp fill data -------------------------------------*/
                 // var memory = {};
