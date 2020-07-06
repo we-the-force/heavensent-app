@@ -198,7 +198,7 @@
 									<h1>{{name}}</h1>
 									<p>{{deliveryDate}}</p>
 								</div>
-								<a href="#" class="edit popover-open" data-popover=".popover-opt" data-memory="{{id}}">
+								<a href="#" class="memory-options edit popover-open" data-popover=".popover-opt" data-memory="{{id}}">
 									<span class="material-icons">more_horiz</span>
 								</a>
 							</div>
@@ -428,7 +428,7 @@
 			<div class="popover-inner">
 				<div class="list">
 					<ul>
-						<li><a class="list-button item-link" href="#">Edit</a></li>
+						<li><a id="edit-memory-btn" class="list-button item-link popover-close" href="#">Edit</a></li>
 						<li><a class="list-button item-link" href="#">Delete</a></li>
 					</ul>
 				</div>
@@ -486,6 +486,10 @@
 					console.log($$(this).prop("dataset").user);
 					$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
 					console.log($$('.popover-person'));
+				})
+
+				$$('.memory-options').on('click', function(val){
+					$$('#edit-memory-btn')[0].href = "/memories/edit/memory/" + $$(this).prop("dataset").memory;
 				})
 
 				$$('.card.memory').click(function (val) {
