@@ -458,10 +458,11 @@
                 });
                 sessionStorage.on_demand = JSON.stringify(toggle_demand.checked);
 
-                progressBar(mb);
-
+                
                 $$('.progress-cont .desc').find('#total').text(maxmb);
                 $$('.progress-cont .desc').find('#prog').text(maxmb);
+                
+                progressBar(mb);
 
                 switch (plan) {
                         case "basic":
@@ -1397,8 +1398,9 @@
                     console.log(`Progress (${mb}/1000000) = ${progress}`);
                     let porcent_prog = (progress * 100) / maxmb;
                     console.log(`Percent Prog (${progress} * 100 / ${maxmb}) = ${porcent_prog}`);
-                    app.progressbar.set('#space-progressbar', porcent_prog);
                     $$('.progress-cont .desc #prog').text((maxmb - progress));
+                    app.progressbar.set('#space-progressbar', porcent_prog);
+                    
                 }
                 function dbToFrontEndRepeat(repeatValue)
                 {
