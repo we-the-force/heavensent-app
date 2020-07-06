@@ -1,0 +1,1124 @@
+<template>
+    <div class="page" data-name="create-memory" id="create-memory">
+        <div class="artwork"></div>
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a class="back-btn">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title">Create Memory</h1>
+                        <div class="none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="inputs list" id="_01">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="title" placeholder="Title" required validate>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap textarea">
+                                <textarea id="description" placeholder="Message" class="resizable"
+                                    maxlength="140"></textarea>
+                                <span class="contador">0/140</span>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- <li class="item-content item-input with-label">
+                        <label for="notes" class="note-title">Note</label>
+                        <div class="item-inner">
+                            <div class="item-input-wrap textarea">
+                                <textarea id="notes" placeholder="Text" class="resizable" maxlength="140"></textarea>
+                                <span class="contador">0/140</span>
+                            </div>
+                        </div>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- <div class="btns-cont center" id="b_01">
+                <a id="add-note-btn" class="button color-blue round large">Add note</a>
+            </div> -->
+            <div class="upload-title">Upload files</div>
+            <div class="upload-cont">
+                <div class="progress-cont">
+                    <p class="bar"><span data-progress="0" class="progressbar" id="space-progressbar"></span></p>
+                    <div class="desc">Available space <div id="prog">100</div>MB out of <div id="total">100</div>MB
+                    </div>
+                </div>
+                <div class="media-cont">
+                    <label class="cover" for="add-cover">
+                        <img src="" alt="">
+                        <a class="edit popover-open" data-popover=".popover-opt">
+                            <span class="material-icons">more_horiz</span>
+                        </a>
+                        <input type="file" id="add-cover" class="none" accept="image/*">
+                    </label>
+                    <div class="medias">
+                        <div class="media">
+                            <span class="material-icons">mic</span>
+                        </div>
+                        <div class="media">
+                            <span class="material-icons">comment</span>
+                        </div>
+                        <div class="media">
+                            <span class="material-icons">image</span>
+                        </div>
+                        <div class="media">
+                            <span class="material-icons">videocam</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="btns-cont center add" id="b_02">
+                    <label id="add-media" href="" class="add-btn">
+                        <i class="icons material-icons">add</i>
+                        <input type="file" id="file-inp" class="none" accept="video/*,image/*">
+                    </label>
+                </div>
+            </div>
+            <div class="contacts-title">Add contacts
+            </div>
+            <div class="contacts-cont">
+                <div class="contacts">
+                    <div class="person no_contact">
+                        <!-- cuando no hay contactos agregados quitar la clase none -->
+                    </div>
+                    <!-- <div class="person">
+                    <span class="material-icons close">close</span>
+                    <img src="../../static/img/envy.jpg" alt="">
+                </div>
+                <div class="person">
+                    <span class="material-icons close">close</span>
+                    <img src="../../static/img/ramona.jpeg" alt="">
+                </div>
+                <div class="person">
+                    <span class="material-icons close">close</span>
+                    <img src="../../static/img/scott.jpeg" alt="">
+                </div>
+                <div class="person">
+                    <span class="material-icons close">close</span>
+                    <img src="../../static/img/kim.jpeg" alt="">
+                </div> -->
+                </div>
+                <div class="btns-cont center add" id="b_03">
+                    <a id="add-contact" href="/memories/contacts" class="add-btn">
+                        <i class="icons material-icons">add</i>
+                    </a>
+                </div>
+            </div>
+            <div class="location-title">Location
+            </div>
+            <div class="location-cont">
+                <div class="btns-cont center location-btn" id="b_04">
+                    <a id="add-location-btn" href="/memories/location" class="button color-blue round large">Add
+                        location</a>
+                </div>
+                <div class="location-map none">
+                    <div class="map" id="map-static"></div>
+                    <div class="map-info">
+                        <div class="address">
+                            <h1 class="title">Address</h1>
+                            <p class="addr">6th Ave 1274b</p>
+                        </div>
+                        <a href="/memories/location" class="edit-btn addr">
+                            <i class="icons material-icons">edit</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="date-title">Deliver date
+                <!-- quitar none cuando este moestrando informacion o agregar none cuando no haya info -->
+                <a href="" class="edit-btn deliver popup-open none" data-popup=".popup-deliver">
+                    <i class="icons material-icons">edit</i>
+                </a>
+            </div>
+            <!-- aggrega la clase none alboton cuando se vaya a mostrar informacion y quitar none de el div deliver info -->
+            <div class="deliver-cont">
+                <div class="btns-cont center date-btn" id="b_05">
+                    <a id="add-deliver-date" class="button color-blue round large popup-open"
+                        data-popup=".popup-deliver">Set date to deliver</a>
+                </div>
+                <div class="deliver-info none">
+                    <div class="info-cont">
+                        <div class="date-info">
+                            <p class="title">Date:</p>
+                            <p class="val"></p>
+                        </div>
+                        <div class="time-info">
+                            <p class="title">Time:</p>
+                            <p class="val"></p>
+                        </div>
+                        <p class="immediatly-info none">The memory will be sent immediately</p>
+                    </div>
+                    <div class="footer-deliver">The memory will repeat itself every year until 08/22/2024</div>
+                </div>
+            </div>
+            <div class="ondemand-cont">
+                <div class="ondemand">
+                    <h1>On Demand</h1>
+                    <a class="popup-open" href="#" data-popup=".popup-demand">
+                        <i class="info icons material-icons">info</i>
+                    </a>
+                </div>
+                <label class="toggle toggle-init" id="on-demand-toggle">
+                    <input type="checkbox">
+                    <span class="toggle-icon"></span>
+                </label>
+            </div>
+            <div class="btns-cont center create" id="b_04">
+                <a id="create-btn-memory" class="button color-white round large">Create memory</a>
+            </div>
+        </div>
+        <div class="popup popup-demand">
+            <div class="block">
+                <p>The user can access the content as many times as they can and wherever</p>
+            </div>
+        </div>
+        <div class="popup popup-deliver">
+            <div class="immediately-cont">
+                <h1>Send immediately</h1>
+                <label class="toggle toggle-init" id="immediately-toggle">
+                    <input id="send-immediately-toggle" type="checkbox">
+                    <span class="toggle-icon"></span>
+                </label>
+            </div>
+            <div class="date_time inputs list">
+                <ul>
+                    <li class="item-content item-input two-inputs">
+                        <div class="item-inner">
+                            <label for="deliver-date" class="label">Date</label>
+                            <div class="item-input-wrap">
+                                <input type="date" class="pop-deliver-inputs" id="deliver-date" required validate />
+                            </div>
+                        </div>
+                        <div class="item-inner">
+                            <label for="deliver-date" class="label">Time</label>
+                            <div class="item-input-wrap">
+                                <input type="time" class="pop-deliver-inputs" id="deliver-time" required validate />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="repeat-cont">
+                <h1>Repeat</h1>
+                <div class="inputs list">
+                    <ul>
+                        <li class="item-content item-input two-inputs">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <a id="select-repeat" class="select color-white round small popover-open"
+                                        data-popover=".popover-repeat">
+                                        <i class="material-icons">keyboard_arrow_down</i>
+                                        <p id="select-repeat-value">Yearly</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="end-repeat-cont">
+                <h1>End repetition</h1>
+                <div class="inputs list">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <input type="date" id="date-end" class="pop-deliver-inputs" required validate />
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer">The memory will repeat itself every year until <div>--/--/----</div>
+            </div>
+            <div class="btns-cont center" id="date">
+                <a id="accept-deliver-date" class="button color-blue grey round small" disabled="true">Accept</a>
+            </div>
+        </div>
+        <div class="popover popover-repeat space-on-right">
+            <div class="popover-inner">
+                <div class="list">
+                    <ul>
+                        <li><a class="list-btn never popover-close" href="#">Never</a></li>
+                        <!-- <li><a class="list-btn every_day popover-close" href="#">Every day</a></li> -->
+                        <li><a class="list-btn weekly popover-close" href="#">Weekly</a></li>
+                        <!-- <li><a class="list-btn biweekly popover-close" href="#">Biweekly</a></li> -->
+                        <!-- <li><a class="list-btn each_month popover-close" href="#">Each month </a></li> -->
+                        <li><a class="list-btn each_month popover-close" href="#">Monthly</a></li>
+                        <!-- <li><a class="list-btn every_3_months popover-close" href="#">Every 3 months</a></li> -->
+                        <!-- <li><a class="list-btn every_6_months popover-close" href="#">Every 6 months</a></li> -->
+                        <!-- <li><a class="list-btn every_year popover-close checked" href="#">Every year</a></li> -->
+                        <li><a class="list-btn every_year popover-close" href="#">Yearly</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="popover popover-opt space-on-left">
+            <div class="popover-angle none"></div>
+            <div class="popover-inner">
+                <div class="list">
+                    <ul>
+                        <li>
+                            <label for="file-cover">
+                                <i class="list-button item-link popover-close" href="#" id="edit">Edit</i>
+                                <input type="file" id="file-cover" class="none" accept="image/*">
+                            </label>
+                        </li>
+                        <li><a class="list-button item-link popover-close" href="#" id="delete">Delete</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    // var app = new Framework7();
+    import $$ from "dom7";
+    export default {
+        on: {
+            pageInit: async function (e, page) {
+                var self = this;
+                var app = self.$app;
+                var loggedUser = await app.methods.getLocalValue('loggedUser');
+
+                /* var latlng = sessionStorage.latlng;
+                var addr = sessionStorage.addr; */
+                var title = sessionStorage.title;
+                var desc = sessionStorage.desc;
+                var immediately = sessionStorage.immediately;
+                var date = sessionStorage.date;
+                var time = sessionStorage.time;
+                var repeat = sessionStorage.repeat;
+                var date_end = sessionStorage.date_end;
+                var footer = sessionStorage.footer;
+                var on_demand = sessionStorage.on_demand;
+
+                var files = [];
+                var mb = 0;
+                var cover /* = sessionStorage.cover */;
+                /* var contacts = sessionStorage.contacts; */
+                var maxmb = page.route.context.CurrentPlan.plan.memoryQuotaMB;
+                console.log("- - - plan - - -");
+                console.log(page.route.context.CurrentPlan);
+                var maxbytes = maxmb * 1000000;
+                var plan = page.route.context.CurrentPlan.plan.name;
+                var toggle_immediately = app.toggle.create({
+                    el: '#immediately-toggle'
+                });
+                var toggle_demand = app.toggle.create({
+                    el: '#on-demand-toggle'
+                });
+                sessionStorage.on_demand = JSON.stringify(toggle_demand.checked);
+
+                $$('.progress-cont .desc').find('#total').text(maxmb);
+                $$('.progress-cont .desc').find('#prog').text(maxmb);
+
+                switch (plan) {
+                    case "basic":
+                        $$('.location-cont #add-location-btn').removeAttr('href');
+                        $$('.location-cont').addClass('none');
+                        $$('.location-title').addClass('none');
+                        $$('.ondemand-cont').addClass('none');
+                        $$('.media-cont #add-media input').attr("accept", "image/*");
+                        break;
+                    case "standard":
+                        $$('.location-cont #add-location-btn').removeAttr('href');
+                        $$('.location-cont').addClass('none');
+                        $$('.location-title').addClass('none');
+                        $$('.ondemand-cont').addClass('none');
+                        break;
+                    case "premium":
+
+                        break;
+                    default:
+                        break;
+                }
+                if (on_demand) {
+                    toggle_demand.checked = JSON.parse(on_demand);
+                }
+                if (title) {
+                    $$('input#title').val(JSON.parse(title));
+                }
+                if (desc) {
+                    $$('textarea#description').val(JSON.parse(desc));
+                }
+
+                if (date && time && repeat) {
+                    $$('.date-title .edit-btn').removeClass('none');
+                    $$('.deliver-cont .btns-cont').addClass('none');
+                    $$('.deliver-cont .deliver-info').removeClass('none');
+                    toggle_immediately.checked = JSON.parse(sessionStorage.immediately);
+                    if (toggle_immediately.checked) {
+                        $$('.popup-deliver .date_time.inputs').addClass('none');
+                        $$('#deliver-time').addClass('grey');
+                        $$('#deliver-date').addClass('grey');
+                        $$('.immediatly-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .date-info').addClass('none');
+                        $$('.deliver-cont .deliver-info .time-info').addClass('none');
+                    } else {
+                        $$('#deliver-date').val(JSON.parse(sessionStorage.date));
+                        $$('#deliver-time').val(JSON.parse(sessionStorage.time));
+                    }
+                    $$('#select-repeat p').text(JSON.parse(sessionStorage.repeat))
+                    if (JSON.parse(sessionStorage.date_end) != "") {
+                        $$('#date-end').val(JSON.parse(sessionStorage.date_end));
+                        /* frace al inicio */
+                        let repeat = JSON.parse(sessionStorage.footer).split(' until ');
+                        let date_foot = repeat[1];
+                        repeat = repeat[0].split(' itself ')[1];
+                        $$('.popup-deliver .footer').children('div').text(JSON.parse(sessionStorage.date_end));
+                        $$('.popup-deliver .footer').html('The memory will repeat itself ' + repeat + ' until <div>' + date_foot + '</div>');
+                    } else {
+                        /* disable and grey */
+                        $$('#date-end.pop-deliver-inputs').addClass('grey');
+                        $$('.end-repeat-cont').addClass('none');
+                        $$('.popup-deliver .footer').text('The memory will never repeat');
+                    }
+                    $$('.deliver-cont .deliver-info .footer-deliver').text(JSON.parse(sessionStorage.footer));
+                    $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date));
+                    $$('.deliver-cont .deliver-info .time-info .val').text(JSON.parse(sessionStorage.time));
+                }
+
+                if (sessionStorage.date && sessionStorage.time && sessionStorage.repeat) {
+                    $$('#accept-deliver-date').prop('disabled', false);
+                    $$('#accept-deliver-date').removeClass('grey');
+                    $$('#accept-deliver-date').addClass('popup-close');
+                    $$('#accept-deliver-date').off('click').click(x => deliverAccept());
+                }
+
+                /* habilita deshabilita end repetition dependiendo de lo que selecciones en repeat */
+                $$('.popover-repeat .popover-close').click(function (el) {
+                    /* let input_end = $$('#date-end.pop-deliver-inputs'); */
+                    $$(this).parent().parent().find('.checked').removeClass('checked');
+                    $$(this).addClass('checked');
+                    $$('.popup-deliver .select p').text($$(this).text());
+
+                    if ($$(this).hasClass('never')) {
+                        $$('#date-end').val("");
+                        $$('.pop-deliver-inputs#date-end').addClass('grey');
+                        $$('.end-repeat-cont').addClass('none');
+                        $$('.pop-deliver-inputs').trigger('change');
+                        $$('.popup-deliver .footer').text('The memory will never repeat');
+                    } else {
+                        $$('.pop-deliver-inputs#date-end').removeClass('grey');
+                        $$('.end-repeat-cont').removeClass('none');
+                        $$('.pop-deliver-inputs').trigger('change');
+                        $$('.popup-deliver .footer').html('The memory will repeat itself ' + $$(this).text() + ' until <div>--/--/----</div>');
+                    }
+                });
+
+                /* verifica que los inputs necesarios esten llenos en el popover */
+                $$('.pop-deliver-inputs').change(function (e) {
+                    console.log("Some shit changed");
+                    var inputs = $$('.pop-deliver-inputs:not(.grey)');
+                    console.log(inputs);
+                    var nonempty = inputs.filter(function () {
+                        return this.value != ''
+                    });
+                    if (nonempty.length == inputs.length) {
+                        $$('#accept-deliver-date').prop('disabled', false);
+                        $$('#accept-deliver-date').removeClass('grey');
+                        $$('#accept-deliver-date').addClass('popup-close');
+                        $$('#accept-deliver-date').off('click').click(x => deliverAccept());
+                    } else {
+                        $$('#accept-deliver-date').prop('disabled', true);
+                        $$('#accept-deliver-date').addClass('grey');
+                        $$('#accept-deliver-date').removeClass('popup-close');
+                    }
+                });
+
+                /* send immmediately toggle disable rest of popup */
+                $$('#immediately-toggle').on('toggle:change', function (val) {
+                    if (toggle_immediately.checked) {
+                        $$('.popup-deliver .date_time.inputs').addClass('none');
+                        $$('#deliver-time').addClass('grey');
+                        $$('#deliver-date').addClass('grey');
+                        $$('.pop-deliver-inputs').trigger('change');
+                    } else {
+                        $$('#deliver-time').removeClass('grey');
+                        $$('#deliver-date').removeClass('grey');
+                        $$('.popup-deliver .date_time.inputs').removeClass('none');
+                        $$('.pop-deliver-inputs').trigger('change');
+                    }
+
+                });
+
+                /* agrega fecha en el footer */
+                $$('.pop-deliver-inputs#date-end').change(function (e) {
+                    $$('.popup-deliver .footer').children('div').text($$(this).val());
+                });
+
+                /* guarda el valor del toggle cuando cambia */
+                $$('#on-demand-toggle').on('toggle:change', function (val) {
+                    sessionStorage.on_demand = JSON.stringify(app.toggle.get(this).checked);
+                });
+
+                /* guarda el valor del  titulo por si cambia la pantalla*/
+                $$('input#title').on('input:notempty', function (params) {
+                    sessionStorage.title = JSON.stringify($$(this).val());
+                });
+
+                /* guarda los valores de la descripcion si cambia de pantalla */
+                $$('textarea#description').on('input:notempty', function (params) {
+                    sessionStorage.desc = JSON.stringify($$(this).val());
+                });
+
+                /* cuenta palabras de los text area */
+                $$('textarea').on('input:notempty', function (val) {
+                    $$(this).next().text($$(this).val().length + '/140');
+                });
+                $$('textarea').on('input:empty', function (val) {
+                    $$(this).next().text('0/140');
+                });
+
+                /* elimina un contacto */
+                /* $$('.person.contact .close').click(function (val) {
+                    contacts.splice(contacts.indexOf(contacts.find(x => x.id == $$(this).parent().data('id'))), 1);
+                    sessionStorage.contacts = JSON.stringify(contacts);
+                    $$(this).parent().remove();
+                    if (contacts.length == 0) $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
+                }); */
+
+                /* delete cover img */
+                $$('.popover-opt .list-button#delete').click(function (val) {
+                    let cover_cont = $$('.media-cont .cover');
+                    mb -= cover.size;
+                    progressBar(mb)
+                    cover = null;
+                    cover_cont.children('img').attr('src', '');
+                    cover_cont.removeClass('edit');
+                    $$('#add-cover').off('click');
+                    /* coverSessionstorage(cover); */
+                });
+
+                /* change cover img */
+                $$('#file-cover').change(function (val) {
+                    let reader = new FileReader();
+                    let cover_cont = $$('.media-cont .cover');
+                    if (this.files && this.files[0]) {
+                        reader.onload = e => {
+                            cover_cont.addClass('edit');
+                            cover_cont.children('img').attr('src', e.target.result);
+                            /* coverSessionstorage(e.target.result); */
+                        }
+                        let newmb = mb - cover.size;
+                        if ((newmb + this.files[0].size) <= maxbytes) {
+                            reader.readAsDataURL(this.files[0]);
+                            mb -= cover.size;
+                            cover = this.files[0];
+                            mb += cover.size;
+                            progressBar(mb);
+                        } else {
+                            console.log("file-cover.change. newmb thing");
+                            console.log(newmb);
+                            app.dialog.alert('No space available');
+
+                        }
+                    }
+                });
+
+                /* add cover img */
+                $$('#add-cover').change(function (val) {
+                    let reader = new FileReader();
+                    let cover_cont = $$('.media-cont .cover');
+                    if (this.files && this.files[0]) {
+                        reader.onload = e => {
+                            cover_cont.addClass('edit');
+                            cover_cont.children('img').attr('src', e.target.result);
+                            /* coverSessionstorage(e.target.result); */
+                        }
+                        if ((mb + this.files[0].size) <= maxbytes) {
+                            reader.readAsDataURL(this.files[0]);
+                            cover = this.files[0];
+                            mb += cover.size;
+                            progressBar(mb);
+                        } else {
+                            console.log("add-cover.change. mb thing");
+                            console.log(mb);
+                            console.log(this.files[0].size);
+                            console.log("total");
+                            console.log(mb + this.files[0].size);
+                            console.log(`${mb} + ${this.files[0].size} = ${mb + this.files[0].size}, total size <= ${maxbytes}? ${((mb + this.files[0].size) <= maxbytes)}`);
+                            app.dialog.alert('No space available');
+                        }
+                    }
+                    $$(this).on('click', function (event) {
+                        event.preventDefault();
+                    });
+                });
+
+                /* add file */
+                $$('#file-inp').change(async function (val) {
+                    let reader = new FileReader();
+                    let medias = $$('.media-cont .medias');
+
+                    let newfile = $$('<div class="media fill">' +
+                        '<span class="material-icons close">close</span>' +
+                        '<span class="material-icons type"></span>' +
+                        '<img src="" alt="">' +
+                        '</div>');
+                    if (this.files && this.files[0]) {
+                        /* si hay archivos */
+                        let file = this.files[0];
+                        if (file.type.match('image')) {
+                            reader.onload = e => {
+                                if (!medias.find('.media:last-child').hasClass('fill')) {
+                                    /* si no hay nada agrega unas clases */
+                                    medias.find('.media').addClass('none');
+                                    medias.addClass('f_start');
+                                }
+                                /* funcion que ejecuta cuando lee el archivo */
+                                newfile.children('img').attr('src', e.target.result);
+                                newfile.children('.type').text('photo');
+                                newfile.appendTo(medias);
+
+                                $$('.media-cont .media.fill .close').off('click');
+                                $$('.media-cont .media.fill .close').click(function (val) {
+                                    /* 
+                                    cuando eliminas un archivo 
+                                    lo borra del array
+                                    baja la barra de progreso
+                                    elimina el html
+                                    */
+                                    mb -= files[$$(this).parent().index() - 4].size;
+                                    progressBar(mb)
+                                    files.splice($$(this).parent().index() - 4, 1);
+                                    $$(this).parent().remove();
+                                    if (!medias.find('.media:last-child').hasClass('fill')) {
+                                        /* cuando no hay archivos regresa al estado original */
+                                        medias.find('.media').removeClass('none');
+                                        medias.removeClass('f_start');
+                                    }
+                                });
+                            }
+                        } else if (file.type.match('video')) {
+                            reader.onload = e => {
+
+                                if (!medias.find('.media:last-child').hasClass('fill')) {
+                                    /* si no hay nada agrega unas clases */
+                                    medias.find('.media').addClass('none');
+                                    medias.addClass('f_start');
+                                }
+                                var video = document.createElement('video');
+                                var timeupdate = function () {
+                                    $$('.page-content').css('background', 'aqua');
+                                    if (snapImage()) {
+                                        video.removeEventListener('timeupdate', timeupdate);
+                                        video.pause();
+                                    }
+                                };
+                                video.addEventListener('loadeddata', function () {
+                                    if (snapImage()) {
+                                        video.removeEventListener('timeupdate', timeupdate);
+                                    }
+                                });
+                                var snapImage = function () {
+                                    var canvas = document.createElement('canvas');
+                                    canvas.width = video.videoWidth;
+                                    canvas.height = video.videoHeight;
+                                    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                                    var image = canvas.toDataURL();
+                                    var success = image.length > 0;
+                                    if (success) {
+                                        newfile.children('img').attr('src', image);
+                                        newfile.children('.type').text('videocam');
+                                        newfile.appendTo(medias);
+                                        $$('.media-cont .media.fill .close').off('click');
+                                        $$('.media-cont .media.fill .close').click(function (val) {
+                                            /* 
+                                            cuando eliminas un archivo 
+                                            lo borra del array
+                                            baja la barra de progreso
+                                            elimina el html
+                                            */
+                                            mb -= files[$$(this).parent().index() - 4].size;
+                                            progressBar(mb)
+                                            files.splice($$(this).parent().index() - 4, 1);
+                                            $$(this).parent().remove();
+                                            if (!medias.find('.media:last-child').hasClass('fill')) {
+                                                /* cuando no hay archivos regresa al estado original */
+                                                medias.find('.media').removeClass('none');
+                                                medias.removeClass('f_start');
+                                            }
+                                        });
+                                    }
+                                    return success;
+                                };
+                                video.addEventListener('timeupdate', timeupdate);
+                                video.preload = 'metadata';
+                                video.src = e.target.result;
+                                video.muted = true;
+                                video.playsInline = true;
+                                video.play();
+                            }
+                        }
+                        if ((mb + file.size) <= maxbytes) {
+                            /* 
+                            si no pasa el maximo de tamaño
+                            lee el archivo
+                            agrega al array
+                            aumenta la barra de progreso
+                            */
+                            reader.readAsDataURL(file);
+                            files.push(file);
+                            mb += file.size;
+                            progressBar(mb);
+                        } else {
+                            app.dialog.alert('No space available');
+                        }
+                    }
+                });
+
+                $$('.navbar .back-btn').click(e => {
+                    sessionStorage.clear();
+                    app.views.main.router.navigate('/memories/home');
+                });
+
+                /* aqui guarda la memoria */
+                $$('#create-btn-memory').click(async e => {
+                    let ss = sessionStorage;
+                    console.log("Create-btn-memory.click");
+                    let immediately = $$("#send-immediately-toggle").prop("checked");
+                    let repeat = $$("#select-repeat-value")[0].innerText;
+                    console.log(repeat);
+                    let date = $$("#deliver-date").val();
+                    console.log(immediately);
+
+                    let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.time, ss.repeat, ss.date_end, ss.on_demand);
+
+                    /* datos que sean completamente necesarios */
+                    let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
+                    if (result.valid) {
+                        // CREATE MEMORY
+                        app.preloader.show("blue");
+                        await app.request.promise.postJSON(`${app.data.server}/memories`, result.memory).then(async function (res) {
+                            console.log("");
+                            console.log("response memory");
+                            var createdMemory = res.data;
+                            console.log(createdMemory);
+
+                            console.log("* * * * Uploading * * * *");
+                            //UPLOAD COVER
+                            if (await uploadCover(result.memoryFiles.cover, createdMemory.id)) {
+
+                                //UPLOAD OTHER FILES
+                                if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
+                                    app.preloader.hide();
+                                    app.dialog.alert("The memory has been created successfully!");
+                                    // sessionStorage.clear();
+                                    app.views.main.router.navigate('/memories/home');
+                                }
+                                else {
+                                    app.dialog.alert("Error uploading files, memory wasn't created!");
+                                }
+                            }
+                            else {
+                                console.log("!!!!!! Error uploading cover !!!!!!");
+                            }
+
+
+                        })
+                            .catch(function (err) {
+                                app.preloader.hide();
+                                console.log("error adding memory!");
+                                console.log(err);
+                                app.dialog.alert("There was an unexpected error when trying to create the memory!");
+                            })
+                        app.preloader.hide();
+                    }
+                    else {
+                        console.log("Failed to pass the check thing");
+                        console.log(result);
+                        app.dialog.alert(`You missed one or more important fields, please fill them; ${result.message}`);
+                    }
+                });
+
+                async function uploadCover(cover, memoryRefId) {
+                    const data = new FormData();
+                    // data.append("files", file);
+                    var result = false;
+                    let captionData = { caption: "asd", alternativeText: "asdasd" };
+                    data.append("files", cover, `mem-${memoryRefId}_cover.png`);
+                    data.append("refId", memoryRefId);
+                    data.append("ref", "memory");
+                    data.append('field', 'cover');
+                    // data.append('source', 'users-permissions');
+                    console.log("Post cover request [upload cover]");
+                    try {
+
+                        await app.request.promise({
+                            url: app.data.server + '/upload',
+                            method: "POST",
+                            crossDomain: true,
+                            contentType: "multipart/form-data",
+                            data: data
+                        }).then(async function (coverResult) {
+                            let resultObject = JSON.parse(coverResult.data);
+                            console.log(resultObject);
+                        });
+                        result = true;
+                    }
+                    catch (err) {
+                        console.log("ERROR UPLOADING MEDIA");
+                        console.log(err);
+                        result = false;
+                    }
+                    return result;
+                }
+
+
+                async function uploadFiles(files, captions, memoryRefId) {
+                    console.log("Uploading files");
+                    const data = new FormData();
+                    var result = false;
+                    for (let i = 0; i < files.length; i++) {
+                        data.append(`files`, files[i], files[i].name.replace(/ /g, "_"));
+                    }
+                    data.append("refId", memoryRefId);
+                    data.append("ref", "memory");
+                    data.append('field', 'media');
+                    console.log("Post media request [upload cover]");
+
+                    try {
+                        let lmao = await app.request.promise({
+                            url: app.data.server + '/upload',
+                            method: "POST",
+                            crossDomain: true,
+                            contentType: "multipart/form-data",
+                            data: data
+                        }).then(async function (filesResult) {
+                            console.log("- - - - Then - - - -");
+                            let resultObject = JSON.parse(filesResult.data);
+                            console.log(resultObject);
+                            for (let i = 0; i < resultObject.length; i++) {
+                                var fileCaption = captions.length > i ? captions[i] : `Test_${i}`;
+                                console.log(`File ${i}, caption: ${fileCaption}`);
+                                await app.request({
+                                    url: app.data.server + `/upload?id=${resultObject[i].id}`,
+                                    method: 'POST',
+                                    data: {
+                                        fileInfo: { caption: fileCaption }
+                                    }
+                                });
+                            }
+                        });
+                        console.log("- - - Files - - -");
+                        console.log(lmao);
+                        result = true;
+
+                    }
+                    catch (err) {
+                        console.log("ERROR UPLOADING MEDIA");
+                        console.log(err);
+                        result = false;
+                    }
+                    return result;
+                }
+
+                function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand) {
+                    console.log("Starting validateFields");
+                    console.log(date_end);
+                    var result = {
+                        valid: true,
+                        errors: 0,
+                        message: "",
+                        memory: {
+                            "title": "",
+                            "description": "",
+                            "cover": "",
+                            "media": [],
+                            "owners": [{ "id": loggedUser.id }],
+                            "recipients": [],
+                            "reminderType": "none",
+                            "reminder": {
+                                "date": "",
+                                "time": "",
+                                "repeat": "",
+                                "locationLat": "",
+                                "locationLng": "",
+                                "date_end": ""
+                            },
+                            "sent": false,
+                            "on_demand": on_demand,
+                        },
+                        memoryFiles: {
+                            "cover": "",
+                            "media": []
+                        }
+                    };
+
+                    console.log("");
+                    var contacts = undefined;
+                    if (oldContacts != undefined) {
+                        contacts = getContacts(oldContacts);
+                    }
+                    if (time) {
+                        let auxTime = time.substring(1, time.length - 1).split(':');
+                        time = `${String(auxTime[0]).padStart(2, 0)}:${String(auxTime[1]).padStart(2, 0)}:00.000`;
+                        // `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                    }
+
+                    // console.log("Checking title [validateFields]");
+                    // console.log(title);
+                    // console.log(!title);
+                    if (!title) {
+                        result.valid = false;
+                        result.message += "No title";
+                        result.errors++;
+                    }
+                    else {
+                        console.log("Title:");
+                        console.log(title);
+                        result.memory.title = title.substring(1, title.length - 1);
+                    }
+
+                    // console.log("Checking desc [validateFields]");
+                    // console.log(desc);
+                    // console.log(!desc);
+                    if (!desc) {
+                        result.valid = false;
+                        result.message += result.errors > 0 ? ", no description" : "No description";
+                        result.errors++;
+                    }
+                    else {
+                        result.memory.description = desc.substring(1, desc.length - 1);
+                    }
+
+                    // console.log("Checking cover [validateFields]");
+                    // console.log(cover);
+                    // console.log(!cover);
+                    if (!cover) {
+                        if (!editing)
+                        {
+                            result.valid = false;
+                            result.message += result.errors > 0 ? ", no cover" : "No cover";
+                            result.errors++;
+                        }
+                    }
+                    else {
+                        result.memoryFiles.cover = cover;
+                    }
+
+                    // console.log("Checking files [validateFields]");
+                    // console.log(files);
+                    // console.log(!(files.length > 0));
+                    if (!(files.length > 0)) {
+                        if (!editing)
+                        {
+                            result.valid = false;
+                            result.message += result.errors > 0 ? ", no files" : "No files";
+                            result.errors++;
+                        }
+                    }
+                    else {
+                        result.memoryFiles.media = files;
+                    }
+
+                    // console.log("Checking contacts [validateFields]");
+                    // console.log(contacts);
+                    // console.log(!(contacts.length > 0));
+                    if (!contacts || !(contacts.length > 0)) {
+                        result.valid = false;
+                        result.message += result.errors > 0 ? ", no contacts" : "No contacts";
+                        result.errors++;
+                    }
+                    else {
+                        result.memory.recipients = contacts;
+                    }
+
+                    // console.log("Checking latlng [validateFields]");
+                    // console.log(latlng);
+                    // console.log(!latlng);
+                    if (plan === "premium") {
+                        if (!latlng) {
+                            // result.valid = false;
+                            // result.message += result.errors > 0 ? ", no location" : "No location";
+                            // result.errors++;
+                        }
+                        else {
+                            let newLatlng = JSON.parse(latlng);
+                            result.memory.reminderType = "location";
+                            result.memory.reminder.locationLat = newLatlng.lat.toString();
+                            result.memory.reminder.locationLng = newLatlng.lng.toString();
+                        }
+                    }
+
+                    //Send date
+                    // console.log("Checking immediately [validateFields]");
+                    // console.log(immediately);
+                    // console.log(!immediately);
+                    if (!immediately) {
+                        // console.log("Checking date [validateFields]");
+                        // console.log(date);
+                        // console.log(!date);
+                        if (!latlng) {
+                            //Date is a must!
+                            if (!date) {
+                                // result.valid = false;
+                                // result.message += result.errors > 0 ? ", no date" : "No date";
+                                // result.errors++;
+                                result.memory.reminderType = "none";
+                                // result.memory.reminder.date = '1900-01-01';
+                                result.memory.reminder.date = null;
+                            }
+                            else {
+                                if (result.memory.reminderType === "none") {
+                                    result.memory.reminderType = "date"
+                                }
+                                result.memory.reminder.date = date;
+                            }
+                            if (!time) {
+                                // result.valid = false;
+                                // result.message += result.errors > 0 ? ", no time" : "No time";
+                                // result.errors++;
+                                result.memory.reminder.time = null;
+                            }
+                            else {
+                                result.memory.reminder.time = time;
+                            }
+                            if (!repeat) {
+                                // result.valid = false;
+                                // result.message += result.errors > 0 ? ", no repeat" : "No repeat";
+                                // result.errors++;
+                                result.memory.reminder.repeat = "not";
+                                result.memory.reminder.date_end = undefined;
+                            }
+                            else {
+                                result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                if (result.memory.reminder.repeat === "not")
+                                {
+                                    console.log("Not repeating, date_end = null");
+                                    result.memory.reminder.date_end = undefined;
+                                }
+                                else
+                                {
+                                    console.log("Check if there is an end_date");
+                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                }
+                            }
+                        }
+                        else {
+                            var today = new Date();
+                            if (!date) {
+                                // result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
+                                result.memory.reminder.date = null;
+
+                            }
+                            else {
+                                result.memory.reminderType = "date"
+                                result.memory.reminder.date = date;
+                            }
+                            if (!time) {
+                                // result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                                result.memory.reminder.time = null;
+                            }
+                            else {
+                                result.memory.reminder.time = time;
+                            }
+                            if (!repeat) {
+                                result.memory.reminder.repeat = "not";
+                                result.memory.reminder.date_end = undefined;
+                            }
+                            else {
+                                result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                if (result.memory.reminder.repeat === "not")
+                                {
+                                    console.log("Not repeating, date_end = null");
+                                    result.memory.reminder.date_end = undefined;
+                                }
+                                else
+                                {
+                                    console.log("Check if there is an end_date");
+                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        console.log("Immediately!");
+                        let today = new Date();
+                        result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
+                        result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                        result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                    }
+
+                    if (plan == "premium") {
+                        // result.memory.onDemand = on_demand;
+                    }
+                    else {
+                        // result.memory.onDemand = false;
+                    }
+
+                    console.log("Resulting memory [validateMemory]");
+                    console.log(result.memory);
+                    console.log(result.memoryFiles);
+                    //title, desc, cover, files, contacts, latlng, addr, immediately, date, time, repeat, date_end, on_demand
+                    return result;
+                }
+
+                function getContacts(contactString) {
+                    console.log("getContacts");
+                    console.log(contactString);
+                    let contactObject = JSON.parse(contactString);
+                    var arrayObject = [];
+                    for (let i = 0; i < contactObject.length; i++) {
+                        arrayObject.push({ "id": contactObject[i].id });
+                    }
+                    console.log(arrayObject);
+                    return arrayObject;
+                }
+
+                function deliverAccept() {
+                    console.log("Entering deliver accept")
+                    $$('.date-title .edit-btn').removeClass('none');
+                    $$('.deliver-cont .btns-cont').addClass('none');
+                    $$('.deliver-cont .deliver-info').removeClass('none');
+                    let immediately = app.toggle.get('#immediately-toggle').checked;
+                    let date = $$('#deliver-date').val();
+                    let time = $$('#deliver-time').val();
+                    if (immediately) {
+                        $$('.immediatly-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .date-info').addClass('none');
+                        $$('.deliver-cont .deliver-info .time-info').addClass('none');
+                        date = "";
+                        time = "";
+                    } else {
+                        $$('.immediatly-info').addClass('none');
+                        $$('.deliver-cont .deliver-info .date-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .time-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .date-info .val').text(date);
+                        $$('.deliver-cont .deliver-info .time-info .val').text(time);
+                    }
+                    let repeat = $$('#select-repeat p').text();
+                    let date_end = repeat == "Never" ? "" : $$('#date-end').val();
+                    $$('.deliver-cont .deliver-info .footer-deliver').text($$('.popup-deliver .footer').text());
+                    sessionStorage.date = JSON.stringify(date);
+                    sessionStorage.time = JSON.stringify(time);
+                    sessionStorage.immediately = JSON.stringify(immediately);
+                    sessionStorage.repeat = JSON.stringify(repeat);
+                    sessionStorage.date_end = JSON.stringify(date_end);
+                    sessionStorage.footer = JSON.stringify($$('.popup-deliver .footer').text());
+                }
+
+                function progressBar(mb) {/* funcion de barra de progreso */
+                    let progress = mb / 1000000;
+                    let porcent_prog = (progress * 100) / maxmb;
+                    app.progressbar.set('#space-progressbar', porcent_prog);
+                    $$('.progress-cont .desc #prog').text((maxmb - progress));
+                }
+            },
+        },
+    }
+</script>

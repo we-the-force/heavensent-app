@@ -13,6 +13,7 @@ import InviteAdmin from '../pages/contacts/invite-admin.f7.html';
 import EditContact from '../pages/contacts/edit-contact.f7.html';
 
 import CreateMemory from '../pages/memory/create-memory.f7.html';
+import EditMemory from '../pages/memory/edit-memory.f7.html';
 import BirthdayMemory from '../pages/memory/birthday-memory.f7.html';
 import HomeMemories from '../pages/memory/home-memories.f7.html';
 import LocationMemory from '../pages/memory/add-location.f7.html';
