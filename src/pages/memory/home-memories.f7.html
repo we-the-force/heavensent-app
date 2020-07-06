@@ -73,72 +73,6 @@
 						</div>
 					</div>
 					{{/each}}
-					<!-- <div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/wallace.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Wallace</p>
-						</div>
-					</div>
-					
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/scott.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Scott</p>
-						</div>
-					</div>
-					
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/ramona.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Ramona</p>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/envy.jpg" alt="" srcset="">
-							</a>
-							<p class="name-person">Natalia</p>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/steven.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Steven</p>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/neil.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Neil</p>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/kim.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Kim</p>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/gideon.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Gideon</p>
-						</div>
-					</div> -->
 				</div>
 			</div>
 			<div class="create-title">Create</div>
@@ -193,7 +127,7 @@
 									<h1>{{name}}</h1>
 									<p>{{deliveryDate}}</p>
 								</div>
-								<a href="#" class="edit popover-open" data-popover=".popover-opt" data-memory="{{id}}">
+								<a href="#" class="edit memory-options popover-open" data-popover=".popover-opt" data-memory="{{id}}">
 									<span class="material-icons">more_horiz</span>
 								</a>
 							</div>
@@ -423,7 +357,7 @@
 			<div class="popover-inner">
 				<div class="list">
 					<ul>
-						<li><a class="list-button item-link" href="#">Edit</a></li>
+						<li><a id="edit-memory-btn" class="list-button item-link popover-close" href="#">Edit</a></li>
 						<li><a class="list-button item-link" href="#">Delete</a></li>
 					</ul>
 				</div>
@@ -480,6 +414,10 @@
 					console.log($$(this).prop("dataset").user);
 					$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
 					console.log($$('.popover-person'));
+				})
+
+				$$('.memory-options').on('click', function(val){
+					$$('#edit-memory-btn')[0].href = "/memories/create/" + $$(this).prop("dataset").memory;
 				})
 
 				$$('.card.memory').click(function (val) {
