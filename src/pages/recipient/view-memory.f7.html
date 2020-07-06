@@ -229,6 +229,7 @@
                 var app = self.$app;
                 var media = [];
 
+                var loggedUser = app.methods.getLocalValue('loggedUser');
                 var memory = page.route.context.Memory;
                 /* -------------------------- temp fill data -------------------------------------*/
                 // var memory = {};
@@ -317,9 +318,21 @@
                     });
                 });
 
+                if (!loggedUser)
+                {
+                    $$('#view-memory-back-btn').css('display','none')
+                }
+
                 $$('#view-memory-back-btn').on('click', function(params){
                     console.log("Click!");
-                    app.views.main.router.navigate(`/memories/dashboard/user/12`);
+                    if (loggedUser)
+                    {
+                        app.views.main.router.navigate(`/memories/dashboard/user/${loggedUser.id}`);
+                    }
+                    else
+                    {
+                        app.views.main.router.navigate(`/memories/dashboard/user/12`);
+                    }
                 });
 
                 function galleryFunc(index) {
