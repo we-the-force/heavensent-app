@@ -381,6 +381,47 @@
                     let cover_cont = $$('.media-cont .cover');
                     cover_cont.addClass("edit");
 
+                    let medias = $$('.media-cont .medias');
+                    if (!medias.find('.media:last-child').hasClass('fill')) {
+                        /* si no hay nada agrega unas clases */
+                        medias.find('.media').addClass('none');
+                        medias.addClass('f_start');
+                    }
+
+                    var space = memoryToEdit.cover.size;
+
+                    // console.log("- - - Current Media - - -")
+                    memoryToEdit.media.forEach(media => {
+                        // console.log("--Media:");
+                        // console.log(media);
+                        space += media.size;
+                        if (media.mime === "image/png")
+                        {
+                            // console.log("Media was an image");
+                            let url = app.data.server + media.url;
+                            // console.log(`Url: ${url}`);
+                            let newfile = $$('<div class="media fill">' +
+                                             '<span class="material-icons type"></span>' +
+                                             '<img src="' + url + '" alt="">' +
+                                             '</div>');
+                            /* funcion que ejecuta cuando lee el archivo */
+                            newfile.children('img').attr('src', url);
+                            newfile.children('.type').text('photo');
+                            newfile.appendTo(medias);
+                            
+                        }
+                        else
+                        {
+                            // console.log(`Current media isn't an image. What could it be? o: (${media.mime})`);
+                            let newfile = $$('<div class="media">' +
+                                             '<span class="material-icons">videocam</span>' +
+                                             '</div>');
+                            newfile.appendTo(medias);
+                        }
+                    })
+
+                    console.log(`Total size occupied: ${space}`)
+
                     // var base64 = await getBase64Image(document.getElementById("cover-thumbnail"));
                     // console.log("AAAAAAAAAAAAAAAAAAAAAAAAH");
                     // console.log(base64);
@@ -401,7 +442,7 @@
                 }
 
                 var files = [];
-                var mb = 0;
+                var mb = editing ? space * 1000 : 0;
                 var cover /* = sessionStorage.cover */;
                 /* var contacts = sessionStorage.contacts; */
                 var maxmb = page.route.context.CurrentPlan.plan.memoryQuotaMB;
@@ -416,6 +457,8 @@
                     el: '#on-demand-toggle'
                 });
                 sessionStorage.on_demand = JSON.stringify(toggle_demand.checked);
+
+                progressBar(mb);
 
                 $$('.progress-cont .desc').find('#total').text(maxmb);
                 $$('.progress-cont .desc').find('#prog').text(maxmb);
@@ -447,6 +490,7 @@
                 {
                     console.log("Disabling add-contact");
                     $$('#add-contact').css('display', 'none');
+                    $$('#add-media').css('display', 'none');
                 }
 
                 if (on_demand) {
@@ -1348,8 +1392,11 @@
                     });
                 }
                 function progressBar(mb) {/* funcion de barra de progreso */
+                    console.log(`Doing the thing with the progress bar! (${mb})`);
                     let progress = mb / 1000000;
+                    console.log(`Progress (${mb}/1000000) = ${progress}`);
                     let porcent_prog = (progress * 100) / maxmb;
+                    console.log(`Percent Prog (${progress} * 100 / ${maxmb}) = ${porcent_prog}`);
                     app.progressbar.set('#space-progressbar', porcent_prog);
                     $$('.progress-cont .desc #prog').text((maxmb - progress));
                 }
