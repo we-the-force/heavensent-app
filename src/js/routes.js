@@ -13,6 +13,7 @@ import InviteAdmin from '../pages/contacts/invite-admin.f7.html';
 import EditContact from '../pages/contacts/edit-contact.f7.html';
 
 import CreateMemory from '../pages/memory/create-memory.f7.html';
+import EditMemory from '../pages/memory/edit-memory.f7.html';
 import BirthdayMemory from '../pages/memory/birthday-memory.f7.html';
 import HomeMemories from '../pages/memory/home-memories.f7.html';
 import LocationMemory from '../pages/memory/add-location.f7.html';
@@ -298,6 +299,86 @@ var routes = [
         // component: CreateMemory,
     },
     {
+        name: 'edit-memory',
+        path: '/memories/edit/memory/:memID',
+        beforeEnter: [checkAuth, isMembershipValid],
+        async: async function (routeTo, routeFrom, resolve, reject){
+            var router = this;
+            var app = router.app;
+            var currentUser = await app.methods.getLocalValue('loggedUser');
+            var userContacts= await app.methods.getLocalValue('loggedUserContacts');
+
+            var memID = routeTo.params.memID;
+            var memoryData;
+            var canEdit = false;
+            var ownerID;
+            var plan;
+            var canAdminMem;
+
+            await app.request.promise.get(`${app.data.server}/memories/${memID}`).then(async function(memResponse){
+                memoryData = JSON.parse(memResponse.data);
+            }).catch(async function(err){
+                console.log("Error fetching memory");
+                console.log(err);
+            })
+            ownerID = memoryData.owners[0].id;
+            if (ownerID === currentUser.id)
+            {
+                //Editing your own memory, can edit everything.
+                canEdit = true;
+                canAdminMem = true;
+                plan = currentUser.currentMembership;
+            }
+            else
+            {
+                await app.request.promise.get(`${app.data.server}/users/${ownerID}`).then(async function(ownerRes){
+                    plan = JSON.parse(ownerRes.data).currentMembership;
+                });
+                userContacts.forEach(contact => {
+                    if (contact.owner.id === ownerID)
+                    {
+                        if (contact.contact.id === currentUser)
+                        {
+                            if (contact.isAdmin)
+                            {
+                                canAdminMem = true;
+                                canEdit = contact.canEdit;
+                            }
+                            else
+                            {
+                                canAdminMem = false;
+                                canEdit = false;
+                            }
+                        }
+                    }
+                })
+            }
+            
+
+
+            if (canAdminMem)
+            {
+                resolve({
+                    component: EditMemory,
+                },
+                {
+                    context: {
+                        CurrentPlan: plan,
+                        CurrentMemory: memoryData,
+                        CanEdit: canEdit,
+                        OwnedMemory: ownerID == currentUser.id
+                    }
+                })
+            }
+            else
+            {
+                console.log("Not admin for this user; not allowing access");
+                reject();
+            }
+
+        }
+    },
+    {
         name: 'home-memories',
         path: '/memories/home',
         beforeEnter: [checkAuth, isMembershipValid],
@@ -336,8 +417,9 @@ var routes = [
             {
                 context: {
                     Server: server,
-                    Contacts: getContacts(contacts),
-                    AdminedContacts: getContacts(adminContacts),
+                    CurrentUser: currentUser,
+                    Contacts: getContacts(contacts, false),
+                    AdminedContacts: getContacts(adminContacts, true),
                     Memories: getMemories(ownedMemories),
                     Fundations: getFundations(baseFundations),
                 }
@@ -406,7 +488,7 @@ var routes = [
                 // console.log(memoryObject);
                 return memoryObject;
             }
-            function getContacts(baseRelation) {
+            function getContacts(baseRelation, admin) {
                 console.log("Home.getContacts()");
                 console.log(baseRelation);
                 let contactsObject = [];
@@ -416,7 +498,7 @@ var routes = [
                         // console.log(relation);
                         contactsObject.push({
                             id: relation.id,
-                            name: (relation.nickname != null && relation.nickname.trim() != "") ? relation.nickname : ((relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username),
+                            name: admin ? ((relation.owner.name != null && relation.owner.name.trim() != "") ? relation.owner.name : relation.owner.username): (relation.nickname != null && relation.nickname.trim() != "") ? relation.nickname : ((relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username),
                             picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : ''
                         });
                     });

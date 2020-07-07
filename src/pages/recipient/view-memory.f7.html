@@ -5,7 +5,7 @@
             <div class="navbar-inner sliding">
                 <div class="header-cont">
                     <div class="header">
-                        <a id="view-memory-back-btn" href="" class="back-btn">
+                        <a id="view-memory-back-btn" href="" class="back-btn back">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
                         <h1 class="title"></h1>
@@ -229,6 +229,8 @@
                 var app = self.$app;
                 var media = [];
 
+                var loggedUser = await app.methods.getLocalValue('loggedUser');
+
                 var memory = page.route.context.Memory;
                 /* -------------------------- temp fill data -------------------------------------*/
                 // var memory = {};
@@ -317,10 +319,22 @@
                     });
                 });
 
-                $$('#view-memory-back-btn').on('click', function(params){
-                    console.log("Click!");
-                    app.views.main.router.navigate(`/memories/dashboard/user/12`);
-                });
+                // if (!loggedUser)
+                // {
+                //     $$('#view-memory-back-btn').css('display','none')
+                // }
+
+                // $$('#view-memory-back-btn').on('click', function(params){
+                //     console.log("Click!");
+                //     if (loggedUser)
+                //     {
+                //         app.views.main.router.navigate(`/memories/dashboard/user/${loggedUser.id}`);
+                //     }
+                //     else
+                //     {
+                //         app.views.main.router.navigate(`/memories/dashboard/user/12`);
+                //     }
+                // });
 
                 function galleryFunc(index) {
                     let gallery = app.photoBrowser.create({

@@ -15,14 +15,19 @@
 						<a href="" class="avatar-fab item-link smart-select smart-select-init" data-open-in="popover">
 							<!-- llenar select con usuarios -->
 							<select id="users">
-								<option value="1" selected>Ramona</option>
+								<option value=1 selected>{{#js_if "this.CurrentUser.name != null"}} {{CurrentUser.name}} {{else}} {{CurrentUser.email}} {{/js_if}}</option>
+								{{#each AdminedContacts}}
+								<option value='{{js "@index + 1"}}'>{{name}} </option>
+								asd <br>
+								<!-- <option value="2" selected>Ramona</option> -->
+								{{/each}}
 								<!-- poner selected al usuario que esta actualmente -->
-								<option value="2">Envy</option>
-								<option value="3">Lisa</option>
-								<option value="4">Neil</option>
-								<option value="5">Kim</option>
-								<option value="6">Roxy</option>
-								<option value="7">Wallace</option>
+								<!-- <option value="2">Envy</option> -->
+								<!-- <option value="3">Lisa</option> -->
+								<!-- <option value="4">Neil</option> -->
+								<!-- <option value="5">Kim</option> -->
+								<!-- <option value="6">Roxy</option> -->
+								<!-- <option value="7">Wallace</option> -->
 							</select>
 							<img id="logged-user-picture" src="" alt="">
 						</a>
@@ -37,7 +42,7 @@
 					<i class="icon material-icons cloud">cloud</i>
 					<span class="tabbar-label">My memories</span>
 				</a>
-				<a class="item-link" href="/memories/dashboard/user/28">
+				<a class="item-link" href="/memories/dashboard/user/{{CurrentUser.id}}">
 					<div class="custom-icon">
 						<i class="icon material-icons cloud grey">cloud</i>
 						<i class="icon material-icons people">people</i>
@@ -193,7 +198,7 @@
 									<h1>{{name}}</h1>
 									<p>{{deliveryDate}}</p>
 								</div>
-								<a href="#" class="edit popover-open" data-popover=".popover-opt" data-memory="{{id}}">
+								<a href="#" class="memory-options edit popover-open" data-popover=".popover-opt" data-memory="{{id}}">
 									<span class="material-icons">more_horiz</span>
 								</a>
 							</div>
@@ -423,7 +428,7 @@
 			<div class="popover-inner">
 				<div class="list">
 					<ul>
-						<li><a class="list-button item-link" href="#">Edit</a></li>
+						<li><a id="edit-memory-btn" class="list-button item-link popover-close" href="#">Edit</a></li>
 						<li><a class="list-button item-link" href="#">Delete</a></li>
 					</ul>
 				</div>
@@ -457,6 +462,7 @@
 
 				await app.methods.updateCurrentUser();
 				await app.methods.loadContacts();
+
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
 
 				if (loggedUser == null) {
@@ -481,6 +487,10 @@
 					console.log($$(this).prop("dataset").user);
 					$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
 					console.log($$('.popover-person'));
+				})
+
+				$$('.memory-options').on('click', function(val){
+					$$('#edit-memory-btn')[0].href = "/memories/edit/memory/" + $$(this).prop("dataset").memory;
 				})
 
 				$$('.card.memory').click(function (val) {
