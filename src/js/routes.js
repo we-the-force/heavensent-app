@@ -299,6 +299,86 @@ var routes = [
         // component: CreateMemory,
     },
     {
+        name: 'edit-memory',
+        path: '/memories/edit/memory/:memID',
+        beforeEnter: [checkAuth, isMembershipValid],
+        async: async function (routeTo, routeFrom, resolve, reject){
+            var router = this;
+            var app = router.app;
+            var currentUser = await app.methods.getLocalValue('loggedUser');
+            var userContacts= await app.methods.getLocalValue('loggedUserContacts');
+
+            var memID = routeTo.params.memID;
+            var memoryData;
+            var canEdit = false;
+            var ownerID;
+            var plan;
+            var canAdminMem;
+
+            await app.request.promise.get(`${app.data.server}/memories/${memID}`).then(async function(memResponse){
+                memoryData = JSON.parse(memResponse.data);
+            }).catch(async function(err){
+                console.log("Error fetching memory");
+                console.log(err);
+            })
+            ownerID = memoryData.owners[0].id;
+            if (ownerID === currentUser.id)
+            {
+                //Editing your own memory, can edit everything.
+                canEdit = true;
+                canAdminMem = true;
+                plan = currentUser.currentMembership;
+            }
+            else
+            {
+                await app.request.promise.get(`${app.data.server}/users/${ownerID}`).then(async function(ownerRes){
+                    plan = JSON.parse(ownerRes.data).currentMembership;
+                });
+                userContacts.forEach(contact => {
+                    if (contact.owner.id === ownerID)
+                    {
+                        if (contact.contact.id === currentUser)
+                        {
+                            if (contact.isAdmin)
+                            {
+                                canAdminMem = true;
+                                canEdit = contact.canEdit;
+                            }
+                            else
+                            {
+                                canAdminMem = false;
+                                canEdit = false;
+                            }
+                        }
+                    }
+                })
+            }
+            
+
+
+            if (canAdminMem)
+            {
+                resolve({
+                    component: EditMemory,
+                },
+                {
+                    context: {
+                        CurrentPlan: plan,
+                        CurrentMemory: memoryData,
+                        CanEdit: canEdit,
+                        OwnedMemory: ownerID == currentUser.id
+                    }
+                })
+            }
+            else
+            {
+                console.log("Not admin for this user; not allowing access");
+                reject();
+            }
+
+        }
+    },
+    {
         name: 'home-memories',
         path: '/memories/home',
         beforeEnter: [checkAuth, isMembershipValid],
