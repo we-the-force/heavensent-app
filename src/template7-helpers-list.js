@@ -6,3 +6,4 @@
   module.exports = ['custom-helper', 'formatDate'];
 */
 module.exports = ['foo'];
+module.exports = ['localize'];

@@ -1,5 +1,6 @@
 import $$ from 'dom7';
 import localforage from "localforage";
+import Template7 from 'template7';
 import Framework7 from 'framework7/framework7.esm.bundle.js';
 
 // Import F7 Styles
@@ -16,6 +17,11 @@ import routes from './routes.js';
 // Import main app component
 import App from '../app.f7.html';
 
+
+Template7.registerHelper('localize', function(value,options) {
+    return window.localize(value)
+});
+
 var app = new Framework7({
     root: '#app', // App root element
     component: App, // App main component
@@ -24,9 +30,21 @@ var app = new Framework7({
     theme: 'auto', // Automatic theme detection
     
     data: {
-        //server: 'http://192.168.5.169:1337'
-        server: 'http://167.172.156.126:1337'
-        // server: 'http://localhost:1337'
+        //server: 'http://192.168.5.169:1337',
+        server: 'http://167.172.156.126:1337',
+        // server: 'http://localhost:1337',
+        locales: {
+            es: {
+                lenguage: "Español (MX)",
+                hello: "Hola",
+                bye: "Adios"
+            },
+            en: {
+                lenguage: "English (US)",
+                hello: "Hello",
+                bye: "Bye"
+            }
+        }
     },
     
     methods: {
@@ -257,6 +275,8 @@ var app = new Framework7({
 });
 //Aqui metes algo pa redirigirte
 $$(document).on('page:init', function (e) {
+    console.log(window.locales);
+    
     $$('.page-content').off('scroll');
     $$('.page-content').scroll(function () {
         if ($$('.page-current .page-content').scrollTop() > 30) {
@@ -267,5 +287,15 @@ $$(document).on('page:init', function (e) {
     });
 });
 
+window.language = (localStorage.getItem('language') || (app.language || 'en_US')).replace (/-/g, "_");
 
+window.localize = function (key) {
+    var language = window.language
+    language = language.replace(/-/g, "_");
+    if (!app.data.locales[language])
+        language = language.substring(0, 2);
+    if (!app.data.locales[language])
+        language = 'en'
 
+    return app.data.locales[language][key] ? app.data.locales[language][key] : key
+}

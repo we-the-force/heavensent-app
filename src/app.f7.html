@@ -25,6 +25,7 @@
 			</div>
 			
 			<div class="footer">
+				<a href="#" class="btn-end panel-close lenguage" id="lenguage">{{localize "lenguage"}}</a>
 				<a href="/UserAgreement" class="btn-end panel-close terms">Terms & Conditions</a>
 				<a href="/" class="btn-end panel-close sign-out" id="sign-out-btn">Sign Out</a>
 			</div>
@@ -172,10 +173,8 @@
 			pageInit: async function () {
 				var self = this;
 				var app = self.$app;
-				
-				console.log("--app.f7.html pageInit");
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
-				console.log(loggedUser);
+
 				updateControls();
 				
 				$$("#sign-out-btn").off("click").on("click", async function(e){
@@ -188,6 +187,24 @@
 					// 	console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
 					// 	app.views.main.router.navigate({ name: "login" });
 					// }
+				})
+
+				$$('#lenguage').click(function (elem) {
+					let leng = "";
+					let val = $$(this).text();
+					if(val == 'Español (MX)'){
+						leng = 'en_US';
+					}else if(val == 'English (US)'){
+						leng = 'es_MX';
+					}
+					localStorage.setItem('language',leng)
+					window.language = leng;
+					self.$update();
+					/* app.views.main.router.refreshPage() */
+					//let leng = ''
+					//localStorage.setItem('language',e.target.value)
+            		//window.language = e.target.value;
+            		//self.$update();
 				})
 				
 				function updateControls()
