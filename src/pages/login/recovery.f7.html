@@ -8,7 +8,7 @@
 						<a href="" class="back-btn back">
 							<i class="icons material-icons">chevron_left</i>
 						</a>
-						<h1 class="title">Forgot password?</h1>
+						<h1 class="title">{{localize "forgot_pass"}}</h1>
 						<div class="none"></div>
 					</div>
 				</div>
@@ -26,7 +26,7 @@
 			</div>
 			<div class="text-cont">
 				<p class="text">
-					Enter your email address and we will send you instructions to reset your password
+					{{localize "text_forgot_pass"}}
 				</p>
 			</div>
 			<div class="inputs list">
@@ -34,7 +34,7 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="email" placeholder="e-mail" required validate />
+								<input type="email" id="email" placeholder='{{localize "mail"}}' required validate />
 								<i class="icons material-icons">edit</i>
 								<!-- <span class="input-clear-button"></span> -->
 							</div>
@@ -43,7 +43,7 @@
 				</ul>
 			</div>
 			<div class="btns-cont center">
-				<a href="/recovery/mailSend" class="button round color-blue large">Recover password</a>
+				<a href="/recovery/mailSend" class="button round color-blue large">{{localize "recover_pass"}}</a>
 			</div>
 		</div>
 	</div>
