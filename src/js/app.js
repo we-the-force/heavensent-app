@@ -42,16 +42,47 @@ var app = new Framework7({
                 pass: "Contraseña",
                 sign_up: "Regístrate",
                 login: "Iniciar sesión",
+                accept: "Aceptar",
+                cancel: "Cancelar",
+                search: "Buscar",
+                create_contact: "Crear contacto",
+                //forgot pass
                 forgot_pass: "¿Olvidó su contraseña?",
                 text_forgot_pass: "Ingrese su dirección de correo electrónico y le enviaremos instrucciones para restablecer su contraseña",
+                //recover pass
                 recover_pass: "Recuperar contraseña",
                 text_mail_send: "Le enviamos un correo electrónico con instrucciones para cambiar su contraseña.",
                 back_login: "Regresar",
+                //change pass
                 change_pass: "Cambiar contraseña",
                 create_pass: "Crear una nueva contraseña",
                 new_pass: "Nueva contraseña",
                 repeat_pass: "Repite la contraseña",
                 save_pass: "Guardar contraseña",
+                //user agreement
+                user_agree: "Acuerdo del Usuario",
+                //sign up
+                name: "Nombre",
+                birthday: "Fecha de nacimiento",
+                phone: "Número de teléfono",
+                create_acount: "Crear una cuenta",
+                //invite admin
+                invite_admin: "Invita a un administrador",
+                text_invite_admin: "El administrador puede enviar o editar recuerdos por usted.",
+                admin_name: "Nombre de administrador",
+                admin_mail: "Correo electrónico de administrador",
+                admin_relation: "Relación con el administrador",
+                admin_edit: "¿El admr. puede editar?",
+                invite: "Invitar",
+                which_relation: "¿Cuál es su relación con su administrador?",
+                which_relation_text: "Define tu relación con el administrador. Podría ser una hija, un hijo, una esposa, un primo, etc. Crearemos un contacto en su cuenta con esta información.",
+                //account confirmed
+                account_confirmed: "Cuenta confirmada!",
+                create_family: "Crear familia",
+                //import 
+                import_contacts: "Importa tus contactos",
+                grant_access: "Autorizar el acceso",
+
             },
             en: {
                 lenguage: "English (US)",
@@ -61,16 +92,48 @@ var app = new Framework7({
                 pass: "Password",
                 sign_up: "Sign up",
                 login: "Login",
+                accept: "Accept",
+                cancel: "Cancel",
+                search: "Buscar",
+                create_contact: "Create contact",     
+                //forgot pass
                 forgot_pass: "Forgot password?",
                 text_forgot_pass: "Enter your email address and we will send you instructions to reset your password",
+                //recover pass
                 recover_pass: "Recover password",
                 text_mail_send: "We send you an email with instructions to change your password.",
                 back_login: "Back to login",
+                //change pass
                 change_pass: "Change password",
                 create_pass: "Create a new password",
                 new_pass: "New password",
                 repeat_pass: "Repeat password",
                 save_pass: "Save password",
+                //user agree
+                user_agree: "User agreement",
+                //sign up
+                name: "Name",
+                birthday: "Birthday",
+                phone: "Phone number",
+                create_acount: "Create account",
+                //invite admin
+                invite_admin: "Invita a un administrador",
+                text_invite_admin: "Administrator could send or edit memories for you.",
+                admin_name: "Admin name",
+                admin_mail: "Admin email",
+                admin_relation: "Admin relationship",
+                admin_edit: "Admin could edit?",
+                invite: "Invite",
+                which_relation: "Which is your relationship with your administrator?",
+                which_relation_text: "Define your relationship with the administrator. Could be a daughter, son, wife, cousin, etc. We will create a contact in your account with this info.",
+                //account confirmed
+                account_confirmed: "Account confirmed!",
+                create_family: "Create family",
+                //import 
+                import_contacts: "Import your contacts",
+                grant_access: "Grant access",
+
+
             }
         }
     },

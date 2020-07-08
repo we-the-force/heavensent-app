@@ -78,10 +78,11 @@
                     width 100%
 
                 input#birthday,input#create-cont-birthday
+                    --birthday 'Birthday'
                     &.aft:after
                         top 50%
                         transform translateY(-50%)
-                        content 'Birthday'
+                        content var(--birthday)
                         font-template(100, 16px, 24px)
                         color Grey_dark_2
                         background Grey_light_2
