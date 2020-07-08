@@ -456,7 +456,8 @@
 			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
-
+				console.log(page);
+				
 				console.log("home-memories pageInit [pageInit], updating user");
 
 				await app.methods.updateCurrentUser();
