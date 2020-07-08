@@ -30,11 +30,6 @@ var app = new Framework7({
     theme: 'auto', // Automatic theme detection
     
     data: {
-<<<<<<< HEAD
-        //server: 'http://192.168.5.169:1337'
-        // server: 'http://167.172.156.126:1337'
-        server: 'http://localhost:1337'
-=======
         //server: 'http://192.168.5.169:1337',
         server: 'http://167.172.156.126:1337',
         // server: 'http://localhost:1337',
@@ -141,7 +136,6 @@ var app = new Framework7({
 
             }
         }
->>>>>>> 8ff332dd906757ae474933eddf30d50222fd9149
     },
     
     methods: {
