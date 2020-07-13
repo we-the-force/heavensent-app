@@ -15,10 +15,9 @@
 						<a href="" class="avatar-fab item-link smart-select smart-select-init" data-open-in="popover">
 							<!-- llenar select con usuarios -->
 							<select id="users">
-								<option value=1 selected>{{#js_if "this.CurrentUser.name != null"}} {{CurrentUser.name}} {{else}} {{CurrentUser.email}} {{/js_if}}</option>
+								<option value="1" id="user-thing-{{CurrentUser.id}}" asd="{{CurrentUser.id}}" selected>{{#js_if "this.CurrentUser.name != null"}} {{CurrentUser.name}} {{else}} {{CurrentUser.email}} {{/js_if}}</option>
 								{{#each AdminedContacts}}
-								<option value='{{js "@index + 1"}}'>{{name}} </option>
-								asd <br>
+								<option value='{{js "@index + 2"}}' id="user-thing-{{id}}" asd="{{id}}">{{name}} </option>
 								<!-- <option value="2" selected>Ramona</option> -->
 								{{/each}}
 								<!-- poner selected al usuario que esta actualmente -->
@@ -78,72 +77,6 @@
 						</div>
 					</div>
 					{{/each}}
-					<!-- <div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/wallace.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Wallace</p>
-						</div>
-					</div>
-					
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/scott.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Scott</p>
-						</div>
-					</div>
-					
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/ramona.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Ramona</p>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/envy.jpg" alt="" srcset="">
-							</a>
-							<p class="name-person">Natalia</p>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/steven.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Steven</p>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/neil.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Neil</p>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/kim.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Kim</p>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="person-cont">
-							<a href="#" class="avatar-person popover-open" data-popover=".popover-person">
-								<img src="../../static/img/gideon.jpeg" alt="" srcset="">
-							</a>
-							<p class="name-person">Gideon</p>
-						</div>
-					</div> -->
 				</div>
 			</div>
 			<div class="create-title">Create</div>
@@ -478,8 +411,24 @@
 
 				$$('select#users').change(function (el) {
 					let select = app.smartSelect.get('.smart-select');
+					let indexValue = select.getValue();
+					let indexValueTwo = $$(this)[0].value;
+					let id = $$(this)[0][indexValueTwo - 1].id;
+					let targetUserId = $$(`#${id}`).attr("asd");
+
+					console.log(`Index Value Two: ${indexValueTwo}, ${id}`);
+
+					let item = select.items[indexValue-1];
+					
+					console.log($$(this)[0]);
+					console.log($$(this)[0][indexValueTwo - 1]);
+					console.log(targetUserId);
+					//'user-thing-23'
+					// console.log($$("user-thing-" + indexValueTwo));
+					console.log(select);
+					console.log(item);
 					select.close(); /* cierra el popover */
-					// console.log(select.getValue()); /* valor del id */
+					console.log(select.getValue()); /* valor del id */
 				});
 
 				$$('.avatar-person').on('click', function (val) {
