@@ -243,7 +243,7 @@
 									app.dialog.alert("Contact added successfully!, updating user");
 									await app.methods.updateCurrentUser();
 									// app.views.main.router.navigate({name: 'invite-admin'})
-									await app.views.main.router.navigate('/memories/home');
+									await app.views.main.router.navigate('/memories/home/user/'+loggedUser.id);
 								}
 								else
 								{
@@ -273,7 +273,7 @@
 								if (assignResult.result)
 								{
 									app.dialog.alert("Contact added successfully!");
-									await app.views.main.router.navigate('/memories/home');
+									await app.views.main.router.navigate('/memories/home/user/'+loggedUser.id);
 								}
 								else
 								{

@@ -292,8 +292,9 @@
                 var self = this;
                 var app = self.$app;
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
-
+                
                 var memoryToEdit = page.route.context.CurrentMemory;
+                var memoryOwner = memoryToEdit.owners[0];
                 console.log("Memory to edit:");
                 console.log(memoryToEdit);
 
@@ -764,7 +765,7 @@
 
                 $$('.navbar .back-btn').click(e => {
                     sessionStorage.clear();
-                    app.views.main.router.navigate('/memories/home');
+                    app.views.main.router.navigate('/memories/home/user/' + memoryOwner.id);
                 });
 
                 /* aqui guarda la memoria */
@@ -798,7 +799,7 @@
                         app.preloader.hide();
                         app.dialog.alert("The memory has been edited succesfully!");
                         sessionStorage.clear();
-                        app.views.main.router.navigate("/memories/home");
+                        app.views.main.router.navigate("/memories/home/user/" + memoryOwner.id);
 
 
 

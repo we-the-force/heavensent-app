@@ -153,7 +153,7 @@ async function isLoggedIn(to, from, resolve, reject) {
             }
             else {
                 // console.log("Going to memories/home [isLoggedIn()]");
-                await router.navigate('/memories/home');
+                await router.navigate('/memories/home/user/' + user.id);
             }
         }
     }
@@ -186,7 +186,7 @@ var routes = [
         name: 'login',
         path: '/',
         name: 'login',
-        // beforeEnter: isLoggedIn,
+        beforeEnter: isLoggedIn,
         component: Login,
     },
     {
@@ -380,18 +380,36 @@ var routes = [
     },
     {
         name: 'home-memories',
-        path: '/memories/home',
+        path: '/memories/home/user/:userID',
         beforeEnter: [checkAuth, isMembershipValid],
         async: async function (routeTo, routeFrom, resolve, reject) {
             var router = this;
             var app = router.app;
             var server = app.data.server;
             await app.methods.updateCurrentUser();
-            var currentUser = await app.methods.getLocalValue('loggedUser');
+            var userID = routeTo.params.userID;
+            var loggedUser = await app.methods.getLocalValue('loggedUser');
             var contacts = await app.methods.getLocalValue('loggedUserContacts');
             var adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
             // console.log(contacts);
             // console.log(`Async function to home-memories, server: ${server}`);
+            
+            var currentUser;
+            if (userID == -1)
+            {
+                currentUser = loggedUser;
+            }
+            else
+            {
+                await app.request.promise.get(`${app.data.server}/users/${userID}`).then(function(targetUserRes){
+                    currentUser = JSON.parse(targetUserRes.data);
+                    console.log("---------------------- This dude exists yeah");
+                }).catch(async function(err){
+                    currentUser = loggedUser;
+                    console.log("-----------------------Dude doesn't exist unu");
+                    app.dialog.alert("We have problems loading this user's account, it looks like it no longer exists. Please contact support.");
+                });
+            }
 
             var ownedMemories;
             await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function (memoriesResult) {
@@ -417,9 +435,10 @@ var routes = [
             {
                 context: {
                     Server: server,
+                    LoggedUser: loggedUser,
                     CurrentUser: currentUser,
-                    Contacts: getContacts(contacts, false),
-                    AdminedContacts: getContacts(adminContacts, true),
+                    Contacts: getContacts(contacts, false, true),
+                    AdminedContacts: getContacts(adminContacts, true, false),
                     Memories: getMemories(ownedMemories),
                     Fundations: getFundations(baseFundations),
                 }
@@ -488,7 +507,7 @@ var routes = [
                 // console.log(memoryObject);
                 return memoryObject;
             }
-            function getContacts(baseRelation, admin) {
+            function getContacts(baseRelation, admin, getRelation) {
                 // console.log("Home.getContacts()");
                 // console.log(baseRelation);
                 let contactsObject = [];
@@ -497,7 +516,7 @@ var routes = [
                         // console.log("Checking relation:");
                         // console.log(relation);
                         contactsObject.push({
-                            id: relation.id,
+                            id: getRelation ? relation.id : relation.owner.id,
                             name: admin ? ((relation.owner.name != null && relation.owner.name.trim() != "") ? relation.owner.name : relation.owner.username): (relation.nickname != null && relation.nickname.trim() != "") ? relation.nickname : ((relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username),
                             picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : ''
                         });

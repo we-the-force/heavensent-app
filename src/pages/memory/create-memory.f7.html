@@ -308,7 +308,7 @@
                 var files = [];
                 var mb = 0;
                 var cover /* = sessionStorage.cover */;
-                /* var contacts = sessionStorage.contacts; */
+                var contacts = sessionStorage.contacts;
                 var maxmb = page.route.context.CurrentPlan.plan.memoryQuotaMB;
                 console.log("- - - plan - - -");
                 console.log(page.route.context.CurrentPlan);
@@ -324,6 +324,20 @@
 
                 $$('.progress-cont .desc').find('#total').text(maxmb);
                 $$('.progress-cont .desc').find('#prog').text(maxmb);
+
+                //Checa si hay contacts, los agrega si si como no
+                if (contacts) {
+                    contacts = JSON.parse(contacts);
+                    $$('.contacts-cont .contacts .person.contact').remove();
+                    contacts.length > 0 ? $$('.contacts-cont .contacts .person.no_contact').addClass('none') : $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
+                    contacts.forEach(el => {
+                        let contact = $$('<div class="person contact" data-id="' + el.id + '">' +
+                            '<span class="material-icons close">close</span>' +
+                            '<img src="' + el.img + '" alt="">' +
+                            '</div>')
+                        contact.appendTo($$('.contacts-cont .contacts'));
+                    });
+                }
 
                 switch (plan) {
                     case "basic":
@@ -683,7 +697,7 @@
 
                 $$('.navbar .back-btn').click(e => {
                     sessionStorage.clear();
-                    app.views.main.router.navigate('/memories/home');
+                    app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
                 });
 
                 /* aqui guarda la memoria */
@@ -718,7 +732,7 @@
                                     app.preloader.hide();
                                     app.dialog.alert("The memory has been created successfully!");
                                     // sessionStorage.clear();
-                                    app.views.main.router.navigate('/memories/home');
+                                    app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
                                 }
                                 else {
                                     app.dialog.alert("Error uploading files, memory wasn't created!");
@@ -843,12 +857,12 @@
                             "recipients": [],
                             "reminderType": "none",
                             "reminder": {
-                                "date": "",
-                                "time": "",
+                                "date": null,
+                                "time": null,
                                 "repeat": "",
                                 "locationLat": "",
                                 "locationLng": "",
-                                "date_end": ""
+                                "date_end": null
                             },
                             "sent": false,
                             "on_demand": on_demand,
@@ -993,14 +1007,14 @@
                                 // result.message += result.errors > 0 ? ", no repeat" : "No repeat";
                                 // result.errors++;
                                 result.memory.reminder.repeat = "not";
-                                result.memory.reminder.date_end = undefined;
+                                result.memory.reminder.date_end = null;
                             }
                             else {
                                 result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
                                 if (result.memory.reminder.repeat === "not")
                                 {
                                     console.log("Not repeating, date_end = null");
-                                    result.memory.reminder.date_end = undefined;
+                                    result.memory.reminder.date_end = null;
                                 }
                                 else
                                 {
@@ -1029,14 +1043,14 @@
                             }
                             if (!repeat) {
                                 result.memory.reminder.repeat = "not";
-                                result.memory.reminder.date_end = undefined;
+                                result.memory.reminder.date_end = null;
                             }
                             else {
                                 result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
                                 if (result.memory.reminder.repeat === "not")
                                 {
                                     console.log("Not repeating, date_end = null");
-                                    result.memory.reminder.date_end = undefined;
+                                    result.memory.reminder.date_end = null;
                                 }
                                 else
                                 {
@@ -1051,7 +1065,27 @@
                         let today = new Date();
                         result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
                         result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
-                        result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                        // result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                        if (!repeat) {
+                                // result.valid = false;
+                                // result.message += result.errors > 0 ? ", no repeat" : "No repeat";
+                                // result.errors++;
+                                result.memory.reminder.repeat = "not";
+                                result.memory.reminder.date_end = null;
+                            }
+                            else {
+                                result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                if (result.memory.reminder.repeat === "not")
+                                {
+                                    console.log("Not repeating, date_end = null");
+                                    result.memory.reminder.date_end = null;
+                                }
+                                else
+                                {
+                                    console.log("Check if there is an end_date");
+                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                }
+                            }
                     }
 
                     if (plan == "premium") {

@@ -58,7 +58,8 @@
 				if (await isUserValidAndHasMembership())
 				{
 					console.log("valid user and membership, going to home [pageInit]");
-					$$("#agreement-accept-btn")[0].href = '/memories/home';
+					let loggedUser = await app.methods.getLocalValue("loggedUser");
+					$$("#agreement-accept-btn")[0].href = '/memories/home/user/' + loggedUser.id;
 				}
 				else
 				{

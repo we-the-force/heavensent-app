@@ -8,7 +8,7 @@
                         <a href="" class="none">
                         </a>
                         <h1 class="title">Donate</h1>
-                        <a href="/memories/home" class="close-btn">
+                        <a href="/memories/home/user/-1" class="close-btn">
                             <i class="icons material-icons">close</i>
                         </a>
                     </div>
@@ -55,7 +55,6 @@
             pageInit: async function (e, page) {
                 var self = this;
                 var app = self.$app;
-
 
                 $$('.card-expandable').on('card:open', x => {
                     let swiper = app.swiper.get('.swiper-container');

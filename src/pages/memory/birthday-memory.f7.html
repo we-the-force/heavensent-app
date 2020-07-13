@@ -5,7 +5,7 @@
             <div class="navbar-inner sliding">
                 <div class="header-cont">
                     <div class="header">
-                        <a href="/memories/home" class="back-btn">
+                        <a href="/memories/home/user/-1" class="back-btn">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
                         <h1 class="title">Birthday Memory</h1>
@@ -237,6 +237,8 @@
             pageInit: function (e, page) {
                 var self = this;
                 var app = self.$app;
+                var loggedUser = app.methods.getLocalValue('loggedUser');
+
                 var cover
                 var files = [];
                 var mb = 0;
@@ -537,7 +539,7 @@
 
                 $$('.page .back-btn').click(e => {
                     sessionStorage.clear();
-                    app.views.main.router.navigate('/memories/home');
+                    app.views.main.router.navigate('/memories/home/user/'+loggedUser.id);
                 })
 
                 $$('.popover-repeat .popover-close').click(function (el) {
@@ -567,7 +569,7 @@
                     console.log($$('#date-end').val());
                     console.log(toggle_demand.checked);
                     sessionStorage.clear();
-                    app.views.main.router.navigate('/memories/home');
+                    app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
                 });
 
                 function deliverAccept() {
