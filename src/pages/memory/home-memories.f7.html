@@ -456,9 +456,8 @@
 			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
-				console.log(page);
 				
-				console.log("home-memories pageInit [pageInit], updating user");
+				// console.log("home-memories pageInit [pageInit], updating user");
 
 				await app.methods.updateCurrentUser();
 				await app.methods.loadContacts();
@@ -480,13 +479,13 @@
 				$$('select#users').change(function (el) {
 					let select = app.smartSelect.get('.smart-select');
 					select.close(); /* cierra el popover */
-					console.log(select.getValue()); /* valor del id */
+					// console.log(select.getValue()); /* valor del id */
 				});
 
 				$$('.avatar-person').on('click', function (val) {
-					console.log($$(this).prop("dataset").user);
+					// console.log($$(this).prop("dataset").user);
 					$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
-					console.log($$('.popover-person'));
+					// console.log($$('.popover-person'));
 				})
 
 				$$('.memory-options').on('click', function(val){
@@ -494,7 +493,7 @@
 				})
 
 				$$('.card.memory').click(function (val) {
-					console.log($$(this).attr('id'));
+					// console.log($$(this).attr('id'));
 					switch ($$(this).attr('id')) {
 						case 'new':
 							app.views.main.router.navigate('/memories/create');

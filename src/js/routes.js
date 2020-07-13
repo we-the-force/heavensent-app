@@ -126,10 +126,10 @@ async function isMembershipValid(to, from, resolve, reject) {
 async function isLoggedIn(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
-    // console.log("-Entering isLoggedIn, updating user");
+    console.log("-Entering isLoggedIn, updating user");
     await app.methods.updateCurrentUser();
     var user = await app.methods.getLocalValue('loggedUser');
-    // console.log(user);
+    console.log(user);
     var valid = (await app.methods.userIsValid());
     if (valid) {
         reject();
@@ -186,7 +186,7 @@ var routes = [
         name: 'login',
         path: '/',
         name: 'login',
-        beforeEnter: isLoggedIn,
+        // beforeEnter: isLoggedIn,
         component: Login,
     },
     {
@@ -489,8 +489,8 @@ var routes = [
                 return memoryObject;
             }
             function getContacts(baseRelation, admin) {
-                console.log("Home.getContacts()");
-                console.log(baseRelation);
+                // console.log("Home.getContacts()");
+                // console.log(baseRelation);
                 let contactsObject = [];
                 if (baseRelation) {
                     baseRelation.forEach(relation => {
@@ -503,7 +503,7 @@ var routes = [
                         });
                     });
                 }
-                console.log(contactsObject);
+                // console.log(contactsObject);
                 return contactsObject;
             }
             function getFundations(baseFund)

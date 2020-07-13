@@ -173,12 +173,18 @@
 			pageInit: async function () {
 				var self = this;
 				var app = self.$app;
-				var loggedUser = await app.methods.getLocalValue('loggedUser');
-
+				var loggedUser = null;
+				
+				console.log("PageInit, user: ");
+				console.log(app.views.main.router);
+				// console.log(loggedUser);
+				loggedUser = await updateUser();
+				
 				updateControls();
 				
 				$$("#sign-out-btn").off("click").on("click", async function(e){
 					e.preventDefault();
+					loggedUser = null;
 					await app.methods.clearCurrentUser();
 					await app.views.main.router.navigate('/');
 					// console.log("Logging out [pageInit.sign-out-btn.onClick]");
@@ -207,6 +213,14 @@
             		//self.$update();
 				})
 				
+				async function updateUser()
+				{
+					console.log("Get user method");
+					let auxUser = await app.methods.getLocalValue("loggedUser");
+					console.log(auxUser);
+					return auxUser;
+				}
+
 				function updateControls()
 				{
 					console.log("Updating controls [pageInit.updateControls()]");

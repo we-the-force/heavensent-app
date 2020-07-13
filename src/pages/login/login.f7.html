@@ -55,7 +55,7 @@
 				var app = self.$app;
 				
 				console.log("---pageBeforeIn, updating user")
-				await app.methods.updateCurrentUser();
+				// await app.methods.updateCurrentUser();
 				var localUser = await app.methods.getLocalValue('loggedUser');
 				if (localUser != null)
 				{

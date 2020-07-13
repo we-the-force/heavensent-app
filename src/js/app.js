@@ -152,10 +152,10 @@ var app = new Framework7({
             return result;
         },
         async setLocalValueToKey(value, key) {
-            if (value != null && key === "loggedUser")
+            if (key === "loggedUser")
             {
                 console.log("Setting local value [setLocalValueToKey]");
-                console.log("---Value---");
+                // console.log("---Value---");
                 console.log(value);
                 // console.log("Key");
                 // console.log(key);
@@ -173,7 +173,7 @@ var app = new Framework7({
         async updateCurrentUser()
         {
             var app = this;
-            console.log("updating current user");
+            console.log("updating current user, getting user");
             var currentLocalUser = await app.methods.getLocalValue('loggedUser');
             console.log(currentLocalUser);
             let result = false;
@@ -204,7 +204,11 @@ var app = new Framework7({
             var app=this;
             console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
             let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
+            let auxUser = await app.methods.getLocalValue('loggedUser');
+            console.log("user after clearing: ");
+            console.log(auxUser);
             await app.methods.setLocalValueToKey([], 'loggedUserContacts')
+            await app.methods.setLocalValueToKey([], 'loggedUserAdminedContacts')
             return result;
         },
         async userIsEmpty()
