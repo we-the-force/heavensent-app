@@ -779,13 +779,20 @@ var routes = [
             var userID = routeTo.params.userID;
 
             app.preloader.show();
-
             // console.log("Move to view [view-membership.async]");
             // console.log(`${app.data.server}/users/${userID} [view-membership.async]`);
             app.request.promise.json(`${app.data.server}/users/${userID}`)
                 .then(function (res) {
                     // console.log("Current membership: [view-membership.json]")
                     // console.log(res.data.currentMembership);
+                    let plan = GetPlanName(res.data.currentMembership);
+                    let plan_name;
+                    if(window.language == 'en_US'){
+                        plan_name = plan + ' ' + window.localize('membership');
+                    }else if(window.language == 'es_MX'){
+                        plan_name = window.localize('membership') + ' ' + plan;
+                    }
+                    console.log(res);
                     app.preloader.hide();
                     resolve(
                         {
@@ -794,7 +801,7 @@ var routes = [
                         {
                             context: {
                                 UserName: GetUserName(res.data),
-                                PlanName: GetPlanName(res.data.currentMembership),
+                                PlanName: plan_name,
                                 PlanPrice: GetPlanPrice(res.data.currentMembership),
                                 BillingDate: GetNextPayDate(res.data.currentMembership),
                             }

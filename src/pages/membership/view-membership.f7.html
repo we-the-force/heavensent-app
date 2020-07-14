@@ -8,7 +8,7 @@
                         <a href="/memories/home/user/-1" class="back-btn">
                             <i id="" class="icons material-icons">chevron_left</i>
                         </a>
-                        <h1 class="title">Membership</h1>
+                        <h1 class="title">{{localize "membership"}}</h1>
                         <div class="none"></div>
                     </div>
                 </div>
@@ -21,20 +21,20 @@
             <div class="title-cont">
                 <!-- <h1>Hello Jacob</h1> -->
                 <h1>{{UserName}}</h1>
-                <p>Thanks for being a HeavenSent member</p>
+                <p>{{localize "text_thanks_membership"}}</p>
             </div>
             <div class="text-cont">
                 <!-- <h1 class="text-title" id="package-name">Package 3 membership</h1> -->
                 <!-- <p class="text-cost" id="package-cost">$15.00 USB /MO</p> -->
-                <h1 class="text-title" id="package-name">{{PlanName}} membership</h1>
+                <h1 class="text-title" id="package-name">{{PlanName}}</h1>
                 <p class="text-cost" id="package-cost">${{PlanPrice}}.00 USD /MO</p>
                 
                 <p class="text">
                     <!-- Next billing date: <span id="next-bill-date">06/26/2020</span> -->
-                    Next billing date: <span id="next-bill-date">{{BillingDate}}</span>
+                    {{localize "next_billing_date"}} <span id="next-bill-date">{{BillingDate}}</span>
                 </p>
                 <p class="text mar-t15">
-                    Billed with: 
+                    {{localize "billed_with"}} 
                     <a class="card-info" id="billing-info">
                         Amex ******1548
                         <span id="edit-billing-info-btn" class="material-icons">edit</span>
@@ -43,10 +43,10 @@
             </div>
             
             <div class="btns-cont center">
-                <a id="change-plan-btn" class="button color-white round large">Change plan</a>
+                <a id="change-plan-btn" class="button color-white round large">{{localize "change_plan"}}</a>
             </div>
             <div class="btns-cont center">  
-                <a id="cancel-plan-btn" class="button color-blue round large">Cancel Subscription</a>
+                <a id="cancel-plan-btn" class="button color-blue round large">{{localize "cancel_subs"}}</a>
             </div>
         </div>
     </div>
