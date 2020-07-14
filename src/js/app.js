@@ -45,7 +45,6 @@ var app = new Framework7({
                 accept: "Aceptar",
                 cancel: "Cancelar",
                 search: "Buscar",
-                create_contact: "Crear contacto",
                 //forgot pass
                 forgot_pass: "¿Olvidó su contraseña?",
                 text_forgot_pass: "Ingrese su dirección de correo electrónico y le enviaremos instrucciones para restablecer su contraseña",
@@ -82,6 +81,14 @@ var app = new Framework7({
                 //import 
                 import_contacts: "Importa tus contactos",
                 grant_access: "Autorizar el acceso",
+                //create/edit contact/guardian
+                create_contact: "Crear contacto",
+                relation: "Relación",
+                create_guardian: "Crear guardián",
+                create_tutor: "Crear tutor", 
+                edit_contact: "Editar contacto",
+                save_changes: "Guardar cambios",
+                nickname: "Apodo",
 
             },
             en: {
@@ -95,7 +102,6 @@ var app = new Framework7({
                 accept: "Accept",
                 cancel: "Cancel",
                 search: "Buscar",
-                create_contact: "Create contact",     
                 //forgot pass
                 forgot_pass: "Forgot password?",
                 text_forgot_pass: "Enter your email address and we will send you instructions to reset your password",
@@ -132,7 +138,14 @@ var app = new Framework7({
                 //import 
                 import_contacts: "Import your contacts",
                 grant_access: "Grant access",
-
+                //create/edit contact/guardian
+                create_contact: "Create contact",  
+                relation: "Relation",
+                create_guardian: "Create guardian",
+                create_tutor: "Create tutor",  
+                edit_contact: "Edit contact",
+                save_changes: "Save changes",
+                nickname: "Nickname",
 
             }
         }
