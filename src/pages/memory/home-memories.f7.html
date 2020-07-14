@@ -335,6 +335,8 @@
 			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
+				var isEditing = page.route.context.IsEditing;
+				var currentUser = page.route.context.CurrentUser;
 				
 				// console.log("home-memories pageInit [pageInit], updating user");
 
@@ -421,20 +423,41 @@
 
 				});
 
+				// function updateControls() {
+				// 	if (loggedUser != null) {
+				// 		var currentMembership = loggedUser.currentMembership;
+				// 		if (currentMembership === null) {
+				// 			currentMembership = "No Membership";
+				// 		}
+				// 		else {
+				// 			currentMembership = loggedUser.currentMembership.plan.name + " membership";
+				// 		}
+
+				// 		$$("#logged-user-name")[0].textContent = isEditing ? "" : loggedUser.name != undefined ? loggedUser.name : loggedUser.username;
+				// 		$$("#logged-user-membership")[0].textContent = currentMembership;
+				// 		if (loggedUser.profilePicture != null) {
+				// 			$$("#logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+				// 		}
+				// 	}
+				// 	else {
+				// 		console.log("User was null, not updating anything [pageInit.updateControls]");
+				// 	}
+				// }
+
 				function updateControls() {
-					if (loggedUser != null) {
-						var currentMembership = loggedUser.currentMembership;
+					if (currentUser != null) {
+						var currentMembership = currentUser.currentMembership;
 						if (currentMembership === null) {
 							currentMembership = "No Membership";
 						}
 						else {
-							currentMembership = loggedUser.currentMembership.plan.name + " membership";
+							currentMembership = currentUser.currentMembership.plan.name + " membership";
 						}
 
-						$$("#logged-user-name")[0].textContent = loggedUser.name != undefined ? loggedUser.name : loggedUser.username;
+						$$("#logged-user-name")[0].textContent = isEditing ? (currentUser.name != undefined ? `Managing ${currentUser.name}'s memories` : `Managing ${currentuser.username}'s memories`) : currentUser.name != undefined ? currentUser.name : currentUser.username;
 						$$("#logged-user-membership")[0].textContent = currentMembership;
-						if (loggedUser.profilePicture != null) {
-							$$("#logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+						if (currentUser.profilePicture != null) {
+							$$("#logged-user-picture")[0].src = `${app.data.server}${currentUser.profilePicture.url}`;
 						}
 					}
 					else {
