@@ -15,9 +15,9 @@
 						<a href="" class="avatar-fab item-link smart-select smart-select-init" data-open-in="popover">
 							<!-- llenar select con usuarios -->
 							<select id="users">
-								<option value="1" id="user-thing-{{CurrentUser.id}}" asd="{{CurrentUser.id}}" selected>{{#js_if "this.CurrentUser.name != null"}} {{CurrentUser.name}} {{else}} {{CurrentUser.email}} {{/js_if}}</option>
+								<option value="1" id="user-thing-{{LoggedUser.id}}" asd="{{LoggedUser.id}}" {{#js_if "this.LoggedUser.id == this.CurrentUser.id"}} selected {{else}} caca {{/js_if}}>{{#js_if "this.LoggedUser.name != null"}} {{LoggedUser.name}} {{else}} {{LoggedUser.email}} {{/js_if}}</option>
 								{{#each AdminedContacts}}
-								<option value='{{js "@index + 2"}}' id="user-thing-{{id}}" asd="{{id}}">{{name}} </option>
+								<option value='{{js "@index + 2"}}' id="user-thing-{{id}}" asd="{{id}}" {{#js_if "this.id == @root.CurrentUser.id"}} selected {{else}} caca {{/js_if}}>{{name}} </option>
 								<!-- <option value="2" selected>Ramona</option> -->
 								{{/each}}
 								<!-- poner selected al usuario que esta actualmente -->
@@ -54,6 +54,9 @@
 			<div class="sqr_bck" id="sqr1"></div>
 			<div class="sqr_bck" id="sqr2"></div>
 			<div class="sqr_bck" id="sqr3"></div>
+			{{#if IsEditing}}
+
+			{{else}}
 			<div class="contacts-cont">
 				<div class="contacts-title">Contacts</div>
 				<a href="/contact/create" class="add-btn">
@@ -117,6 +120,7 @@
 					</div>
 				</div>
 			</div>
+			{{/if}}
 			{{#js_if "(this.Memories.pending.length + this.Memories.scheduled.length) > 0"}}
 			{{#js_if "this.Memories.scheduled.length > 0"}}
 			<div class="scheduled-title">Scheduled</div>
@@ -199,7 +203,7 @@
 									<h1>{{name}}</h1>
 									<p>{{deliveryDate}}</p>
 								</div>
-								<a href="#" class="edit popover-open" data-popover=".popover-opt" data-memory="{{id}}">
+								<a href="#" class="memory-options edit popover-open" data-popover=".popover-opt" data-memory="{{id}}">
 									<span class="material-icons">more_horiz</span>
 								</a>
 							</div>
@@ -256,8 +260,12 @@
 			</div>
 			{{/js_if}}
 			{{else}}
-
+				No traes memorias vato
 			{{/js_if}}
+
+			{{#if IsEditing}}
+
+			{{else}}
 			<div class="donate-title">Donate</div>
 			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init donate-swiper">
 				<div class="swiper-wrapper">
@@ -287,71 +295,9 @@
 						</div>
 					</div>
 					{{/each}}
-					<!-- <div class="swiper-slide">
-						<div class="card card-expandable">
-							<div class="card-content">
-								<div class="bg-video">
-									<div class="sqr_bck" id="sqr6"></div>
-									<div class="sqr_bck" id="sqr7"></div>
-									<div class="sqr_bck" id="sqr8"></div>
-									<span class="material-icons play card-opened-fade-out">play_circle_outline</span>
-								</div>
-								<div class="card-content-padding">
-									<div class="btns-cont card-opened-fade-out">
-										<a href="#" class="btn-card card-prevent-open">Give now</a>
-									</div>
-									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
-										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
-										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="card card-expandable">
-							<div class="card-content">
-								<div class="bg-video">
-									<div class="sqr_bck" id="sqr6"></div>
-									<div class="sqr_bck" id="sqr7"></div>
-									<div class="sqr_bck" id="sqr8"></div>
-									<span class="material-icons play card-opened-fade-out">play_circle_outline</span>
-								</div>
-								<div class="card-content-padding">
-									<div class="btns-cont card-opened-fade-out">
-										<a href="#" class="btn-card card-prevent-open">Give now</a>
-									</div>
-									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
-										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
-										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="card card-expandable">
-							<div class="card-content">
-								<div class="bg-video">
-									<div class="sqr_bck" id="sqr6"></div>
-									<div class="sqr_bck" id="sqr7"></div>
-									<div class="sqr_bck" id="sqr8"></div>
-									<span class="material-icons play card-opened-fade-out">play_circle_outline</span>
-								</div>
-								<div class="card-content-padding">
-									<div class="btns-cont card-opened-fade-out">
-										<a href="#" class="btn-card card-prevent-open">Give now</a>
-									</div>
-									<p class="card-opened-fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing
-										elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-										ad minim veniam, quis nostrud exercitation ullamco laboris porem ipsum dolor sit
-										amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-								</div>
-							</div>
-						</div>
-					</div> -->
 				</div>
 			</div>
+			{{/if}}
 			<div class="footer">
 				<div class="sqr_bck" id="sqr4"></div>
 				<div class="sqr_bck" id="sqr5"></div>
@@ -409,7 +355,7 @@
 
 				/* aqui esta este pedo */
 
-				$$('select#users').change(function (el) {
+				$$('select#users').change(async function (el) {
 					let select = app.smartSelect.get('.smart-select');
 					let indexValue = select.getValue();
 					let indexValueTwo = $$(this)[0].value;
@@ -425,10 +371,13 @@
 					console.log(targetUserId);
 					//'user-thing-23'
 					// console.log($$("user-thing-" + indexValueTwo));
-					console.log(select);
-					console.log(item);
+					// console.log(select);
+					// console.log(item);
 					select.close(); /* cierra el popover */
-					console.log(select.getValue()); /* valor del id */
+					// console.log(select.getValue()); /* valor del id */
+
+					await app.views.main.router.navigate(`/memories/home/user/${targetUserId}`, {reloadCurrent: true});
+					// app.views.main.router.refreshPage();
 				});
 
 				$$('.avatar-person').on('click', function (val) {

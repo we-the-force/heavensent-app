@@ -139,6 +139,7 @@ var app = new Framework7({
     },
     
     methods: {
+        clearingUser: false,
         //Los datos a cambiar van a ser todos los del usuario.
         async getLocalValue(key) {
             let result = null;
@@ -177,7 +178,7 @@ var app = new Framework7({
             var currentLocalUser = await app.methods.getLocalValue('loggedUser');
             console.log(currentLocalUser);
             let result = false;
-            if (currentLocalUser != null)
+            if (currentLocalUser != null && !app.methods.clearingUser)
             {
                 await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult){
                     var user = JSON.parse(getResult.data);
@@ -202,13 +203,12 @@ var app = new Framework7({
         async clearCurrentUser()
         {
             var app=this;
+            app.methods.clearingUser = true;
             console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
             let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
-            let auxUser = await app.methods.getLocalValue('loggedUser');
-            console.log("user after clearing: ");
-            console.log(auxUser);
             await app.methods.setLocalValueToKey([], 'loggedUserContacts')
             await app.methods.setLocalValueToKey([], 'loggedUserAdminedContacts')
+            app.methods.clearingUser = false;
             return result;
         },
         async userIsEmpty()

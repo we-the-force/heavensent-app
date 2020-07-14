@@ -18,7 +18,7 @@
 			</div>
 			
 			<div class="btns-cont">
-				<a href="/memories/home" class="btn-panel panel-close active">Profile</a>
+				<a id="profile-btn" href="/memories/home" class="btn-panel panel-close active">Profile</a>
 				<a id="app-plan-button" href="/membership/view/user/" class="btn-panel panel-close ">Plan</a>
 				<!-- herdcoded -->
 				<a href="#" class="btn-panel panel-close ">Donate</a>
@@ -176,81 +176,86 @@
 				var loggedUser = null;
 				
 				console.log("PageInit, user: ");
-				console.log(app.views.main.router);
-				// console.log(loggedUser);
-				loggedUser = await updateUser();
-				
-				updateControls();
-				
-				$$("#sign-out-btn").off("click").on("click", async function(e){
-					e.preventDefault();
-					loggedUser = null;
-					await app.methods.clearCurrentUser();
-					await app.views.main.router.navigate('/');
-					// console.log("Logging out [pageInit.sign-out-btn.onClick]");
-					// if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
-					// {
-					// 	console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
-					// 	app.views.main.router.navigate({ name: "login" });
-					// }
-				})
-
-				$$('#lenguage').click(function (elem) {
-					let leng = "";
-					let val = $$(this).text();
-					if(val == 'Español (MX)'){
-						leng = 'en_US';
-					}else if(val == 'English (US)'){
-						leng = 'es_MX';
-					}
-					localStorage.setItem('language',leng)
-					window.language = leng;
-					self.$update();
-					/* app.views.main.router.refreshPage() */
-					//let leng = ''
-					//localStorage.setItem('language',e.target.value)
-            		//window.language = e.target.value;
-            		//self.$update();
-				})
-				
-				async function updateUser()
+				// console.log(app.views.main.router.url);
+				if (app.views.main.router.url != "/")
 				{
-					console.log("Get user method");
-					let auxUser = await app.methods.getLocalValue("loggedUser");
-					console.log(auxUser);
-					return auxUser;
-				}
+					// console.log(loggedUser);
+					loggedUser = await updateUser();
+					
+					updateControls();
+					
+					$$("#sign-out-btn").off("click").on("click", async function(e){
+						e.preventDefault();
+						loggedUser = null;
+						await app.methods.clearCurrentUser();
+						console.log("User cleared [app.f7.signout]");
+						await app.views.main.router.navigate('/');
+						// console.log("Logging out [pageInit.sign-out-btn.onClick]");
+						// if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
+						// {
+						// 	console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
+						// 	app.views.main.router.navigate({ name: "login" });
+						// }
+					})
 
-				function updateControls()
-				{
-					console.log("Updating controls [pageInit.updateControls()]");
-					if (loggedUser != null)
+					$$('#lenguage').click(function (elem) {
+						let leng = "";
+						let val = $$(this).text();
+						if(val == 'Español (MX)'){
+							leng = 'en_US';
+						}else if(val == 'English (US)'){
+							leng = 'es_MX';
+						}
+						localStorage.setItem('language',leng)
+						window.language = leng;
+						self.$update();
+						/* app.views.main.router.refreshPage() */
+						//let leng = ''
+						//localStorage.setItem('language',e.target.value)
+            			//window.language = e.target.value;
+            			//self.$update();
+					})
+
+					async function updateUser()
 					{
-						var currentMembership = loggedUser.currentMembership;
-						if(currentMembership === null)
+						console.log("Get user method");
+						let auxUser = await app.methods.getLocalValue("loggedUser");
+						console.log(auxUser);
+						return auxUser;
+					}
+
+					function updateControls()
+					{
+						// console.log("Updating controls [pageInit.updateControls()]");
+						if (loggedUser != null)
 						{
-							currentMembership = "No Membership";
+							var currentMembership = loggedUser.currentMembership;
+							if(currentMembership === null)
+							{
+								currentMembership = "No Membership";
+							}
+							else
+							{
+								currentMembership = loggedUser.currentMembership.plan.name + " membership";
+							}
+
+							$$("#side-logged-user-name")[0].textContent = loggedUser.name != undefined ? loggedUser.name : loggedUser.username;
+							$$("#side-logged-user-membership")[0].textContent = currentMembership;
+							$$("#profile-btn")[0].href = ``;
+							if (loggedUser.profilePicture != null)
+							{
+								$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+							}
+
+							$$("#app-plan-button")[0].href = `/membership/view/user/${loggedUser.id}`;
 						}
 						else
 						{
-							currentMembership = loggedUser.currentMembership.plan.name + " membership";
+							currentMembership = "No membership";
+							$$("#side-logged-user-name")[0].textContent = "No user";
+							$$("#side-logged-user-membership")[0].textContent = "No membership";
+							$$("#side-logged-user-picture")[0].src = ``;
 						}
-						
-						$$("#side-logged-user-name")[0].textContent = loggedUser.name != undefined ? loggedUser.name : loggedUser.username;
-						$$("#side-logged-user-membership")[0].textContent = currentMembership;
-						if (loggedUser.profilePicture != null)
-						{
-							$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
-						}
-						
-						$$("#app-plan-button")[0].href = `/membership/view/user/${loggedUser.id}`;
-					}
-					else
-					{
-						currentMembership = "No membership";
-						$$("#side-logged-user-name")[0].textContent = "No user";
-						$$("#side-logged-user-membership")[0].textContent = "No membership";
-						$$("#side-logged-user-picture")[0].src = ``;
 					}
 				} 
 			},

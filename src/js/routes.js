@@ -306,7 +306,7 @@ var routes = [
             var router = this;
             var app = router.app;
             var currentUser = await app.methods.getLocalValue('loggedUser');
-            var userContacts= await app.methods.getLocalValue('loggedUserContacts');
+            var userContacts= await app.methods.getLocalValue('loggedUserAdminedContacts');
 
             var memID = routeTo.params.memID;
             var memoryData;
@@ -331,14 +331,24 @@ var routes = [
             }
             else
             {
+                console.log("Not the loggedUser");
                 await app.request.promise.get(`${app.data.server}/users/${ownerID}`).then(async function(ownerRes){
                     plan = JSON.parse(ownerRes.data).currentMembership;
                 });
+                console.log("Checking contacts:");
+                console.log(userContacts);
                 userContacts.forEach(contact => {
+                    console.log("Checking owner thing for contact:");
+                    console.log(contact);
+                    console.log(`${contact.owner.id} === ${ownerID}`);
                     if (contact.owner.id === ownerID)
                     {
-                        if (contact.contact.id === currentUser)
+                        console.log("Yes, is contact the same?");
+                        console.log(`${contact.contact.id} === ${currentUser.id}`);
+                        if (contact.contact.id === currentUser.id)
                         {
+                            console.log("Got the contact relationship of the logged user:");
+                            console.log(contact);
                             if (contact.isAdmin)
                             {
                                 canAdminMem = true;
@@ -403,13 +413,16 @@ var routes = [
             {
                 await app.request.promise.get(`${app.data.server}/users/${userID}`).then(function(targetUserRes){
                     currentUser = JSON.parse(targetUserRes.data);
-                    console.log("---------------------- This dude exists yeah");
+                    // console.log("---------------------- This dude exists yeah");
                 }).catch(async function(err){
                     currentUser = loggedUser;
-                    console.log("-----------------------Dude doesn't exist unu");
+                    // console.log("-----------------------Dude doesn't exist unu");
                     app.dialog.alert("We have problems loading this user's account, it looks like it no longer exists. Please contact support.");
                 });
             }
+
+            var isEditing = (currentUser.id != loggedUser.id);
+            // console.log(`IsEditing? ${isEditing} (${currentUser.id} != ${loggedUser.id})`);
 
             var ownedMemories;
             await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function (memoriesResult) {
@@ -437,6 +450,7 @@ var routes = [
                     Server: server,
                     LoggedUser: loggedUser,
                     CurrentUser: currentUser,
+                    IsEditing: isEditing,
                     Contacts: getContacts(contacts, false, true),
                     AdminedContacts: getContacts(adminContacts, true, false),
                     Memories: getMemories(ownedMemories),
@@ -599,6 +613,7 @@ var routes = [
                 context: {
                     Server: app.data.server,
                     Memories: getMemories(baseMemories),
+                    CurrentUser: userID
                 }
             })
 

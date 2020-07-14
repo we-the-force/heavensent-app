@@ -55,7 +55,6 @@
 				var app = self.$app;
 				
 				console.log("---pageBeforeIn, updating user")
-				// await app.methods.updateCurrentUser();
 				var localUser = await app.methods.getLocalValue('loggedUser');
 				if (localUser != null)
 				{
@@ -156,8 +155,11 @@
 									
 									if (await app.methods.userHasValidMembership())
 									{
+										await app.methods.loadContacts();
+										await app.methods.loadAdminedContacts();
 										console.log("User has a valid membership! [pageInit.login-btn.onClick]");
-										app.views.main.router.navigate({ name: "home-memories" });
+										// app.views.main.router.navigate({ name: "home-memories" });
+										app.views.main.router.navigate(`/memories/home/user/${user.id}`);
 									}
 									else
 									{
