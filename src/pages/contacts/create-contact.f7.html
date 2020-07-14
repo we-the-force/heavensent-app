@@ -8,7 +8,7 @@
 						<a href="" class="back-btn back">
 							<i class="icons material-icons">chevron_left</i>
 						</a>
-						<h1 class="title">Create family member</h1>
+						<h1 class="title">{{localize "create_contact"}}</h1>
 						<div class="none"></div>
 					</div>
 				</div>
@@ -32,28 +32,28 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="create-cont-name" placeholder="Name" required validate />
+								<input type="text" id="create-cont-name" placeholder="{{localize 'name'}}" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="create-cont-email" placeholder="Email" required validate />
+								<input type="email" id="create-cont-email" placeholder="{{localize 'mail'}}" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="create-cont-mobile" placeholder="Mobile" required validate />
+								<input type="text" id="create-cont-mobile" placeholder="{{localize 'phone'}}" required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="create-cont-relation" placeholder="Relation" required validate />
+								<input type="text" id="create-cont-relation" placeholder="{{localize 'relation'}}" required validate />
 							</div>
 						</div>
 					</li>
@@ -71,7 +71,7 @@
 				<a href="/guardian/create" id="create-guardian-btn" class="button color-white round large">Select / Create guardian</a>
 			</div>
 			<div class="btns-cont center">
-				<a id="create-member-btn" class="button color-blue round large">Create a member</a>
+				<a id="create-member-btn" class="button color-blue round large">{{localize "create_contact"}}</a>
 			</div>
 			<div class="footer">
 				<div class="sqr_bck" id="sqr4"></div>
@@ -113,6 +113,7 @@
 				// $$("#create-cont-is-admin").val();
 				// $$("#create-cont-edit-memories").val();
 				// $$("#create-cont-is-minor").val("off");
+				$$('#create-cont-birthday')[0].style.setProperty("--birthday", "'" + app.data.locales[window.language.substring(0, 2)]['birthday'] + "'");
 				
 				$$('#create-cont-birthday').click(function (el) {
 					$$(this).removeClass('aft');
