@@ -786,7 +786,7 @@
                         // CREATE MEMORY
                         app.preloader.show("blue");
 
-                        await app.request({
+                        await app.request.promise({
 									url: `${app.data.server}/memories/${memoryToEdit.id}`,
 									method: 'PUT',
 									data: {
@@ -795,11 +795,21 @@
                                         reminder: result.memory.reminder,
                                         sent: result.memory.sent,
 									}
+                                }).then(function(response){
+                                    console.log('response');
+                                    console.log(response);
+
+                                    app.preloader.hide();
+                                    app.dialog.alert("The memory has been edited succesfully!");
+                                    sessionStorage.clear();
+                                    app.views.main.router.navigate("/memories/home/user/" + memoryOwner.id);
+                                }).catch(function(err){
+                                    console.log("Error updating thing");
+                                    console.log(err);
+
+                                    app.preloader.hide();
+                                    app.dialog.alert(`An error occurred when updating memory info!`);
                                 });
-                        app.preloader.hide();
-                        app.dialog.alert("The memory has been edited succesfully!");
-                        sessionStorage.clear();
-                        app.views.main.router.navigate("/memories/home/user/" + memoryOwner.id);
 
 
 
@@ -966,7 +976,7 @@
                     if (oldContacts != undefined) {
                         contacts = getContacts(oldContacts);
                     }
-                    if (time) {
+                    if (time && !(time != "null" || time != "undefined")) {
                         let auxTime = time.substring(1, time.length - 1).split(':');
                         time = `${String(auxTime[0]).padStart(2, 0)}:${String(auxTime[1]).padStart(2, 0)}:00.000`;
                         // `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
@@ -1073,7 +1083,7 @@
                                 // result.errors++;
                                 result.memory.reminderType = "none";
                                 // result.memory.reminder.date = '1900-01-01';
-                                result.memory.reminder.date = null;
+                                result.memory.reminder.date = undefined;
                             }
                             else {
                                 if (result.memory.reminderType === "none") {
@@ -1081,11 +1091,11 @@
                                 }
                                 result.memory.reminder.date = date;
                             }
-                            if (!time) {
+                            if (!time || time === "null") {
                                 // result.valid = false;
                                 // result.message += result.errors > 0 ? ", no time" : "No time";
                                 // result.errors++;
-                                result.memory.reminder.time = null;
+                                result.memory.reminder.time = undefined;
                             }
                             else {
                                 result.memory.reminder.time = time;
@@ -1106,8 +1116,18 @@
                                 }
                                 else
                                 {
-                                    console.log("Check if there is an end_date");
-                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                    if (date_end && date_end != "null")
+                                    {
+                                        console.log("Si hay date_end: " + date_end);
+                                        result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                    }
+                                    else
+                                    {
+                                        console.log("No hay date_end: " + date_end);
+                                        result.valid = false;
+                                        result.message += "No end date for repeating memory";
+                                        result.errors++;
+                                    }
                                 }
                             }
                         }
@@ -1115,7 +1135,7 @@
                             var today = new Date();
                             if (!date) {
                                 // result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
-                                result.memory.reminder.date = null;
+                                result.memory.reminder.date = undefined;
 
                             }
                             else {
@@ -1124,7 +1144,7 @@
                             }
                             if (!time) {
                                 // result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
-                                result.memory.reminder.time = null;
+                                result.memory.reminder.time = undefined;
                             }
                             else {
                                 result.memory.reminder.time = time;
