@@ -10,27 +10,29 @@
 				</div>
 				<div class="text">
 					<div class="name-cont">
-						<h1 id="side-logged-user-name" class="name capitalize">Jacob Ethan</h1>
+						<h1 id="side-logged-user-name" class="name capitalize"></h1>
 						<span class="material-icons">edit</span>
 					</div>
 					<p id="side-logged-user-membership">Membership</p>
 				</div>
 			</div>
-			
+
 			<div class="btns-cont">
-				<a id="profile-btn" href="/memories/home" class="btn-panel panel-close active">Profile</a>
-				<a id="app-plan-button" href="/membership/view/user/" class="btn-panel panel-close ">Plan</a>
+				<a id="profile-btn" href="/memories/home"
+					class="btn-panel panel-close active">{{localize "profile"}}</a>
+				<a id="app-plan-button" href="/membership/view/user/"
+					class="btn-panel panel-close ">{{localize "plan"}}</a>
 				<!-- herdcoded -->
-				<a href="#" class="btn-panel panel-close ">Donate</a>
+				<a href="#" class="btn-panel panel-close ">{{localize "donate"}}</a>
 			</div>
-			
+
 			<div class="footer">
 				<a href="#" class="btn-end panel-close lenguage" id="lenguage">{{localize "lenguage"}}</a>
-				<a href="/UserAgreement" class="btn-end panel-close terms">Terms & Conditions</a>
-				<a href="/" class="btn-end panel-close sign-out" id="sign-out-btn">Sign Out</a>
+				<a href="/UserAgreement" class="btn-end panel-close terms">{{localize "terms_and_conds"}}</a>
+				<a href="/" class="btn-end panel-close sign-out" id="sign-out-btn">{{localize "sign_out"}}</a>
 			</div>
 		</div>
-		
+
 		<!-- Right panel with reveal effect-->
 		<!-- <div class="panel panel-right panel-reveal theme-dark">
 			<div class="view">
@@ -47,10 +49,10 @@
 				</div>
 			</div>
 		</div> -->
-		
+
 		<!-- Your main view, should have "view-main" class -->
 		<div class="view view-main view-init safe-areas" data-url="/"></div>
-		
+
 		<!-- Popup -->
 		<!-- <div class="popup" id="my-popup">
 			<div class="view">
@@ -72,7 +74,7 @@
 				</div>
 			</div>
 		</div> -->
-		
+
 		<!-- Login Screen -->
 		<!-- <div class="login-screen" id="my-login-screen">
 			<div class="view">
@@ -174,17 +176,16 @@
 				var self = this;
 				var app = self.$app;
 				var loggedUser = null;
-				
+
 				console.log("PageInit, user: ");
 				// console.log(app.views.main.router.url);
-				if (app.views.main.router.url != "/")
-				{
+				if (app.views.main.router.url != "/") {
 					// console.log(loggedUser);
 					loggedUser = await updateUser();
-					
+
 					updateControls();
-					
-					$$("#sign-out-btn").off("click").on("click", async function(e){
+
+					$$("#sign-out-btn").off("click").on("click", async function (e) {
 						e.preventDefault();
 						loggedUser = null;
 						await app.methods.clearCurrentUser();
@@ -201,63 +202,67 @@
 					$$('#lenguage').click(function (elem) {
 						let leng = "";
 						let val = $$(this).text();
-						if(val == 'Español (MX)'){
+						if (val == 'Español (MX)') {
 							leng = 'en_US';
-						}else if(val == 'English (US)'){
+						} else if (val == 'English (US)') {
 							leng = 'es_MX';
 						}
-						localStorage.setItem('language',leng)
+						localStorage.setItem('language', leng)
 						window.language = leng;
 						self.$update();
+						app.views.main.router.refreshPage();
 						/* app.views.main.router.refreshPage() */
 						//let leng = ''
 						//localStorage.setItem('language',e.target.value)
-            			//window.language = e.target.value;
-            			//self.$update();
+						//window.language = e.target.value;
+						//self.$update();
 					})
 
-					async function updateUser()
-					{
+					async function updateUser() {
 						console.log("Get user method");
 						let auxUser = await app.methods.getLocalValue("loggedUser");
 						console.log(auxUser);
 						return auxUser;
 					}
 
-					function updateControls()
-					{
+					function updateControls() {
 						// console.log("Updating controls [pageInit.updateControls()]");
-						if (loggedUser != null)
-						{
+						if (loggedUser != null) {
 							var currentMembership = loggedUser.currentMembership;
-							if(currentMembership === null)
-							{
-								currentMembership = "No Membership";
+							if (currentMembership === null) {
+								if (window.language == 'en_US') {
+									currentMembership = 'No ' + window.localize('membership');
+								} else if (window.language == 'es_MX') {
+									currentMembership = 'Sin ' + window.localize('membership');
+								}
+								//currentMembership = "No Membership";
 							}
-							else
-							{
-								currentMembership = loggedUser.currentMembership.plan.name + " membership";
+							else {
+								if (window.language == 'en_US') {
+									currentMembership = loggedUser.currentMembership.plan.name + " "+ window.localize('membership');
+								} else if (window.language == 'es_MX') {
+									currentMembership = window.localize('membership') + " "+ loggedUser.currentMembership.plan.name ;
+								}
+								//currentMembership = loggedUser.currentMembership.plan.name + " membership";
 							}
 
 							$$("#side-logged-user-name")[0].textContent = loggedUser.name != undefined ? loggedUser.name : loggedUser.username;
 							$$("#side-logged-user-membership")[0].textContent = currentMembership;
 							$$("#profile-btn")[0].href = ``;
-							if (loggedUser.profilePicture != null)
-							{
+							if (loggedUser.profilePicture != null) {
 								$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
 							}
 
 							$$("#app-plan-button")[0].href = `/membership/view/user/${loggedUser.id}`;
 						}
-						else
-						{
+						else {
 							currentMembership = "No membership";
 							$$("#side-logged-user-name")[0].textContent = "No user";
 							$$("#side-logged-user-membership")[0].textContent = "No membership";
 							$$("#side-logged-user-picture")[0].src = ``;
 						}
 					}
-				} 
+				}
 			},
 		},
 	}; 

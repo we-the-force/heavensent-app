@@ -18,7 +18,7 @@ import routes from './routes.js';
 import App from '../app.f7.html';
 
 
-Template7.registerHelper('localize', function(value,options) {
+Template7.registerHelper('localize', function (value, options) {
     return window.localize(value)
 });
 
@@ -28,7 +28,7 @@ var app = new Framework7({
     id: 'io.wetheforce.heavensent', // App bundle ID
     name: 'HeavenSent', // App name
     theme: 'auto', // Automatic theme detection
-    
+
     data: {
         //server: 'http://192.168.5.169:1337',
         server: 'http://167.172.156.126:1337',
@@ -85,7 +85,7 @@ var app = new Framework7({
                 create_contact: "Crear contacto",
                 relation: "Relación",
                 create_guardian: "Crear guardián",
-                create_tutor: "Crear tutor", 
+                create_tutor: "Crear tutor",
                 edit_contact: "Editar contacto",
                 save_changes: "Guardar cambios",
                 nickname: "Apodo",
@@ -152,8 +152,22 @@ var app = new Framework7({
                 //Add location
                 add_loc_header: "Agregar ubicación",
                 add_loc_address: "Dirección",
-                add_loc_save: "Guardar ubicación"
-                                
+                add_loc_save: "Guardar ubicación",
+                //home
+                contacts: "Contactos",
+                create: "Crear",
+                new_memory: "Nueva Memoria",
+                birthday_memory: "Memoria de cumpleaños",
+                collage: "Collage",
+                especial_memory: "Memoria especial",
+                scheduled: "Programado",
+                my_memories: "Mis memorias",
+                shared_with_me: "Compartido conmigo",
+                //left panel
+                profile: "Perfil",
+                plan: "Plan",
+                terms_and_conds: "Términos y condiciones",
+                sign_out: "Cerrar sesion",
             },
             en: {
                 lenguage: "English (US)",
@@ -203,10 +217,10 @@ var app = new Framework7({
                 import_contacts: "Import your contacts",
                 grant_access: "Grant access",
                 //create/edit contact/guardian
-                create_contact: "Create contact",  
+                create_contact: "Create contact",
                 relation: "Relation",
                 create_guardian: "Create guardian",
-                create_tutor: "Create tutor",  
+                create_tutor: "Create tutor",
                 edit_contact: "Edit contact",
                 save_changes: "Save changes",
                 nickname: "Nickname",
@@ -235,7 +249,7 @@ var app = new Framework7({
                 credit_card: "Credit card",
                 confirm: "Confirm",
                 payment_confirmed: "Payment confirmed",
-                go_profile: "Go to profile", 
+                go_profile: "Go to profile",
                 donate: "Donate",
                 give_now: "Give now",
                 //Create Memory
@@ -273,11 +287,26 @@ var app = new Framework7({
                 //Add location
                 add_loc_header: "Add location",
                 add_loc_address: "Address",
-                add_loc_save: "Save location"
+                add_loc_save: "Save location",
+                //home
+                contacts: "Contacts",
+                create: "Create",
+                new_memory: "New Memory",
+                birthday_memory: "Birthday Memory",
+                collage: "Collage",
+                especial_memory: "Especial Memory",
+                scheduled: "Scheduled",
+                my_memories: "My memories",
+                shared_with_me: "Shared with me",
+                //left panel
+                profile: "Profile",
+                plan: "Plan",
+                terms_and_conds: "Terms & Conditions",
+                sign_out: "Sign Out",
             }
         }
     },
-    
+
     methods: {
         clearingUser: false,
         //Los datos a cambiar van a ser todos los del usuario.
@@ -293,8 +322,7 @@ var app = new Framework7({
             return result;
         },
         async setLocalValueToKey(value, key) {
-            if (key === "loggedUser")
-            {
+            if (key === "loggedUser") {
                 console.log("Setting local value [setLocalValueToKey]");
                 // console.log("---Value---");
                 console.log(value);
@@ -311,38 +339,34 @@ var app = new Framework7({
             })
             return result;
         },
-        async updateCurrentUser()
-        {
+        async updateCurrentUser() {
             var app = this;
             console.log("updating current user, getting user");
             var currentLocalUser = await app.methods.getLocalValue('loggedUser');
             console.log(currentLocalUser);
             let result = false;
-            if (currentLocalUser != null && !app.methods.clearingUser)
-            {
-                await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult){
+            if (currentLocalUser != null && !app.methods.clearingUser) {
+                await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function (getResult) {
                     var user = JSON.parse(getResult.data);
                     console.log("currentLocalUser wasn't null, setting value to loggedUser");
                     result = await app.methods.setLocalValueToKey(user, 'loggedUser');
                     await app.methods.loadContacts();
                     await app.methods.loadAdminedContacts();
                     // console.log("Update User Result:" + result + " [updateCurrentUser()]");
-                }).catch(async function (error){
+                }).catch(async function (error) {
                     console.log("Error updating current user!!! [updateCurrentUser()]");
                     console.log(error);
                     await app.methods.clearCurrentUser();
                     result = false;
                 });
             }
-            else
-            {
+            else {
                 console.log("Couldn't update current user; user was null [updateCurrentUser()]")
             }
             return result;
         },
-        async clearCurrentUser()
-        {
-            var app=this;
+        async clearCurrentUser() {
+            var app = this;
             app.methods.clearingUser = true;
             console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
             let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
@@ -351,22 +375,17 @@ var app = new Framework7({
             app.methods.clearingUser = false;
             return result;
         },
-        async userIsEmpty()
-        {
+        async userIsEmpty() {
             var currentUser = await this.methods.getLocalValue('loggedUser');
-            if (currentUser === null)
-            {
+            if (currentUser === null) {
                 return true;
             }
             return false;
         },
-        async userIsValid()
-        {
+        async userIsValid() {
             var currentUser = await this.methods.getLocalValue('loggedUser');
-            if (currentUser != null)
-            {
-                if (currentUser.confirmed)
-                {
+            if (currentUser != null) {
+                if (currentUser.confirmed) {
                     console.log("User Is Valid [userIsValid()]");
                     return true;
                 }
@@ -374,161 +393,137 @@ var app = new Framework7({
             console.log("User Is Not Valid [userIsValid()]");
             return false;
         },
-        async userHasAdmin()
-        {
+        async userHasAdmin() {
             //Call userIsValid before this always.
             var currentUser = await this.methods.getLocalValue('loggedUser');
             var result = false;
-            if (currentUser != null)
-            {
+            if (currentUser != null) {
                 // console.log("Requesting JSON");
                 // console.log(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`);
-                await this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`).then(async function(res){
+                await this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`).then(async function (res) {
                     // console.log("user has something? [userHasAdmin()]");
                     // console.log(res.data);
                     let hasAdmins = (res.data.length > 0);
                     // console.log(hasAdmins);
-                    if (hasAdmins)
-                    {
+                    if (hasAdmins) {
                         // console.log(`user has at least 1 admin (${res.data.length}) [userHasAdmin()]`);
                         result = true;
                     }
-                    else
-                    {
+                    else {
                         // console.log("Had no admins [userHasAdmin()]")
                         result = false;
                     }
                 })
             }
-            else
-            {
+            else {
                 console.log("Had no loggedUser [userHasAdmin()]");
                 result = false;
             }
             return result;
         },
-        async userHasValidMembership()
-        {
+        async userHasValidMembership() {
             var currentUser = await this.methods.getLocalValue('loggedUser');
             // console.log("user has valid membership? [userHasValidMembership()]");
             var result = false;
-            if (currentUser != null)
-            {
-                if (currentUser.currentMembership != null)
-                {
+            if (currentUser != null) {
+                if (currentUser.currentMembership != null) {
                     // console.log("current membership wasn't null [userHasValidMembership()]");
                     // console.log(currentUser.currentMembership);
-                    if (currentUser.currentMembership.isActive)
-                    {
+                    if (currentUser.currentMembership.isActive) {
                         // console.log("current user's membership is active! [userHasValidMembership()]");
                         result = true;
                     }
-                    else
-                    {
+                    else {
                         // console.log("current user's membership was inactive unu [userHasValidMembership()]");
                         result = false;
                     }
                 }
-                else
-                {
+                else {
                     // console.log("current membership is null!!! [userHasValidMembership()]");
                     result = false;
                 }
             }
-            else
-            {
+            else {
                 // console.log("current user is null!!! [userHasValidMembership()]");
                 result = false;
             }
-            
+
             return result;
         },
-        async loadContacts()
-        {
-            var app=this;
+        async loadContacts() {
+            var app = this;
             var currentUser = await app.methods.getLocalValue('loggedUser');
             var contacts = [];
             var result = false;
-            if (currentUser != null)
-            {
-                this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}`).then(async function(res){
+            if (currentUser != null) {
+                this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}`).then(async function (res) {
                     result = await app.methods.setLocalValueToKey(res.data, 'loggedUserContacts');
                     // return true;
                 })
             }
             return result;
         },
-        async clearContacts()
-        {
+        async clearContacts() {
             await this.methods.setLocalValueToKey([], 'loggedUserContacts');
         },
-        async loadAdminedContacts()
-        {
-            var app=this;
+        async loadAdminedContacts() {
+            var app = this;
             var currentUser = await app.methods.getLocalValue('loggedUser');
             var contacts = [];
             var result = false;
-            if (currentUser != null)
-            {
+            if (currentUser != null) {
                 //http://localhost:1337/contacts/?contact=12&isAdmin=true
-                this.request.promise.json(`${app.data.server}/contacts/?contact=${currentUser.id}&isAdmin=true`).then(async function(res){
+                this.request.promise.json(`${app.data.server}/contacts/?contact=${currentUser.id}&isAdmin=true`).then(async function (res) {
                     result = await app.methods.setLocalValueToKey(res.data, 'loggedUserAdminedContacts');
                     // return true;
                 })
             }
             return result;
         },
-        async clearAdminedContacts()
-        {
+        async clearAdminedContacts() {
             await this.methods.setLocalValueToKey([], 'loggedAdminedUserContacts');
         },
-        setCookie(cname, cvalue, exdays)
-        {
+        setCookie(cname, cvalue, exdays) {
             var d = new Date();
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-            var expires = 'expires='+d.toUTCString();
+            var expires = 'expires=' + d.toUTCString();
             document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
         },
-        getCookie(name)
-        {
-            var app=this;
+        getCookie(name) {
+            var app = this;
             var name = cname + "=";
             var ca = document.cookie.split(';');
-            for (var i = 0; i < ca.length; i++){
+            for (var i = 0; i < ca.length; i++) {
                 var c = ca[i];
-                while (c.charAt(0) == ' '){
+                while (c.charAt(0) == ' ') {
                     c = c.substring(1);
                 }
-                if (c.indexOf(name) == 0){
+                if (c.indexOf(name) == 0) {
                     return c.substring(name.length, c.length);
                 }
             }
             return "";
         },
-        checkCookie()
-        {
-            var app=this;
+        checkCookie() {
+            var app = this;
             var user = getCookie("username");
-            if (user != ""){
-                alert("Welcome again "+user);
+            if (user != "") {
+                alert("Welcome again " + user);
             } else {
                 user = prompt("Please enter your name:", "");
-                if (user != "" && user != null){
+                if (user != "" && user != null) {
                     setCookie("username", user, 365);
                 }
             }
         },
-        deleteCookie(name)
-        {
-            var app=this;
-            if (this.methods.getCookie(name))
-            {
+        deleteCookie(name) {
+            var app = this;
+            if (this.methods.getCookie(name)) {
                 this.methods.setCookie(name, "", -1000);
             }
         },
-        displayCookies()
-        {
-            var app=this;
+        displayCookies() {
+            var app = this;
             // var fname = getCookie("firstname");
             // if (fname==null) {
             //     fname="";
@@ -546,7 +541,7 @@ var app = new Framework7({
             console.log("- - - - Cookies - - - -");
             console.log(document.cookie);
             // alert (document.cookie);
-        },            
+        },
         updateUsername(e) {
             this.username = e.target.value;
             this.$update();
@@ -563,7 +558,7 @@ var app = new Framework7({
     },
     // App routes
     routes: routes,
-    
+
     // Register service worker
     serviceWorker: Framework7.device.cordova ? {} : {
         path: '/service-worker.js',
@@ -588,14 +583,14 @@ var app = new Framework7({
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
             }
-            
+
         },
     },
 });
 //Aqui metes algo pa redirigirte
 $$(document).on('page:init', function (e) {
     console.log(window.locales);
-    
+
     $$('.page-content').off('scroll');
     $$('.page-content').scroll(function () {
         if ($$('.page-current .page-content').scrollTop() > 30) {
@@ -606,7 +601,7 @@ $$(document).on('page:init', function (e) {
     });
 });
 
-window.language = (localStorage.getItem('language') || (app.language || 'en_US')).replace (/-/g, "_");
+window.language = (localStorage.getItem('language') || (app.language || 'en_US')).replace(/-/g, "_");
 
 window.localize = function (key) {
     var language = window.language

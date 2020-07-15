@@ -15,9 +15,14 @@
 						<a href="" class="avatar-fab item-link smart-select smart-select-init" data-open-in="popover">
 							<!-- llenar select con usuarios -->
 							<select id="users">
-								<option value="1" id="user-thing-{{LoggedUser.id}}" asd="{{LoggedUser.id}}" {{#js_if "this.LoggedUser.id == this.CurrentUser.id"}} selected {{else}} caca {{/js_if}}>{{#js_if "this.LoggedUser.name != null"}} {{LoggedUser.name}} {{else}} {{LoggedUser.email}} {{/js_if}}</option>
+								<option value="1" id="user-thing-{{LoggedUser.id}}" asd="{{LoggedUser.id}}"
+									{{#js_if "this.LoggedUser.id == this.CurrentUser.id"}} selected {{else}} caca
+									{{/js_if}}>{{#js_if "this.LoggedUser.name != null"}} {{LoggedUser.name}} {{else}}
+									{{LoggedUser.email}} {{/js_if}}</option>
 								{{#each AdminedContacts}}
-								<option value='{{js "@index + 2"}}' id="user-thing-{{id}}" asd="{{id}}" {{#js_if "this.id == @root.CurrentUser.id"}} selected {{else}} caca {{/js_if}}>{{name}} </option>
+								<option value='{{js "@index + 2"}}' id="user-thing-{{id}}" asd="{{id}}"
+									{{#js_if "this.id == @root.CurrentUser.id"}} selected {{else}} caca {{/js_if}}>
+									{{name}} </option>
 								<!-- <option value="2" selected>Ramona</option> -->
 								{{/each}}
 								<!-- poner selected al usuario que esta actualmente -->
@@ -39,14 +44,14 @@
 			<div class="toolbar-inner">
 				<a class="item-link">
 					<i class="icon material-icons cloud">cloud</i>
-					<span class="tabbar-label">My memories</span>
+					<span class="tabbar-label">{{localize "my_memories"}}</span>
 				</a>
 				<a class="item-link" href="/memories/dashboard/user/{{CurrentUser.id}}">
 					<div class="custom-icon">
 						<i class="icon material-icons cloud grey">cloud</i>
 						<i class="icon material-icons people">people</i>
 					</div>
-					<span class="tabbar-label two">Shared with me</span>
+					<span class="tabbar-label two">{{localize "shared_with_me"}}</span>
 				</a>
 			</div>
 		</div>
@@ -58,7 +63,7 @@
 
 			{{else}}
 			<div class="contacts-cont">
-				<div class="contacts-title">Contacts</div>
+				<div class="contacts-title">{{localize "contacts"}}</div>
 				<a href="/contact/create" class="add-btn">
 					<i class="icons material-icons">add</i>
 				</a>
@@ -82,14 +87,14 @@
 					{{/each}}
 				</div>
 			</div>
-			<div class="create-title">Create</div>
+			<div class="create-title">{{localize "create"}}</div>
 			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init create-swiper">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide">
 						<div class="card simple memory" id="new">
 							<img src="../../static/img/Pluma_card.png" alt="" srcset="">
 							<div class="card-content">
-								<p> New Memory </p>
+								<p> {{localize "new_memory"}} </p>
 							</div>
 						</div>
 					</div>
@@ -97,7 +102,7 @@
 						<div class="card simple memory" id="birthday">
 							<img src="../../static/img/Regalo_card.png" alt="" srcset="">
 							<div class="card-content">
-								<p> Birthday Memory </p>
+								<p> {{localize "birthday_memory"}} </p>
 							</div>
 						</div>
 					</div>
@@ -106,7 +111,7 @@
 							<img src="../../static/img/sqrs.png" alt="" srcset=""
 								style="margin-left: 4px; margin-top: 2px;">
 							<div class="card-content">
-								<p> Colagge </p>
+								<p> {{localize "collage"}} </p>
 							</div>
 						</div>
 					</div>
@@ -114,7 +119,7 @@
 						<div class="card simple memory" id="special">
 							<img src="../../static/img/Pluma_card_tail.png" alt="" srcset="">
 							<div class="card-content">
-								<p> Especial Memory </p>
+								<p> {{localize "especial_memory"}} </p>
 							</div>
 						</div>
 					</div>
@@ -123,7 +128,7 @@
 			{{/if}}
 			{{#js_if "(this.Memories.pending.length + this.Memories.scheduled.length) > 0"}}
 			{{#js_if "this.Memories.scheduled.length > 0"}}
-			<div class="scheduled-title">Scheduled</div>
+			<div class="scheduled-title">{{localize "scheduled"}}</div>
 			<div data-space-between="10" data-slides-per-view="1.1"
 				class="swiper-container swiper-init sheduled-swiper">
 				<div class="swiper-wrapper">
@@ -135,7 +140,8 @@
 									<h1>{{name}}</h1>
 									<p>{{deliveryDate}}</p>
 								</div>
-								<a href="#" class="memory-options edit popover-open" data-popover=".popover-opt" data-memory="{{id}}">
+								<a href="#" class="memory-options edit popover-open" data-popover=".popover-opt"
+									data-memory="{{id}}">
 									<span class="material-icons">more_horiz</span>
 								</a>
 							</div>
@@ -203,7 +209,8 @@
 									<h1>{{name}}</h1>
 									<p>{{deliveryDate}}</p>
 								</div>
-								<a href="#" class="memory-options edit popover-open" data-popover=".popover-opt" data-memory="{{id}}">
+								<a href="#" class="memory-options edit popover-open" data-popover=".popover-opt"
+									data-memory="{{id}}">
 									<span class="material-icons">more_horiz</span>
 								</a>
 							</div>
@@ -260,13 +267,13 @@
 			</div>
 			{{/js_if}}
 			{{else}}
-				No traes memorias vato
+			No traes memorias vato
 			{{/js_if}}
 
 			{{#if IsEditing}}
 
 			{{else}}
-			<div class="donate-title">Donate</div>
+			<div class="donate-title">{{localize "donate"}}</div>
 			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init donate-swiper">
 				<div class="swiper-wrapper">
 					{{#each Fundations}}
@@ -286,8 +293,8 @@
 								</div>
 								<div class="card-content-padding">
 									<div class="btns-cont card-opened-fade-out">
-										<a href="#" class="btn-card card-prevent-open" data-fundation="{{id}}">Give
-											now</a>
+										<a href="#" class="btn-card card-prevent-open"
+											data-fundation="{{id}}">{{localize "give_now"}}</a>
 									</div>
 									<p class="card-opened-fade-in">{{desc}}</p>
 								</div>
@@ -337,7 +344,7 @@
 				var app = self.$app;
 				var isEditing = page.route.context.IsEditing;
 				var currentUser = page.route.context.CurrentUser;
-				
+
 				// console.log("home-memories pageInit [pageInit], updating user");
 
 				await app.methods.updateCurrentUser();
@@ -366,8 +373,8 @@
 
 					console.log(`Index Value Two: ${indexValueTwo}, ${id}`);
 
-					let item = select.items[indexValue-1];
-					
+					let item = select.items[indexValue - 1];
+
 					console.log($$(this)[0]);
 					console.log($$(this)[0][indexValueTwo - 1]);
 					console.log(targetUserId);
@@ -378,7 +385,7 @@
 					select.close(); /* cierra el popover */
 					// console.log(select.getValue()); /* valor del id */
 
-					await app.views.main.router.navigate(`/memories/home/user/${targetUserId}`, {reloadCurrent: true});
+					await app.views.main.router.navigate(`/memories/home/user/${targetUserId}`, { reloadCurrent: true });
 					// app.views.main.router.refreshPage();
 				});
 
@@ -388,7 +395,7 @@
 					// console.log($$('.popover-person'));
 				})
 
-				$$('.memory-options').on('click', function(val){
+				$$('.memory-options').on('click', function (val) {
 					$$('#edit-memory-btn')[0].href = "/memories/edit/memory/" + $$(this).prop("dataset").memory;
 				})
 
@@ -448,10 +455,18 @@
 					if (currentUser != null) {
 						var currentMembership = currentUser.currentMembership;
 						if (currentMembership === null) {
-							currentMembership = "No Membership";
+							if (window.language == 'en_US') {
+								currentMembership = 'No ' + window.localize('membership');
+							} else if (window.language == 'es_MX') {
+								currentMembership = 'Sin ' + window.localize('membership');
+							}
 						}
 						else {
-							currentMembership = currentUser.currentMembership.plan.name + " membership";
+							if (window.language == 'en_US') {
+								currentMembership = loggedUser.currentMembership.plan.name + " " + window.localize('membership');
+							} else if (window.language == 'es_MX') {
+								currentMembership = window.localize('membership') + " " + loggedUser.currentMembership.plan.name;
+							}
 						}
 
 						$$("#logged-user-name")[0].textContent = isEditing ? (currentUser.name != undefined ? `Managing ${currentUser.name}'s memories` : `Managing ${currentuser.username}'s memories`) : currentUser.name != undefined ? currentUser.name : currentUser.username;
