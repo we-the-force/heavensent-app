@@ -31,8 +31,8 @@ var app = new Framework7({
 
     data: {
         //server: 'http://192.168.5.169:1337',
-        // server: 'http://167.172.156.126:1337',
-        server: 'http://localhost:1337',
+        server: 'http://167.172.156.126:1337',
+        // server: 'http://localhost:1337',
         locales: {
             es: {
                 lenguage: "Español (MX)",
