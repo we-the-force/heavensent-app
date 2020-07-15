@@ -16,12 +16,12 @@
 							<!-- llenar select con usuarios -->
 							<select id="users">
 								<option value="1" id="user-thing-{{LoggedUser.id}}" asd="{{LoggedUser.id}}"
-									{{#js_if "this.LoggedUser.id == this.CurrentUser.id"}} selected {{else}} caca
-									{{/js_if}}>{{#js_if "this.LoggedUser.name != null"}} {{LoggedUser.name}} {{else}}
+									{{#js_if "this.LoggedUser.id == this.CurrentUser.id"}} selected {{/js_if}}>
+									{{#js_if "this.LoggedUser.name != null"}} {{LoggedUser.name}} {{else}}
 									{{LoggedUser.email}} {{/js_if}}</option>
 								{{#each AdminedContacts}}
 								<option value='{{js "@index + 2"}}' id="user-thing-{{id}}" asd="{{id}}"
-									{{#js_if "this.id == @root.CurrentUser.id"}} selected {{else}} caca {{/js_if}}>
+									{{#js_if "this.id == @root.CurrentUser.id"}} selected {{/js_if}}>
 									{{name}} </option>
 								<!-- <option value="2" selected>Ramona</option> -->
 								{{/each}}

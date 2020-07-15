@@ -8,7 +8,7 @@
                         <a class="back-btn">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
-                        <h1 class="title">Create Memory</h1>
+                        <h1 class="title">{{localize "create_mem_header"}}</h1>
                         <div class="none"></div>
                     </div>
                 </div>
@@ -20,14 +20,14 @@
                     <li class="item-content item-input">
                         <div class="item-inner">
                             <div class="item-input-wrap">
-                                <input type="text" id="title" placeholder="Title" required validate>
+                                <input type="text" id="title" placeholder="{{localize 'create_mem_title'}}" required validate>
                             </div>
                         </div>
                     </li>
                     <li class="item-content item-input">
                         <div class="item-inner">
                             <div class="item-input-wrap textarea">
-                                <textarea id="description" placeholder="Message" class="resizable"
+                                <textarea id="description" placeholder="{{localize 'create_mem_message'}}" class="resizable"
                                     maxlength="140"></textarea>
                                 <span class="contador">0/140</span>
                             </div>
@@ -47,11 +47,11 @@
             <!-- <div class="btns-cont center" id="b_01">
                 <a id="add-note-btn" class="button color-blue round large">Add note</a>
             </div> -->
-            <div class="upload-title">Upload files</div>
+            <div class="upload-title">{{localize "create_mem_upload"}}</div>
             <div class="upload-cont">
                 <div class="progress-cont">
                     <p class="bar"><span data-progress="0" class="progressbar" id="space-progressbar"></span></p>
-                    <div class="desc">Available space <div id="prog">100</div>MB out of <div id="total">100</div>MB
+                    <div class="desc">{{localize "create_mem_space"}} <div id="prog">100</div>MB {{localize "create_mem_out_of"}} <div id="total">100</div>MB
                     </div>
                 </div>
                 <div class="media-cont">
@@ -84,7 +84,7 @@
                     </label>
                 </div>
             </div>
-            <div class="contacts-title">Add contacts
+            <div class="contacts-title">{{localize "create_mem_add_contacts"}}
             </div>
             <div class="contacts-cont">
                 <div class="contacts">
@@ -114,12 +114,11 @@
                     </a>
                 </div>
             </div>
-            <div class="location-title">Location
+            <div class="location-title">{{localize "create_mem_location"}}
             </div>
             <div class="location-cont">
                 <div class="btns-cont center location-btn" id="b_04">
-                    <a id="add-location-btn" href="/memories/location" class="button color-blue round large">Add
-                        location</a>
+                    <a id="add-location-btn" href="/memories/location" class="button color-blue round large">{{localize "create_mem_add_location"}}</a>
                 </div>
                 <div class="location-map none">
                     <div class="map" id="map-static"></div>
@@ -134,7 +133,7 @@
                     </div>
                 </div>
             </div>
-            <div class="date-title">Deliver date
+            <div class="date-title">{{localize "create_mem_deliver_date"}}
                 <!-- quitar none cuando este moestrando informacion o agregar none cuando no haya info -->
                 <a href="" class="edit-btn deliver popup-open none" data-popup=".popup-deliver">
                     <i class="icons material-icons">edit</i>
@@ -144,7 +143,7 @@
             <div class="deliver-cont">
                 <div class="btns-cont center date-btn" id="b_05">
                     <a id="add-deliver-date" class="button color-blue round large popup-open"
-                        data-popup=".popup-deliver">Set date to deliver</a>
+                        data-popup=".popup-deliver"> {{localize "create_mem_set_deliver_date"}}</a>
                 </div>
                 <div class="deliver-info none">
                     <div class="info-cont">
@@ -156,14 +155,14 @@
                             <p class="title">Time:</p>
                             <p class="val"></p>
                         </div>
-                        <p class="immediatly-info none">The memory will be sent immediately</p>
+                        <p class="immediatly-info none">{{localize "create_mem_repeat_footer_immediately"}}</p>
                     </div>
                     <div class="footer-deliver">The memory will repeat itself every year until 08/22/2024</div>
                 </div>
             </div>
             <div class="ondemand-cont">
                 <div class="ondemand">
-                    <h1>On Demand</h1>
+                    <h1>{{localize "create_mem_on_demand"}}</h1>
                     <a class="popup-open" href="#" data-popup=".popup-demand">
                         <i class="info icons material-icons">info</i>
                     </a>
@@ -174,17 +173,17 @@
                 </label>
             </div>
             <div class="btns-cont center create" id="b_04">
-                <a id="create-btn-memory" class="button color-white round large">Create memory</a>
+                <a id="create-btn-memory" class="button color-white round large">{{localize "create_mem_create"}}</a>
             </div>
         </div>
         <div class="popup popup-demand">
             <div class="block">
-                <p>The user can access the content as many times as they can and wherever</p>
+                <p>{{localize "create_mem_on_demand_desc"}}</p>
             </div>
         </div>
         <div class="popup popup-deliver">
             <div class="immediately-cont">
-                <h1>Send immediately</h1>
+                <h1>{{localize "create_mem_immediately"}}</h1>
                 <label class="toggle toggle-init" id="immediately-toggle">
                     <input id="send-immediately-toggle" type="checkbox">
                     <span class="toggle-icon"></span>
@@ -194,13 +193,13 @@
                 <ul>
                     <li class="item-content item-input two-inputs">
                         <div class="item-inner">
-                            <label for="deliver-date" class="label">Date</label>
+                            <label for="deliver-date" class="label">{{localize "create_mem_date"}}</label>
                             <div class="item-input-wrap">
                                 <input type="date" class="pop-deliver-inputs" id="deliver-date" required validate />
                             </div>
                         </div>
                         <div class="item-inner">
-                            <label for="deliver-date" class="label">Time</label>
+                            <label for="deliver-date" class="label">{{localize "create_mem_time"}}</label>
                             <div class="item-input-wrap">
                                 <input type="time" class="pop-deliver-inputs" id="deliver-time" required validate />
                             </div>
@@ -210,7 +209,7 @@
             </div>
 
             <div class="repeat-cont">
-                <h1>Repeat</h1>
+                <h1>{{localize "create_mem_repeat"}}</h1>
                 <div class="inputs list">
                     <ul>
                         <li class="item-content item-input two-inputs">
@@ -219,7 +218,7 @@
                                     <a id="select-repeat" class="select color-white round small popover-open"
                                         data-popover=".popover-repeat">
                                         <i class="material-icons">keyboard_arrow_down</i>
-                                        <p id="select-repeat-value">Never</p>
+                                        <p id="select-repeat-value">{{localize "create_mem_never"}}</p>
                                     </a>
                                 </div>
                             </div>
@@ -228,7 +227,7 @@
                 </div>
             </div>
             <div class="end-repeat-cont">
-                <h1>End repetition</h1>
+                <h1>{{localize "create_mem_repeat_end"}}</h1>
                 <div class="inputs list">
                     <ul>
                         <li class="item-content item-input">
@@ -251,16 +250,16 @@
             <div class="popover-inner">
                 <div class="list">
                     <ul>
-                        <li><a class="list-btn never popover-close" href="#">Never</a></li>
+                        <li><a class="list-btn never popover-close" href="#">{{localize "create_mem_never"}}</a></li>
                         <!-- <li><a class="list-btn every_day popover-close" href="#">Every day</a></li> -->
-                        <li><a class="list-btn weekly popover-close" href="#">Weekly</a></li>
+                        <li><a class="list-btn weekly popover-close" href="#">{{localize "create_mem_weekly"}}</a></li>
                         <!-- <li><a class="list-btn biweekly popover-close" href="#">Biweekly</a></li> -->
                         <!-- <li><a class="list-btn each_month popover-close" href="#">Each month </a></li> -->
-                        <li><a class="list-btn each_month popover-close" href="#">Monthly</a></li>
+                        <li><a class="list-btn each_month popover-close" href="#">{{localize "create_mem_monthly"}}</a></li>
                         <!-- <li><a class="list-btn every_3_months popover-close" href="#">Every 3 months</a></li> -->
                         <!-- <li><a class="list-btn every_6_months popover-close" href="#">Every 6 months</a></li> -->
                         <!-- <li><a class="list-btn every_year popover-close checked" href="#">Every year</a></li> -->
-                        <li><a class="list-btn every_year popover-close" href="#">Yearly</a></li>
+                        <li><a class="list-btn every_year popover-close" href="#">{{localize "create_mem_yearly"}}</a></li>
                     </ul>
                 </div>
             </div>
@@ -368,6 +367,12 @@
                 if (desc) {
                     $$('textarea#description').val(JSON.parse(desc));
                 }
+            
+				//if (window.language == 'en_US') {
+				//	currentMembership = 'No ' + window.localize('membership');
+				//} else if (window.language == 'es_MX') {
+				//	currentMembership = 'Sin ' + window.localize('membership');
+				//}
 
                 if (date && time && repeat) {
                     $$('.date-title .edit-btn').removeClass('none');
@@ -389,16 +394,22 @@
                     if (JSON.parse(sessionStorage.date_end) != "") {
                         $$('#date-end').val(JSON.parse(sessionStorage.date_end));
                         /* frace al inicio */
-                        let repeat = JSON.parse(sessionStorage.footer).split(' until ');
+                        let repeat = JSON.parse(sessionStorage.footer).split(window.language == 'en_US' ? ' until ' : (window.language == 'es_MX' ? " hasta " : ""));
                         let date_foot = repeat[1];
-                        repeat = repeat[0].split(' itself ')[1];
+                        repeat = repeat[0].split(window.language == 'en_US' ? ' itself ' : (window.language == 'es_MX' ? ' repetirá ' : ''))[1];
                         $$('.popup-deliver .footer').children('div').text(JSON.parse(sessionStorage.date_end));
-                        $$('.popup-deliver .footer').html('The memory will repeat itself ' + repeat + ' until <div>' + date_foot + '</div>');
+                        $$('.popup-deliver .footer').html(window.localize('create_mem_repeat_footer_date') + ' ' + repeat + ' ' + window.localize('create_mem_repeat_footer_until') + ' <div>' + date_foot + '</div>');
+                        // if (window.language == 'en_US')
+                        // {
+                        //     $$('.popup-deliver .footer').html('The memory will repeat itself ' + repeat + ' until <div>' + date_foot + '</div>');
+                        // }else if (window.language == 'es_MX')
+                        // {
+                        // }
                     } else {
                         /* disable and grey */
                         $$('#date-end.pop-deliver-inputs').addClass('grey');
                         $$('.end-repeat-cont').addClass('none');
-                        $$('.popup-deliver .footer').text('The memory will never repeat');
+                        $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_never'));
                     }
                     $$('.deliver-cont .deliver-info .footer-deliver').text(JSON.parse(sessionStorage.footer));
                     $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date));
@@ -424,12 +435,12 @@
                         $$('.pop-deliver-inputs#date-end').addClass('grey');
                         $$('.end-repeat-cont').addClass('none');
                         $$('.pop-deliver-inputs').trigger('change');
-                        $$('.popup-deliver .footer').text('The memory will never repeat');
+                        $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_footer_never'));
                     } else {
                         $$('.pop-deliver-inputs#date-end').removeClass('grey');
                         $$('.end-repeat-cont').removeClass('none');
                         $$('.pop-deliver-inputs').trigger('change');
-                        $$('.popup-deliver .footer').html('The memory will repeat itself ' + $$(this).text() + ' until <div>--/--/----</div>');
+                        $$('.popup-deliver .footer').html(window.localize('create_mem_repeat_footer_date') + ' ' + $$(this).text() + ' ' + window.localize('create_mem_repeat_footer_until') + ' ' + '<div>--/--/----</div>');
                     }
                 });
 
@@ -914,12 +925,9 @@
                     // console.log(cover);
                     // console.log(!cover);
                     if (!cover) {
-                        if (!editing)
-                        {
-                            result.valid = false;
-                            result.message += result.errors > 0 ? ", no cover" : "No cover";
-                            result.errors++;
-                        }
+                        result.valid = false;
+                        result.message += result.errors > 0 ? ", no cover" : "No cover";
+                        result.errors++;
                     }
                     else {
                         result.memoryFiles.cover = cover;
@@ -929,12 +937,9 @@
                     // console.log(files);
                     // console.log(!(files.length > 0));
                     if (!(files.length > 0)) {
-                        if (!editing)
-                        {
-                            result.valid = false;
-                            result.message += result.errors > 0 ? ", no files" : "No files";
-                            result.errors++;
-                        }
+                        result.valid = false;
+                        result.message += result.errors > 0 ? ", no files" : "No files";
+                        result.errors++;
                     }
                     else {
                         result.memoryFiles.media = files;
@@ -1010,7 +1015,8 @@
                                 result.memory.reminder.date_end = null;
                             }
                             else {
-                                result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                // result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                result.memory.reminder.repeat = repetitionToApi(repeat.substring(1, repeat.length - 1))
                                 if (result.memory.reminder.repeat === "not")
                                 {
                                     console.log("Not repeating, date_end = null");
@@ -1046,7 +1052,8 @@
                                 result.memory.reminder.date_end = null;
                             }
                             else {
-                                result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                // result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                result.memory.reminder.repeat = repetitionToApi(repeat.substring(1, repeat.length - 1))
                                 if (result.memory.reminder.repeat === "not")
                                 {
                                     console.log("Not repeating, date_end = null");
@@ -1074,7 +1081,8 @@
                                 result.memory.reminder.date_end = null;
                             }
                             else {
-                                result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                // result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                result.memory.reminder.repeat = repetitionToApi(repeat.substring(1, repeat.length - 1))
                                 if (result.memory.reminder.repeat === "not")
                                 {
                                     console.log("Not repeating, date_end = null");
@@ -1151,6 +1159,26 @@
                     let porcent_prog = (progress * 100) / maxmb;
                     app.progressbar.set('#space-progressbar', porcent_prog);
                     $$('.progress-cont .desc #prog').text((maxmb - progress));
+                }
+
+                function repetitionToApi(value)
+                {
+                    if (value === "Never" || value == "Nunca")
+                    {
+                        return "not";
+                    }
+                    else if (value === "Weekly" || value === "Semanalmente")
+                    {
+                        return "weekly";
+                    }
+                    else if (value === "Monthly" || value === "Mensualmente")
+                    {
+                        return "monthly";
+                    }
+                    else if (value === "Yearly" || value === "Anualmente")
+                    {
+                        return "yearly";
+                    }
                 }
             },
         },
