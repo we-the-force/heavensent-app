@@ -148,11 +148,11 @@
                 <div class="deliver-info none">
                     <div class="info-cont">
                         <div class="date-info">
-                            <p class="title">Date:</p>
+                            <p class="title">{{localize "create_mem_date"}}:</p>
                             <p class="val"></p>
                         </div>
                         <div class="time-info">
-                            <p class="title">Time:</p>
+                            <p class="title">{{localize "create_mem_time"}}:</p>
                             <p class="val"></p>
                         </div>
                         <p class="immediatly-info none">{{localize "create_mem_repeat_footer_immediately"}}</p>
@@ -399,12 +399,6 @@
                         repeat = repeat[0].split(window.language == 'en_US' ? ' itself ' : (window.language == 'es_MX' ? ' repetirá ' : ''))[1];
                         $$('.popup-deliver .footer').children('div').text(JSON.parse(sessionStorage.date_end));
                         $$('.popup-deliver .footer').html(window.localize('create_mem_repeat_footer_date') + ' ' + repeat + ' ' + window.localize('create_mem_repeat_footer_until') + ' <div>' + date_foot + '</div>');
-                        // if (window.language == 'en_US')
-                        // {
-                        //     $$('.popup-deliver .footer').html('The memory will repeat itself ' + repeat + ' until <div>' + date_foot + '</div>');
-                        // }else if (window.language == 'es_MX')
-                        // {
-                        // }
                     } else {
                         /* disable and grey */
                         $$('#date-end.pop-deliver-inputs').addClass('grey');
