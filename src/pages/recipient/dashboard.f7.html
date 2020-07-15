@@ -9,7 +9,7 @@
                         <a href="" class="menu-btn">
                             <i class="icons material-icons">menu</i>
                         </a>
-                        <h1 class="title">Memories</h1>
+                        <h1 class="title">{{localize "memories"}}</h1>
                         <div class="none"></div>
                     </div>
                 </div>
@@ -20,14 +20,14 @@
 			<div class="toolbar-inner">
 				<a class="item-link" href="/memories/home/user/{{CurrentUser}}">
 					<i class="icon material-icons cloud grey">cloud</i>
-					<span class="tabbar-label">My memories</span>
+					<span class="tabbar-label">{{localize "my_memories"}}</span>
 				</a>
 				<a class="item-link" href="#">
 					<div class="custom-icon">
 						<i class="icon material-icons cloud">cloud</i>
 						<i class="icon material-icons people">people</i>
 					</div>
-					<span class="tabbar-label two">Shared with me</span>
+					<span class="tabbar-label two">{{localize "shared_with_me"}}</span>
 				</a>
 			</div>
 		</div>
@@ -45,7 +45,7 @@
                             <div class="card-header">
                                 <div class="title-card">
                                     <h1>{{title}}</h1>
-                                    <p class="sender">Sent by: {{owner}}</p>
+                                    <p class="sender">{{localize "sent_by"}} {{owner}}</p>
                                 </div>
                                 <a href="#" class="info popover-open" data-popover=".popover-info">
                                     <span class="material-icons">info</span>
@@ -72,7 +72,7 @@
                             <div class="card-footer">
                                 <div class="btns-cont center">
                                     <!-- <a href="/memories/view/memory/{{id}}" class="button color-blue round small">See</a> -->
-                                    <a href="/memory/{{id}}" class="button color-blue round small">See</a>
+                                    <a href="/memory/{{id}}" class="button color-blue round small">{{localize "see"}}</a>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div class="btns-cont center create">
-                <a id="create-memories" class="button color-white round large">Create memories</a>
+                <a id="create-memories" class="button color-white round large">{{localize "create_memories"}}</a>
             </div>
             <div class="footer">
                 <div class="sqr_bck" id="sqr4"></div>
@@ -99,15 +99,15 @@
                     <ul>
                         <li class="content">
                             <span class="material-icons grey-light">image</span>
-                            No content
+                            {{localize "no_content"}}
                         </li>
                         <li>
                             <span class="material-icons">textsms</span>
-                            Text
+                            {{localize "text"}}
                         </li>
                         <li>
                             <span class="material-icons">image</span>
-                            Pictures
+                            {{localize "pictures"}}
                         </li>
                         <li>
                             <span class="material-icons">videocam</span>
@@ -119,7 +119,7 @@
                     <ul>
                         <li class="content">
                             <span class="material-icons blue">image</span>
-                            Content
+                            {{localize "content"}}
                         </li>
                         <li>
                             <span class="material-icons">mic</span>
@@ -131,7 +131,7 @@
                         </li>
                         <li>
                             <span class="material-icons">play_circle_filled</span>
-                            On Demand
+                            {{localize "on_demand"}}
                         </li>
                     </ul>
                 </div>
