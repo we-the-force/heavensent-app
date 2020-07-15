@@ -966,10 +966,20 @@
                     if (oldContacts != undefined) {
                         contacts = getContacts(oldContacts);
                     }
-                    if (time && !(time != "null" || time != "undefined")) {
+                    if (time && !(time == "null" || time == "undefined")) {
+                        console.log("--- times ---");
+                        console.log(time);
                         let auxTime = time.substring(1, time.length - 1).split(':');
+                        console.log(auxTime);
                         time = `${String(auxTime[0]).padStart(2, 0)}:${String(auxTime[1]).padStart(2, 0)}:00.000`;
                         // `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                    }
+                    else
+                    {
+                        console.log("No habia time chale");
+                        console.log(time);
+                        console.log('!(time != "null" || time != "undefined")');
+                        console.log(!(time != "null" || time != "undefined"));
                     }
 
                     // console.log("Checking title [validateFields]");
