@@ -127,7 +127,11 @@ var app = new Framework7({
                 scheduled: "Programado",
                 my_memories: "Mis memorias",
                 shared_with_me: "Compartido conmigo",
-
+                //left panel
+                profile: "Perfil",
+                plan: "Plan",
+                terms_and_conds: "Términos y condiciones",
+                sign_out: "Cerrar sesion",
             },
             en: {
                 lenguage: "English (US)",
@@ -222,6 +226,11 @@ var app = new Framework7({
                 scheduled: "Scheduled",
                 my_memories: "My memories",
                 shared_with_me: "Shared with me",
+                //left panel
+                profile: "Profile",
+                plan: "Plan",
+                terms_and_conds: "Terms & Conditions",
+                sign_out: "Sign Out",
             }
         }
     },
