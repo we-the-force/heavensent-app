@@ -198,7 +198,7 @@
 			</div>
 			{{/js_if}}
 			{{#js_if "this.Memories.pending.length > 0"}}
-			<div class="later-title">Send later</div>
+			<div class="later-title">{{localize "send_later"}}</div>
 			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init later-swiper">
 				<div class="swiper-wrapper">
 					{{#each Memories.pending}}

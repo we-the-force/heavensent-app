@@ -454,7 +454,7 @@
                         $$('#date-end.pop-deliver-inputs').addClass('grey');
                         $$('.end-repeat-cont').addClass('none');
                         // $$('.popup-deliver .footer').text('The memory will never repeat');
-                        $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_never'));
+                        $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_footer_never'));
                     }
                     $$('.deliver-cont .deliver-info .footer-deliver').text(JSON.parse(sessionStorage.footer));
                     $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date));
@@ -481,7 +481,7 @@
                         $$('.end-repeat-cont').addClass('none');
                         $$('.pop-deliver-inputs').trigger('change');
                         // $$('.popup-deliver .footer').text('The memory will never repeat');
-                        $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_never'));
+                        $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_footer_never'));
                     } else {
                         $$('.pop-deliver-inputs#date-end').removeClass('grey');
                         $$('.end-repeat-cont').removeClass('none');
@@ -966,7 +966,11 @@
                     if (oldContacts != undefined) {
                         contacts = getContacts(oldContacts);
                     }
-                    if (time && !(time == "null" || time == "undefined")) {
+                    if (time == "\"\"")
+                    {
+                        console.log("Que pedo el time no existe");
+                    }
+                    if (time && !(time == "null" || time == "undefined" ||  time == "\"\"")) {
                         console.log("--- times ---");
                         console.log(time);
                         let auxTime = time.substring(1, time.length - 1).split(':');
@@ -980,6 +984,7 @@
                         console.log(time);
                         console.log('!(time != "null" || time != "undefined")');
                         console.log(!(time != "null" || time != "undefined"));
+                        time = undefined;
                     }
 
                     // console.log("Checking title [validateFields]");
@@ -1111,7 +1116,7 @@
                                 result.memory.reminder.repeat = repetitionToApi(repeat.substring(1, repeat.length - 1));
                                 if (result.memory.reminder.repeat === "not")
                                 {
-                                    console.log("Not repeating, date_end = null");
+                                    console.log("Not repeating, date_end = undefined");
                                     result.memory.reminder.date_end = undefined;
                                 }
                                 else
@@ -1157,7 +1162,7 @@
                                 result.memory.reminder.repeat = repetitionToApi(repeat.substring(1, repeat.length - 1));
                                 if (result.memory.reminder.repeat === "not")
                                 {
-                                    console.log("Not repeating, date_end = null");
+                                    console.log("Not repeating, date_end = undefined");
                                     result.memory.reminder.date_end = undefined;
                                 }
                                 else
@@ -1176,14 +1181,14 @@
                         if (!repeat)
                         {
                             result.memory.reminder.repeat = 'not';
-                            result.memory.reminder.date_end = null;
+                            result.memory.reminder.date_end = undefined;
                         }
                         else
                         {
                             result.memory.reminder.repeat = repetitionToApi(repeat.substring(1, repeat.length - 1));
                             if (result.memory.reminder.repeat === "not")
                             {
-                                result.memory.reminder.date_end = null;
+                                result.memory.reminder.date_end = undefined;
                             }
                             else
                             {

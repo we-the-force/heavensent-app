@@ -125,6 +125,7 @@ var app = new Framework7({
                 collage: "Collage",
                 especial_memory: "Memoria especial",
                 scheduled: "Programado",
+                send_later: "Enviar Luego",
                 my_memories: "Mis memorias",
                 shared_with_me: "Compartido conmigo",
                 //left panel
@@ -307,6 +308,7 @@ var app = new Framework7({
                 collage: "Collage",
                 especial_memory: "Especial Memory",
                 scheduled: "Scheduled",
+                send_later: "Send Later",
                 my_memories: "My memories",
                 shared_with_me: "Shared with me",
                 //left panel
@@ -507,6 +509,9 @@ var app = new Framework7({
                         // console.log("Had no admins [userHasAdmin()]")
                         result = false;
                     }
+                }).catch(function(error){
+                    console.log("Error checking if it's admin or not");
+                    console.log(error);
                 })
             }
             else {
