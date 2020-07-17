@@ -243,39 +243,37 @@
 						return false;
 					}
 
-					console.log("showing blue [pageInit.create-btn.onClick]");
-					app.preloader.show("blue");
-					console.log("app.request [pageInit.create-btn.onClick]");
+					//If email exists, check if it was created by someone adding them as contact/admin.
+					let emailRes = await emailExists(email);
+					if (emailRes.result)
+					{
+						let user = emailRes.user;
 
-					console.log("Creating main user [pageInit.create-btn.onClick]");
-					app.request.promise.postJSON(app.data.server + "/auth/local/register", {
-						"username": email,
-						"email": email,
-						"password": password,
-					})
-						.then(async function (signupRes) {
-							var createdUser = signupRes.data.user;
-							console.log("User created, adding extra data [pageInit.create-btn.onClick]");
+						if (user.created_as_receiver)
+						{
+							console.log("Updating user info");
 							await app.request({
-								url: app.data.server + '/users/' + createdUser.id,
+								url: app.data.server + '/users/' + user.id,
 								method: 'PUT',
 								data: {
+									"password": password,
 									"mobile": mobile,
 									"birthday": birthday,
 									"name": username,
+									"created_as_receiver": false,
 								}
 							});
-							console.log("Adding photo [pageInit.create-btn.onClick]");
+
+							console.log("Uploading image");
 							await c.result('blob', 'png').then(async blob => {
-								// let file = new File([blob], "perfil.png", new Date());
+
 								const data = new FormData();
-								// data.append("files", file);
 								data.append("files", blob, 'profile.png');
-								data.append("refId", createdUser.id);
+								data.append("refId", user.id);
 								data.append("ref", "user");
 								data.append('source', 'users-permissions');
 								data.append('field', 'profilePicture');
-								console.log("Post image request [pageInit.create-btn.onClick]");
+
 								await app.request({
 									url: app.data.server + '/upload',
 									method: "POST",
@@ -283,20 +281,76 @@
 									contentType: "multipart/form-data",
 									data: data
 								});
-								console.log("croppie result [pageInit.create-btn.onClick]");
+							})
 
+							console.log("Sending email");
+							//Attempt to resend confirmation email
+							app.request.promise.post(`${app.data.server}/auth/send-email-confirmation`, {email: user.email}).then(function(res){
+								console.log("Success");
+								console.log(res);
+							}).catch(function(err){
+								console.log("Ayy something broke");
+								console.log(err);
+							});
+
+							console.log("Going to admin thing");
+							app.preloader.hide();
+							//CREATE ADMIN THING
+							app.views.main.router.navigate({
+								name: 'invite-admin',
+								params: { userID: user.id }
+							})
+
+						}
+						else
+						{
+							app.dialog.alert("That email appears to be taken already. If you forgot your password, please request a password change");
+						}
+					}
+					else
+					{
+						app.preloader.show("blue");
+
+						app.request.promise.postJSON(app.data.server + "/auth/local/register", {
+							"username": email,
+							"email": email,
+							"password": password,
+						}).then(async function (signupRes) {
+
+							var createdUser = signupRes.data.user;
+
+							await app.request({
+								url: app.data.server + '/users/' + createdUser.id,
+								method: 'PUT',
+								data: {
+									"mobile": mobile,
+									"birthday": birthday,
+									"name": username,
+									"created_as_receiver": false,
+								}
+							});
+
+							await c.result('blob', 'png').then(async blob => {
+								const data = new FormData();
+								data.append("files", blob, 'profile.png');
+								data.append("refId", createdUser.id);
+								data.append("ref", "user");
+								data.append('source', 'users-permissions');
+								data.append('field', 'profilePicture');
+
+								await app.request({
+									url: app.data.server + '/upload',
+									method: "POST",
+									crossDomain: true,
+									contentType: "multipart/form-data",
+									data: data
+								});
 								app.preloader.hide();
-
-								console.log("Creating admin [pageInit.create-btn.onClick]");
 								//CREATE ADMIN THING
-
 								app.views.main.router.navigate({
 									name: 'invite-admin',
 									params: { userID: createdUser.id }
 								})
-
-								// app.dialog.alert("We've sent you and email to confirm your account.");
-								// app.views.main.router.navigate({ name: "login" });
 							})
 
 						})
@@ -306,10 +360,32 @@
 							console.log(err);
 							var obj = JSON.parse(err.xhr.response);
 							app.dialog.alert('Some fields are incomplete or incorrect, please try again.' + '\r\n' + obj.message[0].messages[0].message);
-
 						});
+					}
+
+					
 
 				});
+
+				async function emailExists(email)
+				{
+					let result = {
+						result: false,
+						user: undefined
+					};
+					await app.request.promise.get(`${app.data.server}/users/?email=${email}`).then(function(res){
+						let resJson = JSON.parse(res.data);
+						if (resJson.length > 0)
+						{
+							result.result = true;
+							result.user = resJson[0];
+						}
+					}).catch(function(err){
+						console.log("emailExists error");
+						console.log(err);
+					});
+					return result;
+				}
 
 				function makeid(length) {
 					var result = '';
