@@ -31,7 +31,7 @@ var app = new Framework7({
 
     data: {
         //server: 'http://192.168.5.169:1337',
-        server: 'http://api.heavensentnow.com',
+        server: 'https://api.heavensentnow.com',
         // server: 'http://localhost:1337',
         locales: {
             es: {
