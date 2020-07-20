@@ -52,7 +52,7 @@
 				</ul>
 			</div>
 			<div class="btns-cont center">
-				<a href="/" class="button round color-blue large">{{localize "save_pass"}}</a>
+				<a id="save-pass-btn" href="" class="button round color-blue large">{{localize "save_pass"}}</a>
 			</div>
 		</div>
 	</div>
@@ -61,7 +61,62 @@
 	import $$ from "dom7";
 	export default {
 		on: {
-			pageInit: function (e, page) {},
+			pageInit: function (e, page) {
+				var self = this;
+				var app = self.$app;
+				var currentCode = app.views.main.router.currentRoute.params.code;
+
+				console.log(currentCode);
+
+				$$('#save-pass-btn').click(function (val) {
+					// app.request.promise.post(`${app.data.server}/auth/forgot-password`, {email: emailVal}).then(function(res){
+					// 	console.log("email sent");
+					// 	console.log(res);
+					// 	app.views.main.router.navigate('/recovery/mailSend');
+					// }).catch(function(err){
+					// 	console.log("Error sending email");
+					// 	console.log(err);
+					// });
+
+					let pass1 = $$('#pass').val();
+					let pass2 = $$('#pass_2').val();
+
+					console.log(`passes: (${pass}, ${pass_2})`);
+					if (pass1 != '' && pass2 != '')
+					{
+						if (pass1 == pass2)
+						{
+							if (pass1.length >= 8)
+							{
+								app.request.promise.post(`${app.data.server}/auth/reset-password`, {
+									code: currentCode,
+									password: pass1,
+									passwordConfirmation: pass2,
+								}).then(function(res){
+									console.log("The password has been reset");
+									app.dialog.alert("Password has been successfully changed");
+									app.views.main.router.navigate('/');
+								}).catch(function(err){
+									console.log("An error occurred!");
+									console.log(err);
+								});
+							}
+							else
+							{
+								app.dialog.alert("Password must be at least 8 characters long");
+							}
+						}
+						else
+						{
+							app.dialog.alert("Both passwords must match!");
+						}
+					}
+					else
+					{
+						app.dialog.alert("Please fill both password fields");
+					}
+				});
+			},
 		},
 	};
 </script>

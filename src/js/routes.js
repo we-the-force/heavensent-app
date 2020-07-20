@@ -185,28 +185,27 @@ var routes = [
     {
         name: 'login',
         path: '/',
-        name: 'login',
         beforeEnter: isLoggedIn,
         component: Login,
     },
     {
-        path: '/recovery',
         name: 'recovery',
+        path: '/recovery',
         component: Recovery,
     },
     {
-        path: '/recovery/mailSend',
         name: 'recovery_mail_send',
+        path: '/recovery/mailSend',
         component: RecoveryMailSend,
     },
     {
-        path: '/recovery/newPass',
         name: 'recovery_new_pass',
+        path: '/recovery/newPass/code/:code',
         component: RecoveryNewPass,
     },
     {
-        path: '/UserAgreement',
         name: 'user-agreement',
+        path: '/UserAgreement',
         component: UserAgreement,
     },
     {
