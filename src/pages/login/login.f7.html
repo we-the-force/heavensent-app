@@ -50,6 +50,13 @@
 	import localforage from "localforage";
 	export default {
 		on: {
+			pageMounted: async function(){
+				var self = this;
+				var app = self.$app;
+				loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
+					app.alert('ya cargó');
+				} )
+			},
 			pageBeforeIn: async function(){
 				var self = this;
 				var app = self.$app;
