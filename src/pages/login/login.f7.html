@@ -53,8 +53,8 @@
 			pageMounted: async function(){
 				var self = this;
 				var app = self.$app;
-				loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
-					app.alert('ya cargó');
+				app.methods.loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
+					app.dialog.alert('ya cargó');
 				} )
 			},
 			pageBeforeIn: async function(){
