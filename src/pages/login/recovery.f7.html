@@ -43,7 +43,7 @@
 				</ul>
 			</div>
 			<div class="btns-cont center">
-				<a href="/recovery/mailSend" class="button round color-blue large">{{localize "recover_pass"}}</a>
+				<a id="recover-pass-btn" href="" class="button round color-blue large">{{localize "recover_pass"}}</a>
 			</div>
 		</div>
 	</div>
@@ -52,7 +52,45 @@
 	import $$ from "dom7";
 	export default {
 		on: {
-			pageInit: function (e, page) {},
+			pageInit: async function (e, page) {
+				var self = this;
+				var app = self.$app;
+				// var isEditing = page.route.context.IsEditing;
+				// var currentUser = page.route.context.CurrentUser;
+
+				// /recovery/mailSend
+
+				$$('#recover-pass-btn').click(async function (val) {
+					console.log("Ayyy click");
+					let emailVal = $$('#email').val();
+					if (validateEmail(emailVal))
+					{
+						console.log("Doing the email thing");
+						app.request.promise.post(`${app.data.server}/auth/forgot-password`, {email: emailVal}).then(function(res){
+							console.log("email sent");
+							console.log(res);
+							app.views.main.router.navigate('/recovery/mailSend');
+						}).catch(function(err){
+							console.log("Error sending email");
+							console.log(err);
+						});
+					}
+					else
+					{
+						app.dialog.alert("pls correo correcto");
+					}
+				});
+
+				function validateEmail(mail) 
+				{
+					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+					{
+						return (true);
+					}
+					// alert("You have entered an invalid email address!")
+					return (false);
+				}
+			},
 		},
 	};
 </script>

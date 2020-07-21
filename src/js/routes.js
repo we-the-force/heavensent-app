@@ -185,28 +185,27 @@ var routes = [
     {
         name: 'login',
         path: '/',
-        name: 'login',
         beforeEnter: isLoggedIn,
         component: Login,
     },
     {
-        path: '/recovery',
         name: 'recovery',
+        path: '/recovery',
         component: Recovery,
     },
     {
-        path: '/recovery/mailSend',
         name: 'recovery_mail_send',
+        path: '/recovery/mailSend',
         component: RecoveryMailSend,
     },
     {
-        path: '/recovery/newPass',
         name: 'recovery_new_pass',
+        path: '/recovery/newPass/code/:code',
         component: RecoveryNewPass,
     },
     {
-        path: '/UserAgreement',
         name: 'user-agreement',
+        path: '/UserAgreement',
         component: UserAgreement,
     },
     {
@@ -239,7 +238,11 @@ var routes = [
             var router = this;
             var app = router.app;
             // var currentUser = await app.methods.getLocalValue()
+            var loggedUser = await app.methods.getLocalValue('loggedUser');
             var contactId = routeTo.params.contactId;
+
+            var contactInfo = null;
+            var relationInfo = null;
 
             await app.request.promise.json(`${app.data.server}/contacts/${contactId}`).then(function (res) {
                 // Do the resolve depending on if the user exists and such.
@@ -247,16 +250,37 @@ var routes = [
 
                 // console.log("inside async [routes.edit-contact.async]");
                 // console.log(res.data);
+                contactInfo = res.data;
+            }).catch(function(err){
+                console.log("Error fetching contact info [edit-contact.async]");
+                console.log(err);
+            })
 
+            await app.request.promise.json(`${app.data.server}/contacts/?owner=${loggedUser.id}&contact=${contactId}`).then(function (res){
+                relationInfo = res.data; 
+            }).catch(function(err){
+                console.log("Error fetching relationship info [edit-contact.async]");
+                console.log(err);
+            });
+
+
+            if (contactInfo != null && relationInfo != null)
+            {
                 resolve({
                     component: EditContact,
                 },
-                    {
-                        context: {
-                            ContactInfo: res.data,
-                        }
-                    });
-            })
+                {
+                    context: {
+                        ContactInfo: contactInfo,
+                        RelationInfo: relationInfo,
+                    }
+                });
+            }
+            else
+            {
+                console.log("Rejected because user either couldn't get the contact or relation info");
+                reject();
+            }
         }
         // component: EditContact,
     },
