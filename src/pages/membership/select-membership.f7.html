@@ -270,10 +270,15 @@
 					paymentsClient.loadPaymentData(paymentDataRequest)
 									.then(function(paymentData) {
 											// handle the response
+											console.log("Then:");
+											console.log(paymentData);
+											console.log("Do the thing with the membership como no");
 											processPayment(paymentData);
+											assignPlan();
 									})
 									.catch(function(err) {
 											// show error in developer console for debugging
+											console.log("Error en el cositos")
 											console.error(err);
 									});
 				}
@@ -363,6 +368,39 @@
 							return plans[2];
 						// return "premium";
 					}
+				}
+
+				async function assignPlan()
+				{
+					await app.request.promise.get(`${app.data.server}/memberships/?name=${selectedPlan.name}`).then(async function(planRes){
+						let plan = JSON.parse(planRes.data)[0];
+						await app.request.promise.get(`${app.data.server}/users/${queryID}`).then(async function(userRes){
+							console.log("Inserting membership");
+							await app.request({
+								url: `${app.data.server}/users/${queryID}`,
+								method: 'PUT',
+								data:{
+									"currentMembership": {
+										"isActive": true,
+										"nextBillingDate": formatDate(),
+										"billedCard": 123123,
+										"plan": plan.id
+									}
+								}
+							});
+
+							await app.methods.updateCurrentUser();
+
+							//If no errors present
+							app.views.main.router.navigate('/membership/confirmed');
+						}).catch(function(err){
+							console.log(`There was an error fetching the current user (id: ${queryID})`);
+							console.log(err);
+						})
+					}).catch(function(err){
+						console.log(`There was an error fetching the plan! (name: ${selectedPlan.name})`);
+						console.log(err);
+					})
 				}
 
 				async function getPlans()
