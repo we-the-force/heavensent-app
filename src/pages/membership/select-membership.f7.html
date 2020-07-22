@@ -395,7 +395,8 @@
 								"token": paymentToken,
 								"user": queryID,
 								"date": formatDate(false),
-								"concept": `${capitalize(selectedPlan.name)} membership for HeavenSent`
+								"concept": `${capitalize(selectedPlan.name)} membership for HeavenSent`,
+								"amountUSD": `${selectedPlan.cost}`
 							})
 
 							await app.methods.updateCurrentUser();
