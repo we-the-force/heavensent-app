@@ -391,12 +391,15 @@
 								}
 							});
 
+							userEmail = await app.methods.getLocalValue('loggedUser').email;
+
 							await app.request.promise.postJSON(`${app.data.server}/payments`,{
 								"token": paymentToken,
 								"user": queryID,
 								"date": formatDate(false),
 								"concept": `${capitalize(selectedPlan.name)} membership for HeavenSent`,
-								"amountUSD": `${selectedPlan.cost}`
+								"amountUSD": `${selectedPlan.cost}`,
+								"userEmail": email
 							})
 
 							await app.methods.updateCurrentUser();
