@@ -391,7 +391,7 @@
 								}
 							});
 
-							await app.request.promise.postJSON(`${app.data.server}/payment`,{
+							await app.request.promise.postJSON(`${app.data.server}/payments`,{
 								"token": paymentToken,
 								"user": queryID,
 								"date": formatDate(false),
