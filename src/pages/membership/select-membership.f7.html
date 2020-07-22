@@ -119,9 +119,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="btns-cont center">
+			<div id="btn-cont" class="btns-cont center">
 				<!-- <a id="confirm-plan-btn" href="/membership/card/" class="button color-blue round large">Select plan</a> -->
-				<a id="confirm-plan-btn" href="/membership/card/?plan=basic" class="button color-blue round large">{{localize "select_plan"}}</a>
+				<!-- <a id="confirm-plan-btn" href="/membership/card/?plan=basic" class="button color-blue round large">{{localize "select_plan"}}</a> -->
+				<!-- <a id="confirm-plan-btn" href="" class="button color-blue round large">{{localize "select_plan"}}</a> -->
 			</div>
 		</div>
 	</div>
@@ -131,17 +132,177 @@
 	export default {
 		// auth/local/register
 		on: {
+			pageMounted: async function(){
+			},
 			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
 				
 				var queryID = app.views.main.router.currentRoute.params.userID;
 				var clearOnBack = app.views.main.router.currentRoute.params.clearOnBack;
+				console.log("Intro thing");
+				var plans = await getPlans();
+				console.log("plans");
+				console.log(plans);
+				var selectedPlan = plans[0];
+				console.log("Selected PLan");
+				console.log(selectedPlan);
 
+				const baseRequest = {
+					apiVersion: 2,
+					apiVersionMinor: 0
+				};
 				
-				console.log("select-membership pageInit");
-				console.log(queryID);
-				var selectedPlan = "basic";
+				const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+				const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+
+				const tokenizationSpecification = {
+					type: 'PAYMENT_GATEWAY',
+					parameters: {
+							'gateway': 'example',
+							'gatewayMerchantId': 'exampleGatewayMerchantId'
+					}
+				};
+				
+				const baseCardPaymentMethod = {
+					type: 'CARD',
+					parameters: {
+							allowedAuthMethods: allowedCardAuthMethods,
+							allowedCardNetworks: allowedCardNetworks
+					}
+				};
+				
+				const cardPaymentMethod = Object.assign(
+					{},
+					baseCardPaymentMethod,
+					{
+							tokenizationSpecification: tokenizationSpecification
+					}
+				);
+			
+				let paymentsClient = null;
+
+				function getGoogleIsReadyToPayRequest() {
+					return Object.assign(
+									{},
+									baseRequest,
+									{
+											allowedPaymentMethods: [baseCardPaymentMethod]
+									}
+					);
+				}
+				
+				function getGooglePaymentDataRequest() {
+					const paymentDataRequest = Object.assign({}, baseRequest);
+					paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
+					paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+					paymentDataRequest.merchantInfo = {
+							// @todo a merchant ID is available for a production environment after approval by Google
+							// See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
+							merchantId: '01234567890123456789',
+							merchantName: 'Example Merchant'
+					};
+					return paymentDataRequest;
+				}
+			
+				function getGooglePaymentsClient() {
+					if ( paymentsClient === null ) {
+							paymentsClient = new google.payments.api.PaymentsClient({environment: 'TEST'});
+					}
+					return paymentsClient;
+				}
+
+				// function onGooglePayLoaded() {
+				// 	const paymentsClient = getGooglePaymentsClient();
+				// 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+				// 					.then(function(response) {
+				// 							if (response.result) {
+				// 									addGooglePayButton();
+				// 									// @todo prefetch payment data to improve performance after confirming site functionality
+				// 									// prefetchGooglePaymentData();
+				// 							}
+				// 					})
+				// 					.catch(function(err) {
+				// 							// show error in developer console for debugging
+				// 							console.error(err);
+				// 					});
+				// }
+				
+				function addGooglePayButton(buttonId) {
+					const paymentsClient = getGooglePaymentsClient();
+					const button =
+									paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
+					document.getElementById('btn-cont').appendChild(button);
+				}
+			
+				function getGoogleTransactionInfo() {
+					let aux = {
+							countryCode: 'US',
+							currencyCode: 'USD',
+							totalPriceStatus: 'FINAL',
+							// set to cart total
+							totalPrice: selectedPlan != undefined ? selectedPlan.cost.toString() : '5.00'
+					};
+					console.log("Transaction info changed");
+					console.log(selectedPlan);
+					console.log(aux);
+					return aux;
+				}
+
+				function prefetchGooglePaymentData() {
+					const paymentDataRequest = getGooglePaymentDataRequest();
+					// transactionInfo must be set but does not affect cache
+					paymentDataRequest.transactionInfo = {
+							totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
+							currencyCode: 'USD'
+					};
+					const paymentsClient = getGooglePaymentsClient();
+					paymentsClient.prefetchPaymentData(paymentDataRequest);
+				}
+
+				function onGooglePaymentButtonClicked() {
+					const paymentDataRequest = getGooglePaymentDataRequest();
+					paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+					console.log("transactionInfo:");
+					console.log(paymentDataRequest.transactionInfo);
+
+					const paymentsClient = getGooglePaymentsClient();
+					paymentsClient.loadPaymentData(paymentDataRequest)
+									.then(function(paymentData) {
+											// handle the response
+											processPayment(paymentData);
+									})
+									.catch(function(err) {
+											// show error in developer console for debugging
+											console.error(err);
+									});
+				}
+
+				function processPayment(paymentData) {
+					// show returned data in developer console for debugging
+							console.log(paymentData);
+					// @todo pass payment token to your gateway to process payment
+					paymentToken = paymentData.paymentMethodData.tokenizationData.token;
+				}
+
+				app.methods.loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
+					const paymentsClient = getGooglePaymentsClient();
+					paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+									.then(function(response) {
+											if (response.result) {
+													addGooglePayButton();
+													// @todo prefetch payment data to improve performance after confirming site functionality
+													// prefetchGooglePaymentData();
+											}
+									})
+									.catch(function(err) {
+											// show error in developer console for debugging
+											console.error(err);
+									});
+				} )
+				
+				// console.log("select-membership pageInit");
+				// console.log(queryID);
 				
 				console.log("**Previous Path**")
 				console.log(app.views.main.router.previousRoute.route);
@@ -153,6 +314,7 @@
 					console.log(el);
 					if (!el.hasClass("active")) {
 						selectedPlan = getIndex(el[0].id);
+						console.log(selectedPlan);
 						// el[0].href = selectedPlan;
 						changeConfirmButtonHref(selectedPlan);
 						el.siblings(".active").removeClass("active");
@@ -183,7 +345,7 @@
 				function changeConfirmButtonHref(extraRef)
 				{
 					// console.log($$("#confirm-plan-btn"));
-					$$("#confirm-plan-btn")[0].href = `/membership/card/user/${queryID}/plan/${extraRef}`;
+					// $$("#confirm-plan-btn")[0].href = `/membership/card/user/${queryID}/plan/${extraRef}`;
 				}
 				
 				function getIndex(buttonId)
@@ -191,12 +353,31 @@
 					switch(buttonId)
 					{
 						case "plan-a":
-						return "basic";
+							console.log("Setting thing");
+							return plans[0];
+						// return "basic";
 						case "plan-b":
-						return "standard";
+							return plans[1];
+						// return "standard";
 						case "plan-c":
-						return "premium";
+							return plans[2];
+						// return "premium";
 					}
+				}
+
+				async function getPlans()
+				{
+					let plansRes = await app.request.promise.json(`${app.data.server}/memberships`);
+					let planList = [];
+					plansRes.data.forEach(plan => {
+						planList.push({
+							id: plan.id,
+							name: plan.name,
+							cost: plan.costPerMonth
+						});
+                    	// memObject.push(getMemory(mem));
+					})
+					return planList;
 				}
 			},
 		},
