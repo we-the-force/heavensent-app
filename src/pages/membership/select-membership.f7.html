@@ -137,7 +137,7 @@
 			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
-				
+				var paymentToken;
 				var queryID = app.views.main.router.currentRoute.params.userID;
 				var clearOnBack = app.views.main.router.currentRoute.params.clearOnBack;
 				console.log("Intro thing");
