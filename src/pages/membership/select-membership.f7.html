@@ -199,8 +199,8 @@
 					paymentDataRequest.merchantInfo = {
 							// @todo a merchant ID is available for a production environment after approval by Google
 							// See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
-							merchantId: '01234567890123456789',
-							merchantName: 'Example Merchant'
+							merchantId: '247883957',
+							merchantName: 'HeavenSent'
 					};
 					return paymentDataRequest;
 				}
@@ -274,7 +274,7 @@
 											console.log(paymentData);
 											console.log("Do the thing with the membership como no");
 											processPayment(paymentData);
-											assignPlan();
+											assignPlan(paymentData);
 									})
 									.catch(function(err) {
 											// show error in developer console for debugging
@@ -370,7 +370,7 @@
 					}
 				}
 
-				async function assignPlan()
+				async function assignPlan(paymentData)
 				{
 					await app.request.promise.get(`${app.data.server}/memberships/?name=${selectedPlan.name}`).then(async function(planRes){
 						let plan = JSON.parse(planRes.data)[0];
@@ -382,12 +382,21 @@
 								data:{
 									"currentMembership": {
 										"isActive": true,
-										"nextBillingDate": formatDate(),
+										"nextBillingDate": formatDate(true),
 										"billedCard": 123123,
-										"plan": plan.id
+										"plan": plan.id,
+										"token": paymentToken,
+										"billedCard": paymentData.paymentMethodData.description
 									}
 								}
 							});
+
+							await app.request.promise.postJSON(`${app.data.server}/payment`,{
+								"token": paymentToken,
+								"user": queryID,
+								"date": formatDate(false),
+								"concept": `${capitalize(selectedPlan.name)} membership for HeavenSent`
+							})
 
 							await app.methods.updateCurrentUser();
 
@@ -417,7 +426,12 @@
 					})
 					return planList;
 				}
-				function formatDate()
+				function capitalize(text)
+				{
+					if (typeof text !== 'string') return ''
+					return text.charAt(0).toUpperCase() + s.slice(1);
+				}
+				function formatDate(includeTime)
 				{
 					let date = new Date();
 					date.setDate(date.getDate() + 30);
@@ -427,8 +441,16 @@
 					let hour = date.getHours();
 					
 					//2020-06-11T19:00:00.000Z
-					let result = `${yyyy}-${mm}-${dd}T${hour}:00:00.000Z`;
+					let result;
 					
+					if (includeTime)
+					{
+						result = `${yyyy}-${mm}-${dd}T${hour}:00:00.000Z`;
+					}
+					else
+					{
+						result = `${yyyy}-${mm}-${dd}`;
+					}
 					return result;
 				}
 			},

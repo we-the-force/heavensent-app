@@ -828,6 +828,7 @@ var routes = [
                                 PlanName: plan_name,
                                 PlanPrice: GetPlanPrice(res.data.currentMembership),
                                 BillingDate: GetNextPayDate(res.data.currentMembership),
+                                BilledCard: plan.billedCard
                             }
                         }
                     );
