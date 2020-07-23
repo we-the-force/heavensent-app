@@ -575,6 +575,7 @@ var routes = [
                             name: fund.name,
                             cover: fund.cover ? fund.cover.url : "",
                             desc: fund.description ? fund.description : "[-no description-]",
+                            suggestedAmount: fund.suggestedAmountUSD ? fund.suggestedAmountUSD : '0.00',
                         });
                     })
                 }

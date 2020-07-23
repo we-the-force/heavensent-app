@@ -292,9 +292,8 @@
 									<span class="material-icons play card-opened-fade-out">play_circle_outline</span>
 								</div>
 								<div class="card-content-padding">
-									<div class="btns-cont card-opened-fade-out">
-										<a href="#" class="btn-card card-prevent-open"
-											data-fundation="{{id}}">{{localize "give_now"}}</a>
+									<div class="btns-cont card-opened-fade-out play-btn donation-cont" data-fundation="{{id}}">
+										<!-- <a href="#" class="btn-card card-prevent-open" data-fundation="{{id}}">{{localize "give_now"}}</a> -->
 									</div>
 									<p class="card-opened-fade-in">{{desc}}</p>
 								</div>
@@ -343,7 +342,8 @@
 				var app = self.$app;
 				var isEditing = page.route.context.IsEditing;
 				var currentUser = page.route.context.CurrentUser;
-
+				var fundations = page.route.context.Fundations;
+				var paymentToken;
 				// console.log("home-memories pageInit [pageInit], updating user");
 
 				await app.methods.updateCurrentUser();
@@ -361,6 +361,188 @@
 					$$('.header h1.title').css('font-size', '18px');
 				}
 
+				const baseRequest = {
+					apiVersion: 2,
+					apiVersionMinor: 0
+				};
+				
+				const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+				const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+
+				const tokenizationSpecification = {
+					type: 'PAYMENT_GATEWAY',
+					parameters: {
+							'gateway': 'example',
+							'gatewayMerchantId': 'exampleGatewayMerchantId'
+					}
+				};
+				
+				const baseCardPaymentMethod = {
+					type: 'CARD',
+					parameters: {
+							allowedAuthMethods: allowedCardAuthMethods,
+							allowedCardNetworks: allowedCardNetworks
+					}
+				};
+				
+				const cardPaymentMethod = Object.assign(
+					{},
+					baseCardPaymentMethod,
+					{
+							tokenizationSpecification: tokenizationSpecification
+					}
+				);
+			
+				let paymentsClient = null;
+
+				function getGoogleIsReadyToPayRequest() {
+					return Object.assign(
+									{},
+									baseRequest,
+									{
+											allowedPaymentMethods: [baseCardPaymentMethod]
+									}
+					);
+				}
+				
+				function getGooglePaymentDataRequest() {
+					const paymentDataRequest = Object.assign({}, baseRequest);
+					paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
+					paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+					paymentDataRequest.merchantInfo = {
+							// @todo a merchant ID is available for a production environment after approval by Google
+							// See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
+							merchantId: '247883957',
+							merchantName: 'HeavenSent'
+					};
+					return paymentDataRequest;
+				}
+			
+				function getGooglePaymentsClient() {
+					if ( paymentsClient === null ) {
+							paymentsClient = new google.payments.api.PaymentsClient({environment: 'TEST'});
+					}
+					return paymentsClient;
+				}
+
+				// function onGooglePayLoaded() {
+				// 	const paymentsClient = getGooglePaymentsClient();
+				// 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+				// 					.then(function(response) {
+				// 							if (response.result) {
+				// 									addGooglePayButton();
+				// 									// @todo prefetch payment data to improve performance after confirming site functionality
+				// 									// prefetchGooglePaymentData();
+				// 							}
+				// 					})
+				// 					.catch(function(err) {
+				// 							// show error in developer console for debugging
+				// 							console.error(err);
+				// 					});
+				// }
+				
+				function addGooglePayButton(buttonId) {
+					
+					const paymentsClient = getGooglePaymentsClient();
+					var i;
+					var donationThings = document.getElementsByClassName("donation-cont");
+					console.log(donationThings.length);
+					for (i = 0; i < donationThings.length; i++)
+					{
+						console.log("Doing the donation thing: " + i);
+						console.log(donationThings[i]);
+						let currentId = $$(donationThings[i]).prop("dataset").fundation;
+
+						const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
+						// const button = paymentsClient.createButton({onClick: donate});
+						console.log("Button!");
+						$$(button).find('.gpay-button').attr('data-fundation', currentId);
+						$$(button).find('.gpay-button').addClass('card-prevent-open');
+						//btn-card card-prevent-open
+
+						console.log(button);
+
+						donationThings[i].appendChild(button);
+					}
+					// document.getElementById('btn-cont').appendChild(button);
+				}
+				function getGoogleTransactionInfo(amount) {
+					let aux = {
+							countryCode: 'US',
+							currencyCode: 'USD',
+							totalPriceStatus: 'FINAL',
+							// set to cart total
+							// totalPrice: selectedPlan != undefined ? selectedPlan.cost.toString() : '5.00'
+							totalPrice: amount != undefined ? amount.toString() : '0.00'
+					};
+					console.log("Transaction info changed");
+					console.log(selectedPlan);
+					console.log(aux);
+					return aux;
+				}
+
+				function prefetchGooglePaymentData() {
+					const paymentDataRequest = getGooglePaymentDataRequest();
+					// transactionInfo must be set but does not affect cache
+					paymentDataRequest.transactionInfo = {
+							totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
+							currencyCode: 'USD'
+					};
+					const paymentsClient = getGooglePaymentsClient();
+					paymentsClient.prefetchPaymentData(paymentDataRequest);
+				}
+
+				function onGooglePaymentButtonClicked() {
+					let fundationId = $$(this).prop("dataset").fundation;
+					console.log(fundationId);
+					let fund = getFundation(fundationId);
+
+					const paymentDataRequest = getGooglePaymentDataRequest();
+					paymentDataRequest.transactionInfo = getGoogleTransactionInfo(fund.suggestedAmount);
+					console.log("transactionInfo:");
+					console.log(paymentDataRequest.transactionInfo);
+
+					const paymentsClient = getGooglePaymentsClient();
+					paymentsClient.loadPaymentData(paymentDataRequest)
+									.then(function(paymentData) {
+											// handle the response
+											console.log("Then:");
+											console.log(paymentData);
+											console.log("Do the thing with the membership como no");
+											processPayment(paymentData);
+											donate(fund);
+											// assignPlan(paymentData);
+									})
+									.catch(function(err) {
+											// show error in developer console for debugging
+											console.log("Error en el cositos")
+											console.error(err);
+									});
+				}
+
+				function processPayment(paymentData) {
+					// show returned data in developer console for debugging
+							console.log(paymentData);
+					// @todo pass payment token to your gateway to process payment
+					paymentToken = paymentData.paymentMethodData.tokenizationData.token;
+				}
+
+				app.methods.loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
+					const paymentsClient = getGooglePaymentsClient();
+					paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+									.then(function(response) {
+											if (response.result) {
+													addGooglePayButton();
+													// @todo prefetch payment data to improve performance after confirming site functionality
+													// prefetchGooglePaymentData();
+											}
+									})
+									.catch(function(err) {
+											// show error in developer console for debugging
+											console.error(err);
+									});
+				} )
+
 				/* aqui esta este pedo */
 
 				$$('select#users').change(async function (el) {
@@ -374,15 +556,7 @@
 
 					let item = select.items[indexValue - 1];
 
-					console.log($$(this)[0]);
-					console.log($$(this)[0][indexValueTwo - 1]);
-					console.log(targetUserId);
-					//'user-thing-23'
-					// console.log($$("user-thing-" + indexValueTwo));
-					// console.log(select);
-					// console.log(item);
-					select.close(); /* cierra el popover */
-					// console.log(select.getValue()); /* valor del id */
+					select.close();
 
 					await app.views.main.router.navigate(`/memories/home/user/${targetUserId}`, { reloadCurrent: true });
 					// app.views.main.router.refreshPage();
@@ -429,27 +603,6 @@
 
 				});
 
-				// function updateControls() {
-				// 	if (loggedUser != null) {
-				// 		var currentMembership = loggedUser.currentMembership;
-				// 		if (currentMembership === null) {
-				// 			currentMembership = "No Membership";
-				// 		}
-				// 		else {
-				// 			currentMembership = loggedUser.currentMembership.plan.name + " membership";
-				// 		}
-
-				// 		$$("#logged-user-name")[0].textContent = isEditing ? "" : loggedUser.name != undefined ? loggedUser.name : loggedUser.username;
-				// 		$$("#logged-user-membership")[0].textContent = currentMembership;
-				// 		if (loggedUser.profilePicture != null) {
-				// 			$$("#logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
-				// 		}
-				// 	}
-				// 	else {
-				// 		console.log("User was null, not updating anything [pageInit.updateControls]");
-				// 	}
-				// }
-
 				function updateControls() {
 					if (currentUser != null) {
 						var currentMembership = currentUser.currentMembership;
@@ -481,6 +634,59 @@
 
 				function isOverflown(element) {
 					return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+				}
+
+				async function donate(fundation)
+				{
+					if (fund != undefined)
+					{
+						await app.request.promise.postJSON(`${app.data.server}/donations`,{
+							"amount": fund.suggestedAmount,
+							"fundation": fund.id,
+							"user": loggedUser.id,
+							"date": formatDate(),
+							"token": paymentToken != undefined ? paymentToken : "EmptyTokenHopefullyATest",
+						}).then(function(res){
+							console.log("Donation done successfully");
+							app.dialog.alert("Thank you so much for your donation!");
+						}).catch(function(err){
+							console.log("Error adding donation");
+							console.log(err);
+						})
+					}
+					else
+					{
+						console.log("fundation was undefined lmao");
+					}
+				}
+
+				function getFundation(id)
+				{
+					console.log("----Getting fundation---- " + id);
+					let result = undefined;
+					fundations.forEach(fund => {
+						console.log("current fund");
+						console.log(fund);
+						console.log(`fund.id: ${fund.id}, id: ${id}`);
+						if (fund.id == id)
+						{
+							console.log(`Returned fundation`);
+							result = fund;
+							console.log(result);
+						}
+					});
+					return result;
+				}
+				function formatDate()
+				{
+					let date = new Date();
+					let dd = String(date.getDate()).padStart(2, '0');
+					let mm = String(date.getMonth() + 1).padStart(2, '0');
+					let yyyy = date.getFullYear();
+
+					let result = `${yyyy}-${mm}-${dd}`;
+
+					return result;
 				}
 			},
 		},
