@@ -399,7 +399,7 @@
 								"date": formatDate(false, false),
 								"concept": `${capitalize(selectedPlan.name)} membership for HeavenSent`,
 								"amountUSD": `${selectedPlan.cost}`,
-								"userEmail": email
+								"userEmail": userEmail
 							})
 
 							await app.methods.updateCurrentUser();
