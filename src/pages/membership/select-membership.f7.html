@@ -391,7 +391,12 @@
 								}
 							});
 
-							var userEmail = await app.methods.getLocalValue('loggedUser').email;
+							var loggedUser = await app.methods.getLocalValue('loggedUser');
+							console.log("Logged user:");
+							console.log(loggedUser);
+
+							var userEmail = loggedUser.email;
+							console.log("----- email: " + userEmail);
 
 							await app.request.promise.postJSON(`${app.data.server}/payments`,{
 								"token": paymentToken,
