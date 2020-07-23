@@ -453,8 +453,8 @@
 						console.log(donationThings[i]);
 						let currentId = $$(donationThings[i]).prop("dataset").fundation;
 
-						const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
-						// const button = paymentsClient.createButton({onClick: donate});
+						// const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
+						const button = paymentsClient.createButton({onClick: testDonate});
 						console.log("Button!");
 						$$(button).find('.gpay-button').attr('data-fundation', currentId);
 						$$(button).find('.gpay-button').addClass('card-prevent-open');
@@ -640,11 +640,40 @@
 					if (fund != undefined)
 					{
 						await app.request.promise.postJSON(`${app.data.server}/donations`,{
-							"amount": fund.suggestedAmount,
+							"amountUSD": fund.suggestedAmount,
 							"fundation": fund.id,
 							"user": loggedUser.id,
 							"date": formatDate(),
 							"token": paymentToken != undefined ? paymentToken : "EmptyTokenHopefullyATest",
+							"concept": formatConcept(fund)
+						}).then(function(res){
+							console.log("Donation done successfully");
+							app.dialog.alert("Thank you so much for your donation!");
+						}).catch(function(err){
+							console.log("Error adding donation");
+							console.log(err);
+						})
+					}
+					else
+					{
+						console.log("fundation was undefined lmao");
+					}
+				}
+
+				async function testDonate()
+				{
+					let fundationId = $$(this).prop("dataset").fundation;
+					console.log(fundationId);
+					let fund = getFundation(fundationId);
+					if (fund != undefined)
+					{
+						await app.request.promise.postJSON(`${app.data.server}/donations`,{
+							"amountUSD": fund.suggestedAmount,
+							"fundation": fund.id,
+							"user": loggedUser.id,
+							"date": formatDate(),
+							"token": paymentToken != undefined ? paymentToken : "EmptyTokenHopefullyATest",
+							"concept": formatConcept(fund)
 						}).then(function(res){
 							console.log("Donation done successfully");
 							app.dialog.alert("Thank you so much for your donation!");
@@ -674,6 +703,11 @@
 							console.log(result);
 						}
 					});
+					return result;
+				}
+				function formatConcept(fund)
+				{
+					let result = `Donation towards ${fund.name}`;
 					return result;
 				}
 				function formatDate()
