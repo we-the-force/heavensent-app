@@ -453,8 +453,8 @@
 						console.log(donationThings[i]);
 						let currentId = $$(donationThings[i]).prop("dataset").fundation;
 
-						// const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
-						const button = paymentsClient.createButton({onClick: testDonate});
+						const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
+						// const button = paymentsClient.createButton({onClick: testDonate});
 						console.log("Button!");
 						$$(button).find('.gpay-button').attr('data-fundation', currentId);
 						$$(button).find('.gpay-button').addClass('card-prevent-open');
