@@ -382,7 +382,7 @@
 								data:{
 									"currentMembership": {
 										"isActive": true,
-										"nextBillingDate": formatDate(true),
+										"nextBillingDate": formatDate(true, true),
 										"billedCard": 123123,
 										"plan": plan.id,
 										"token": paymentToken,
@@ -396,7 +396,7 @@
 							await app.request.promise.postJSON(`${app.data.server}/payments`,{
 								"token": paymentToken,
 								"user": queryID,
-								"date": formatDate(false),
+								"date": formatDate(false, false),
 								"concept": `${capitalize(selectedPlan.name)} membership for HeavenSent`,
 								"amountUSD": `${selectedPlan.cost}`,
 								"userEmail": email
@@ -435,10 +435,13 @@
 					if (typeof text !== 'string') return ''
 					return text.charAt(0).toUpperCase() + text.slice(1);
 				}
-				function formatDate(includeTime)
+				function formatDate(includeTime, nextMonth)
 				{
 					let date = new Date();
-					date.setDate(date.getDate() + 30);
+					if (nextMonth)
+					{
+						date.setDate(date.getDate() + 30);
+					}
 					let dd = String(date.getDate()).padStart(2, '0');
 					let mm = String(date.getMonth() + 1).padStart(2, '0');
 					let yyyy = date.getFullYear();
