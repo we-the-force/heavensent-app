@@ -376,171 +376,187 @@
 					$$('.header h1.title').css('font-size', '18px');
 				}
 
-				const baseRequest = {
+				if (app.device.os === "ios")
+				{
+					if (ApplePaySession)
+					{
+						app.dialog.alert("Ayyy cargando el applepay")
+					}
+					else
+					{
+						console.log("Muerto")
+					}
+				}
+				else
+				{
+					const baseRequest = {
 					apiVersion: 2,
 					apiVersionMinor: 0
-				};
-				
-				const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
-				const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+					};
 
-				const tokenizationSpecification = {
-					type: 'PAYMENT_GATEWAY',
-					parameters: {
-							'gateway': 'example',
-							'gatewayMerchantId': 'exampleGatewayMerchantId'
-					}
-				};
-				
-				const baseCardPaymentMethod = {
-					type: 'CARD',
-					parameters: {
-							allowedAuthMethods: allowedCardAuthMethods,
-							allowedCardNetworks: allowedCardNetworks
-					}
-				};
-				
-				const cardPaymentMethod = Object.assign(
-					{},
-					baseCardPaymentMethod,
-					{
-							tokenizationSpecification: tokenizationSpecification
-					}
-				);
-			
-				let paymentsClient = null;
+					const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+					const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
 
-				function getGoogleIsReadyToPayRequest() {
-					return Object.assign(
-									{},
-									baseRequest,
-									{
-											allowedPaymentMethods: [baseCardPaymentMethod]
-									}
+					const tokenizationSpecification = {
+						type: 'PAYMENT_GATEWAY',
+						parameters: {
+								'gateway': 'example',
+								'gatewayMerchantId': 'exampleGatewayMerchantId'
+						}
+					};
+
+					const baseCardPaymentMethod = {
+						type: 'CARD',
+						parameters: {
+								allowedAuthMethods: allowedCardAuthMethods,
+								allowedCardNetworks: allowedCardNetworks
+						}
+					};
+
+					const cardPaymentMethod = Object.assign(
+						{},
+						baseCardPaymentMethod,
+						{
+								tokenizationSpecification: tokenizationSpecification
+						}
 					);
-				}
-				
-				function getGooglePaymentDataRequest() {
-					const paymentDataRequest = Object.assign({}, baseRequest);
-					paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
-					paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
-					paymentDataRequest.merchantInfo = {
-							// @todo a merchant ID is available for a production environment after approval by Google
-							// See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
-							merchantId: '247883957',
-							merchantName: 'HeavenSent'
-					};
-					return paymentDataRequest;
-				}
-			
-				function getGooglePaymentsClient() {
-					if ( paymentsClient === null ) {
-							paymentsClient = new google.payments.api.PaymentsClient({environment: 'TEST'});
-					}
-					return paymentsClient;
-				}
-
-				// function onGooglePayLoaded() {
-				// 	const paymentsClient = getGooglePaymentsClient();
-				// 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
-				// 					.then(function(response) {
-				// 							if (response.result) {
-				// 									addGooglePayButton();
-				// 									// @todo prefetch payment data to improve performance after confirming site functionality
-				// 									// prefetchGooglePaymentData();
-				// 							}
-				// 					})
-				// 					.catch(function(err) {
-				// 							// show error in developer console for debugging
-				// 							console.error(err);
-				// 					});
-				// }
-				
-				function addGooglePayButton(buttonId) {
 					
-					const paymentsClient = getGooglePaymentsClient();
-					var i;
-					var donationThings = document.getElementsByClassName("donation-cont");
-					for (i = 0; i < donationThings.length; i++)
-					{
-						let currentId = $$(donationThings[i]).prop("dataset").fundation;
+					let paymentsClient = null;
 
-						const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
-						// const button = paymentsClient.createButton({onClick: testDonate});
-						$$(button).find('.gpay-button').attr('data-fundation', currentId);
-						$$(button).find('.gpay-button').addClass('card-prevent-open');
-						//btn-card card-prevent-open
-
-						donationThings[i].appendChild(button);
+					function getGoogleIsReadyToPayRequest() {
+						return Object.assign(
+										{},
+										baseRequest,
+										{
+												allowedPaymentMethods: [baseCardPaymentMethod]
+										}
+						);
 					}
-					// document.getElementById('btn-cont').appendChild(button);
+
+					function getGooglePaymentDataRequest() {
+						const paymentDataRequest = Object.assign({}, baseRequest);
+						paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
+						paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+						paymentDataRequest.merchantInfo = {
+								// @todo a merchant ID is available for a production environment after approval by Google
+								// See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
+								merchantId: '247883957',
+								merchantName: 'HeavenSent'
+						};
+						return paymentDataRequest;
+					}
+				
+					function getGooglePaymentsClient() {
+						if ( paymentsClient === null ) {
+								paymentsClient = new google.payments.api.PaymentsClient({environment: 'TEST'});
+						}
+						return paymentsClient;
+					}
+
+					// function onGooglePayLoaded() {
+					// 	const paymentsClient = getGooglePaymentsClient();
+					// 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+					// 					.then(function(response) {
+					// 							if (response.result) {
+					// 									addGooglePayButton();
+					// 									// @todo prefetch payment data to improve performance after confirming site functionality
+					// 									// prefetchGooglePaymentData();
+					// 							}
+					// 					})
+					// 					.catch(function(err) {
+					// 							// show error in developer console for debugging
+					// 							console.error(err);
+					// 					});
+					// }
+					
+					function addGooglePayButton(buttonId) {
+
+						const paymentsClient = getGooglePaymentsClient();
+						var i;
+						var donationThings = document.getElementsByClassName("donation-cont");
+						for (i = 0; i < donationThings.length; i++)
+						{
+							let currentId = $$(donationThings[i]).prop("dataset").fundation;
+
+							const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
+							// const button = paymentsClient.createButton({onClick: testDonate});
+							$$(button).find('.gpay-button').attr('data-fundation', currentId);
+							$$(button).find('.gpay-button').addClass('card-prevent-open');
+							//btn-card card-prevent-open
+
+							donationThings[i].appendChild(button);
+						}
+						// document.getElementById('btn-cont').appendChild(button);
+					}
+					function getGoogleTransactionInfo(amount) {
+						let aux = {
+								countryCode: 'US',
+								currencyCode: 'USD',
+								totalPriceStatus: 'FINAL',
+								// set to cart total
+								// totalPrice: selectedPlan != undefined ? selectedPlan.cost.toString() : '5.00'
+								totalPrice: amount != undefined ? amount.toString() : '0.00'
+						};
+						return aux;
+					}
+
+					function prefetchGooglePaymentData() {
+						const paymentDataRequest = getGooglePaymentDataRequest();
+						// transactionInfo must be set but does not affect cache
+						paymentDataRequest.transactionInfo = {
+								totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
+								currencyCode: 'USD'
+						};
+						const paymentsClient = getGooglePaymentsClient();
+						paymentsClient.prefetchPaymentData(paymentDataRequest);
+					}
+
+					function onGooglePaymentButtonClicked() {
+						let fundationId = $$(this).prop("dataset").fundation;
+						let fund = getFundation(fundationId);
+
+						const paymentDataRequest = getGooglePaymentDataRequest();
+						paymentDataRequest.transactionInfo = getGoogleTransactionInfo(fund.suggestedAmount);
+
+						const paymentsClient = getGooglePaymentsClient();
+						paymentsClient.loadPaymentData(paymentDataRequest)
+										.then(function(paymentData) {
+												// handle the response
+												processPayment(paymentData);
+												donate(fund);
+												// assignPlan(paymentData);
+										})
+										.catch(function(err) {
+												// show error in developer console for debugging
+												console.error(err);
+										});
+					}
+
+					function processPayment(paymentData) {
+						// show returned data in developer console for debugging
+								console.log(paymentData);
+						// @todo pass payment token to your gateway to process payment
+						paymentToken = paymentData.paymentMethodData.tokenizationData.token;
+					}
+
+					app.methods.loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
+						const paymentsClient = getGooglePaymentsClient();
+						paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+										.then(function(response) {
+												if (response.result) {
+														addGooglePayButton();
+														// @todo prefetch payment data to improve performance after confirming site functionality
+														// prefetchGooglePaymentData();
+												}
+										})
+										.catch(function(err) {
+												// show error in developer console for debugging
+												console.error(err);
+										});
+					} )
 				}
-				function getGoogleTransactionInfo(amount) {
-					let aux = {
-							countryCode: 'US',
-							currencyCode: 'USD',
-							totalPriceStatus: 'FINAL',
-							// set to cart total
-							// totalPrice: selectedPlan != undefined ? selectedPlan.cost.toString() : '5.00'
-							totalPrice: amount != undefined ? amount.toString() : '0.00'
-					};
-					return aux;
-				}
 
-				function prefetchGooglePaymentData() {
-					const paymentDataRequest = getGooglePaymentDataRequest();
-					// transactionInfo must be set but does not affect cache
-					paymentDataRequest.transactionInfo = {
-							totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
-							currencyCode: 'USD'
-					};
-					const paymentsClient = getGooglePaymentsClient();
-					paymentsClient.prefetchPaymentData(paymentDataRequest);
-				}
-
-				function onGooglePaymentButtonClicked() {
-					let fundationId = $$(this).prop("dataset").fundation;
-					let fund = getFundation(fundationId);
-
-					const paymentDataRequest = getGooglePaymentDataRequest();
-					paymentDataRequest.transactionInfo = getGoogleTransactionInfo(fund.suggestedAmount);
-
-					const paymentsClient = getGooglePaymentsClient();
-					paymentsClient.loadPaymentData(paymentDataRequest)
-									.then(function(paymentData) {
-											// handle the response
-											processPayment(paymentData);
-											donate(fund);
-											// assignPlan(paymentData);
-									})
-									.catch(function(err) {
-											// show error in developer console for debugging
-											console.error(err);
-									});
-				}
-
-				function processPayment(paymentData) {
-					// show returned data in developer console for debugging
-							console.log(paymentData);
-					// @todo pass payment token to your gateway to process payment
-					paymentToken = paymentData.paymentMethodData.tokenizationData.token;
-				}
-
-				app.methods.loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
-					const paymentsClient = getGooglePaymentsClient();
-					paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
-									.then(function(response) {
-											if (response.result) {
-													addGooglePayButton();
-													// @todo prefetch payment data to improve performance after confirming site functionality
-													// prefetchGooglePaymentData();
-											}
-									})
-									.catch(function(err) {
-											// show error in developer console for debugging
-											console.error(err);
-									});
-				} )
+				
 
 				/* aqui esta este pedo */
 
