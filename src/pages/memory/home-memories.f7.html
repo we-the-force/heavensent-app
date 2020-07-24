@@ -348,15 +348,18 @@
 
 				console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
 				console.log(app.device);
+				app.dialog.alert(app.device.os);
 
-				if (ApplePaySession)
-				{
-					app.dialog.alert("AY SI SE PUEDE");
-				}
-				else
-				{
-					app.dialog.alert("Chale");
-				}
+				// if (ApplePaySession)
+				// {
+				// 	console.log("No apple pay session");
+				// 	app.dialog.alert("AY SI SE PUEDE");
+				// }
+				// else
+				// {
+				// 	console.log("apple pay session como no");
+				// 	app.dialog.alert("Chale");
+				// }
 
 				await app.methods.updateCurrentUser();
 				await app.methods.loadContacts();
