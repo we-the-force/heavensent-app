@@ -346,6 +346,18 @@
 				var paymentToken;
 				// console.log("home-memories pageInit [pageInit], updating user");
 
+				console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
+				console.log(app.device);
+
+				if (ApplePaySession)
+				{
+					app.dialog.alert("AY SI SE PUEDE");
+				}
+				else
+				{
+					app.dialog.alert("Chale");
+				}
+
 				await app.methods.updateCurrentUser();
 				await app.methods.loadContacts();
 
@@ -446,21 +458,15 @@
 					const paymentsClient = getGooglePaymentsClient();
 					var i;
 					var donationThings = document.getElementsByClassName("donation-cont");
-					console.log(donationThings.length);
 					for (i = 0; i < donationThings.length; i++)
 					{
-						console.log("Doing the donation thing: " + i);
-						console.log(donationThings[i]);
 						let currentId = $$(donationThings[i]).prop("dataset").fundation;
 
 						const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
 						// const button = paymentsClient.createButton({onClick: testDonate});
-						console.log("Button!");
 						$$(button).find('.gpay-button').attr('data-fundation', currentId);
 						$$(button).find('.gpay-button').addClass('card-prevent-open');
 						//btn-card card-prevent-open
-
-						console.log(button);
 
 						donationThings[i].appendChild(button);
 					}
@@ -475,8 +481,6 @@
 							// totalPrice: selectedPlan != undefined ? selectedPlan.cost.toString() : '5.00'
 							totalPrice: amount != undefined ? amount.toString() : '0.00'
 					};
-					console.log("Transaction info changed");
-					console.log(aux);
 					return aux;
 				}
 
@@ -493,28 +497,21 @@
 
 				function onGooglePaymentButtonClicked() {
 					let fundationId = $$(this).prop("dataset").fundation;
-					console.log(fundationId);
 					let fund = getFundation(fundationId);
 
 					const paymentDataRequest = getGooglePaymentDataRequest();
 					paymentDataRequest.transactionInfo = getGoogleTransactionInfo(fund.suggestedAmount);
-					console.log("transactionInfo:");
-					console.log(paymentDataRequest.transactionInfo);
 
 					const paymentsClient = getGooglePaymentsClient();
 					paymentsClient.loadPaymentData(paymentDataRequest)
 									.then(function(paymentData) {
 											// handle the response
-											console.log("Then:");
-											console.log(paymentData);
-											console.log("Do the thing with the membership como no");
 											processPayment(paymentData);
 											donate(fund);
 											// assignPlan(paymentData);
 									})
 									.catch(function(err) {
 											// show error in developer console for debugging
-											console.log("Error en el cositos")
 											console.error(err);
 									});
 				}
@@ -663,7 +660,6 @@
 				async function testDonate()
 				{
 					let fundationId = $$(this).prop("dataset").fundation;
-					console.log(fundationId);
 					let fund = getFundation(fundationId);
 					if (fund != undefined)
 					{
@@ -675,7 +671,6 @@
 							"token": paymentToken != undefined ? paymentToken : "EmptyTokenHopefullyATest",
 							"concept": formatConcept(fund)
 						}).then(function(res){
-							console.log("Donation done successfully");
 							app.dialog.alert("Thank you so much for your donation!");
 						}).catch(function(err){
 							console.log("Error adding donation");
@@ -690,17 +685,11 @@
 
 				function getFundation(id)
 				{
-					console.log("----Getting fundation---- " + id);
 					let result = undefined;
 					fundations.forEach(fund => {
-						console.log("current fund");
-						console.log(fund);
-						console.log(`fund.id: ${fund.id}, id: ${id}`);
 						if (fund.id == id)
 						{
-							console.log(`Returned fundation`);
 							result = fund;
-							console.log(result);
 						}
 					});
 					return result;
