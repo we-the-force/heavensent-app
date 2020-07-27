@@ -348,7 +348,7 @@
 
 				console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
 				console.log(app.device);
-				app.dialog.alert(app.device.os + ", ver 0.0.1.0");
+				app.dialog.alert(app.device.os + ", ver 0.0.1.1");
 
 				await app.methods.updateCurrentUser();
 				await app.methods.loadContacts();
@@ -365,19 +365,17 @@
 					$$('.header h1.title').css('font-size', '18px');
 				}
 
-				function createButton(fund_id)
-				{
-					var div = document.createElement('div');
-					div.innerHTML = `<button type="button" aria-label="Google Play" class="gpay-button black buy long card-prevent-open" data-fundation=${fund_id}></button>`;
-					return div;
-				}
+				
 
 				if (app.device.os === "ios")
 				{
 					if (ApplePaySession)
 					{
 						app.dialog.alert("Ayyy cargando el applepay");
-						addApplePayButtons();
+						if (window.ApplePaySession && ApplePaySession.canMakePayments())
+						{
+							addApplePayButtons();
+						}
 
 						function addApplePayButtons()
 						{
@@ -390,6 +388,14 @@
 								const button = createButton(currentId);
 								donationThings[i].appendChild(button);
 							}
+						}
+
+						function createButton(fund_id)
+						{
+							var div = document.createElement('div');
+							// div.innerHTML = `<button type="button" aria-label="Google Play" class="gpay-button black buy long card-prevent-open" data-fundation=${fund_id}></button>`;
+							div.innerHTML = `<div class="apple-pay-button apple-pay-button-white"></div>`;
+							return div;
 						}
 
 						function addGooglePayButton(buttonId) {
@@ -765,3 +771,48 @@
 		},
 	};
 </script>
+<style>
+	@supports (-webkit-appearance: -apple-pay-button) { 
+	    .apple-pay-button {
+	        display: inline-block;
+	        -webkit-appearance: -apple-pay-button;
+	    }
+	    .apple-pay-button-black {
+	        -apple-pay-button-style: black;
+	    }
+	    .apple-pay-button-white {
+	        -apple-pay-button-style: white;
+	    }
+	    .apple-pay-button-white-with-line {
+	        -apple-pay-button-style: white-outline;
+	    }
+	}
+
+	@supports not (-webkit-appearance: -apple-pay-button) {
+    .apple-pay-button {
+        display: inline-block;
+        background-size: 100% 60%;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        border-radius: 5px;
+        padding: 0px;
+        box-sizing: border-box;
+        min-width: 200px;
+        min-height: 32px;
+        max-height: 64px;
+    }
+    .apple-pay-button-black {
+        background-image: -webkit-named-image(apple-pay-logo-white);
+        background-color: black;
+    }
+    .apple-pay-button-white {
+        background-image: -webkit-named-image(apple-pay-logo-black);
+        background-color: white;
+    }
+    .apple-pay-button-white-with-line {
+        background-image: -webkit-named-image(apple-pay-logo-black);
+        background-color: white;
+        border: .5px solid black;
+    } 
+}
+</style>
