@@ -35,7 +35,7 @@ var app = new Framework7({
         // server: 'http://localhost:1337',
         locales: {
             es: {
-                lenguage: "Español (MX)",
+                lenguage: "English (US)",
                 hello: "Hola",
                 bye: "Adios",
                 mail: "Correo electrónico",
@@ -218,7 +218,7 @@ var app = new Framework7({
                 edit_mem_accept_date: "Aceptar",
             },
             en: {
-                lenguage: "English (US)",
+                lenguage: "Español (MX)",
                 hello: "Hello",
                 bye: "Bye",
                 mail: "E-mail",
