@@ -306,7 +306,7 @@ var app = new Framework7({
                 new_memory: "New Memory",
                 birthday_memory: "Birthday Memory",
                 collage: "Collage",
-                especial_memory: "Especial Memory",
+                especial_memory: "Special Memory",
                 scheduled: "Scheduled",
                 send_later: "Send Later",
                 my_memories: "My memories",
