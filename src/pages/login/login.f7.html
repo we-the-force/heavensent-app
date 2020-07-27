@@ -24,7 +24,8 @@
 						<div class="item-inner">
 							<div class="item-input-wrap">
 								<input type="password" id="password" placeholder='{{localize "pass"}}' required validate />
-								<i class="icons material-icons">edit</i>
+								<i id="pass-edit-icon" class="icons material-icons">edit</i>
+								<span class="show" style="display: none;">Show</span>
 								<!-- <span class="input-clear-button"></span> -->
 							</div>
 						</div>
@@ -109,6 +110,27 @@
 				if (window.language == 'es_MX') {
 					$$('#login-btn').css('font-size', '14px');
 				}
+
+				$$(".show").click(function (val) {
+					let type = $$("#password").attr("type");
+					if (type == "password") {
+						$$("#password").attr("type", "text");
+					} else {
+						$$("#password").attr("type", "password");
+					}
+				});
+
+				////mostrar span de show
+				$$("#password").on("input:notempty", function (val) {
+					$$(".show").css("display", "block");
+					$$("#pass-edit-icon").css("display", "none");
+				});
+
+				////ocultar span cuando el input este vacio
+				$$("#signup-password").on("input:empty", function (val) {
+					$$(".show").css("display", "none");
+					$$("#pass-edit-icon").css("display", "block");
+				});
 				
 				$$("#login-btn").on("click", async function (e) {
 					e.preventDefault();
