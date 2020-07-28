@@ -367,7 +367,7 @@
 
 				
 
-				if (app.device.os === "iosss")
+				if (app.device.os === "ios")
 				{
 					if (ApplePaySession)
 					{
@@ -407,6 +407,10 @@
 							console.log(auxThing);
 							var fundationValueThing = $$(auxThing).prop("dataset").fundation;
 							console.log(fundationValueThing);
+
+							let payRequest = buildPaymentRequest(fundationValueThing);
+
+							startApplePaySession(config);
 						}
 						function buildPaymentRequest(fund_id)
 						{
@@ -430,31 +434,21 @@
 									"amount": fund.suggestedAmount
 								}
 							}
+
+							return payReq;
 						}
 
-						function addGooglePayButton(buttonId) {
-
-							const paymentsClient = getGooglePaymentsClient();
-							var i;
-							var donationThings = document.getElementsByClassName("donation-cont");
-							for (i = 0; i < donationThings.length; i++)
-							{
-								let currentId = $$(donationThings[i]).prop("dataset").fundation;
-
-								const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
-								// const button = paymentsClient.createButton({onClick: testDonate});
-								$$(button).find('.gpay-button').attr('data-fundation', currentId);
-								$$(button).find('.gpay-button').addClass('card-prevent-open');
-								//btn-card card-prevent-open
-
-								donationThings[i].appendChild(button);
-							}
-							// document.getElementById('btn-cont').appendChild(button);
+						function startApplePaySession(config)
+						{
+							let applePaySession = new ApplePaySession(6, config);
+							//Handle applePaySessionEvents
+							applePaySession.begin();
 						}
+
 					}
 					else
 					{
-						console.log("Muerto")
+
 					}
 				}
 				else
