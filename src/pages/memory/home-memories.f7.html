@@ -367,11 +367,10 @@
 
 				
 
-				if (app.device.os === "ios")
+				if (app.device.os === "iosss")
 				{
 					if (ApplePaySession)
 					{
-						app.dialog.alert("Ayyy cargando el applepay");
 						if (window.ApplePaySession && ApplePaySession.canMakePayments())
 						{
 							addApplePayButtons();
@@ -384,21 +383,53 @@
 							for (i = 0; i < donationThings.length; i++)
 							{
 								let currentId = $$(donationThings[i]).prop("dataset").fundation;
-
 								const button = createButton(currentId);
+								$$(button).on('click', function(asd){
+									onApplePayButtonClick(this);
+								});
 								donationThings[i].appendChild(button);
 							}
 						}
-
 						function createButton(fund_id)
 						{
 							var div = document.createElement('div');
-							$$(div).addClass('apple-pay-button-with-text apple-pay-button-white-with-text card-prevent-open');
+							$$(div).addClass(`apple-pay-button-with-text apple-pay-button-white-with-text card-prevent-open`);
+							$$(div).attr('data-fundation', fund_id);
 							// div.innerHTML = `<button type="button" aria-label="Google Play" class="gpay-button black buy long card-prevent-open" data-fundation=${fund_id}></button>`;
 							// div.innerHTML = `<div class="apple-pay-button apple-pay-button-white"></div>`;
 							div.innerHTML = `<span class="text">Buy with</span>
 											 <span class="logo"></span>`;
 							return div;
+						}
+						function onApplePayButtonClick(auxThing)
+						{
+							console.log("AAAAAH EL CLICK");
+							console.log(auxThing);
+							var fundationValueThing = $$(auxThing).prop("dataset").fundation;
+							console.log(fundationValueThing);
+						}
+						function buildPaymentRequest(fund_id)
+						{
+							let fund = getFundation(fund_id);
+
+							let payReq = {
+								"countryCode": "US",
+								"currencyCode": "USD",
+								"merchantCapabilities":[
+									"supports3DS"
+								],
+								"supportedNetworks": [
+									"visa",
+									"masterCard",
+									"amex",
+									"discover"
+								],
+								"total": {
+									"label": "Demo (Card is not charged), " + formatConcept(fund),
+									"type": "final",
+									"amount": fund.suggestedAmount
+								}
+							}
 						}
 
 						function addGooglePayButton(buttonId) {
@@ -597,7 +628,33 @@
 					} )
 				}
 
-				
+				function getFundation(id)
+				{
+					let result = undefined;
+					fundations.forEach(fund => {
+						if (fund.id == id)
+						{
+							result = fund;
+						}
+					});
+					return result;
+				}
+				function formatConcept(fund)
+				{
+					let result = `Donation towards ${fund.name}`;
+					return result;
+				}
+				function formatDate()
+				{
+					let date = new Date();
+					let dd = String(date.getDate()).padStart(2, '0');
+					let mm = String(date.getMonth() + 1).padStart(2, '0');
+					let yyyy = date.getFullYear();
+
+					let result = `${yyyy}-${mm}-${dd}`;
+
+					return result;
+				}
 
 				/* aqui esta este pedo */
 
@@ -741,34 +798,6 @@
 					{
 						console.log("fundation was undefined lmao");
 					}
-				}
-
-				function getFundation(id)
-				{
-					let result = undefined;
-					fundations.forEach(fund => {
-						if (fund.id == id)
-						{
-							result = fund;
-						}
-					});
-					return result;
-				}
-				function formatConcept(fund)
-				{
-					let result = `Donation towards ${fund.name}`;
-					return result;
-				}
-				function formatDate()
-				{
-					let date = new Date();
-					let dd = String(date.getDate()).padStart(2, '0');
-					let mm = String(date.getMonth() + 1).padStart(2, '0');
-					let yyyy = date.getFullYear();
-
-					let result = `${yyyy}-${mm}-${dd}`;
-
-					return result;
 				}
 			},
 		},
