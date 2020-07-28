@@ -62,7 +62,6 @@
 			{{#if IsEditing}}
 
 			{{else}}
-			<div id='ckoApplePay'>asd</div>
 			<div class="contacts-cont">
 				<div class="contacts-title">{{localize "contacts"}}</div>
 				<a href="/contact/create" class="add-btn">
@@ -349,7 +348,7 @@
 
 				console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
 				console.log(app.device);
-				app.dialog.alert(app.device.os + ", ver 0.0.1.6");
+				app.dialog.alert(app.device.os + ", ver 0.0.1.7");
 
 				await app.methods.updateCurrentUser();
 				await app.methods.loadContacts();
@@ -597,7 +596,20 @@
 							let applePaySession = new ApplePaySession(6, config);
 							//Handle applePaySessionEvents
 							applePaySession.begin();
-							app.dialog.alert("applePaySession has begun");
+							app.dialog.alert(`Apple URL: ${applePaySession}`);
+							console.log(applePaySession);
+						}
+
+						function handleApplePayEvents(appleSession)
+						{
+							appleSession.onvalidatemerchant = function(event){
+
+							}
+						}
+
+						function validateApplePaySession(appleUrl, callback)
+						{
+							axios.post()
 						}
 
 					}
