@@ -348,7 +348,7 @@
 
 				console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
 				console.log(app.device);
-				app.dialog.alert(app.device.os + ", ver 0.0.1.8");
+				app.dialog.alert(app.device.os + ", ver 0.0.1.9");
 
 				await app.methods.updateCurrentUser();
 				await app.methods.loadContacts();
@@ -595,6 +595,7 @@
 						{
 							let applePaySession = new ApplePaySession(6, config);
 							//Handle applePaySessionEvents
+							handleApplePayEvents(applePaySession);
 							applePaySession.begin();
 							app.dialog.alert(`Apple URL: ${applePaySession}`);
 							console.log(applePaySession);
@@ -603,7 +604,8 @@
 						function handleApplePayEvents(appleSession)
 						{
 							appleSession.onvalidatemerchant = function(event){
-
+								console.log("!!!EVENT!!! onvalidatemerchant");
+								console.log(event);
 							}
 						}
 
@@ -620,6 +622,7 @@
 				}
 				else
 				{
+//--------------------------------------------------------------------------------------------------------------------
 					console.log("---------------------------------Not ios");
 					const baseRequest = {
 					apiVersion: 2,
