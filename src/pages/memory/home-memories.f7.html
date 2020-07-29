@@ -39,7 +39,6 @@
 				</div>
 			</div>
 		</div>
-		<div id="ckoApplePay">asd</div>
 		<!-- agregar o quitar none de toolbar para quitarlo y ponerlo -->
 		<div class="toolbar toolbar-bottom">
 			<div class="toolbar-inner">
@@ -268,7 +267,7 @@
 			</div>
 			{{/js_if}}
 			{{else}}
-			No traes memorias vato
+
 			{{/js_if}}
 
 			{{#if IsEditing}}
@@ -294,6 +293,7 @@
 								</div>
 								<div class="card-content-padding">
 									<div class="btns-cont card-opened-fade-out play-btn donation-cont" data-fundation="{{id}}">
+										<a id="ckoApplePay" class="btn-card card-prevent-open" data-fundation="{{id}}">{{localize "give_now"}}</a>
 										<!-- <a href="#" class="btn-card card-prevent-open" data-fundation="{{id}}">{{localize "give_now"}}</a> -->
 									</div>
 									<p class="card-opened-fade-in">{{desc}}</p>
@@ -349,7 +349,7 @@
 
 				console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
 				console.log(app.device);
-				app.dialog.alert(app.device.os + ", ver 0.0.1.11");
+				app.dialog.alert(app.device.os + ", ver 0.0.1.12");
 
 				await app.methods.updateCurrentUser();
 				await app.methods.loadContacts();
