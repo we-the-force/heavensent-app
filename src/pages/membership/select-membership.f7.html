@@ -122,7 +122,7 @@
 			<div id="btn-cont" class="btns-cont center">
 				<!-- <a id="confirm-plan-btn" href="/membership/card/" class="button color-blue round large">Select plan</a> -->
 				<!-- <a id="confirm-plan-btn" href="/membership/card/?plan=basic" class="button color-blue round large">{{localize "select_plan"}}</a> -->
-				<!-- <a id="confirm-plan-btn" href="" class="button color-blue round large">{{localize "select_plan"}}</a> -->
+				<a id="confirm-plan-btn" href="" class="button color-blue round large">{{localize "select_plan"}}</a>
 			</div>
 		</div>
 	</div>
@@ -290,22 +290,27 @@
 					paymentToken = paymentData.paymentMethodData.tokenizationData.token;
 				}
 
-				app.methods.loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
-					const paymentsClient = getGooglePaymentsClient();
-					paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
-									.then(function(response) {
-											if (response.result) {
-													addGooglePayButton();
-													// @todo prefetch payment data to improve performance after confirming site functionality
-													// prefetchGooglePaymentData();
-											}
-									})
-									.catch(function(err) {
-											// show error in developer console for debugging
-											console.error(err);
-									});
-				} )
+				// app.methods.loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
+				// 	const paymentsClient = getGooglePaymentsClient();
+				// 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+				// 					.then(function(response) {
+				// 							if (response.result) {
+				// 									addGooglePayButton();
+				// 									// @todo prefetch payment data to improve performance after confirming site functionality
+				// 									// prefetchGooglePaymentData();
+				// 							}
+				// 					})
+				// 					.catch(function(err) {
+				// 							// show error in developer console for debugging
+				// 							console.error(err);
+				// 					});
+				// } )
 				
+				$$("#confirm-plan-btn").on('click', function(asd){
+					console.log("Click!");
+					console.log(asd);
+				});
+
 				// console.log("select-membership pageInit");
 				// console.log(queryID);
 				
