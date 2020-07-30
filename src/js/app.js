@@ -32,6 +32,12 @@ var app = new Framework7({
     data: {
         //server: 'http://192.168.5.169:1337',
         server: 'https://api.heavensentnow.com',
+        domain: 'https://app.heavensentnow.com',
+        memberships:{
+            basic: 'price_1HAgf6ANVxwYjCOlAR05xv7u',
+            standard: '',
+            premium: ''
+        },
         // server: 'http://localhost:1337',
         locales: {
             es: {
