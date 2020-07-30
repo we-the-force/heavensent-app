@@ -148,6 +148,41 @@
 				console.log("Selected PLan");
 				console.log(selectedPlan);
 
+				var PUBLISHABLE_KEY = "pk_test_51HAgIHANVxwYjCOlUg48SX6TLneuj8ZlF941xZngpEqLu8dwJ9mjyp1k2W8p03k7nHak8yPgVxksbSwjrM46YyKf00bZKFzN4Z";
+				var DOMAIN = app.data.domain;
+				var memberhsips = app.data.memberships;
+
+				var stripe = Stripe(PUBLISHABLE_KEY);
+
+				function redirectToCheckout(price_id)
+				{
+					let lineItems = [{price: priceId, quantity:1}];
+					// let successUrl = `http://success.html?session_id={CHECKOUT_SESSION_ID}`;
+					let successUrl = `http://heavensent.netlify.app/#!/membership/view/user/35`;
+					let cancelUrl = `http://canceled.html`;
+					// let cancelUrl = `http://canceled.html`;
+
+					let object = {
+					lineItems: lineItems,
+					successUrl: successUrl,
+					cancelUrl: cancelUrl,
+					mode: 'subscription'
+					};
+					stripe.redirectToCheckout(object).then(function (res){
+					console.log(res);
+					handleResult(res);
+					});
+				}
+
+				function handleResult(result)
+				{
+					console.log(result);
+					if (result.error)
+					{
+						console.log(result.error.message);
+					}
+				}
+
 				const baseRequest = {
 					apiVersion: 2,
 					apiVersionMinor: 0
@@ -309,6 +344,7 @@
 				$$("#confirm-plan-btn").on('click', function(asd){
 					console.log("Click!");
 					console.log(asd);
+					redirectToCheckout(memberships.basic);
 				});
 
 				// console.log("select-membership pageInit");

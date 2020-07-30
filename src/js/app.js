@@ -38,6 +38,7 @@ var app = new Framework7({
             standard: '',
             premium: ''
         },
+        
         // server: 'http://localhost:1337',
         locales: {
             es: {
