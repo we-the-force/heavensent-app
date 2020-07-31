@@ -881,7 +881,7 @@ var routes = [
             var app = router.app;
 
             console.log("Membership/confirmed/session/ thing");
-            console.log("0.0.2.18");
+            console.log("0.0.2.19");
 
             var stripeUrl = app.data.stripe.stripeUrl;
             var paymentUrl = app.data.stripe.paymentUrl;
@@ -898,8 +898,6 @@ var routes = [
             console.log(headerVar);
 
             // app.request.setup(headerVar);
-
-
 
             app.request.json(`${stripeUrl}/${sessionId}`, function(res){
                 console.log('request session json');
