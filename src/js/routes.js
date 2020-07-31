@@ -881,7 +881,7 @@ var routes = [
             var app = router.app;
 
             console.log("Membership/confirmed/session/ thing");
-            console.log("0.0.2.14");
+            console.log("0.0.2.15");
 
             var stripeUrl = app.data.stripe.stripeUrl;
             var paymentUrl = app.data.stripe.paymentUrl;
