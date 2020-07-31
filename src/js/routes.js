@@ -881,10 +881,10 @@ var routes = [
             var app = router.app;
 
             console.log("Membership/confirmed/session/ thing");
-            console.log("0.0.2.21");
+            console.log("0.0.2.22");
 
             var stripeUrl = app.data.stripe.stripeUrl;
-            var subscriptionjUrl = app.data.stripe.subscriptionUrl;
+            var subscriptionUrl = app.data.stripe.subscriptionUrl;
             var sessionId = routeTo.params.sessionId;
 
             // app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
