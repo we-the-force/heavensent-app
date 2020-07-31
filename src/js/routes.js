@@ -881,7 +881,7 @@ var routes = [
             var app = router.app;
 
             console.log("Membership/confirmed/session/ thing");
-            console.log("0.0.2.23");
+            console.log("0.0.2.24");
 
             var stripeUrl = app.data.stripe.stripeUrl;
             var subscriptionUrl = app.data.stripe.subscriptionUrl;
@@ -907,7 +907,9 @@ var routes = [
                 console.log('get session result');
                 console.log(sessionRes);
 
-                var sessionData = JSON.parse(sessionRes.data);
+                var sessionData = JSON.parse(sessionRes);
+                console.log("sessionData");
+                console.log(sessionData);
                 var subId = sessionData.subscription;
 
                 console.log('subscription');
