@@ -886,7 +886,19 @@ var routes = [
             var paymentUrl = app.data.stripe.paymentUrl;
             var sessionId = routeTo.params.sessionId;
 
-            app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
+            // app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
+            let headerVar = {
+                headers: {
+                  'Authorization': 'Bearer '+app.data.stripe.testKeys.sk,
+                }
+            };
+
+            console.log("header");
+            console.log(headerVar);
+
+            app.request.setup(headerVar);
+
+
 
             app.request.json(`${stripeUrl}/${sessionId}`, function(res){
                 console.log('request session json');
