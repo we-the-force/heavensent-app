@@ -168,9 +168,9 @@
 							currency: "usd",
 							product: product_id,
 							unit_amount: 500,
-							// recurring: {
-							// 	interval: 'month',
-							// }
+							recurring: {
+								interval: 'month',
+							}
 						},
 						quantity: 1,
 					}];
@@ -184,8 +184,7 @@
 						cancel_url: cancelUrl,
 						customer_email: loggedUser.email,
 						payment_method_types: ['card'],
-						// mode: 'subscription'
-						mode: 'payment'
+						mode: 'subscription'
 					};
 					
 					console.log("object");

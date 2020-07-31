@@ -881,10 +881,10 @@ var routes = [
             var app = router.app;
 
             console.log("Membership/confirmed/session/ thing");
-            console.log("0.0.2.19");
+            console.log("0.0.2.20");
 
             var stripeUrl = app.data.stripe.stripeUrl;
-            var paymentUrl = app.data.stripe.paymentUrl;
+            var subscriptionjUrl = app.data.stripe.subscriptionUrl;
             var sessionId = routeTo.params.sessionId;
 
             // app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
@@ -899,26 +899,41 @@ var routes = [
 
             // app.request.setup(headerVar);
 
-            app.request.json(`${stripeUrl}/${sessionId}`, function(res){
-                console.log('request session json');
-                console.log(res);
-                app.preloader.hide();
-                var paymentIntent = res.payment_intent;
+            app.request.promise({
+                url: stripeUrl+'/'+sessionId,
+                method: "GET",
+                headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+            }).then(function(sessionRes){
+                console.log('get session result');
+                console.log(sessionRes);
 
-                app.request.get(`${paymentUrl}/${paymentIntent}`, function(paymentRes){
-                    var paymentData = JSON.parse(paymentRes);
-                    console.log("Get payment intent");
-                    console.log(paymentData);
-                    if (paymentData.charges.data[0].paid)
-                    {
-                        // Resolve route to load page
-                        resolve({
-                            component: PaymentConfirmMembership,
-                        }, 
-                        {context: {}});
-                    }
-                })
-            });
+                var sessionData = JSON.parse(sessionRes);
+                var subId = sessionData.subscription;
+
+                console.log('subscription');
+                console.log(subId);
+            })
+
+            // app.request.json(`${stripeUrl}/${sessionId}`, function(res){
+            //     console.log('request session json');
+            //     console.log(res);
+            //     app.preloader.hide();
+            //     var subsId = res.subscription;
+
+            //     app.request.get(`${subscriptionUrl}/${subsId}`, function(subRes){
+            //         var subData = JSON.parse(subRes);
+            //         console.log("Get payment intent");
+            //         console.log(paymentData);
+            //         if (paymentData.charges.data[0].paid)
+            //         {
+            //             // Resolve route to load page
+            //             resolve({
+            //                 component: PaymentConfirmMembership,
+            //             }, 
+            //             {context: {}});
+            //         }
+            //     })
+            // });
         }
     },
     {
