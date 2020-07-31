@@ -140,7 +140,7 @@
 				var paymentToken;
 				var queryID = app.views.main.router.currentRoute.params.userID;
 				var clearOnBack = app.views.main.router.currentRoute.params.clearOnBack;
-				var loggedUser = app.methods.getLocalValue('loggedUser');
+				var loggedUser = await app.methods.getLocalValue('loggedUser');
 				console.log("Intro thing");
 				var plans = await getPlans();
 				console.log("plans");
