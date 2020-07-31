@@ -196,12 +196,11 @@
 					// 	handleResult(res);
 					// });
 
-					app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
+					// app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
 
-					app.request.promise.post(stripeUrl, object).then(function(res){
+					app.request.promise.post(stripeUrl, {headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}, data: object}).then(function(res){
 						var sessionData = JSON.parse(res.data);
 						console.log(sessionData.id);
-						app.request.setup({headers: {'Authorization': ''}});
 						stripe.redirectToCheckout({sessionId: sessionData.id});
 					})
 				}
