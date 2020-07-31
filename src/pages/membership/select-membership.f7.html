@@ -163,10 +163,22 @@
 					// let successUrl = `http://success.html?session_id={CHECKOUT_SESSION_ID}`;
 					let successUrl = `http://heavensent.netlify.app/#!/membership/confirmed/session/{CHECKOUT_SESSION_ID}`;
 					let cancelUrl = `http://canceled.html`;
+					let line_items =  [{
+						price_data: {
+							currency: "usd",
+							product_data: {
+								name: 'Heavensent Basic Membership',
+							},
+							unit_amount: 500,
+						},
+						quantity: 1,
+					}];
+
+					//Ahorita esta hardcodeado, acomodalo al ratito pls;
 					// let cancelUrl = `http://canceled.html`;
 
 					let object = {
-						line_items: lineItems,
+						line_items: line_items,
 						success_url: successUrl,
 						cancel_url: cancelUrl,
 						customer_email: loggedUser.email,
