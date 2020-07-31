@@ -35,7 +35,7 @@ var app = new Framework7({
         domain: 'https://app.heavensentnow.com',
         stripe: {
             stripeUrl: 'https://api.stripe.com/v1/checkout/sessions',
-            paymsubscriptionUrl: 'https://api.stripe.com/v1/subscriptions',
+            subscriptionUrl: 'https://api.stripe.com/v1/subscriptions',
             memberships:{
                 basic: 'prod_HkB1fcYIm145fD',
                 standard: '',
