@@ -156,21 +156,22 @@
 
 				function redirectToCheckout(price_id)
 				{
-					let lineItems = [{price: priceId, quantity:1}];
+					let lineItems = [{price: price_id, quantity:1}];
 					// let successUrl = `http://success.html?session_id={CHECKOUT_SESSION_ID}`;
 					let successUrl = `http://heavensent.netlify.app/#!/membership/view/user/35`;
 					let cancelUrl = `http://canceled.html`;
 					// let cancelUrl = `http://canceled.html`;
 
 					let object = {
-					lineItems: lineItems,
-					successUrl: successUrl,
-					cancelUrl: cancelUrl,
-					mode: 'subscription'
+						lineItems: lineItems,
+						successUrl: successUrl,
+						cancelUrl: cancelUrl,
+						mode: 'subscription'
 					};
 					stripe.redirectToCheckout(object).then(function (res){
-					console.log(res);
-					handleResult(res);
+						console.log("Redirect response");
+						console.log(res);
+						handleResult(res);
 					});
 				}
 
