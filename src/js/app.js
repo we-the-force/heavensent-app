@@ -33,10 +33,18 @@ var app = new Framework7({
         //server: 'http://192.168.5.169:1337',
         server: 'https://api.heavensentnow.com',
         domain: 'https://app.heavensentnow.com',
-        memberships:{
-            basic: 'price_1HAgf6ANVxwYjCOlAR05xv7u',
-            standard: '',
-            premium: ''
+        stripe: {
+            stripeUrl: 'https://api.stripe.com/v1/checkout/sessions',
+            paymentUrl: 'https://api.stripe.com/v1/payment_intents',
+            memberships:{
+                basic: 'price_1HAgf6ANVxwYjCOlAR05xv7u',
+                standard: '',
+                premium: ''
+            },
+            testKeys:{
+                pk: "pk_test_51HAgIHANVxwYjCOlUg48SX6TLneuj8ZlF941xZngpEqLu8dwJ9mjyp1k2W8p03k7nHak8yPgVxksbSwjrM46YyKf00bZKFzN4Z",
+                sk: "sk_test_51HAgIHANVxwYjCOl8lBAuQ5eTCYVtJNofeKHfa2lEZT1fERzj8WxaMbYAtTsSdi5iaKwkODuMblL3t6O0wmBtUhh00vb2B67lH",
+            },
         },
         
         // server: 'http://localhost:1337',

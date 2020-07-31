@@ -873,9 +873,42 @@ var routes = [
     },
     {
         name: 'payment-confirm-membership',
-        path: '/membership/confirmed',
+        path: '/membership/confirmed/session/:sessionId',
         beforeEnter: [checkAuth],
-        component: PaymentConfirmMembership,
+        // component: PaymentConfirmMembership,
+        async: function (routeTo, routeFrom, resolve, reject){
+            var router = this;
+            var app = router.app;
+
+            console.log("Membership/confirmed/session/ thing");
+
+            var stripeUrl = app.data.stripe.stripeUrl;
+            var paymentUrl = app.data.stripe.paymentUrl;
+            var sessionId = routeTo.params.sessionId;
+
+            app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.sk}});
+
+            app.request.json(`${stripeUrl}/${sessionId}`, function(res){
+                console.log('request session json');
+                console.log(res);
+                app.preloader.hide();
+                var paymentIntent = res.payment_intent;
+
+                app.request.get(`${paymentUrl}/${paymentIntent}`, function(paymentRes){
+                    var paymentData = JSON.parse(paymentRes);
+                    console.log("Get payment intent");
+                    console.log(paymentData);
+                    if (paymentData.charges.data[0].paid)
+                    {
+                        // Resolve route to load page
+                        resolve({
+                            component: PaymentConfirmMembership,
+                        }, 
+                        {context: {}});
+                    }
+                })
+            });
+        }
     },
     {
         name: 'fundations-single',

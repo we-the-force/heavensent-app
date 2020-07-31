@@ -140,6 +140,7 @@
 				var paymentToken;
 				var queryID = app.views.main.router.currentRoute.params.userID;
 				var clearOnBack = app.views.main.router.currentRoute.params.clearOnBack;
+				var loggedUser = app.methods.getLocalValue('loggedUser');
 				console.log("Intro thing");
 				var plans = await getPlans();
 				console.log("plans");
@@ -148,9 +149,11 @@
 				console.log("Selected PLan");
 				console.log(selectedPlan);
 
-				var PUBLISHABLE_KEY = "pk_test_51HAgIHANVxwYjCOlUg48SX6TLneuj8ZlF941xZngpEqLu8dwJ9mjyp1k2W8p03k7nHak8yPgVxksbSwjrM46YyKf00bZKFzN4Z";
+				var PUBLISHABLE_KEY = app.data.stripe.testKeys.pk;
+				var SECRET_KEY = app.data.stripe.testKeys.sk;
 				var DOMAIN = app.data.domain;
-				var memberships = app.data.memberships;
+				var memberships = app.data.stripe.memberships;
+				var stripeUrl = app.data.stripe.stripeUrl;
 
 				var stripe = Stripe(PUBLISHABLE_KEY);
 
@@ -158,7 +161,7 @@
 				{
 					let lineItems = [{price: price_id, quantity:1}];
 					// let successUrl = `http://success.html?session_id={CHECKOUT_SESSION_ID}`;
-					let successUrl = `http://heavensent.netlify.app/#!/membership/view/user/35`;
+					let successUrl = `http://heavensent.netlify.app/#!/membership/confirmed/session/{CHECKOUT_SESSION_ID}`;
 					let cancelUrl = `http://canceled.html`;
 					// let cancelUrl = `http://canceled.html`;
 
@@ -166,13 +169,24 @@
 						lineItems: lineItems,
 						successUrl: successUrl,
 						cancelUrl: cancelUrl,
+						customerEmail: loggedUser.email,
 						mode: 'subscription'
 					};
-					stripe.redirectToCheckout(object).then(function (res){
-						console.log("Redirect response");
-						console.log(res);
-						handleResult(res);
-					});
+
+					// stripe.redirectToCheckout(object).then(function (res){
+					// 	console.log("Redirect response");
+					// 	console.log(res);
+					// 	handleResult(res);
+					// });
+
+					app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
+
+					app.request.promise.post(strapiUrl, object).then(function(res){
+						var sessionData = JSON.parse(res.data);
+						console.log(sessionData.id);
+						app.request.setup({headers: {'Authorization': ''}});
+						stripe.redirectToCheckout({sessionId: sessionData.id});
+					})
 				}
 
 				function handleResult(result)
