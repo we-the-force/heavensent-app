@@ -157,9 +157,9 @@
 
 				var stripe = Stripe(PUBLISHABLE_KEY);
 
-				function redirectToCheckout(price_id)
+				function redirectToCheckout(product_id)
 				{
-					let lineItems = [{price: price_id, quantity:1}];
+					// let lineItems = [{price: price_id, quantity:1}];
 					// let successUrl = `http://success.html?session_id={CHECKOUT_SESSION_ID}`;
 					let successUrl = `http://heavensent.netlify.app/#!/membership/confirmed/session/{CHECKOUT_SESSION_ID}`;
 					let cancelUrl = `http://canceled.html`;
@@ -170,6 +170,10 @@
 								name: 'Heavensent Basic Membership',
 							},
 							unit_amount: 500,
+							type: 'recurring',
+							recurring: {
+								interval: 'month',
+							}
 						},
 						quantity: 1,
 					}];

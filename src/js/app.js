@@ -37,7 +37,7 @@ var app = new Framework7({
             stripeUrl: 'https://api.stripe.com/v1/checkout/sessions',
             paymentUrl: 'https://api.stripe.com/v1/payment_intents',
             memberships:{
-                basic: 'price_1HAgf6ANVxwYjCOlAR05xv7u',
+                basic: 'prod_HkB1fcYIm145fD',
                 standard: '',
                 premium: ''
             },
