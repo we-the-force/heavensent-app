@@ -198,11 +198,24 @@
 
 					// app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
 
-					app.request.promise.post(stripeUrl, {headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}, data: object}).then(function(res){
+					app.request.promise({
+						url: stripeUrl,
+						method: "POST",
+						data: object,
+						headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+					}).then(function(res){
 						var sessionData = JSON.parse(res.data);
 						console.log(sessionData.id);
+						app.request.setup({headers: {'Authorization': ''}});
 						stripe.redirectToCheckout({sessionId: sessionData.id});
 					})
+
+					// app.request.promise.post(stripeUrl, object).then(function(res){
+					// 	var sessionData = JSON.parse(res.data);
+					// 	console.log(sessionData.id);
+					// 	app.request.setup({headers: {'Authorization': ''}});
+					// 	stripe.redirectToCheckout({sessionId: sessionData.id});
+					// })
 				}
 
 				function handleResult(result)
