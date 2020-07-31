@@ -881,7 +881,7 @@ var routes = [
             var app = router.app;
 
             console.log("Membership/confirmed/session/ thing");
-            console.log("0.0.2.24");
+            console.log("0.0.2.25");
 
             var stripeUrl = app.data.stripe.stripeUrl;
             var subscriptionUrl = app.data.stripe.subscriptionUrl;
@@ -905,9 +905,9 @@ var routes = [
                 headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
             }).then(function(sessionRes){
                 console.log('get session result');
-                console.log(sessionRes);
+                console.log(sessionRes.data);
 
-                var sessionData = JSON.parse(sessionRes);
+                var sessionData = JSON.parse(sessionRes.data);
                 console.log("sessionData");
                 console.log(sessionData);
                 var subId = sessionData.subscription;
