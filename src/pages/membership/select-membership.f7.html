@@ -157,17 +157,17 @@
 
 				var stripe = Stripe(PUBLISHABLE_KEY);
 
-				function redirectToCheckout(product_id)
+				function redirectToCheckout()
 				{
 					// let lineItems = [{price: price_id, quantity:1}];
 					// let successUrl = `http://success.html?session_id={CHECKOUT_SESSION_ID}`;
-					let successUrl = `http://heavensent.netlify.app/#!/membership/confirmed/session/{CHECKOUT_SESSION_ID}`;
-					let cancelUrl = `http://canceled.html`;
+					let successUrl = `http://app.heavensent.com/#!/membership/confirmed/session/{CHECKOUT_SESSION_ID}/plan/${selectedPlan.id}`;
+					let cancelUrl = `https://app.heavensentnow.com/#!/membership/view/user/${loggedUser.id}`;
 					let line_items =  [{
 						price_data: {
 							currency: "usd",
-							product: product_id,
-							unit_amount: 500,
+							product: selectedPlan.stripeId,
+							unit_amount: (selectedPlan.cost * 100),
 							recurring: {
 								interval: 'month',
 							}
@@ -190,12 +190,6 @@
 					console.log("object");
 					console.log(object);
 
-					// stripe.redirectToCheckout(object).then(function (res){
-					// 	console.log("Redirect response");
-					// 	console.log(res);
-					// 	handleResult(res);
-					// });
-
 					// app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
 
 					app.request.promise({
@@ -209,15 +203,8 @@
 						app.request.setup({headers: {'Authorization': ''}});
 						stripe.redirectToCheckout({sessionId: sessionData.id});
 					})
-
-					// app.request.promise.post(stripeUrl, object).then(function(res){
-					// 	var sessionData = JSON.parse(res.data);
-					// 	console.log(sessionData.id);
-					// 	app.request.setup({headers: {'Authorization': ''}});
-					// 	stripe.redirectToCheckout({sessionId: sessionData.id});
-					// })
 				}
-
+				/*
 				function handleResult(result)
 				{
 					console.log(result);
@@ -384,11 +371,11 @@
 				// 							console.error(err);
 				// 					});
 				// } )
-				
+				*/
 				$$("#confirm-plan-btn").on('click', function(asd){
 					console.log("Click!");
 					console.log(asd);
-					redirectToCheckout(memberships.basic);
+					redirectToCheckout();
 				});
 
 				// console.log("select-membership pageInit");
@@ -468,7 +455,6 @@
 									"currentMembership": {
 										"isActive": true,
 										"nextBillingDate": formatDate(true, true),
-										"billedCard": 123123,
 										"plan": plan.id,
 										"token": paymentToken,
 										"billedCard": paymentData.paymentMethodData.description
@@ -513,6 +499,7 @@
 					plansRes.data.forEach(plan => {
 						planList.push({
 							id: plan.id,
+							stripeId: plan.stripeID,
 							name: plan.name,
 							cost: plan.costPerMonth
 						});

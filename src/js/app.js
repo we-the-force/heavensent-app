@@ -34,12 +34,13 @@ var app = new Framework7({
         server: 'https://api.heavensentnow.com',
         domain: 'https://app.heavensentnow.com',
         stripe: {
+            stripeApiUrl: 'https://api.stripe.com/v1/',
             stripeUrl: 'https://api.stripe.com/v1/checkout/sessions',
             subscriptionUrl: 'https://api.stripe.com/v1/subscriptions',
             memberships:{
                 basic: 'prod_HkB1fcYIm145fD',
-                standard: '',
-                premium: ''
+                standard: 'prod_Hm1wGmIhRWWEGx',
+                premium: 'prod_Hm1zt93sfAb68T'
             },
             testKeys:{
                 pk: "pk_test_51HAgIHANVxwYjCOlUg48SX6TLneuj8ZlF941xZngpEqLu8dwJ9mjyp1k2W8p03k7nHak8yPgVxksbSwjrM46YyKf00bZKFzN4Z",
@@ -454,9 +455,9 @@ var app = new Framework7({
         },
         async setLocalValueToKey(value, key) {
             if (key === "loggedUser") {
-                console.log("Setting local value [setLocalValueToKey]");
+                // console.log("Setting local value [setLocalValueToKey]");
                 // console.log("---Value---");
-                console.log(value);
+                // console.log(value);
                 // console.log("Key");
                 // console.log(key);
             }
@@ -472,14 +473,14 @@ var app = new Framework7({
         },
         async updateCurrentUser() {
             var app = this;
-            console.log("updating current user, getting user");
+            // console.log("updating current user, getting user");
             var currentLocalUser = await app.methods.getLocalValue('loggedUser');
-            console.log(currentLocalUser);
+            // console.log(currentLocalUser);
             let result = false;
             if (currentLocalUser != null && !app.methods.clearingUser) {
                 await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function (getResult) {
                     var user = JSON.parse(getResult.data);
-                    console.log("currentLocalUser wasn't null, setting value to loggedUser");
+                    // console.log("currentLocalUser wasn't null, setting value to loggedUser");
                     result = await app.methods.setLocalValueToKey(user, 'loggedUser');
                     await app.methods.loadContacts();
                     await app.methods.loadAdminedContacts();
@@ -499,7 +500,7 @@ var app = new Framework7({
         async clearCurrentUser() {
             var app = this;
             app.methods.clearingUser = true;
-            console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
+            // console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
             let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
             await app.methods.setLocalValueToKey([], 'loggedUserContacts')
             await app.methods.setLocalValueToKey([], 'loggedUserAdminedContacts')
@@ -517,7 +518,7 @@ var app = new Framework7({
             var currentUser = await this.methods.getLocalValue('loggedUser');
             if (currentUser != null) {
                 if (currentUser.confirmed) {
-                    console.log("User Is Valid [userIsValid()]");
+                    // console.log("User Is Valid [userIsValid()]");
                     return true;
                 }
             }
@@ -672,8 +673,8 @@ var app = new Framework7({
             // if (lname!="") {
             //     lname="lastname="+lname;
             // }
-            console.log("- - - - Cookies - - - -");
-            console.log(document.cookie);
+            // console.log("- - - - Cookies - - - -");
+            // console.log(document.cookie);
             // alert (document.cookie);
         },
         updateUsername(e) {

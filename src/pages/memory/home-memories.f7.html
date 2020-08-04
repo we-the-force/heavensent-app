@@ -347,9 +347,9 @@
 				var paymentToken;
 				// console.log("home-memories pageInit [pageInit], updating user");
 
-				console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
-				console.log(app.device);
-				app.dialog.alert(app.device.os + ", ver 0.0.2.26");
+				// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
+				// console.log(app.device);
+				// app.dialog.alert(app.device.os + ", ver 0.0.2.26");
 
 				await app.methods.updateCurrentUser();
 				await app.methods.loadContacts();
@@ -459,7 +459,7 @@
 							let currentId = $$(donationThings[i]).prop("dataset").fundation;
 
 							const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
-							console.log(button);
+							// console.log(button);
 							// const button = paymentsClient.createButton({onClick: testDonate});
 							$$(button).find('.gpay-button').attr('data-fundation', currentId);
 							$$(button).find('.gpay-button').addClass('card-prevent-open');
@@ -515,7 +515,7 @@
 
 					function processPayment(paymentData) {
 						// show returned data in developer console for debugging
-								console.log(paymentData);
+								// console.log(paymentData);
 						// @todo pass payment token to your gateway to process payment
 						paymentToken = paymentData.paymentMethodData.tokenizationData.token;
 					}
@@ -573,7 +573,7 @@
 					let id = $$(this)[0][indexValueTwo - 1].id;
 					let targetUserId = $$(`#${id}`).attr("asd");
 
-					console.log(`Index Value Two: ${indexValueTwo}, ${id}`);
+					// console.log(`Index Value Two: ${indexValueTwo}, ${id}`);
 
 					let item = select.items[indexValue - 1];
 
@@ -620,12 +620,14 @@
 				});
 
 				$$('.card-expandable .btn-card').click(x => {
-					console.log('make somthing');
+					// console.log('make somthing');
 
 				});
 
 				function updateControls() {
 					if (currentUser != null) {
+						// console.log("=-=-=-=-=-=-=-=-=-=-=-=Update controls");
+						// console.log(currentUser);
 						var currentMembership = currentUser.currentMembership;
 						if (currentMembership === null) {
 							if (window.language == 'en_US') {
