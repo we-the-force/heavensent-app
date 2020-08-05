@@ -947,13 +947,33 @@ var routes = [
                     {
                         let membershipObject = createMembershipObject(subData.id, readableEndDate, paymentMethodData.card.last4, paymentMethodData.card.brand, planId);
                         let paymentObject = createPaymentObject(subData.id, loggedUser.id, readableStartDate, plan.name, (sessionData.amount_total / 100), sessionData.customer_email);
-                        // let paymentObject = createPaymentObject();
-                        console.log("Membership object");
-                        console.log(membershipObject);
-                        console.log("Payment Object");
-                        console.log(paymentObject);
+                        // let userInfo = await app.request({url: `${app.data.server}/users/${loggedUser.id}`, method: 'GET'});
+                        let userInfo;
+                        await  app.request.promise.json(`${app.data.server}/users/${loggedUser.id}`).then(function(res){
+                            userInfo = res.data;
+                        });
 
-                        await assignPlan(membershipObject, paymentObject);
+                        // let paymentObject = createPaymentObject();
+
+                        // console.log("");
+                        // console.log("User Info");
+                        // console.log(userInfo);
+                        // console.log("Membership object");
+                        // console.log(membershipObject);
+                        // console.log("Payment Object");
+                        // console.log(paymentObject);
+
+                        if (!isMembershipTheSame(userInfo.currentMembership, membershipObject.currentMembership))
+                        {
+                            await assignPlan(membershipObject, paymentObject);
+                        }
+                        else
+                        {
+                            app.preloader.hide();
+
+                            resolve({component: PaymentConfirmMembership});
+                        }
+                        
                     }
                     else
                     {
@@ -962,8 +982,28 @@ var routes = [
                 })
             })
 
+            function isMembershipTheSame(userMembership, newMembership)
+            {
+                let billingDate = (userMembership.nextBillingDate === newMembership.nextBillingDate);
+                let plan = (userMembership.plan.id.toString() === newMembership.plan.toString());
+                let token = (userMembership.token === newMembership.token);
+                let billedCard = (userMembership.billedCard === newMembership.billedCard);
+
+                // console.log(`(${userMembership.nextBillingDate}) vs (${newMembership.nextBillingDate}) = ${billingDate}`);
+                // console.log(`(${userMembership.plan.id}) vs (${newMembership.plan}) = ${plan}`);
+                // console.log(`(${userMembership.token}) vs (${newMembership.token}) = ${token}`);
+                // console.log(`(${userMembership.billedCard}) vs (${newMembership.billedCard}) = ${billedCard}`);
+
+                if (billingDate && plan && token && billedCard)
+                {
+                    return true;
+                }
+                return false;
+            }
+
             async function assignPlan(membershipObject, paymentObject)
 			{
+                console.log("---- Assigning plan ----");
 				await app.request.promise.get(`${app.data.server}/users/${loggedUser.id}`).then(async function(userRes){
 					// console.log("Inserting membership");
 					await app.request({
@@ -993,7 +1033,7 @@ var routes = [
                     "currentMembership":{
                         "token": token,
                         "isActive": true,
-                        "nextBillingDate": formatDate(nextBillingDate),
+                        "nextBillingDate": formatDate(nextBillingDate, true),
                         "plan": planId,
                         "billedCard": `${cardBrand} **** **** **** ${billedCard}`
                     }
