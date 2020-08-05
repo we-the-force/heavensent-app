@@ -22,6 +22,12 @@ Template7.registerHelper('localize', function (value, options) {
     return window.localize(value)
 });
 
+var keyConf = require('./keyConfig.js');
+console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
+// console.log(keyConf.KEY_2());
+// keyConf.sum(1, 2);
+// console.log(keyConf);
+
 var app = new Framework7({
     root: '#app', // App root element
     component: App, // App main component
@@ -30,7 +36,8 @@ var app = new Framework7({
     theme: 'auto', // Automatic theme detection
 
     data: {
-        //server: 'http://192.168.5.169:1337',
+        // keyConfig
+        // testKey: keyConfig.SECRET_KEY,
         server: 'https://api.heavensentnow.com',
         domain: 'https://app.heavensentnow.com',
         stripe: {
@@ -43,8 +50,8 @@ var app = new Framework7({
                 premium: 'prod_Hm1zt93sfAb68T'
             },
             testKeys:{
-                pk: "pk_test_51HAgIHANVxwYjCOlUg48SX6TLneuj8ZlF941xZngpEqLu8dwJ9mjyp1k2W8p03k7nHak8yPgVxksbSwjrM46YyKf00bZKFzN4Z",
-                sk: "sk_test_51HAgIHANVxwYjCOl8lBAuQ5eTCYVtJNofeKHfa2lEZT1fERzj8WxaMbYAtTsSdi5iaKwkODuMblL3t6O0wmBtUhh00vb2B67lH",
+                pk: keyConf.Keys.PUBLISHABLE,
+                sk: keyConf.Keys.SECRET,
             },
         },
         

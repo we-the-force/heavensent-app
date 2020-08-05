@@ -41,3 +41,5 @@ cordova/www/
 
 # Production build
 www/
+
+keyConfig.js
