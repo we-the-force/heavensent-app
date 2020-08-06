@@ -984,6 +984,10 @@ var routes = [
 
             function isMembershipTheSame(userMembership, newMembership)
             {
+                if (userMembership.plan === null)
+                {
+                    return false;
+                }
                 let billingDate = (userMembership.nextBillingDate === newMembership.nextBillingDate);
                 let plan = (userMembership.plan.id.toString() === newMembership.plan.toString());
                 let token = (userMembership.token === newMembership.token);

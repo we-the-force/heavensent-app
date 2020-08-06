@@ -221,7 +221,7 @@
 					async function updateUser() {
 						console.log("Get user method");
 						let auxUser = await app.methods.getLocalValue("loggedUser");
-						console.log(auxUser);
+						// console.log(auxUser);
 						return auxUser;
 					}
 
@@ -229,7 +229,7 @@
 						// console.log("Updating controls [pageInit.updateControls()]");
 						if (loggedUser != null) {
 							var currentMembership = loggedUser.currentMembership;
-							if (currentMembership === null) {
+							if (currentMembership === null || currentMembership.plan === null) {
 								if (window.language == 'en_US') {
 									currentMembership = 'No ' + window.localize('membership');
 								} else if (window.language == 'es_MX') {
