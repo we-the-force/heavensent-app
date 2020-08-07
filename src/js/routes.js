@@ -811,28 +811,43 @@ var routes = [
                     // console.log("Current membership: [view-membership.json]")
                     // console.log(res.data.currentMembership);
                     let plan = GetPlanName(res.data.currentMembership);
-                    let plan_name;
-                    if(window.language == 'en_US'){
-                        plan_name = plan + ' ' + window.localize('membership');
-                    }else if(window.language == 'es_MX'){
-                        plan_name = window.localize('membership') + ' ' + plan;
-                    }
-                    console.log(res);
-                    app.preloader.hide();
-                    resolve(
-                        {
-                            component: ViewMembership,
-                        },
-                        {
-                            context: {
-                                UserName: GetUserName(res.data),
-                                PlanName: plan_name,
-                                PlanPrice: GetPlanPrice(res.data.currentMembership),
-                                BillingDate: GetNextPayDate(res.data.currentMembership),
-                                BilledCard: res.data.currentMembership.billedCard
+                    if (plan === "None")
+                    {
+                        app.preloader.hide();
+                        reject();
+                        router.navigate({
+                            name: 'select-membership',
+                            params: {
+                                userID: res.data.id,
+                                clearOnBack: "1"
                             }
+                        })
+                    }
+                    else
+                    {
+                        let plan_name;
+                        if(window.language == 'en_US'){
+                            plan_name = plan + ' ' + window.localize('membership');
+                        }else if(window.language == 'es_MX'){
+                            plan_name = window.localize('membership') + ' ' + plan;
                         }
-                    );
+                        console.log(res);
+                        app.preloader.hide();
+                        resolve(
+                            {
+                                component: ViewMembership,
+                            },
+                            {
+                                context: {
+                                    UserName: GetUserName(res.data),
+                                    PlanName: plan_name,
+                                    PlanPrice: GetPlanPrice(res.data.currentMembership),
+                                    BillingDate: GetNextPayDate(res.data.currentMembership),
+                                    BilledCard: res.data.currentMembership.billedCard
+                                }
+                            }
+                        );
+                    }
                 });
 
             function GetUserName(user) {
@@ -844,7 +859,11 @@ var routes = [
                 }
             }
             function GetPlanName(plan) {
-                if (plan === null) {
+                console.log("GetPlanName");
+                console.log(plan);
+                let isMembershipNull = plan === null;
+                let isPlanNull = plan.plan === null;
+                if (isMembershipNull || isPlanNull) {
                     return "None";
                 }
                 else {

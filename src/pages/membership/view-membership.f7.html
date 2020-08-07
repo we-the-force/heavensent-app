@@ -63,6 +63,46 @@
                 updateControls();
 
 
+                $$("#cancel-plan-btn").on("click", async function (e) {
+                        e.preventDefault();
+                        
+                        app.dialog.confirm(window.localize('cancel_subs_dialog'), window.localize('cancel_subs'), handleCancel)
+
+						// loggedUser = null;
+						// await app.methods.clearCurrentUser();
+						// console.log("User cleared [app.f7.signout]");
+						// await app.views.main.router.navigate('/');
+						// console.log("Logging out [pageInit.sign-out-btn.onClick]");
+						// if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
+						// {
+						// 	console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
+						// 	app.views.main.router.navigate({ name: "login" });
+						// }
+                });
+                
+                async function handleCancel()
+                {
+                    console.log(loggedUser.currentMembership.token);
+                    let updateResponse;
+
+                    await app.request.promise({
+                        url: `${app.data.stripe.subscriptionUrl}/${loggedUser.currentMembership.token}?cancel_at_period_end=true`,
+                        method: "POST",
+                        headers: {'Authorization': `Bearer ${app.data.stripe.testKeys.sk}`},
+                    }).then(async function (updateResponse){
+                        let updateData = JSON.parse(updateResponse.data);
+                        console.log(updateData);
+
+                        let endDate = new Date(updateData.current_period_end * 1000);
+                        app.dialog.alert(`${window.localize('cancel_subs_canceled')} ${endDate}`);
+                    });
+
+                }
+                function nocancelMembership()
+                {
+                    console.log("Que dice mi mama que siempre no");
+                }
+
                 function updateControls()
                 {
                     console.log("UpdateControls()")
