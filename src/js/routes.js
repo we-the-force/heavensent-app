@@ -1003,7 +1003,7 @@ var routes = [
 
             function isMembershipTheSame(userMembership, newMembership)
             {
-                if (userMembership.plan === null)
+                if (userMembership === null || userMembership.plan === null)
                 {
                     return false;
                 }
