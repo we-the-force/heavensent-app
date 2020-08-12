@@ -28,7 +28,8 @@
                 <!-- <h1 class="text-title" id="package-name">Package 3 membership</h1> -->
                 <!-- <p class="text-cost" id="package-cost">$15.00 USB /MO</p> -->
                 <h1 class="text-title" id="package-name">{{PlanName}}</h1>
-                <p class="text-cost" id="package-cost">${{PlanPrice}}.00 USD /MO</p>
+                <!-- <p class="text-cost" id="package-cost">${{PlanPrice}}.00 USD /MO</p> -->
+                <p class="text-cost" id="package-cost">$0.00 USD {{localize "view_membership_next_month"}}</p>
                 
                 <p class="text">
                     <!-- Next billing date: <span id="next-bill-date">06/26/2020</span> -->
@@ -62,7 +63,7 @@
                 
                 await app.methods.updateCurrentUser();
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
-                updateControls();
+                await updateControls();
 
 
                 $$("#cancel-plan-btn").on("click", async function (e) {
@@ -124,7 +125,7 @@
                     console.log("Que dice mi mama que siempre no");
                 }
 
-                function updateControls()
+                async function updateControls()
                 {
                     console.log("UpdateControls()")
                     $$("#change-plan-btn")[0].href = `/membership/select/user/${loggedUser.id}/clear/0`;
@@ -136,8 +137,46 @@
 
                         console.log("Canceling membership unu");
                     }
-                    // console.log($$("#package-name"));
+                    else
+                    {
+                        await app.request.promise({
+                            url: `${app.data.stripe.stripeApiUrl}invoices/upcoming?subscription=${loggedUser.currentMembership.token}`,
+                            method: 'GET',
+                            headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+                        }).then(function (upInvRes){
+                            let data = JSON.parse(upInvRes.data);
+                            let formattedNumber = formatAmountNumber(data.amount_due/100);
+                            let formattedText = `$${formattedNumber} USD ${window.localize('view_membership_next_month')}`
+                            $$('#package-cost')[0].innerText = formattedText;
+                        }).catch(function (err){
+                            console.log("Error in upcomingInvoice");
+                            console.log(err);
+                        });
+                    }
                 }
+                function formatAmountNumber(toFormat)
+                {
+                    var splitAmount = toFormat.toString().split('.');
+                    var formattedAmount = `${splitAmount[0]}.${(splitAmount.length > 1 ? formatSingleNumber(splitAmount[1]) : "00" )}`;
+                    return formattedAmount;
+                }
+
+                function formatSingleNumber(number)
+                {
+                    switch (number.toString().length)
+                    {
+                        case 0:
+                            return "00";
+                            break;
+                        case 1:
+                            return number + "0";
+                            break;
+                        case 2:
+                            return number;
+                            break;
+                    }
+                }
+
             }
         },
     };
