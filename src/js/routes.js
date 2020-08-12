@@ -30,6 +30,7 @@ import SelectMembership from '../pages/membership/select-membership.f7.html';
 import AddCardInfo from '../pages/membership/add-card-info.f7.html';
 import ViewMembership from '../pages/membership/view-membership.f7.html';
 import PaymentConfirmMembership from '../pages/membership/payment-confirm-membership.f7.html';
+import MembershipChangeConfirm from '../pages/membership/membership-change-confirm.f7.html';
 
 import ViewFamily from '../pages/family/view-family.f7.html';
 
@@ -1100,6 +1101,12 @@ var routes = [
                 return text.charAt(0).toUpperCase() + text.slice(1);
             }
         }
+    },
+    {
+        name: 'membership-change-confirmed',
+        path: '/membership/change/confirmed',
+        beforeEnter: [checkAuth, isMembershipValid],
+        component: MembershipChangeConfirm,
     },
     {
         name: 'fundations-single',

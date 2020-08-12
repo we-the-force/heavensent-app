@@ -195,7 +195,14 @@
 					
 					canceled_subscription = false;
 					let hasMembership = loggedUser.currentMembership !== null;
-					let hasToken = hasMembership ? loggedUser.currentMembership.token !== 'null' : false;
+					let hasToken = hasMembership ? loggedUser.currentMembership.token !== null : false;
+					// console.log("User has membership??");
+					// console.log(`hasMembership: ${hasMembership}, hasToken: ${hasToken}, result: ${(hasMembership && hasToken)}`);
+					// console.log("Membership:");
+					// console.log(loggedUser.currentMembership);
+					// console.log("token");
+					// console.log(loggedUser.currentMembership.token);
+
 
 					if (hasMembership && hasToken)
 					{
@@ -233,8 +240,7 @@
 
 						if (selectedPlan.stripeId != subscription.items.data[0].plan.product)
 						{
-							console.log(`Not the same, go on (${selectedPlan.stripeId})`);
-
+							// console.log(`Not the same, go on (${selectedPlan.stripeId})`);
 							if (subscription.cancel_at_period_end)
 							{
 								//Subscription has been canceled, gotta uncancel it first lmao
@@ -251,16 +257,16 @@
 							}
 
 							let proration_date = Math.floor(Date.now() / 1000);
-							console.log(`Proration Date`);
-							console.log(proration_date);
+							// console.log(`Proration Date`);
+							// console.log(proration_date);
 
 							let items = [{
 								id: subscription.items.data[0].id,
 								price: selectedPlan.stripePrice
 							}];
 
-							console.log("Items");
-							console.log(items);
+							// console.log("Items");
+							// console.log(items);
 
 							let upcomingInvoice;
 							await app.request.promise({
@@ -276,15 +282,36 @@
 
 							// let upcomingInvoice = await stripe.invoices.retrieveUpcoming({subscription: loggedUser.currentMembership.token});
 							app.preloader.hide();
-							console.log("-=-=-=-=-=-Upcoming Invoice");
-							console.log(upcomingInvoice);
-							console.log(new Date(upcomingInvoice.next_payment_attempt * 1000));
-							console.log(new Date(upcomingInvoice.period_end * 1000));
-							console.log(new Date(loggedUser.currentMembership.nextBillingDate));
+							// console.log("-=-=-=-=-=-Upcoming Invoice");
+							// console.log(upcomingInvoice);
+							// console.log(new Date(upcomingInvoice.next_payment_attempt * 1000));
+							// console.log(new Date(upcomingInvoice.period_end * 1000));
+							// console.log(new Date(loggedUser.currentMembership.nextBillingDate));
+
+
+
+							let current_prorations = [];
+							let cost = 0;
+							for (let i = 0; i < upcomingInvoice.lines.data.length; i++)
+							{
+								let invoice_item = upcomingInvoice.lines.data[i];
+								let proration_result = invoice_item.period.start - proration_date;
+								// console.log("-----current invoice item-----");
+								// console.log(invoice_item);
+								// console.log(`periodStart - proration_date  (${invoice_item.period.start} - ${proration_date} = ${proration_result})`);
+								if (invoice_item.period.start - proration_date <= 1)
+								{
+									current_prorations.push(invoice_item);
+									cost += invoice_item.amount;
+								}
+							}
+							// console.log('Current prorations: ');
+							// console.log(current_prorations);
+							// console.log(`Cost: ${cost}`);
 
 							// app.dialog.confirm(window.localize('cancel_subs_dialog'), window.localize('cancel_subs'), handleCancel)
 							// app.dialog.confirm(`Tas seguro que te quieres cambiar? El siguiente pago tendras que pagar ${(upcomingInvoice.amount_due)/100} USD`, 'Confirmar cambio de plan', handleConfirm(loggedUser.currentMembership.token, items, proration_date))
-							app.dialog.confirm(`Tas seguro que te quieres cambiar? El siguiente pago tendras que pagar ${(upcomingInvoice.amount_due)/100} USD`, 'Confirmar cambio de plan', function() {handleConfirm(loggedUser.currentMembership.token, items, proration_date, new Date(upcomingInvoice.period_end * 1000));}, handleCancel);
+							app.dialog.confirm(`${window.localize('confirm_plan_change_dialog_text')} ${(upcomingInvoice.amount_due)/100} USD`, window.localize('confirm_plan_change_dialog_title'), function() {handleConfirm(loggedUser.currentMembership.token, items, proration_date, new Date(upcomingInvoice.period_end * 1000));}, handleCancel);
 
 							// Update subscription
 							// console.log("!!! Updating subscription to new sub");
@@ -323,24 +350,6 @@
 							// });
 							// console.log(newSubscription);
 
-							// let current_prorations = [];
-							// let cost = 0;
-							// for (let i = 0; i < upcomingInvoice.lines.data.length; i++)
-							// {
-							// 	let invoice_item = upcomingInvoice.lines.data[i];
-							// 	let proration_result = invoice_item.period.start - proration_date;
-							// 	// console.log("-----current invoice item-----");
-							// 	// console.log(invoice_item);
-							// 	// console.log(`periodStart - proration_date  (${invoice_item.period.start} - ${proration_date} = ${proration_result})`);
-							// 	if (invoice_item.period.start - proration_date <= 1)
-							// 	{
-							// 		current_prorations.push(invoice_item);
-							// 		cost += invoice_item.amount;
-							// 	}
-							// }
-							// console.log('Current prorations: ');
-							// console.log(current_prorations);
-							// console.log(`Cost: ${cost}`);
 						}
 						else
 						{
@@ -350,9 +359,8 @@
 					}
 					else
 					{
-						console.log("object");
-						console.log(object);
-
+						// console.log("object");
+						// console.log(object);
 						await app.request.promise({
 							url: stripeUrl,
 							method: "POST",
@@ -369,21 +377,21 @@
 				async function handleConfirm(subscription, items, proration_date, period_end)
 				{
 					app.preloader.show("blue");
-					console.log("Confirmando como no");
-					console.log("Subscription");
-					console.log(subscription);
-					console.log("Items");
-					console.log(items);
-					console.log("proration date");
-					console.log(proration_date);
-					console.log("period end");
-					console.log(period_end);
-					console.log("Plan:");
-					console.log(selectedPlan);
+					// console.log("Confirmando como no");
+					// console.log("Subscription");
+					// console.log(subscription);
+					// console.log("Items");
+					// console.log(items);
+					// console.log("proration date");
+					// console.log(proration_date);
+					// console.log("period end");
+					// console.log(period_end);
+					// console.log("Plan:");
+					// console.log(selectedPlan);
 
 					let membershipObject = createMembershipObject(subscription, period_end, loggedUser.currentMembership.billedCard, selectedPlan.id);
-					console.log("Membership object");
-					console.log(membershipObject);
+					// console.log("Membership object");
+					// console.log(membershipObject);
 					// Update subscription
 					console.log("!!! Updating subscription to new sub");
 					await app.request.promise({
@@ -391,8 +399,8 @@
 						method: 'POST',
 						headers: {"Authorization": 'Bearer ' + app.data.stripe.testKeys.sk}
 					}).then(async function (subsUpdateResponse){
-						console.log("Update subscription response");
-						console.log(JSON.parse(subsUpdateResponse.data));
+						// console.log("Update subscription response");
+						// console.log(JSON.parse(subsUpdateResponse.data));
 						await assignPlan(membershipObject);
 					}).catch(function (err){
 						app.preloader.hide();
@@ -405,15 +413,21 @@
 					console.log("Handling canceling");
 					if (canceled_subscription)
 					{
+						app.preloader.show("blue");
 						//Subscription has been canceled, gotta uncancel it first lmao
-						console.log("Uncanceling subscription");
+						console.log("membership was marked as canceled before starting, recanceling subscription");
 						await app.request.promise({
 							url: `${app.data.stripe.stripeApiUrl}subscriptions/${loggedUser.currentMembership.token}?cancel_at_period_end=true`,
 							method: 'POST',
 							headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
 						}).then(function (uncancelRes){
-							console.log("Uncanceling");
+							app.preloader.hide();
+							console.log("Canceled");
 							// console.log(JSON.parse(uncancelRes.data));
+						}).catch(function (err){
+							app.preloader.hide();
+							console.log("Error recanceling membership!!!");
+							console.log(err.xhr.response);
 						});
 					}
 				}
@@ -422,8 +436,8 @@
 					console.log("---- Assigning plan ----");
 					await app.request.promise.get(`${app.data.server}/users/${loggedUser.id}`).then(async function(userRes){
 						// console.log("Inserting membership");
-						console.log("Updating to current membership object");
-						console.log(membershipObject);
+						// console.log("Updating to current membership object");
+						// console.log(membershipObject);
 						await app.request.promise({
 							url: `${app.data.server}/users/${loggedUser.id}`,
 							method: 'PUT',
@@ -435,21 +449,11 @@
 							console.log("Error updating membership");
 							console.log(err.xhr.response);
 						});
-						// var loggedUser = await app.methods.getLocalValue('loggedUser');
-						// var userEmail = loggedUser.email;
 						// await app.request.promise.postJSON(`${app.data.server}/payments`,paymentObject)
 						console.log("updating current user");
 						await app.methods.updateCurrentUser();
-						//If no errors present
-						// app.views.main.router.navigate('/membership/confirmed');
-	
-						// console.log("Going to payment confirm como no");
 						app.preloader.hide();
-						// resolve({component: PaymentConfirmMembership});
-
-						//Navigate to the next screen or something idk
-
-						app.dialog.alert("Aqui te deberia llevar a otra ventana, nomas que todavia no la hago")
+						await app.views.main.router.navigate('/membership/change/confirmed');
 					}).catch(function(err){
 						app.preloader.hide();
 						console.log(`There was an error fetching the current user (id: ${loggedUser.id})`);
