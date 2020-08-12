@@ -46,11 +46,20 @@ var app = new Framework7({
             stripeApiUrl: 'https://api.stripe.com/v1/',
             stripeUrl: 'https://api.stripe.com/v1/checkout/sessions',
             subscriptionUrl: 'https://api.stripe.com/v1/subscriptions',
-            memberships:{
-                basic: 'prod_HkB1fcYIm145fD',
-                standard: 'prod_Hm1wGmIhRWWEGx',
-                premium: 'prod_Hm1zt93sfAb68T'
-            },
+            // memberships:{
+            //     basic: {
+            //         product: 'prod_HkB1fcYIm145fD',
+            //         price: 'price_1HAgf6ANVxwYjCOlAR05xv7u'
+            //     },
+            //     standard:{ 
+            //         product: 'prod_Hm1wGmIhRWWEGx',
+            //         price: 'price_1HCTskANVxwYjCOlbIOEZkW3'
+            //     },
+            //     premium: {
+            //         product: 'prod_Hm1zt93sfAb68T',
+            //         price: 'price_1HCTv3ANVxwYjCOlU0cpZD49'
+            //     }
+            // },
             testKeys:{
                 pk: keyConf.Keys.PUBLISHABLE,
                 sk: keyConf.Keys.SECRET,
@@ -117,6 +126,8 @@ var app = new Framework7({
                 //membership
                 membership: "Membresía",
                 text_thanks_membership: "Gracias por ser miembro de HeavenSent",
+                // view_membership_cancel: "Your membership has been canceled, you won't be charged again at the end of the current period",
+                view_membership_cancel: "Tu membresía ha sido cancelada, no se te cobrará al final del periodo actual",
                 next_billing_date: "Siguiente Fecha de facturación:",
                 billed_with: "Facturado con:",
                 change_plan: "Cambiar plan",
@@ -302,6 +313,7 @@ var app = new Framework7({
                 //membership
                 membership: "Membership",
                 text_thanks_membership: "Thanks for being a HeavenSent member",
+                view_membership_cancel: "Your membership has been canceled, you won't be charged again at the end of the current period",
                 next_billing_date: "Next billing date:",
                 billed_with: "Billed with:",
                 change_plan: "Change plan",

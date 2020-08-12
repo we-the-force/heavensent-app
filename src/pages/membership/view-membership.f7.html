@@ -22,6 +22,7 @@
                 <!-- <h1>Hello Jacob</h1> -->
                 <h1>{{UserName}}</h1>
                 <p>{{localize "text_thanks_membership"}}</p>
+                <p id="canceled-membership-text" style="color:red"></p>
             </div>
             <div class="text-cont">
                 <!-- <h1 class="text-title" id="package-name">Package 3 membership</h1> -->
@@ -59,6 +60,7 @@
                 var self = this;
                 var app = self.$app;
                 
+                await app.methods.updateCurrentUser();
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
                 updateControls();
 
@@ -95,6 +97,25 @@
 
                         let endDate = new Date(updateData.current_period_end * 1000);
                         app.dialog.alert(`${window.localize('cancel_subs_canceled')} ${endDate}`);
+
+                        let asd = await app.request({
+                            url: `${app.data.server}/users/${loggedUser.id}`,
+                            method: 'PUT',
+                            data: {
+                                "currentMembership": {
+                                    "isActive": loggedUser.currentMembership.isActive,
+                                    "nextBillingDate": loggedUser.currentMembership.nextBillingDate,
+                                    "plan": loggedUser.currentMembership.plan.id,
+                                    "token": loggedUser.currentMembership.token,
+                                    "billedCard": loggedUser.currentMembership.billedCard,
+                                    "cancelOnPeriodEnd": true
+                                }
+                            }
+                        });
+
+                        await app.methods.updateCurrentUser();
+
+                        app.views.main.router.refreshPage();
                     });
 
                 }
@@ -107,6 +128,14 @@
                 {
                     console.log("UpdateControls()")
                     $$("#change-plan-btn")[0].href = `/membership/select/user/${loggedUser.id}/clear/0`;
+                    if (loggedUser.currentMembership.cancelOnPeriodEnd)
+                    {
+                        console.log($$("#canceled-membership-text")[0]);
+                        
+                        $$("#canceled-membership-text")[0].innerText = window.localize('view_membership_cancel');
+
+                        console.log("Canceling membership unu");
+                    }
                     // console.log($$("#package-name"));
                 }
             }

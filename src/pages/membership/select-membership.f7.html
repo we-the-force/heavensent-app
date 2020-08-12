@@ -140,43 +140,49 @@
 				var paymentToken;
 				var queryID = app.views.main.router.currentRoute.params.userID;
 				var clearOnBack = app.views.main.router.currentRoute.params.clearOnBack;
+				await app.methods.updateCurrentUser();
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
 				console.log("Intro thing");
 				var plans = await getPlans();
 				console.log("plans");
 				console.log(plans);
 				var selectedPlan = plans[0];
-				console.log("Selected PLan");
+				console.log("Selected Plan");
 				console.log(selectedPlan);
 
 				var PUBLISHABLE_KEY = app.data.stripe.testKeys.pk;
 				var SECRET_KEY = app.data.stripe.testKeys.sk;
 				var DOMAIN = app.data.domain;
-				var memberships = app.data.stripe.memberships;
+				// var memberships = app.data.stripe.memberships;
 				var stripeUrl = app.data.stripe.stripeUrl;
+				var canceled_subscription = false;
 
-				var stripe = Stripe(PUBLISHABLE_KEY);
 
-				function redirectToCheckout()
+				const stripe = require('stripe')(SECRET_KEY);
+				console.log('stripeVar');
+				console.log(stripe.invoices);
+
+				var stripeRedirect = Stripe(PUBLISHABLE_KEY);
+
+				async function redirectToCheckout()
 				{
+					app.preloader.show('blue');
 					// let lineItems = [{price: price_id, quantity:1}];
 					// let successUrl = `http://success.html?session_id={CHECKOUT_SESSION_ID}`;
 					let successUrl = `${app.data.domain}/#!/membership/confirmed/session/{CHECKOUT_SESSION_ID}/plan/${selectedPlan.id}`;
 					let cancelUrl = `${app.data.domain}/#!/membership/view/user/${loggedUser.id}`;
 					let line_items =  [{
-						price_data: {
-							currency: "usd",
-							product: selectedPlan.stripeId,
-							unit_amount: (selectedPlan.cost * 100),
-							recurring: {
-								interval: 'month',
-							}
-						},
+						price: selectedPlan.stripePrice,
+						// price_data: {
+						// 	currency: "usd",
+						// 	product: selectedPlan.stripeId,
+						// 	unit_amount: (selectedPlan.cost * 100),
+						// 	recurring: {
+						// 		interval: 'month',
+						// 	}
+						// },
 						quantity: 1,
 					}];
-
-					//Ahorita esta hardcodeado, acomodalo al ratito pls;
-					// let cancelUrl = `http://canceled.html`;
 
 					let object = {
 						line_items: line_items,
@@ -187,211 +193,325 @@
 						mode: 'subscription'
 					};
 					
-					console.log("object");
-					console.log(object);
+					canceled_subscription = false;
+					let hasMembership = loggedUser.currentMembership !== null;
+					let hasToken = hasMembership ? loggedUser.currentMembership.token !== 'null' : false;
 
-					// app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
+					if (hasMembership && hasToken)
+					{
+						/*
+							Retrieve current subscription
+							Update subscription with new values
+							-Prorations
+								Get proration date
+								Get current subscription
+								Get upcoming invoice
+									Update upcoming invoice????
+										-Add subscription_items (the updated ones)
+										-Add proration_date
+									Calculate proration cost
+							-Confirm new costs with user
+								Save proration date before confirming with user, because the amount may change.
+						*/
 
-					app.request.promise({
-						url: stripeUrl,
-						method: "POST",
-						data: object,
-						headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
-					}).then(function(res){
-						var sessionData = JSON.parse(res.data);
-						console.log(sessionData.id);
-						app.request.setup({headers: {'Authorization': ''}});
-						stripe.redirectToCheckout({sessionId: sessionData.id});
+						// console.log("Pidiendo subscription");
+						// const subscription = await stripe.subscriptions.retrieve('sub_49ty4767H20z6a');
+						// console.log("Ayyy");
+
+						let subscription; 
+						await app.request.promise({
+							url: app.data.stripe.stripeApiUrl + "subscriptions/" + loggedUser.currentMembership.token,
+							method: "GET",
+							headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+						}).then(function (subRes){
+							// console.log("Sub res");
+							// console.log(subRes);
+							subscription = JSON.parse(subRes.data);
+						});
+						console.log(subscription);
+						// console.log(subscription.customer_email);
+
+						if (selectedPlan.stripeId != subscription.items.data[0].plan.product)
+						{
+							console.log(`Not the same, go on (${selectedPlan.stripeId})`);
+
+							if (subscription.cancel_at_period_end)
+							{
+								//Subscription has been canceled, gotta uncancel it first lmao
+								console.log("Uncanceling subscription");
+								await app.request.promise({
+									url: `${app.data.stripe.stripeApiUrl}subscriptions/${loggedUser.currentMembership.token}?cancel_at_period_end=false`,
+									method: 'POST',
+									headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+								}).then(function (uncancelRes){
+									console.log("Uncanceling");
+									console.log(JSON.parse(uncancelRes.data));
+									canceled_subscription = true;
+								});
+							}
+
+							let proration_date = Math.floor(Date.now() / 1000);
+							console.log(`Proration Date`);
+							console.log(proration_date);
+
+							let items = [{
+								id: subscription.items.data[0].id,
+								price: selectedPlan.stripePrice
+							}];
+
+							console.log("Items");
+							console.log(items);
+
+							let upcomingInvoice;
+							await app.request.promise({
+								url: `${app.data.stripe.stripeApiUrl}invoices/upcoming?subscription=${loggedUser.currentMembership.token}&subscription_proration_date=${proration_date}&subscription_items[0][id]=${items[0].id}&subscription_items[0][price]=${items[0].price}`,
+								method: 'GET',
+								headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+							}).then(function (upInvRes){
+								upcomingInvoice = JSON.parse(upInvRes.data);
+							}).catch(function (err){
+								console.log("Error in upcomingInvoice");
+								console.log(err.xhr.response);
+							});
+
+							// let upcomingInvoice = await stripe.invoices.retrieveUpcoming({subscription: loggedUser.currentMembership.token});
+							app.preloader.hide();
+							console.log("-=-=-=-=-=-Upcoming Invoice");
+							console.log(upcomingInvoice);
+							console.log(new Date(upcomingInvoice.next_payment_attempt * 1000));
+							console.log(new Date(upcomingInvoice.period_end * 1000));
+							console.log(new Date(loggedUser.currentMembership.nextBillingDate));
+
+							// app.dialog.confirm(window.localize('cancel_subs_dialog'), window.localize('cancel_subs'), handleCancel)
+							// app.dialog.confirm(`Tas seguro que te quieres cambiar? El siguiente pago tendras que pagar ${(upcomingInvoice.amount_due)/100} USD`, 'Confirmar cambio de plan', handleConfirm(loggedUser.currentMembership.token, items, proration_date))
+							app.dialog.confirm(`Tas seguro que te quieres cambiar? El siguiente pago tendras que pagar ${(upcomingInvoice.amount_due)/100} USD`, 'Confirmar cambio de plan', function() {handleConfirm(loggedUser.currentMembership.token, items, proration_date, new Date(upcomingInvoice.period_end * 1000));}, handleCancel);
+
+							// Update subscription
+							// console.log("!!! Updating subscription to new sub");
+							// await app.request.promise({
+							// 	url: `${app.data.stripe.stripeApiUrl}subscriptions/${loggedUser.currentMembership.token}?cancel_at_period_end=false&proration_behavior=create_prorations&items[0][id]=${items[0].id}&items[0][price]=${items[0].price}&proration_date=${proration_date}`,
+							// 	method: 'POST',
+							// 	headers: {"Authorization": 'Bearer ' + app.data.stripe.testKeys.sk}
+							// }).then(function (subsUpdateResponse){
+							// 	console.log("Update subscription response");
+							// 	console.log(JSON.parse(subsUpdateResponse.data));
+							// })
+
+
+							// let newUpcomingInvoice;
+							// await app.request.promise({
+							// 	url: `${app.data.stripe.stripeApiUrl}invoices/upcoming?subscription=${loggedUser.currentMembership.token}`,
+							// 	method: 'GET',
+							// 	headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+							// }).then(function (upInvRes){
+							// 	newUpcomingInvoice = JSON.parse(upInvRes.data);
+							// });
+							// console.log('=-=-=-=-=-=-=New upcoming invoice');
+							// console.log(newUpcomingInvoice);
+
+
+
+							// let newSubscription; 
+							// await app.request.promise({
+							// 	url: app.data.stripe.stripeApiUrl + "subscriptions/" + loggedUser.currentMembership.token,
+							// 	method: "GET",
+							// 	headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+							// }).then(function (subRes){
+							// 	// console.log("Sub res");
+							// 	// console.log(subRes);
+							// 	newSubscription = JSON.parse(subRes.data);
+							// });
+							// console.log(newSubscription);
+
+							// let current_prorations = [];
+							// let cost = 0;
+							// for (let i = 0; i < upcomingInvoice.lines.data.length; i++)
+							// {
+							// 	let invoice_item = upcomingInvoice.lines.data[i];
+							// 	let proration_result = invoice_item.period.start - proration_date;
+							// 	// console.log("-----current invoice item-----");
+							// 	// console.log(invoice_item);
+							// 	// console.log(`periodStart - proration_date  (${invoice_item.period.start} - ${proration_date} = ${proration_result})`);
+							// 	if (invoice_item.period.start - proration_date <= 1)
+							// 	{
+							// 		current_prorations.push(invoice_item);
+							// 		cost += invoice_item.amount;
+							// 	}
+							// }
+							// console.log('Current prorations: ');
+							// console.log(current_prorations);
+							// console.log(`Cost: ${cost}`);
+						}
+						else
+						{
+							console.log("- - - - - It's the same, ignore - - - - -");
+							app.preloader.hide();
+						}
+					}
+					else
+					{
+						console.log("object");
+						console.log(object);
+
+						await app.request.promise({
+							url: stripeUrl,
+							method: "POST",
+							data: object,
+							headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+						}).then(function(res){
+							var sessionData = JSON.parse(res.data);
+							// console.log(sessionData.id);
+							app.preloader.hide();
+							stripeRedirect.redirectToCheckout({sessionId: sessionData.id});
+						})
+					}
+				}
+				async function handleConfirm(subscription, items, proration_date, period_end)
+				{
+					app.preloader.show("blue");
+					console.log("Confirmando como no");
+					console.log("Subscription");
+					console.log(subscription);
+					console.log("Items");
+					console.log(items);
+					console.log("proration date");
+					console.log(proration_date);
+					console.log("period end");
+					console.log(period_end);
+					console.log("Plan:");
+					console.log(selectedPlan);
+
+					let membershipObject = createMembershipObject(subscription, period_end, loggedUser.currentMembership.billedCard, selectedPlan.id);
+					console.log("Membership object");
+					console.log(membershipObject);
+					// Update subscription
+					console.log("!!! Updating subscription to new sub");
+					await app.request.promise({
+						url: `${app.data.stripe.stripeApiUrl}subscriptions/${subscription}?cancel_at_period_end=false&proration_behavior=create_prorations&items[0][id]=${items[0].id}&items[0][price]=${items[0].price}&proration_date=${proration_date}`,
+						method: 'POST',
+						headers: {"Authorization": 'Bearer ' + app.data.stripe.testKeys.sk}
+					}).then(async function (subsUpdateResponse){
+						console.log("Update subscription response");
+						console.log(JSON.parse(subsUpdateResponse.data));
+						await assignPlan(membershipObject);
+					}).catch(function (err){
+						app.preloader.hide();
+						console.log("There was an error updating the current subscription!");
+						console.log(err.xhr.response);
 					})
 				}
-				/*
-				function handleResult(result)
+				async function handleCancel()
 				{
-					console.log(result);
-					if (result.error)
+					console.log("Handling canceling");
+					if (canceled_subscription)
 					{
-						console.log(result.error.message);
+						//Subscription has been canceled, gotta uncancel it first lmao
+						console.log("Uncanceling subscription");
+						await app.request.promise({
+							url: `${app.data.stripe.stripeApiUrl}subscriptions/${loggedUser.currentMembership.token}?cancel_at_period_end=true`,
+							method: 'POST',
+							headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+						}).then(function (uncancelRes){
+							console.log("Uncanceling");
+							// console.log(JSON.parse(uncancelRes.data));
+						});
 					}
 				}
+				async function assignPlan(membershipObject)
+				{
+					console.log("---- Assigning plan ----");
+					await app.request.promise.get(`${app.data.server}/users/${loggedUser.id}`).then(async function(userRes){
+						// console.log("Inserting membership");
+						console.log("Updating to current membership object");
+						console.log(membershipObject);
+						await app.request.promise({
+							url: `${app.data.server}/users/${loggedUser.id}`,
+							method: 'PUT',
+							data: membershipObject
+						}).then(function (res){
+							console.log("Success!");
+							// console.log(res.data);
+						}).catch(function (err){
+							console.log("Error updating membership");
+							console.log(err.xhr.response);
+						});
+						// var loggedUser = await app.methods.getLocalValue('loggedUser');
+						// var userEmail = loggedUser.email;
+						// await app.request.promise.postJSON(`${app.data.server}/payments`,paymentObject)
+						console.log("updating current user");
+						await app.methods.updateCurrentUser();
+						//If no errors present
+						// app.views.main.router.navigate('/membership/confirmed');
+	
+						// console.log("Going to payment confirm como no");
+						app.preloader.hide();
+						// resolve({component: PaymentConfirmMembership});
 
-				const baseRequest = {
-					apiVersion: 2,
-					apiVersionMinor: 0
-				};
-				
-				const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
-				const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+						//Navigate to the next screen or something idk
 
-				const tokenizationSpecification = {
-					type: 'PAYMENT_GATEWAY',
-					parameters: {
-							'gateway': 'example',
-							'gatewayMerchantId': 'exampleGatewayMerchantId'
+						app.dialog.alert("Aqui te deberia llevar a otra ventana, nomas que todavia no la hago")
+					}).catch(function(err){
+						app.preloader.hide();
+						console.log(`There was an error fetching the current user (id: ${loggedUser.id})`);
+						console.log(err.xhr.response);
+					})
+				}
+				function createMembershipObject(token, nextBillingDate, billedCard, planId)
+				{
+					let object = {
+						"currentMembership":{
+							"token": token,
+							"isActive": true,
+							"nextBillingDate": formatDate(nextBillingDate, true),
+							"plan": planId,
+							"billedCard": billedCard,
+							"cancelOnPeriodEnd": false
+						}
 					}
-				};
+					return object;
+				}
+            	function formatDate(date, includeTime)
+            	{
+					console.log("Format Date");
+					console.log(date);
+            	    let hour = date.getHours();
+            	    let dd = String(date.getDate()).padStart(2, '0');
+					let mm = String(date.getMonth() + 1).padStart(2, '0');
+					let yyyy = date.getFullYear();
 				
-				const baseCardPaymentMethod = {
-					type: 'CARD',
-					parameters: {
-							allowedAuthMethods: allowedCardAuthMethods,
-							allowedCardNetworks: allowedCardNetworks
-					}
-				};
+            	    let result;
 				
-				const cardPaymentMethod = Object.assign(
-					{},
-					baseCardPaymentMethod,
-					{
-							tokenizationSpecification: tokenizationSpecification
-					}
-				);
-			
-				let paymentsClient = null;
+            	    if (includeTime)
+            	    {
+            	        result = `${yyyy}-${mm}-${dd}T${hour}:00:00.000Z`;
+            	    }
+            	    else
+            	    {
+            	        result = `${yyyy}-${mm}-${dd}`;
+            	    }
+            	    return result;
+            	}
 
-				function getGoogleIsReadyToPayRequest() {
-					return Object.assign(
-									{},
-									baseRequest,
-									{
-											allowedPaymentMethods: [baseCardPaymentMethod]
-									}
-					);
-				}
-				
-				function getGooglePaymentDataRequest() {
-					const paymentDataRequest = Object.assign({}, baseRequest);
-					paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
-					paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
-					paymentDataRequest.merchantInfo = {
-							// @todo a merchant ID is available for a production environment after approval by Google
-							// See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
-							merchantId: '247883957',
-							merchantName: 'HeavenSent'
-					};
-					return paymentDataRequest;
-				}
-			
-				function getGooglePaymentsClient() {
-					if ( paymentsClient === null ) {
-							paymentsClient = new google.payments.api.PaymentsClient({environment: 'TEST'});
-					}
-					return paymentsClient;
-				}
-
-				// function onGooglePayLoaded() {
-				// 	const paymentsClient = getGooglePaymentsClient();
-				// 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
-				// 					.then(function(response) {
-				// 							if (response.result) {
-				// 									addGooglePayButton();
-				// 									// @todo prefetch payment data to improve performance after confirming site functionality
-				// 									// prefetchGooglePaymentData();
-				// 							}
-				// 					})
-				// 					.catch(function(err) {
-				// 							// show error in developer console for debugging
-				// 							console.error(err);
-				// 					});
-				// }
-				
-				function addGooglePayButton(buttonId) {
-					const paymentsClient = getGooglePaymentsClient();
-					const button =
-									paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
-					document.getElementById('btn-cont').appendChild(button);
-				}
-			
-				function getGoogleTransactionInfo() {
-					let aux = {
-							countryCode: 'US',
-							currencyCode: 'USD',
-							totalPriceStatus: 'FINAL',
-							// set to cart total
-							totalPrice: selectedPlan != undefined ? selectedPlan.cost.toString() : '5.00'
-					};
-					console.log("Transaction info changed");
-					console.log(selectedPlan);
-					console.log(aux);
-					return aux;
-				}
-
-				function prefetchGooglePaymentData() {
-					const paymentDataRequest = getGooglePaymentDataRequest();
-					// transactionInfo must be set but does not affect cache
-					paymentDataRequest.transactionInfo = {
-							totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
-							currencyCode: 'USD'
-					};
-					const paymentsClient = getGooglePaymentsClient();
-					paymentsClient.prefetchPaymentData(paymentDataRequest);
-				}
-
-				function onGooglePaymentButtonClicked() {
-					const paymentDataRequest = getGooglePaymentDataRequest();
-					paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
-					console.log("transactionInfo:");
-					console.log(paymentDataRequest.transactionInfo);
-
-					const paymentsClient = getGooglePaymentsClient();
-					paymentsClient.loadPaymentData(paymentDataRequest)
-									.then(function(paymentData) {
-											// handle the response
-											console.log("Then:");
-											console.log(paymentData);
-											console.log("Do the thing with the membership como no");
-											processPayment(paymentData);
-											assignPlan(paymentData);
-									})
-									.catch(function(err) {
-											// show error in developer console for debugging
-											console.log("Error en el cositos")
-											console.error(err);
-									});
-				}
-
-				function processPayment(paymentData) {
-					// show returned data in developer console for debugging
-							console.log(paymentData);
-					// @todo pass payment token to your gateway to process payment
-					paymentToken = paymentData.paymentMethodData.tokenizationData.token;
-				}
-
-				// app.methods.loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
-				// 	const paymentsClient = getGooglePaymentsClient();
-				// 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
-				// 					.then(function(response) {
-				// 							if (response.result) {
-				// 									addGooglePayButton();
-				// 									// @todo prefetch payment data to improve performance after confirming site functionality
-				// 									// prefetchGooglePaymentData();
-				// 							}
-				// 					})
-				// 					.catch(function(err) {
-				// 							// show error in developer console for debugging
-				// 							console.error(err);
-				// 					});
-				// } )
-				*/
 				$$("#confirm-plan-btn").on('click', function(asd){
-					console.log("Click!");
-					console.log(asd);
+					// console.log("Click!");
+					// console.log(asd);
 					redirectToCheckout();
 				});
 
 				// console.log("select-membership pageInit");
 				// console.log(queryID);
 				
-				console.log("**Previous Path**")
-				console.log(app.views.main.router.previousRoute.route);
+				// console.log("**Previous Path**")
+				// console.log(app.views.main.router.previousRoute.route);
 
 				changeConfirmButtonHref(selectedPlan);
 
 				$$(".button-plan").click(function (val) {
 					let el = $$(this);
-					console.log(el);
+					// console.log(el);
 					if (!el.hasClass("active")) {
 						selectedPlan = getIndex(el[0].id);
-						console.log(selectedPlan);
+						// console.log(selectedPlan);
 						// el[0].href = selectedPlan;
 						changeConfirmButtonHref(selectedPlan);
 						el.siblings(".active").removeClass("active");
@@ -442,7 +562,7 @@
 					}
 				}
 
-				async function assignPlan(paymentData)
+				async function assignPlan_old(paymentData)
 				{
 					await app.request.promise.get(`${app.data.server}/memberships/?name=${selectedPlan.name}`).then(async function(planRes){
 						let plan = JSON.parse(planRes.data)[0];
@@ -500,6 +620,7 @@
 						planList.push({
 							id: plan.id,
 							stripeId: plan.stripeID,
+							stripePrice: plan.stripePrice,
 							name: plan.name,
 							cost: plan.costPerMonth
 						});
