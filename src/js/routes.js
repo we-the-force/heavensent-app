@@ -30,6 +30,7 @@ import SelectMembership from '../pages/membership/select-membership.f7.html';
 import AddCardInfo from '../pages/membership/add-card-info.f7.html';
 import ViewMembership from '../pages/membership/view-membership.f7.html';
 import PaymentConfirmMembership from '../pages/membership/payment-confirm-membership.f7.html';
+import MembershipChangeConfirm from '../pages/membership/membership-change-confirm.f7.html';
 
 import ViewFamily from '../pages/family/view-family.f7.html';
 
@@ -811,28 +812,43 @@ var routes = [
                     // console.log("Current membership: [view-membership.json]")
                     // console.log(res.data.currentMembership);
                     let plan = GetPlanName(res.data.currentMembership);
-                    let plan_name;
-                    if(window.language == 'en_US'){
-                        plan_name = plan + ' ' + window.localize('membership');
-                    }else if(window.language == 'es_MX'){
-                        plan_name = window.localize('membership') + ' ' + plan;
-                    }
-                    console.log(res);
-                    app.preloader.hide();
-                    resolve(
-                        {
-                            component: ViewMembership,
-                        },
-                        {
-                            context: {
-                                UserName: GetUserName(res.data),
-                                PlanName: plan_name,
-                                PlanPrice: GetPlanPrice(res.data.currentMembership),
-                                BillingDate: GetNextPayDate(res.data.currentMembership),
-                                BilledCard: res.data.currentMembership.billedCard
+                    if (plan === "None")
+                    {
+                        app.preloader.hide();
+                        reject();
+                        router.navigate({
+                            name: 'select-membership',
+                            params: {
+                                userID: res.data.id,
+                                clearOnBack: "1"
                             }
+                        })
+                    }
+                    else
+                    {
+                        let plan_name;
+                        if(window.language == 'en_US'){
+                            plan_name = plan + ' ' + window.localize('membership');
+                        }else if(window.language == 'es_MX'){
+                            plan_name = window.localize('membership') + ' ' + plan;
                         }
-                    );
+                        console.log(res);
+                        app.preloader.hide();
+                        resolve(
+                            {
+                                component: ViewMembership,
+                            },
+                            {
+                                context: {
+                                    UserName: GetUserName(res.data),
+                                    PlanName: plan_name,
+                                    PlanPrice: GetPlanPrice(res.data.currentMembership),
+                                    BillingDate: GetNextPayDate(res.data.currentMembership),
+                                    BilledCard: res.data.currentMembership.billedCard
+                                }
+                            }
+                        );
+                    }
                 });
 
             function GetUserName(user) {
@@ -844,7 +860,11 @@ var routes = [
                 }
             }
             function GetPlanName(plan) {
-                if (plan === null) {
+                console.log("GetPlanName");
+                console.log(plan);
+                let isMembershipNull = plan === null;
+                let isPlanNull = plan.plan === null;
+                if (isMembershipNull || isPlanNull) {
                     return "None";
                 }
                 else {
@@ -873,9 +893,220 @@ var routes = [
     },
     {
         name: 'payment-confirm-membership',
-        path: '/membership/confirmed',
+        path: '/membership/confirmed/session/:sessionId/plan/:planId',
         beforeEnter: [checkAuth],
-        component: PaymentConfirmMembership,
+        // component: PaymentConfirmMembership,
+        async: async function (routeTo, routeFrom, resolve, reject){
+            var router = this;
+            var app = router.app;
+
+            //
+            // console.log("Membership/confirmed/session/ thing");
+
+            var stripeUrl = app.data.stripe.stripeUrl;
+            var subscriptionUrl = app.data.stripe.subscriptionUrl;
+            var stripeApiUrl = app.data.stripe.stripeApiUrl;
+            var sessionId = routeTo.params.sessionId;
+            var planId = routeTo.params.planId;
+            var loggedUser = await app.methods.getLocalValue('loggedUser');
+
+            var plan;
+            await app.request.promise.get(`${app.data.server}/memberships/${planId}`).then(function (planRes){
+                plan = JSON.parse(planRes.data);
+            }).catch(function(err){
+                console.log("Error fetching fundations");
+                console.log(err);
+            });
+
+            // app.request.setup({headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}});
+            let headers = {
+                'Authorization': 'Bearer '+app.data.stripe.testKeys.sk,
+            }
+
+            app.request.promise({
+                url: stripeUrl+'/'+sessionId,
+                method: "GET",
+                headers: headers
+            }).then(async function(sessionRes){
+                // console.log('get session result');
+                // console.log(sessionRes.data);
+
+                app.preloader.show('blue');
+                var sessionData = JSON.parse(sessionRes.data);
+                // console.log("sessionData");
+                // console.log(sessionData);
+                var subId = sessionData.subscription;
+
+                app.request.promise({
+                    url: `${subscriptionUrl}/${subId}`,
+                    method: "GET",
+                    headers: headers
+                }).then(async function(subRes){
+                    var subData = JSON.parse(subRes.data);
+                    // console.log("Get subscription intent");
+                    // console.log(subData);
+                    let epochStartDate = subData.current_period_start;
+                    let epochEndDate = subData.current_period_end;
+
+                    let readableStartDate = new Date(epochStartDate * 1000);
+                    let readableEndDate = new Date(epochEndDate * 1000);
+
+                    var paymentMethodData = await app.request.promise({
+                        // url: `${stripeApiUrl}payment_methods/pm_1HC5gbANVxwYjCOlpqvWnOYe`,
+                        url: `${stripeApiUrl}payment_methods/${subData.default_payment_method}`,
+                        method: "GET",
+                        headers: headers
+                    });
+
+                    paymentMethodData = JSON.parse(paymentMethodData.data);
+
+                    // console.log("PaymentMethod info");
+                    // console.log(paymentMethodData);
+
+                    if (subData.status === "active")
+                    {
+                        let membershipObject = createMembershipObject(subData.id, readableEndDate, paymentMethodData.card.last4, paymentMethodData.card.brand, planId);
+                        let paymentObject = createPaymentObject(subData.id, loggedUser.id, readableStartDate, plan.name, (sessionData.amount_total / 100), sessionData.customer_email);
+                        // let userInfo = await app.request({url: `${app.data.server}/users/${loggedUser.id}`, method: 'GET'});
+                        let userInfo;
+                        await  app.request.promise.json(`${app.data.server}/users/${loggedUser.id}`).then(function(res){
+                            userInfo = res.data;
+                        });
+
+                        // let paymentObject = createPaymentObject();
+
+                        // console.log("");
+                        // console.log("User Info");
+                        // console.log(userInfo);
+                        // console.log("Membership object");
+                        // console.log(membershipObject);
+                        // console.log("Payment Object");
+                        // console.log(paymentObject);
+
+                        if (!isMembershipTheSame(userInfo.currentMembership, membershipObject.currentMembership))
+                        {
+                            await assignPlan(membershipObject, paymentObject);
+                        }
+                        else
+                        {
+                            app.preloader.hide();
+
+                            resolve({component: PaymentConfirmMembership});
+                        }
+                        
+                    }
+                    else
+                    {
+                        console.log("Subscription isn't active, what do? This shouldn't even be possible D:");
+                    }
+                })
+            })
+
+            function isMembershipTheSame(userMembership, newMembership)
+            {
+                if (userMembership === null || userMembership.plan === null)
+                {
+                    return false;
+                }
+                let billingDate = (userMembership.nextBillingDate === newMembership.nextBillingDate);
+                let plan = (userMembership.plan.id.toString() === newMembership.plan.toString());
+                let token = (userMembership.token === newMembership.token);
+                let billedCard = (userMembership.billedCard === newMembership.billedCard);
+
+                // console.log(`(${userMembership.nextBillingDate}) vs (${newMembership.nextBillingDate}) = ${billingDate}`);
+                // console.log(`(${userMembership.plan.id}) vs (${newMembership.plan}) = ${plan}`);
+                // console.log(`(${userMembership.token}) vs (${newMembership.token}) = ${token}`);
+                // console.log(`(${userMembership.billedCard}) vs (${newMembership.billedCard}) = ${billedCard}`);
+
+                if (billingDate && plan && token && billedCard)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+            async function assignPlan(membershipObject, paymentObject)
+			{
+                console.log("---- Assigning plan ----");
+				await app.request.promise.get(`${app.data.server}/users/${loggedUser.id}`).then(async function(userRes){
+					// console.log("Inserting membership");
+					await app.request({
+						url: `${app.data.server}/users/${loggedUser.id}`,
+						method: 'PUT',
+						data: membershipObject
+					});
+					// var loggedUser = await app.methods.getLocalValue('loggedUser');
+					var userEmail = loggedUser.email;
+					await app.request.promise.postJSON(`${app.data.server}/payments`,paymentObject)
+					await app.methods.updateCurrentUser();
+					//If no errors present
+                    // app.views.main.router.navigate('/membership/confirmed');
+
+                    // console.log("Going to payment confirm como no");
+                    app.preloader.hide();
+
+                    resolve({component: PaymentConfirmMembership});
+				}).catch(function(err){
+					console.log(`There was an error fetching the current user (id: ${loggedUser.id})`);
+					console.log(err);
+				})
+            }
+            function createMembershipObject(token, nextBillingDate, billedCard, cardBrand, planId)
+            {
+                let object = {
+                    "currentMembership":{
+                        "token": token,
+                        "isActive": true,
+                        "nextBillingDate": formatDate(nextBillingDate, true),
+                        "plan": planId,
+                        "billedCard": `${cardBrand} **** **** **** ${billedCard}`
+                    }
+                }
+                return object;
+            }
+            function createPaymentObject(token, userId, date, planName, amountUSD, userEmail)
+            {
+                let object = {
+                    "token": token,
+                    "user": userId,
+                    "date": formatDate(date, false),
+                    "concept": `${capitalize(planName)} membership for HeavenSent`,
+                    "amountUSD": `${amountUSD}`,
+                    "userEmail": userEmail
+                }
+                return object;
+            }
+            function formatDate(date, includeTime)
+            {
+                let hour = date.getHours();
+                let dd = String(date.getDate()).padStart(2, '0');
+				let mm = String(date.getMonth() + 1).padStart(2, '0');
+				let yyyy = date.getFullYear();
+                
+                let result;
+                
+                if (includeTime)
+                {
+                    result = `${yyyy}-${mm}-${dd}T${hour}:00:00.000Z`;
+                }
+                else
+                {
+                    result = `${yyyy}-${mm}-${dd}`;
+                }
+                return result;
+            }
+            function capitalize(text)
+            {
+                if (typeof text !== 'string') return ''
+                return text.charAt(0).toUpperCase() + text.slice(1);
+            }
+        }
+    },
+    {
+        name: 'membership-change-confirmed',
+        path: '/membership/change/confirmed',
+        beforeEnter: [checkAuth, isMembershipValid],
+        component: MembershipChangeConfirm,
     },
     {
         name: 'fundations-single',

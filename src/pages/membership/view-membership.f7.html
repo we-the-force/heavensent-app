@@ -22,12 +22,14 @@
                 <!-- <h1>Hello Jacob</h1> -->
                 <h1>{{UserName}}</h1>
                 <p>{{localize "text_thanks_membership"}}</p>
+                <p id="canceled-membership-text" style="color:red"></p>
             </div>
             <div class="text-cont">
                 <!-- <h1 class="text-title" id="package-name">Package 3 membership</h1> -->
                 <!-- <p class="text-cost" id="package-cost">$15.00 USB /MO</p> -->
                 <h1 class="text-title" id="package-name">{{PlanName}}</h1>
-                <p class="text-cost" id="package-cost">${{PlanPrice}}.00 USD /MO</p>
+                <!-- <p class="text-cost" id="package-cost">${{PlanPrice}}.00 USD /MO</p> -->
+                <p class="text-cost" id="package-cost">$0.00 USD {{localize "view_membership_next_month"}}</p>
                 
                 <p class="text">
                     <!-- Next billing date: <span id="next-bill-date">06/26/2020</span> -->
@@ -59,16 +61,122 @@
                 var self = this;
                 var app = self.$app;
                 
+                await app.methods.updateCurrentUser();
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
-                updateControls();
+                await updateControls();
 
 
-                function updateControls()
+                $$("#cancel-plan-btn").on("click", async function (e) {
+                        e.preventDefault();
+                        
+                        app.dialog.confirm(window.localize('cancel_subs_dialog'), window.localize('cancel_subs'), handleCancel)
+
+						// loggedUser = null;
+						// await app.methods.clearCurrentUser();
+						// console.log("User cleared [app.f7.signout]");
+						// await app.views.main.router.navigate('/');
+						// console.log("Logging out [pageInit.sign-out-btn.onClick]");
+						// if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
+						// {
+						// 	console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
+						// 	app.views.main.router.navigate({ name: "login" });
+						// }
+                });
+                
+                async function handleCancel()
+                {
+                    console.log(loggedUser.currentMembership.token);
+                    let updateResponse;
+
+                    await app.request.promise({
+                        url: `${app.data.stripe.subscriptionUrl}/${loggedUser.currentMembership.token}?cancel_at_period_end=true`,
+                        method: "POST",
+                        headers: {'Authorization': `Bearer ${app.data.stripe.testKeys.sk}`},
+                    }).then(async function (updateResponse){
+                        let updateData = JSON.parse(updateResponse.data);
+                        console.log(updateData);
+
+                        let endDate = new Date(updateData.current_period_end * 1000);
+                        app.dialog.alert(`${window.localize('cancel_subs_canceled')} ${endDate}`);
+
+                        let asd = await app.request({
+                            url: `${app.data.server}/users/${loggedUser.id}`,
+                            method: 'PUT',
+                            data: {
+                                "currentMembership": {
+                                    "isActive": loggedUser.currentMembership.isActive,
+                                    "nextBillingDate": loggedUser.currentMembership.nextBillingDate,
+                                    "plan": loggedUser.currentMembership.plan.id,
+                                    "token": loggedUser.currentMembership.token,
+                                    "billedCard": loggedUser.currentMembership.billedCard,
+                                    "cancelOnPeriodEnd": true
+                                }
+                            }
+                        });
+
+                        await app.methods.updateCurrentUser();
+
+                        app.views.main.router.refreshPage();
+                    });
+
+                }
+                function nocancelMembership()
+                {
+                    console.log("Que dice mi mama que siempre no");
+                }
+
+                async function updateControls()
                 {
                     console.log("UpdateControls()")
                     $$("#change-plan-btn")[0].href = `/membership/select/user/${loggedUser.id}/clear/0`;
-                    // console.log($$("#package-name"));
+                    if (loggedUser.currentMembership.cancelOnPeriodEnd)
+                    {
+                        console.log($$("#canceled-membership-text")[0]);
+                        
+                        $$("#canceled-membership-text")[0].innerText = window.localize('view_membership_cancel');
+
+                        console.log("Canceling membership unu");
+                    }
+                    else
+                    {
+                        await app.request.promise({
+                            url: `${app.data.stripe.stripeApiUrl}invoices/upcoming?subscription=${loggedUser.currentMembership.token}`,
+                            method: 'GET',
+                            headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
+                        }).then(function (upInvRes){
+                            let data = JSON.parse(upInvRes.data);
+                            let formattedNumber = formatAmountNumber(data.amount_due/100);
+                            let formattedText = `$${formattedNumber} USD ${window.localize('view_membership_next_month')}`
+                            $$('#package-cost')[0].innerText = formattedText;
+                        }).catch(function (err){
+                            console.log("Error in upcomingInvoice");
+                            console.log(err);
+                        });
+                    }
                 }
+                function formatAmountNumber(toFormat)
+                {
+                    var splitAmount = toFormat.toString().split('.');
+                    var formattedAmount = `${splitAmount[0]}.${(splitAmount.length > 1 ? formatSingleNumber(splitAmount[1]) : "00" )}`;
+                    return formattedAmount;
+                }
+
+                function formatSingleNumber(number)
+                {
+                    switch (number.toString().length)
+                    {
+                        case 0:
+                            return "00";
+                            break;
+                        case 1:
+                            return number + "0";
+                            break;
+                        case 2:
+                            return number;
+                            break;
+                    }
+                }
+
             }
         },
     };

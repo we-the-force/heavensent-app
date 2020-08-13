@@ -22,6 +22,12 @@ Template7.registerHelper('localize', function (value, options) {
     return window.localize(value)
 });
 
+var keyConf = require('./keyConfig.js');
+console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
+// console.log(keyConf.KEY_2());
+// keyConf.sum(1, 2);
+// console.log(keyConf);
+
 var app = new Framework7({
     root: '#app', // App root element
     component: App, // App main component
@@ -30,8 +36,36 @@ var app = new Framework7({
     theme: 'auto', // Automatic theme detection
 
     data: {
-        //server: 'http://192.168.5.169:1337',
+        // keyConfig
+        // testKey: keyConfig.SECRET_KEY,
         server: 'https://api.heavensentnow.com',
+        domain: 'https://app.heavensentnow.com',
+        // server: 'http://localhost:1337',
+        // domain: 'http://localhost:8080',
+        stripe: {
+            stripeApiUrl: 'https://api.stripe.com/v1/',
+            stripeUrl: 'https://api.stripe.com/v1/checkout/sessions',
+            subscriptionUrl: 'https://api.stripe.com/v1/subscriptions',
+            // memberships:{
+            //     basic: {
+            //         product: 'prod_HkB1fcYIm145fD',
+            //         price: 'price_1HAgf6ANVxwYjCOlAR05xv7u'
+            //     },
+            //     standard:{ 
+            //         product: 'prod_Hm1wGmIhRWWEGx',
+            //         price: 'price_1HCTskANVxwYjCOlbIOEZkW3'
+            //     },
+            //     premium: {
+            //         product: 'prod_Hm1zt93sfAb68T',
+            //         price: 'price_1HCTv3ANVxwYjCOlU0cpZD49'
+            //     }
+            // },
+            testKeys:{
+                pk: keyConf.Keys.PUBLISHABLE,
+                sk: keyConf.Keys.SECRET,
+            },
+        },
+        
         // server: 'http://localhost:1337',
         locales: {
             es: {
@@ -92,10 +126,15 @@ var app = new Framework7({
                 //membership
                 membership: "Membresía",
                 text_thanks_membership: "Gracias por ser miembro de HeavenSent",
+                // view_membership_cancel: "Your membership has been canceled, you won't be charged again at the end of the current period",
+                view_membership_cancel: "Tu membresía ha sido cancelada, no se te cobrará al final del periodo actual",
+                view_membership_next_month: "el siguiente mes",
                 next_billing_date: "Siguiente Fecha de facturación:",
                 billed_with: "Facturado con:",
                 change_plan: "Cambiar plan",
                 cancel_subs: "Cancelar suscripción",
+                cancel_subs_dialog: "¿Estas seguro que quieres cancelar tu membresía? No se te cobrará al final del periodo actual y se cancelará entonces",
+                cancel_subs_canceled: "Tu membresía ya no se renovará despues del",
                 select_package: "Seleccionar paquete",
                 choose_plan: "Elija un plan adecuado para usted.",
                 down_and_up: "Degradar o actualizar a cualquier tipo",
@@ -108,12 +147,15 @@ var app = new Framework7({
                 on_demand: "Bajo Demanda",
                 desc_select_membership: "Recuerdos / Personas / Años",
                 select_plan: "Seleccionar plan",
+                confirm_plan_change_dialog_text: "¿Estás seguro que quieres cambiar de plan? El siguiente pago tendrás que pagar",
+                confirm_plan_change_dialog_title: "Confirmar cambio de plan",
                 add_card_info: "Agregar información",
                 name_card: "Nombre en la tarjeta",
                 number_card: "Numero de tarjeta",
                 credit_card: "Tarjeta de crédito",
                 confirm: "Confirmar",
                 payment_confirmed: "Pago confirmado",
+                membership_change_confirmed: "El plan ha sido cambiado exitosamente",
                 go_profile: "Ir al perfil",
                 donate: "Donar",
                 give_now: "Donar ahora",
@@ -275,10 +317,14 @@ var app = new Framework7({
                 //membership
                 membership: "Membership",
                 text_thanks_membership: "Thanks for being a HeavenSent member",
+                view_membership_cancel: "Your membership has been canceled, you won't be charged again at the end of the current period",
+                view_membership_next_month: "next month",
                 next_billing_date: "Next billing date:",
                 billed_with: "Billed with:",
                 change_plan: "Change plan",
                 cancel_subs: "Cancel Subscription",
+                cancel_subs_dialog: "Are you sure you want to cancel your membership? You won't get charged for it at the end of the current period and it will then be canceled",
+                cancel_subs_canceled: "Your membership will no longer be renewed after",
                 select_package: "Select Package",
                 choose_plan: "Choose a plan that's right for you.",
                 down_and_up: "Downgrade or upgrade at any type",
@@ -291,12 +337,15 @@ var app = new Framework7({
                 on_demand: "On Demand",
                 desc_select_membership: "Memories / Person / Years",
                 select_plan: "Select plan",
+                confirm_plan_change_dialog_text: "Are you sure you want to change membership? The following payment you'll have to pay",
+                confirm_plan_change_dialog_title: "Membership change confirmation",
                 add_card_info: "Add card info",
                 name_card: "Name on card",
                 number_card: "Card Number",
                 credit_card: "Credit card",
                 confirm: "Confirm",
                 payment_confirmed: "Payment confirmed",
+                membership_change_confirmed: "Membership changed successfully",
                 go_profile: "Go to profile",
                 donate: "Donate",
                 give_now: "Give now",
@@ -439,9 +488,9 @@ var app = new Framework7({
         },
         async setLocalValueToKey(value, key) {
             if (key === "loggedUser") {
-                console.log("Setting local value [setLocalValueToKey]");
+                // console.log("Setting local value [setLocalValueToKey]");
                 // console.log("---Value---");
-                console.log(value);
+                // console.log(value);
                 // console.log("Key");
                 // console.log(key);
             }
@@ -457,14 +506,14 @@ var app = new Framework7({
         },
         async updateCurrentUser() {
             var app = this;
-            console.log("updating current user, getting user");
+            // console.log("updating current user, getting user");
             var currentLocalUser = await app.methods.getLocalValue('loggedUser');
-            console.log(currentLocalUser);
+            // console.log(currentLocalUser);
             let result = false;
             if (currentLocalUser != null && !app.methods.clearingUser) {
                 await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function (getResult) {
                     var user = JSON.parse(getResult.data);
-                    console.log("currentLocalUser wasn't null, setting value to loggedUser");
+                    // console.log("currentLocalUser wasn't null, setting value to loggedUser");
                     result = await app.methods.setLocalValueToKey(user, 'loggedUser');
                     await app.methods.loadContacts();
                     await app.methods.loadAdminedContacts();
@@ -484,7 +533,7 @@ var app = new Framework7({
         async clearCurrentUser() {
             var app = this;
             app.methods.clearingUser = true;
-            console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
+            // console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
             let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
             await app.methods.setLocalValueToKey([], 'loggedUserContacts')
             await app.methods.setLocalValueToKey([], 'loggedUserAdminedContacts')
@@ -502,7 +551,7 @@ var app = new Framework7({
             var currentUser = await this.methods.getLocalValue('loggedUser');
             if (currentUser != null) {
                 if (currentUser.confirmed) {
-                    console.log("User Is Valid [userIsValid()]");
+                    // console.log("User Is Valid [userIsValid()]");
                     return true;
                 }
             }
@@ -657,8 +706,8 @@ var app = new Framework7({
             // if (lname!="") {
             //     lname="lastname="+lname;
             // }
-            console.log("- - - - Cookies - - - -");
-            console.log(document.cookie);
+            // console.log("- - - - Cookies - - - -");
+            // console.log(document.cookie);
             // alert (document.cookie);
         },
         updateUsername(e) {
