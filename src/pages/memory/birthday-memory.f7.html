@@ -5,7 +5,7 @@
             <div class="navbar-inner sliding">
                 <div class="header-cont">
                     <div class="header">
-                        <a href="/memories/home/user/-1" class="back-btn">
+                        <a class="back-btn">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
                         <h1 class="title">Birthday Memory</h1>
@@ -234,10 +234,10 @@
     import $$ from "dom7";
     export default {
         on: {
-            pageInit: function (e, page) {
+            pageInit: async function (e, page) {
                 var self = this;
                 var app = self.$app;
-                var loggedUser = app.methods.getLocalValue('loggedUser');
+                var loggedUser = await app.methods.getLocalValue('loggedUser');
 
                 var cover
                 var files = [];
@@ -537,7 +537,7 @@
                     /* coverSessionstorage(cover); */
                 });
 
-                $$('.page .back-btn').click(e => {
+                $$('.navbar .back-btn').click(e => {
                     sessionStorage.clear();
                     app.views.main.router.navigate('/memories/home/user/'+loggedUser.id);
                 })
