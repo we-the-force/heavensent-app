@@ -420,6 +420,7 @@ var app = new Framework7({
                 add_loc_save: "Save location",
                 //Edit Memory
                 edit_mem_header: "Edit Memory",
+                edit_mem_save: "Save memory",
                 edit_mem_title: "Title",
                 edit_mem_message: "Message",
                 edit_mem_upload: "Uploaded files",
