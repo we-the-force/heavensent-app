@@ -428,6 +428,7 @@ var app = new Framework7({
                 edit_mem_upload_cover: "Tap here to select a cover for your memory",
                 edit_mem_contacts: "Contacts",
                 edit_mem_location: "Location",
+                edit_mem_add_contacts: "Contacts",
                 edit_mem_add_location: "Add location",
                 edit_mem_deliver_date: "Deliver date",
                 edit_mem_set_deliver_date: "Set date to deliver",

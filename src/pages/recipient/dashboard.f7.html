@@ -6,9 +6,9 @@
             <div class="navbar-inner sliding">
                 <div class="header-cont">
                     <div class="header">
-                        <a href="" class="menu-btn">
+                        <!-- <a href="" class="menu-btn">
                             <i class="icons material-icons">menu</i>
-                        </a>
+                        </a> -->
                         <h1 class="title">{{localize "memories"}}</h1>
                         <div class="none"></div>
                     </div>
@@ -79,14 +79,15 @@
                     </div>
                     {{/each}}
                     {{else}}
-                        No memories have been shared with you yet
+                    <p class="text-align-center">No memories have been shared with you yet</p>
+                        
                         <br>
-                        [Insert message here]
+                        
                     {{/js_if}}
                 </div>
             </div>
             <div class="btns-cont center create">
-                <a id="create-memories" class="button color-white round large">{{localize "create_memories"}}</a>
+                <!-- <a id="create-memories" class="button color-white round large">{{localize "create_memories"}}</a> -->
             </div>
             <div class="footer">
                 <div class="sqr_bck" id="sqr4"></div>
