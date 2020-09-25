@@ -56,6 +56,7 @@
 			</div>
 		</div>
 		<div class="page-content" id="home-memories">
+			<!-- <div class="searchbar-backdrop"></div> -->
 			<div class="sqr_bck" id="sqr1"></div>
 			<div class="sqr_bck" id="sqr2"></div>
 			<div class="sqr_bck" id="sqr3"></div>
@@ -128,11 +129,41 @@
 			{{/if}}
 			{{#js_if "(this.Memories.pending.length + this.Memories.scheduled.length) > 0"}}
 			{{#js_if "this.Memories.scheduled.length > 0"}}
-			<div class="scheduled-title">{{localize "scheduled"}}</div>
+			<div class="scheduled-title">{{localize "scheduled"}}<span class="button switch1 material-icons active">view_list</span></div>
+			<div class="list view_list1 inset searchbar-found">
+				<form class="searchbar searchbar1">
+				<div class="searchbar-inner">
+					<div class="searchbar-input-wrap">
+					<input type="search" placeholder="Search">
+					<i class="searchbar-icon"></i>
+					<span class="input-clear-button"></span>
+					</div>
+					<span class="searchbar-disable-button if-not-aurora">Cancel</span>
+				</div>
+				</form>
+				<ul class="list-search list-search1">
+					{{#each Memories.scheduled}}
+					<li>
+						<a href="#" class="item-link item-content memory-options edit popover-open" data-popover=".popover-opt"
+						data-memory="{{id}}">
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">{{name}}</div>
+
+								</div>
+								<div class="item-subtitle">{{deliveryDate}}</div>
+								
+							</div>
+						</a>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
 			<div data-space-between="10" data-slides-per-view="1.1"
-				class="swiper-container swiper-init sheduled-swiper">
+				class="view_array1 swiper-container swiper-init sheduled-swiper">
 				<div class="swiper-wrapper">
 					{{#each Memories.scheduled}}
+					
 					<div class="swiper-slide">
 						<div class="card complete v1">
 							<div class="card-header">
@@ -198,8 +229,28 @@
 			</div>
 			{{/js_if}}
 			{{#js_if "this.Memories.pending.length > 0"}}
-			<div class="later-title">{{localize "send_later"}}</div>
-			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init later-swiper">
+			<div class="later-title">{{localize "send_later"}}<span class="button switch2 material-icons active">view_list</span></div>
+			<div class="list view_list2 inset ">
+				
+				<ul class="list-search list-search2">
+					{{#each Memories.scheduled}}
+					<li>
+						<a href="#" class="item-link item-content memory-options edit popover-open" data-popover=".popover-opt"
+						data-memory="{{id}}">
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">{{name}}</div>
+
+								</div>
+								<div class="item-subtitle">{{deliveryDate}}</div>
+
+							</div>
+						</a>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
+			<div data-space-between="10" data-slides-per-view="1.1" class="view_array2 swiper-container swiper-init later-swiper">
 				<div class="swiper-wrapper">
 					{{#each Memories.pending}}
 					<div class="swiper-slide">
@@ -588,6 +639,62 @@
 					$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
 					// console.log($$('.popover-person'));
 				})
+				var searchbar1 = app.searchbar.create({
+					el: '.searchbar1',
+					searchContainer: '.list-search1',
+					searchIn: '.item-title',
+					on: {
+							search(sb, query, previousQuery) {
+									console.log(query, previousQuery);
+							}
+					}
+				});
+				// var searchbar2 = app.searchbar.create({
+				// 	el: '.searchbar2',
+				// 	searchContainer: '.list-search2',
+				// 	searchIn: '.item-title',
+				// 	on: {
+				// 			search(sb, query, previousQuery) {
+				// 					console.log(query, previousQuery);
+				// 			}
+				// 	}
+				// });
+				$$('.switch1').on('click',function(eve){
+					var listswitch = $$('.switch1').text();
+					console.log($$('.switch1').text())
+					if(listswitch=='view_list'){
+						console.log('array');
+						$$('.view_list1').show();
+						$$('.view_array1').hide();
+						$$('.switch1').text('view_array');
+
+					} else {
+						console.log('lista');
+
+						$$('.view_list1').hide();
+						$$('.view_array1').show();
+						$$('.switch1').text('view_list');
+
+					}
+				});
+				$$('.switch2').on('click',function(eve){
+					var listswitch = $$('.switch2').text();
+					console.log($$('.switch2').text())
+					if(listswitch=='view_list'){
+						console.log('array');
+						$$('.view_list2').show();
+						$$('.view_array2').hide();
+						$$('.switch2').text('view_array');
+
+					} else {
+						console.log('lista');
+
+						$$('.view_list2').hide();
+						$$('.view_array2').show();
+						$$('.switch2').text('view_list');
+
+					}
+				});
 
 				$$('.memory-options').on('click', function (val) {
 					$$('#edit-memory-btn')[0].href = "/memories/edit/memory/" + $$(this).prop("dataset").memory;
