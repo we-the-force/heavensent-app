@@ -35,6 +35,9 @@
             <div class="sqr_bck" id="sqr1"></div>
             <div class="sqr_bck" id="sqr2"></div>
             <div class="sqr_bck" id="sqr3"></div>
+
+            .
+
             <div data-space-between="20" data-slides-per-view="1.1" data-centered-slides="true"
                 class="swiper-container swiper-init memories-swiper">
                 <div class="swiper-wrapper">
@@ -148,6 +151,16 @@
             pageInit: function (e, page) {
                 var self = this;
                 var app = self.$app;
+                var searchbar1 = app.searchbar.create({
+                    el: '.searchbar1',
+                    searchContainer: '.list-search1',
+                    searchIn: '.item-title',
+                    on: {
+                            search(sb, query, previousQuery) {
+                                    console.log(query, previousQuery);
+                            }
+                    }
+                });
                 // var memory = {};
                 // memory.name = "nombre";
                 // memory.owner = "owner";

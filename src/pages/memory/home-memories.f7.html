@@ -93,7 +93,7 @@
 				<div class="swiper-wrapper">
 					<div class="swiper-slide">
 						<div class="card simple memory" id="new">
-							<img src="../../static/img/Pluma_card.png" alt="" srcset="">
+							<img src="static/img/Pluma_card.png" alt="" srcset="">
 							<div class="card-content">
 								<p> {{localize "new_memory"}} </p>
 							</div>
@@ -101,7 +101,7 @@
 					</div>
 					<div class="swiper-slide">
 						<div class="card simple memory" id="birthday">
-							<img src="../../static/img/Regalo_card.png" alt="" srcset="">
+							<img src="static/img/Regalo_card.png" alt="" srcset="">
 							<div class="card-content">
 								<p> {{localize "birthday_memory"}} </p>
 							</div>
@@ -109,7 +109,7 @@
 					</div>
 					<!-- <div class="swiper-slide">
 						<div class="card simple memory" id="colagge">
-							<img src="../../static/img/sqrs.png" alt="" srcset=""
+							<img src="static/img/sqrs.png" alt="" srcset=""
 								style="margin-left: 4px; margin-top: 2px;">
 							<div class="card-content">
 								<p> {{localize "collage"}} </p>
@@ -118,7 +118,7 @@
 					</div>
 					<div class="swiper-slide">
 						<div class="card simple memory" id="special">
-							<img src="../../static/img/Pluma_card_tail.png" alt="" srcset="">
+							<img src="static/img/Pluma_card_tail.png" alt="" srcset="">
 							<div class="card-content">
 								<p> {{localize "especial_memory"}} </p>
 							</div>
@@ -179,7 +179,7 @@
 							<div class="card-content">
 								{{#js_if "this.cover != ''"}}
 								<div class="cover">
-									<!-- <img src="../../static/img/paisaje.jpeg" alt="" srcset=""> -->
+									<!-- <img src="static/img/paisaje.jpeg" alt="" srcset=""> -->
 									<img src="{{@root.Server}}{{cover}}" alt="" srcset="">
 								</div>
 								{{else}}
@@ -212,7 +212,7 @@
 									{{#js_if "this != ''"}}
 									<img src="{{@root.Server}}{{this}}" alt="" class="person">
 									{{else}}
-									<img src="../../static/img/Busto.png" alt="" class="person">
+									<img src="static/img/Busto.png" alt="" class="person">
 									{{/js_if}}
 									{{/each}}
 									{{#js_if "this.contacts.extraContacts > 0"}}
@@ -268,7 +268,7 @@
 							<div class="card-content">
 								{{#js_if "this.cover != ''"}}
 								<div class="cover">
-									<!-- <img src="../../static/img/paisaje.jpeg" alt="" srcset=""> -->
+									<!-- <img src="static/img/paisaje.jpeg" alt="" srcset=""> -->
 									<img src="{{@root.Server}}{{cover}}" alt="" srcset="">
 								</div>
 								{{else}}

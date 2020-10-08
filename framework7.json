@@ -25,7 +25,7 @@
     "preserveAssetsPaths": false,
     "inlineAssets": true
   },
-  "pkg": "io.wetheforce.heavensent",
+  "pkg": "com.fromtheheart.heavensent",
   "cordova": {
     "folder": "cordova",
     "platforms": [

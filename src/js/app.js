@@ -23,7 +23,7 @@ Template7.registerHelper('localize', function (value, options) {
 });
 
 var keyConf = require('./keyConfig.js');
-console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
+// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
 // console.log(keyConf.KEY_2());
 // keyConf.sum(1, 2);
 // console.log(keyConf);
@@ -482,8 +482,8 @@ var app = new Framework7({
             await localforage.getItem(key).then(function (lsValue) {
                 result = lsValue;
             }).catch(function (glvError) {
-                console.log("Error getting value [getLocalValue()]");
-                console.log(glvError);
+                // console.log("Error getting value [getLocalValue()]");
+                // console.log(glvError);
                 result = null;
             })
             return result;
@@ -500,8 +500,8 @@ var app = new Framework7({
             await localforage.setItem(key, value).then(function (value) {
                 result = true;
             }).catch(function (err) {
-                console.log("Error [setLocalValueToKey()]")
-                console.log(err);
+                // console.log("Error [setLocalValueToKey()]")
+                // console.log(err);
                 result = false;
             })
             return result;
@@ -521,14 +521,14 @@ var app = new Framework7({
                     await app.methods.loadAdminedContacts();
                     // console.log("Update User Result:" + result + " [updateCurrentUser()]");
                 }).catch(async function (error) {
-                    console.log("Error updating current user!!! [updateCurrentUser()]");
-                    console.log(error);
+                    // console.log("Error updating current user!!! [updateCurrentUser()]");
+                    // console.log(error);
                     await app.methods.clearCurrentUser();
                     result = false;
                 });
             }
             else {
-                console.log("Couldn't update current user; user was null [updateCurrentUser()]")
+                // console.log("Couldn't update current user; user was null [updateCurrentUser()]")
             }
             return result;
         },
@@ -557,7 +557,7 @@ var app = new Framework7({
                     return true;
                 }
             }
-            console.log("User Is Not Valid [userIsValid()]");
+            // console.log("User Is Not Valid [userIsValid()]");
             return false;
         },
         async userHasAdmin() {
@@ -581,12 +581,12 @@ var app = new Framework7({
                         result = false;
                     }
                 }).catch(function(error){
-                    console.log("Error checking if it's admin or not");
+                    // console.log("Error checking if it's admin or not");
                     console.log(error);
                 })
             }
             else {
-                console.log("Had no loggedUser [userHasAdmin()]");
+                // console.log("Had no loggedUser [userHasAdmin()]");
                 result = false;
             }
             return result;
@@ -738,9 +738,9 @@ var app = new Framework7({
         scrollIntoViewOnFocus: Framework7.device.cordova && !Framework7.device.electron,
         scrollIntoViewCentered: Framework7.device.cordova && !Framework7.device.electron,
     },
-    view: {
-        pushState: true
-    },
+    // view: {
+    //     pushState: true
+    // },
     // Cordova Statusbar settings
     statusbar: {
         iosOverlaysWebView: true,
@@ -759,7 +759,7 @@ var app = new Framework7({
 });
 //Aqui metes algo pa redirigirte
 $$(document).on('page:init', function (e) {
-    console.log(window.locales);
+    // console.log(window.locales);
 
     $$('.page-content').off('scroll');
     $$('.page-content').scroll(function () {
