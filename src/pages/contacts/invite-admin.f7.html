@@ -48,6 +48,13 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
+								<input type="password" id="admin-password" placeholder="{{localize 'admin_password'}}" required validate />
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input">
+						<div class="item-inner">
+							<div class="item-input-wrap">
 								<input type="text" id="admin-relation" placeholder="{{localize 'admin_relation'}}" required
 								validate />
 								<a class="popup-open" href="#" data-popup=".popup-admin-relation">
@@ -112,6 +119,7 @@
 					var adminName = $$("#admin-name").val();
 					var adminEmail = $$("#admin-email").val();
 					var adminRelation = $$("#admin-relation").val();
+					var adminPassword = $$("#admin-password").val();
 					var adminCouldEdit = $$("#admin-edit").prop('checked');
 					
 					if (!validateText(adminName, 'Please, enter your admin\'s name.', 'Your admin\'s name may not have spaces before or after the text.')) {
@@ -125,6 +133,9 @@
 					if (!validateText(adminRelation, 'Plase enter your and your admin\'s relationship.', 'Your answer may not have spaces before or after the text', false)) {
 						return false;
 					}
+					if (!validateText(adminPassword, 'Plase enter your and your admin\'s relationship.', 'Your answer may not have spaces before or after the text', false)) {
+						return false;
+					}
 					
 					//Admin exists?
 					app.preloader.show("blue");
@@ -136,7 +147,7 @@
 							console.log(`admin email doesn't exist, creating admin account (${adminEmail}) [pageInit.create-btn.onClick]`);
 							app.request.promise.postJSON(`${app.data.server}/auth/local/register`, {
 								"username": adminEmail,
-								"password": makeid(10),
+								"password": adminPassword,
 								"email": adminEmail,
 							})
 							.then(async function (adminAccRes) {
