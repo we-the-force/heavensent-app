@@ -146,6 +146,8 @@ var cordovaApp = {
 
     // Handle Keyboard
     cordovaApp.handleKeyboard();
+    
+    window.screen.orientation.lock('portrait');
   },
 };
 
