@@ -900,7 +900,7 @@ var routes = [
         async: async function (routeTo, routeFrom, resolve, reject){
             var router = this;
             var app = router.app;
-
+            console.log('enter route successuRL');
             //
             // console.log("Membership/confirmed/session/ thing");
 
@@ -910,6 +910,9 @@ var routes = [
             var sessionId = routeTo.params.sessionId;
             var planId = routeTo.params.planId;
             var loggedUser = await app.methods.getLocalValue('loggedUser');
+            console.log('session-ID: '+sessionId);
+            console.log('plan-ID: '+planId);
+            console.log('Logged Usr: '+loggedUser);
 
             var plan;
             await app.request.promise.get(`${app.data.server}/memberships/${planId}`).then(function (planRes){
@@ -979,8 +982,8 @@ var routes = [
                         // console.log("");
                         // console.log("User Info");
                         // console.log(userInfo);
-                        // console.log("Membership object");
-                        // console.log(membershipObject);
+                        console.log("Membership object");
+                        console.log(membershipObject);
                         // console.log("Payment Object");
                         // console.log(paymentObject);
 

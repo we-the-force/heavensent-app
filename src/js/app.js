@@ -31,7 +31,7 @@ var keyConf = require('./keyConfig.js');
 var app = new Framework7({
     root: '#app', // App root element
     component: App, // App main component
-    id: 'io.wetheforce.heavensent', // App bundle ID
+    id: 'com.wetheforce.heavensent', // App bundle ID
     name: 'HeavenSent', // App name
     theme: 'auto', // Automatic theme detection
 
@@ -745,7 +745,7 @@ var app = new Framework7({
     // },
     // Cordova Statusbar settings
     statusbar: {
-        iosOverlaysWebView: true,
+        iosOverlaysWebView: false,
         androidOverlaysWebView: false,
     },
     on: {
@@ -754,6 +754,7 @@ var app = new Framework7({
             if (f7.device.cordova) {
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
+                f7.statusbar.show();
             }
 
         },

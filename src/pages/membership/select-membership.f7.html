@@ -436,15 +436,15 @@
 					console.log("---- Assigning plan ----");
 					await app.request.promise.get(`${app.data.server}/users/${loggedUser.id}`).then(async function(userRes){
 						// console.log("Inserting membership");
-						// console.log("Updating to current membership object");
-						// console.log(membershipObject);
+						console.log("Updating to current membership object");
+						console.log(membershipObject);
 						await app.request.promise({
 							url: `${app.data.server}/users/${loggedUser.id}`,
 							method: 'PUT',
 							data: membershipObject
 						}).then(function (res){
 							console.log("Success!");
-							// console.log(res.data);
+							console.log(res.data);
 						}).catch(function (err){
 							console.log("Error updating membership");
 							console.log(err.xhr.response);

@@ -15,6 +15,10 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-navigation href="https://*stripe.com/*"/>
+    <allow-navigation href="https://*js.stripe.com/*"/>
+    <allow-navigation href="https://app.heavensentnow.com/*"/>
+    <allow-navigation href="https://api.heavensentnow.com/*"/>
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
@@ -76,6 +80,8 @@
       <icon height="100" src="res/icon/ios/icon-50x50@2x.png" width="100" />
       <icon height="167" src="res/icon/ios/icon-83.5x83.5@2x.png" width="167" />
       <icon height="1024" src="res/icon/ios/icon-512x512@2x.png" width="1024" />
+      <preference name="StatusBarOverlaysWebView" value="false" />
+      <preference name="StatusBarBackgroundColor" value="#ffffff" />
     </platform>
 
 
