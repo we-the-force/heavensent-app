@@ -167,10 +167,12 @@
 				async function redirectToCheckout()
 				{
 					app.preloader.show('blue');
+					console.log('redirect to checkout');
 					// let lineItems = [{price: price_id, quantity:1}];
 					// let successUrl = `http://success.html?session_id={CHECKOUT_SESSION_ID}`;
 					let successUrl = `${app.data.domain}/#!/membership/confirmed/session/{CHECKOUT_SESSION_ID}/plan/${selectedPlan.id}`;
 					let cancelUrl = `${app.data.domain}/#!/membership/view/user/${loggedUser.id}`;
+					console.log('successUrl: '+successUrl);
 					let line_items =  [{
 						price: selectedPlan.stripePrice,
 						// price_data: {
