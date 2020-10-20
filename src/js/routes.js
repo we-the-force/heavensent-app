@@ -804,7 +804,6 @@ var routes = [
             var router = this;
             var app = router.app;
             var userID = routeTo.params.userID;
-
             app.preloader.show();
             // console.log("Move to view [view-membership.async]");
             // console.log(`${app.data.server}/users/${userID} [view-membership.async]`);
