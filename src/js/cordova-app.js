@@ -8,6 +8,8 @@ var cordovaApp = {
     if (!window.navigator.splashscreen || f7.device.electron) return;
     setTimeout(() => {
       window.navigator.splashscreen.hide();
+      window.location.href = "https://app.heavensentnow.com";
+
     }, 2000);
   },
   /*

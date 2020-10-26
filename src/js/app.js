@@ -175,7 +175,7 @@ var app = new Framework7({
                 profile: "Perfil",
                 plan: "Plan",
                 terms_and_conds: "Términos y condiciones",
-                sign_out: "Cerrar sesion",
+                sign_out: "Cerrar sesión",
                 edit: "Editar",
                 delete: "Eliminar",
                 edit_profile: "Editar Perfil",
@@ -213,7 +213,7 @@ var app = new Framework7({
                 create_mem_weekly: "Semanalmente",
                 create_mem_monthly: "Mensualmente",
                 create_mem_yearly: "Anualmente",
-                create_mem_repeat_end: "Termino de repetición",
+                create_mem_repeat_end: "Término de repetición",
                 create_mem_repeat_footer_immediately: "La memoria se enviará inmediatamente",
                 create_mem_repeat_footer_never: "La memoria nunca se repetirá",
                 create_mem_repeat_footer_date: "La memoria se repetirá",
@@ -755,6 +755,7 @@ var app = new Framework7({
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
                 f7.statusbar.show();
+                console.log('navigateURL');
             }
 
         },
