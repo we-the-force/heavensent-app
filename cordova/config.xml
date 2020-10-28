@@ -82,6 +82,13 @@
       <icon height="1024" src="res/icon/ios/icon-512x512@2x.png" width="1024" />
       <preference name="StatusBarOverlaysWebView" value="false" />
       <preference name="StatusBarBackgroundColor" value="#ffffff" />
+      <preference name="WKWebViewOnly" value="true" />
+
+      <feature name="CDVWKWebViewEngine">
+          <param name="ios-package" value="CDVWKWebViewEngine" />
+      </feature>
+
+      <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
     </platform>
 
 

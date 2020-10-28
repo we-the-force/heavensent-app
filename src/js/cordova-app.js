@@ -9,7 +9,11 @@ var cordovaApp = {
     setTimeout(() => {
       window.navigator.splashscreen.hide();
       window.location.href = "https://app.heavensentnow.com";
-
+      if ('addEventListener' in document) {
+	document.addEventListener('DOMContentLoaded', function() {
+		FastClick.attach(document.body);
+	}, false);
+}
     }, 2000);
   },
   /*
@@ -97,7 +101,7 @@ var cordovaApp = {
     var f7 = cordovaApp.f7;
     if (!window.Keyboard || !window.Keyboard.shrinkView || f7.device.electron) return;
     var $ = f7.$;
-    window.Keyboard.shrinkView(false);
+    window.Keyboard.shrinkView(true);
     window.Keyboard.disableScrollingInShrinkView(true);
     window.Keyboard.hideFormAccessoryBar(true);
     window.addEventListener('keyboardWillShow', () => {

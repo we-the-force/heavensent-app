@@ -221,10 +221,10 @@
 					email = $$("#signup-email").val();
 					password = $$("#signup-password").val();
 
-					if (!c) {
-						app.dialog.alert('Please upload an image');
-						return false;
-					}
+					// if (!c) {
+					// 	app.dialog.alert('Please upload an image');
+					// 	return false;
+					// }
 					if (!validateText(username, 'Please, enter your desired username.', 'Your username may not have spaces before or after the text.')) {
 						console.log("username not valid [pageInit.create-btn.onClick]");
 						return false;
