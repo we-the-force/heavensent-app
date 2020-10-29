@@ -755,7 +755,7 @@
 						}
 
 						$$("#logged-user-name")[0].textContent = isEditing ? (currentUser.name != undefined ? `Managing ${currentUser.name}'s memories` : `Managing ${currentUser.username}'s memories`) : currentUser.name != undefined ? currentUser.name : currentUser.username;
-						$$("#logged-user-membership")[0].textContent = currentMembership.plan.name;
+						$$("#logged-user-membership")[0].textContent = window.localize('membership') + " " + currentMembership.plan.name;
 						if (currentUser.profilePicture != null) {
 							$$("#logged-user-picture")[0].src = `${app.data.server}${currentUser.profilePicture.url}`;
 						}
