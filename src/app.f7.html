@@ -209,6 +209,9 @@
 						}
 						localStorage.setItem('language', leng)
 						window.language = leng;
+						if(window.language==''){
+							window.language='en_US';
+						}
 						self.$update();
 						app.views.main.router.refreshPage();
 						/* app.views.main.router.refreshPage() */
@@ -242,6 +245,8 @@
 									currentMembership = loggedUser.currentMembership.plan.name + " "+ window.localize('membership');
 								} else if (window.language == 'es_MX') {
 									currentMembership = window.localize('membership') + " "+ loggedUser.currentMembership.plan.name ;
+								} else {
+									currentMembership = loggedUser.currentMembership.plan.name + " "+ window.localize('membership');
 								}
 								//currentMembership = loggedUser.currentMembership.plan.name + " membership";
 							}
