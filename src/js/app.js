@@ -358,9 +358,10 @@ var app = new Framework7({
         scrollIntoViewOnFocus: Framework7.device.cordova && !Framework7.device.electron,
         scrollIntoViewCentered: Framework7.device.cordova && !Framework7.device.electron,
     },
-    // view: {
-    //     pushState: true
-    // },
+    view: {
+        pushState: true,
+        stackPages: true
+    },
     // Cordova Statusbar settings
     statusbar: {
         iosOverlaysWebView: false,

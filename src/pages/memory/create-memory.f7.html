@@ -894,7 +894,7 @@
                     // console.log(!title);
                     if (!title) {
                         result.valid = false;
-                        result.message += "No title";
+                        result.message += window.localize('no_title');
                         result.errors++;
                     }
                     else {
@@ -908,7 +908,7 @@
                     // console.log(!desc);
                     if (!desc) {
                         result.valid = false;
-                        result.message += result.errors > 0 ? ", no description" : "No description";
+                        result.message += result.errors > 0 ? ", "+window.localize('no_description') : window.localize('no_description');
                         result.errors++;
                     }
                     else {
@@ -920,7 +920,7 @@
                     // console.log(!cover);
                     if (!cover) {
                         result.valid = false;
-                        result.message += result.errors > 0 ? ", no cover" : "No cover";
+                        result.message += result.errors > 0 ? ", "+window.localize('no_cover') : window.localize('no_cover');
                         result.errors++;
                     }
                     else {
@@ -932,7 +932,7 @@
                     // console.log(!(files.length > 0));
                     if (!(files.length > 0)) {
                         result.valid = false;
-                        result.message += result.errors > 0 ? ", no files" : "No files";
+                        result.message += result.errors > 0 ? ", "+window.localize('no_files') : window.localize('no_files');
                         result.errors++;
                     }
                     else {
@@ -944,7 +944,7 @@
                     // console.log(!(contacts.length > 0));
                     if (!contacts || !(contacts.length > 0)) {
                         result.valid = false;
-                        result.message += result.errors > 0 ? ", no contacts" : "No contacts";
+                        result.message += result.errors > 0 ? ", " +window.localize('no_contacts') : window.localize('no_contacts');
                         result.errors++;
                     }
                     else {

@@ -747,15 +747,16 @@
 						else {
 							if (window.language == 'en_US') {
 								currentMembership = loggedUser.currentMembership.plan.name + " " + window.localize('membership');
-								console.log('Membership: '+loggedUser.currentMembership);
+								console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
 							} else if (window.language == 'es_MX') {
-								console.log('Membership: '+loggedUser.currentMembership);
+								console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
 								currentMembership = window.localize('membership') + " " + loggedUser.currentMembership.plan.name;
 							}
 						}
 
 						$$("#logged-user-name")[0].textContent = isEditing ? (currentUser.name != undefined ? `Managing ${currentUser.name}'s memories` : `Managing ${currentUser.username}'s memories`) : currentUser.name != undefined ? currentUser.name : currentUser.username;
-						$$("#logged-user-membership")[0].textContent = window.localize('membership') + " " + currentMembership.plan.name;
+						$$("#logged-user-membership")[0].textContent = currentMembership;
+						console.log(JSON.stringify(currentMembership));
 						if (currentUser.profilePicture != null) {
 							$$("#logged-user-picture")[0].src = `${app.data.server}${currentUser.profilePicture.url}`;
 						}
