@@ -557,7 +557,8 @@ var routes = [
                         contactsObject.push({
                             id: getRelation ? relation.id : relation.owner.id,
                             name: admin ? ((relation.owner.name != null && relation.owner.name.trim() != "") ? relation.owner.name : relation.owner.username): (relation.nickname != null && relation.nickname.trim() != "") ? relation.nickname : ((relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username),
-                            picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : ''
+                            picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : '',
+                            admin: relation.isAdmin
                         });
                     });
                 }

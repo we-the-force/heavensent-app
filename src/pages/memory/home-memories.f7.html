@@ -81,6 +81,9 @@
 								<img src="{{@root.Server}}{{picture}}" alt="" srcset="">
 								{{else}}
 								<img src="" alt="" srcset="">
+								{{#if admin}}
+								<span class="badge color-orange">Admin</span>
+								{{/if}}
 							</a>
 							<p class="name-person">{{name}}</p>
 						</div>
@@ -146,12 +149,31 @@
 					<li>
 						<a href="#" class="item-link item-content memory-options edit popover-open" data-popover=".popover-opt"
 						data-memory="{{id}}">
+							<div class="item-med">
+								{{#each contacts.limitedUrls}}
+								{{#js_if "this != ''"}}
+								<img src="{{@root.Server}}{{this}}" width="30px" height="auto" style="margin-right: 5px;" alt="" class="person">
+								{{else}}
+								<img src="static/img/Busto.png" alt="" class="person">
+								{{/js_if}}
+								{{/each}}
+							</div>
 							<div class="item-inner">
+
 								<div class="item-title-row">
-									<div class="item-title">{{name}}</div>
+									
+									<div class="item-title">
+										<div class="item-header">{{deliveryDate}}</div>
+										{{name}}
+										<div class="item-footer">
+											{{#each contacts}}
+											{{name}}&nbsp;
+											{{/each}}
+										</div>
+									</div>
 
 								</div>
-								<div class="item-subtitle">{{deliveryDate}}</div>
+								<div class="item-subtitle"></div>
 								
 							</div>
 						</a>
@@ -393,6 +415,7 @@
 			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
+				console.log(page.route.context);
 				var isEditing = page.route.context.IsEditing;
 				var currentUser = page.route.context.CurrentUser;
 				var fundations = page.route.context.Fundations;
