@@ -415,11 +415,14 @@
 			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
-				console.log(page.route.context);
+				console.log("RouterHome:\r\n", app.views.main.router.history);
+				// console.log(page.route.context);
 				var isEditing = page.route.context.IsEditing;
 				var currentUser = page.route.context.CurrentUser;
 				var fundations = page.route.context.Fundations;
 				var paymentToken;
+
+				console.log(currentUser);
 				// console.log("home-memories pageInit [pageInit], updating user");
 
 				// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
@@ -430,6 +433,8 @@
 				await app.methods.loadContacts();
 
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
+
+				console.log("loggedUser:\r\n", loggedUser);
 
 				if (loggedUser == null) {
 					app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
@@ -590,7 +595,6 @@
 
 					function processPayment(paymentData) {
 						// show returned data in developer console for debugging
-								// console.log(paymentData);
 						// @todo pass payment token to your gateway to process payment
 						paymentToken = paymentData.paymentMethodData.tokenizationData.token;
 					}
@@ -648,8 +652,6 @@
 					let id = $$(this)[0][indexValueTwo - 1].id;
 					let targetUserId = $$(`#${id}`).attr("asd");
 
-					// console.log(`Index Value Two: ${indexValueTwo}, ${id}`);
-
 					let item = select.items[indexValue - 1];
 
 					select.close();
@@ -659,9 +661,7 @@
 				});
 
 				$$('.avatar-person').on('click', function (val) {
-					// console.log($$(this).prop("dataset").user);
 					$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
-					// console.log($$('.popover-person'));
 				})
 				var searchbar1 = app.searchbar.create({
 					el: '.searchbar1',
@@ -770,9 +770,9 @@
 						else {
 							if (window.language == 'en_US') {
 								currentMembership = loggedUser.currentMembership.plan.name + " " + window.localize('membership');
-								console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
+								// console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
 							} else if (window.language == 'es_MX') {
-								console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
+								// console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
 								currentMembership = window.localize('membership') + " " + loggedUser.currentMembership.plan.name;
 							}
 						}

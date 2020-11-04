@@ -417,6 +417,9 @@ var routes = [
         name: 'home-memories',
         path: '/memories/home/user/:userID',
         beforeEnter: [checkAuth, isMembershipValid],
+        options: {
+            reloadAll: true,
+        },
         async: async function (routeTo, routeFrom, resolve, reject) {
             var router = this;
             var app = router.app;

@@ -20,8 +20,8 @@
 			<div class="sqr_bck" id="sqr3"></div>
 			<div class="upload-cont">
 				<div class="upload-img">
-					<div class="photo" id="contact-photo">
-						
+					<div class="photo avatar-fab" id="contact-photo">
+
 					</div>
 				</div>
 				<!-- <label class="img-btn" for="file-upload">
@@ -31,32 +31,35 @@
 			</div>
 			<div class="inputs list">
 				<ul>
-					
+
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="create-cont-nickname" placeholder="{{localize 'nickname'}}" required validate />
+								<input type="text" id="create-cont-nickname" placeholder="{{localize 'nickname'}}"
+									required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="create-cont-relation" placeholder="{{localize 'relation'}}" required validate />
+								<input type="text" id="create-cont-relation" placeholder="{{localize 'relation'}}"
+									required validate />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="text" id="create-cont-name" placeholder="name" required validate readonly/>
+								<input type="text" id="create-cont-name" placeholder="name" required validate
+									readonly />
 							</div>
 						</div>
 					</li>
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="create-cont-email" placeholder="email" required validate readonly/>
+								<input type="email" id="create-cont-email" placeholder="email" required validate />
 							</div>
 						</div>
 					</li>
@@ -70,7 +73,7 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="date" id="create-cont-birthday" placeholder="birthday" required validate/>
+								<input type="date" id="create-cont-birthday" placeholder="birthday" required validate />
 							</div>
 						</div>
 					</li>
@@ -86,7 +89,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 </template>
 <script>
 	import $$ from "dom7";
@@ -96,25 +99,24 @@
 			pageInit: async function (e, page) {
 				var self = this;
 				var app = self.$app;
-				
+
+				console.log("RouterEdit:\r\n", app.views.main.router.history);
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
 				var contactInfo = this.ContactInfo;
-				console.log("Writing contact info");
-				console.log(contactInfo);
-				
+				console.log("Writing contact info:\r\n", contactInfo);
+
 				var c;
 				var username = "";
-				var email="";
-				var mobile="";
-				var relation="";
-				var birthday="";
-				var isAdmin="";
-				var editMemories="";
-				var isMinor="";
-				
-				
+				var email = "";
+				var mobile = "";
+				var relation = "";
+				var birthday = "";
+				var isAdmin = "";
+				var editMemories = "";
+				var isMinor = "";
+
 				fillData();
-				
+
 				//upload photo
 				$$(".img-btn").on("click", function () {
 					if (window.File && window.FileReader && window.FormData) {
@@ -122,12 +124,13 @@
 						inputField.off("change");
 						inputField.on("change", function (e) {
 							var file = e.target.files[0];
-							
+
 							if (file) {
 								if (/^image\//i.test(file.type)) {
 									$$(".img-btn").off("click");
 									readFile(file);
 								} else {
+									//ToLocalize
 									alert("Not a valid image!");
 									console.log("Not a valid image!");
 								}
@@ -136,143 +139,108 @@
 							}
 						});
 					} else {
+						//ToLocalize
 						alert("File upload is not supported!");
 						console.log("File upload is not supported!");
 					}
 				});
-				
-				$$("#create-member-btn").on("click", async function (e) {});
-				
-				async function assignRelation(targetUser, contactUser, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories)
-				{
-					console.log("user");
-					console.log(contactUser);
-					console.log("relation");
-					console.log(contactRelation);
-					console.log("isAdmin");
-					console.log(contactIsAdmin);
-					console.log("editMemories");
-					console.log(contactEditMemories);
-					console.log("isMinor");
-					console.log(contactIsMinor);
-					
+
+				async function updateRelation(nickname, relationship, mobile, email) {
 					let result = {
 						result: false,
 						message: ""
 					};
-					await app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUser.id}&contact=${contactUser.id}`)
-					.then(async function(res){
-						// console.log("right after get");
-						// console.log(res);
-						if (res.data === "[]")
-						{
-							// console.log('Already has contact');
-							await app.request.promise.postJSON(`${app.data.server}/contacts`,{
-								"relation": contactRelation,
-								"owner": {
-									"id": targetUser.id
-								},
-								"contact":{
-									"id": contactUser.id
-								},
-								"isAdmin": contactIsAdmin,
-								"isMinor": contactIsMinor,
-								"editMemories": contactEditMemories
-							})
-							.then(function (res){
-								console.log("response assignRelation");
-								console.log(res);
-								result.result = true;
-								result.message = "Contact added successfully";
-							})
-							.catch(function(err){
-								console.log("error addignRelation");
-								console.log(err);
-								result.result = false;
-								result.message = err;
-							})
+					await app.request.promise.get(`${app.data.server}/contacts/${contactInfo.id}`)
+					.then(async function (res) {
+						if (res.data != "[]") {
+							let resJson = JSON.parse(res.data);
+							if (resJson.nickname === nickname && resJson.relation === relationship && resJson.contactMobile === mobile)
+							{
+								
+							}
+							else
+							{
+								await app.request({
+									url: app.data.server + '/contacts/' + contactInfo.id,
+									method: 'PUT',
+									data: {
+										"nickname": nickname,
+										"relation": relationship,
+										"contactMobile": mobile,
+										"contactEmail": email
+									}
+								});
+							}
+							// await app.views.main.router.navigate('/memories/home/user/'+loggedUser.id);
+							app.views.main.router.navigate({url:'/memories/home/user/' + loggedUser.id, options: {reloadCurrent: true}});
 						}
-						else
-						{
-							// console.log('doesnt have contact');
-							result.result = false;
-							result.message = "You already have that user as a contact";
+						else {
+							//ToLocalize
+							//"This contact relation doesn't exist, how did you manage to do this?";
 						}
+					}).catch(function (error) {
+						console.log("Errorsote:\r\n", error);
+						//ToLocalize
+						//"No such contact was found lmao";
 					});
-					console.log("return of assignContact")
-					console.log(result);
-					return result;
 				}
-				
-				$$("#save-member-btn").on("click", function(val){
-					// console.log("Clicked save-member-btn!");
-					// console.log("birthday.val");
-					// console.log($$("#create-cont-birthday").val());
-					// console.log("birthday");
-					// console.log($$("#create-cont-birthday"));
-					
-					// $$("#create-cont-birthday").val("2020-01-01");
-					
-					// console.log("birthday.val");
-					// console.log($$("#create-cont-birthday").val());
+
+				$$("#save-member-btn").on("click", async function (val) {
+					await updateRelation(
+						$$('#create-cont-nickname').val(), 
+						$$('#create-cont-relation').val(), 
+						$$("#create-cont-mobile").val(),
+						$$("#create-cont-email").val()
+					);
 				})
-				
-				function fillData()
-				{
+
+				function fillData() {
+					// console.log("Info del contacto:\r\n", contactInfo.contact.profilePicture.url);
 					// Poner tambien la imagen pero no tiene el objetito de la imagen porque croppie lo hace de una forma rara.
-					$$('#contact-photo').append('<img src="'+app.data.server+contactInfo.picture+'" alt="">');
+					// $$('#contact-photo').append('<img src="'+app.data.server+contactInfo.picture+'" alt="">');
+					$$('#contact-photo').append('<img src="' + app.data.server + contactInfo.contact.profilePicture.url + '" alt="" style="height:114px;width:114px;">');
 					$$("#create-cont-nickname").val(contactInfo.nickname);
 					$$("#create-cont-relation").val(contactInfo.relation);
 					$$("#create-cont-name").val(contactInfo.contact.name);
-					$$("#create-cont-email").val(contactInfo.contact.email);
-					$$("#create-cont-mobile").val(contactInfo.contact.mobile);
+					$$("#create-cont-email").val(contactInfo.contactEmail);
+					$$("#create-cont-mobile").val(contactInfo.contactMobile);
 					$$("#create-cont-birthday").val(contactInfo.contact.birthday);
 				}
-				function userHasContact(user, contact)
-				{
+				function userHasContact(user, contact) {
 					app.request.promise.get(`${app.data.server}/contacts/?owner=${user}&contact=${contact}`)
-					.then(function(res){
-						console.log("right after get");
-						console.log(res);
-						if (res.data === "[]")
-						{
-							// console.log("user doesnt have contact");
-							// console.log(res.data);
-							return (false);
-						}
-						else
-						{
-							// console.log("user has contact");
-							// console.log(res.data);
-							return (true);
-						}
-					});
+						.then(function (res) {
+							console.log("right after get");
+							console.log(res);
+							if (res.data === "[]") {
+								// console.log("user doesnt have contact");
+								// console.log(res.data);
+								return (false);
+							}
+							else {
+								// console.log("user has contact");
+								// console.log(res.data);
+								return (true);
+							}
+						});
 				}
-				
-				function validateEmail(mail) 
-				{
-					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
-					{
+
+				function validateEmail(mail) {
+					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
 						return (true);
 					}
 					// alert("You have entered an invalid email address!")
 					return (false);
 				}
-				
-				function validateText(text, emptyText, trimmedText, checkTrimmed = true)
-				{
+
+				function validateText(text, emptyText, trimmedText, checkTrimmed = true) {
 					console.log(`${text}, trim?: ${checkTrimmed}`);
-					if (isTextEmptyOrWhitespace(text))
-					{
+					if (isTextEmptyOrWhitespace(text)) {
 						app.dialog.alert(emptyText);
 						return false;
 					}
-					else
-					{
-						if (checkTrimmed)
-						{
-							if (!isTextTrimmed(text))
-							{
+					else {
+						if (checkTrimmed) {
+							if (!isTextTrimmed(text)) {
 								app.dialog.alert(trimmedText);
 								return false;
 							}
@@ -280,63 +248,59 @@
 						return true;
 					}
 				}
-				
-				function isTextValid(value)
-				{
+
+				function isTextValid(value) {
 					return !isTextEmptyOrWhitespace(value) && isTextTrimmed(value);
 				}
-				
-				function isTextEmptyOrWhitespace(value)
-				{
-					if (!value || !value.trim())
-					{
+
+				function isTextEmptyOrWhitespace(value) {
+					if (!value || !value.trim()) {
 						return true;
 					}
 					return false;
 				}
-				
-				function isTextTrimmed(value)
-				{
+
+				function isTextTrimmed(value) {
 					return (value == value.trim());
 				}
-				
-				
+
+
 				//funcion para leer la foto
 				function readFile(file) {
 					var reader = new FileReader();
-					
+
 					reader.onloadend = function () {
 						processFile(reader.result, file.type);
 					};
-					
+
 					reader.onerror = function () {
 						alert("There was an error reading the file!");
 					};
-					
+
 					reader.readAsDataURL(file);
 				}
-				
+
 				//procesar foto
 				function processFile(dataURL, fileType) {
 					var maxWidth = 440;
 					var maxHeight = 440;
-					
+
 					var image = new Image();
 					image.src = dataURL;
-					
+
 					image.onload = function () {
 						var width = image.width;
 						var height = image.height;
 						var shouldResize = width > maxWidth || height > maxHeight;
-						
+
 						if (!shouldResize) {
 							sendFile(dataURL);
 							return;
 						}
-						
+
 						var newWidth;
 						var newHeight;
-						
+
 						if (width > height) {
 							newHeight = height * (maxWidth / width);
 							newWidth = maxWidth;
@@ -344,26 +308,26 @@
 							newWidth = width * (maxHeight / height);
 							newHeight = maxHeight;
 						}
-						
+
 						var canvas = document.createElement("canvas");
-						
+
 						canvas.width = newWidth;
 						canvas.height = newHeight;
-						
+
 						var context = canvas.getContext("2d");
-						
+
 						context.drawImage(this, 0, 0, newWidth, newHeight);
-						
+
 						dataURL = canvas.toDataURL(fileType);
-						
+
 						sendFile(dataURL);
 					};
-					
+
 					image.onerror = function () {
 						alert("There was an error processing your file!");
 					};
 				}
-				
+
 				//poner foto en la pagina
 				function sendFile(dataURL) {
 					var imgHtml = '<img id="web-img" src="' + dataURL + '" alt="">';
@@ -390,7 +354,7 @@
 		width: 100%;
 		height: 100%;
 	}
-	
+
 	.croppie-container .cr-image {
 		z-index: -1;
 		position: absolute;
@@ -400,7 +364,7 @@
 		max-height: none;
 		max-width: none;
 	}
-	
+
 	.croppie-container .cr-boundary {
 		position: relative;
 		overflow: hidden;
@@ -409,7 +373,7 @@
 		width: 100%;
 		height: 100%;
 	}
-	
+
 	.croppie-container .cr-viewport,
 	.croppie-container .cr-resizer {
 		position: absolute;
@@ -422,19 +386,19 @@
 		box-shadow: 0 0 2000px 2000px rgba(0, 0, 0, 0.5);
 		z-index: 0;
 	}
-	
+
 	.croppie-container .cr-resizer {
 		z-index: 2;
 		box-shadow: none;
 		pointer-events: none;
 	}
-	
+
 	.croppie-container .cr-resizer-vertical,
 	.croppie-container .cr-resizer-horisontal {
 		position: absolute;
 		pointer-events: all;
 	}
-	
+
 	.croppie-container .cr-resizer-vertical::after,
 	.croppie-container .cr-resizer-horisontal::after {
 		display: block;
@@ -446,61 +410,61 @@
 		height: 10px;
 		content: "";
 	}
-	
+
 	.croppie-container .cr-resizer-vertical {
 		bottom: -5px;
 		cursor: row-resize;
 		width: 100%;
 		height: 10px;
 	}
-	
+
 	.croppie-container .cr-resizer-vertical::after {
 		left: 50%;
 		margin-left: -5px;
 	}
-	
+
 	.croppie-container .cr-resizer-horisontal {
 		right: -5px;
 		cursor: col-resize;
 		width: 10px;
 		height: 100%;
 	}
-	
+
 	.croppie-container .cr-resizer-horisontal::after {
 		top: 50%;
 		margin-top: -5px;
 	}
-	
+
 	.croppie-container .cr-original-image {
 		display: none;
 	}
-	
+
 	.croppie-container .cr-vp-circle {
 		border-radius: 50%;
 	}
-	
+
 	.croppie-container .cr-overlay {
 		z-index: 1;
 		position: absolute;
 		cursor: move;
 		touch-action: none;
 	}
-	
+
 	.croppie-container .cr-slider-wrap {
 		width: 75%;
 		margin: 15px auto;
 		text-align: center;
 	}
-	
+
 	.croppie-result {
 		position: relative;
 		overflow: hidden;
 	}
-	
+
 	.croppie-result img {
 		position: absolute;
 	}
-	
+
 	.croppie-container .cr-image,
 	.croppie-container .cr-overlay,
 	.croppie-container .cr-viewport {
@@ -509,12 +473,13 @@
 		-ms-transform: translateZ(0);
 		transform: translateZ(0);
 	}
+
 	/*************************************/
 	/***** STYLING RANGE INPUT ***********/
 	/*************************************/
 	/*http://brennaobrien.com/blog/2014/05/style-input-type-range-in-every-browser.html */
 	/*************************************/
-	
+
 	.cr-slider {
 		-webkit-appearance: none;
 		/*removes default webkit styles*/
@@ -527,7 +492,7 @@
 		padding-bottom: 8px;
 		background-color: transparent;
 	}
-	
+
 	.cr-slider::-webkit-slider-runnable-track {
 		width: 100%;
 		height: 3px;
@@ -535,7 +500,7 @@
 		border: 0;
 		border-radius: 3px;
 	}
-	
+
 	.cr-slider::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		border: none;
@@ -545,11 +510,11 @@
 		background: #ddd;
 		margin-top: -6px;
 	}
-	
+
 	.cr-slider:focus {
 		outline: none;
 	}
-	
+
 	.cr-slider::-moz-range-track {
 		width: 100%;
 		height: 3px;
@@ -557,7 +522,7 @@
 		border: 0;
 		border-radius: 3px;
 	}
-	
+
 	.cr-slider::-moz-range-thumb {
 		border: none;
 		height: 16px;
@@ -566,13 +531,14 @@
 		background: #ddd;
 		margin-top: -6px;
 	}
+
 	/*hide the outline behind the border*/
-	
+
 	.cr-slider:-moz-focusring {
 		outline: 1px solid white;
 		outline-offset: -1px;
 	}
-	
+
 	.cr-slider::-ms-track {
 		width: 100%;
 		height: 5px;
@@ -584,17 +550,17 @@
 		color: transparent;
 		/*remove default tick marks*/
 	}
-	
+
 	.cr-slider::-ms-fill-lower {
 		background: rgba(0, 0, 0, 0.5);
 		border-radius: 10px;
 	}
-	
+
 	.cr-slider::-ms-fill-upper {
 		background: rgba(0, 0, 0, 0.5);
 		border-radius: 10px;
 	}
-	
+
 	.cr-slider::-ms-thumb {
 		border: none;
 		height: 16px;
@@ -603,42 +569,43 @@
 		background: #ddd;
 		margin-top: 1px;
 	}
-	
+
 	.cr-slider:focus::-ms-fill-lower {
 		background: rgba(0, 0, 0, 0.5);
 	}
-	
+
 	.cr-slider:focus::-ms-fill-upper {
 		background: rgba(0, 0, 0, 0.5);
 	}
+
 	/*******************************************/
 	/***********************************/
 	/* Rotation Tools */
 	/***********************************/
-	
+
 	.cr-rotate-controls {
 		position: absolute;
 		bottom: 5px;
 		left: 5px;
 		z-index: 1;
 	}
-	
+
 	.cr-rotate-controls button {
 		border: 0;
 		background: none;
 	}
-	
+
 	.cr-rotate-controls i:before {
 		display: inline-block;
 		font-style: normal;
 		font-weight: 900;
 		font-size: 22px;
 	}
-	
+
 	.cr-rotate-l i:before {
 		content: "↺";
 	}
-	
+
 	.cr-rotate-r i:before {
 		content: "↻";
 	}

@@ -129,6 +129,7 @@
 </template>
 <script>
 	import $$ from "dom7";
+	import Stripe from "stripe";
 	export default {
 		// auth/local/register
 		on: {
@@ -159,10 +160,12 @@
 
 
 				const stripe = require('stripe')(SECRET_KEY);
-				console.log('stripeVar');
-				console.log(stripe.invoices);
+				// console.log('stripeVar');
+				console.log("StripeVar: \r\n", stripe.invoices);
 
 				var stripeRedirect = Stripe(PUBLISHABLE_KEY);
+				console.log("Stripe Redirect", stripeRedirect);
+				// console.log("Stripe Redirect:");
 
 				async function redirectToCheckout()
 				{
@@ -194,6 +197,7 @@
 						payment_method_types: ['card'],
 						mode: 'subscription'
 					};
+					console.log("Objects: \r\n", object);
 					
 					canceled_subscription = false;
 					let hasMembership = loggedUser.currentMembership !== null;
@@ -208,6 +212,7 @@
 
 					if (hasMembership && hasToken)
 					{
+						console.log("Has membership and has token");
 						/*
 							Retrieve current subscription
 							Update subscription with new values
@@ -363,6 +368,7 @@
 					{
 						// console.log("object");
 						// console.log(object);
+						console.log("Await promise");
 						await app.request.promise({
 							url: stripeUrl,
 							method: "POST",
@@ -373,6 +379,9 @@
 							// console.log(sessionData.id);
 							app.preloader.hide();
 							stripeRedirect.redirectToCheckout({sessionId: sessionData.id});
+						}).catch(function(err){
+							console.log("Error in promise! \r\n", err);
+							// console.log(err);
 						})
 					}
 				}

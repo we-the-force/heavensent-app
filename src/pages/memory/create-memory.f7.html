@@ -292,6 +292,8 @@
                 var app = self.$app;
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
 
+
+
                 /* var latlng = sessionStorage.latlng;
                 var addr = sessionStorage.addr; */
                 var title = sessionStorage.title;
@@ -304,13 +306,15 @@
                 var footer = sessionStorage.footer;
                 var on_demand = sessionStorage.on_demand;
 
+                console.log("***Home session storage things***\r\n", `Repeat: ${repeat}, date_end: ${date_end}`);
+
                 var files = [];
                 var mb = 0;
                 var cover /* = sessionStorage.cover */;
                 var contacts = sessionStorage.contacts;
                 var maxmb = page.route.context.CurrentPlan.plan.memoryQuotaMB;
-                console.log("- - - plan - - -");
-                console.log(page.route.context.CurrentPlan);
+                // console.log("- - - plan - - -");
+                // console.log(page.route.context.CurrentPlan);
                 var maxbytes = maxmb * 1000000;
                 var plan = page.route.context.CurrentPlan.plan.name;
                 var toggle_immediately = app.toggle.create({
@@ -323,6 +327,11 @@
 
                 $$('.progress-cont .desc').find('#total').text(maxmb);
                 $$('.progress-cont .desc').find('#prog').text(maxmb);
+
+                if (repeat != undefined && (repeat === "Weekly" || repeat === "Semanalmente"))
+                {
+                    hideRepeatFields();
+                }
 
                 //Checa si hay contacts, los agrega si si como no
                 if (contacts) {
@@ -417,9 +426,20 @@
                     $$('#accept-deliver-date').off('click').click(x => deliverAccept());
                 }
 
+                function hideRepeatFields()
+                {
+                    $$('.list-btn.never.popover-close').addClass('checked');
+                    $$('#date-end').val("");
+                    $$('.pop-deliver-inputs#date-end').addClass('grey');
+                    $$('.end-repeat-cont').addClass('none');
+                    $$('.pop-deliver-inputs').trigger('change');
+                    $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_footer_never'));
+                }
+
                 /* habilita deshabilita end repetition dependiendo de lo que selecciones en repeat */
                 $$('.popover-repeat .popover-close').click(function (el) {
                     /* let input_end = $$('#date-end.pop-deliver-inputs'); */
+                    console.log("El clickcito ayyy", $$(this));
                     $$(this).parent().parent().find('.checked').removeClass('checked');
                     $$(this).addClass('checked');
                     $$('.popup-deliver .select p').text($$(this).text());
@@ -440,7 +460,6 @@
 
                 /* verifica que los inputs necesarios esten llenos en el popover */
                 $$('.pop-deliver-inputs').change(function (e) {
-                    console.log("Some shit changed");
                     var inputs = $$('.pop-deliver-inputs:not(.grey)');
                     console.log(inputs);
                     var nonempty = inputs.filter(function () {
@@ -708,12 +727,12 @@
                 /* aqui guarda la memoria */
                 $$('#create-btn-memory').click(async e => {
                     let ss = sessionStorage;
-                    console.log("Create-btn-memory.click");
+                    // console.log("Create-btn-memory.click");
                     let immediately = $$("#send-immediately-toggle").prop("checked");
                     let repeat = $$("#select-repeat-value")[0].innerText;
-                    console.log(repeat);
+                    // console.log(repeat);
                     let date = $$("#deliver-date").val();
-                    console.log(immediately);
+                    // console.log(immediately);
 
                     let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.time, ss.repeat, ss.date_end, ss.on_demand);
 
@@ -723,23 +742,22 @@
                         // CREATE MEMORY
                         app.preloader.show("blue");
                         await app.request.promise.postJSON(`${app.data.server}/memories`, result.memory).then(async function (res) {
-                            console.log("");
-                            console.log("response memory");
                             var createdMemory = res.data;
-                            console.log(createdMemory);
 
-                            console.log("* * * * Uploading * * * *");
                             //UPLOAD COVER
                             if (await uploadCover(result.memoryFiles.cover, createdMemory.id)) {
 
                                 //UPLOAD OTHER FILES
                                 if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
                                     app.preloader.hide();
+                                    //Localize
                                     app.dialog.alert("The memory has been created successfully!");
+
                                     // sessionStorage.clear();
                                     app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
                                 }
                                 else {
+                                    //Localize
                                     app.dialog.alert("Error uploading files, memory wasn't created!");
                                 }
                             }
@@ -753,6 +771,7 @@
                                 app.preloader.hide();
                                 console.log("error adding memory!");
                                 console.log(err);
+                                //Localize
                                 app.dialog.alert("There was an unexpected error when trying to create the memory!");
                             })
                         app.preloader.hide();
@@ -760,6 +779,7 @@
                     else {
                         console.log("Failed to pass the check thing");
                         console.log(result);
+                        //Localize
                         app.dialog.alert(`You missed one or more important fields, please fill them; ${result.message}`);
                     }
                 });
@@ -848,7 +868,7 @@
 
                 function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand) {
                     console.log("Starting validateFields");
-                    console.log(date_end);
+                    // console.log(date_end);
                     var result = {
                         valid: true,
                         errors: 0,
@@ -878,7 +898,7 @@
                         }
                     };
 
-                    console.log("");
+                    // console.log("");
                     var contacts = undefined;
                     if (oldContacts != undefined) {
                         contacts = getContacts(oldContacts);
@@ -898,8 +918,8 @@
                         result.errors++;
                     }
                     else {
-                        console.log("Title:");
-                        console.log(title);
+                        // console.log("Title:");
+                        // console.log(title);
                         result.memory.title = title.substring(1, title.length - 1);
                     }
 
@@ -969,13 +989,7 @@
                     }
 
                     //Send date
-                    // console.log("Checking immediately [validateFields]");
-                    // console.log(immediately);
-                    // console.log(!immediately);
                     if (!immediately) {
-                        // console.log("Checking date [validateFields]");
-                        // console.log(date);
-                        // console.log(!date);
                         if (!latlng) {
                             //Date is a must!
                             if (!date) {
@@ -990,6 +1004,12 @@
                                 if (result.memory.reminderType === "none") {
                                     result.memory.reminderType = "date"
                                 }
+                                result.valid = false;
+                                result.message = "Test";
+                                let asd = moment().startOf('day').fromNow();
+                                let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                                let todayThing = new Date(date);
+                                console.log("-------Dates y asi\r\n", `  ${date}\r\n  ${Date.now()}\r\n   ${todayThing}\r\n   ${today}`);
                                 result.memory.reminder.date = date;
                             }
                             if (!time) {
