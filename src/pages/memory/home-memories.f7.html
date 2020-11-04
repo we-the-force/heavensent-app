@@ -769,11 +769,11 @@
 						}
 						else {
 							if (window.language == 'en_US') {
-								currentMembership = loggedUser.currentMembership.plan.name + " " + window.localize('membership');
+								currentMembership = `${loggedUser.currentMembership.plan.name} ${window.localize('membership')}`;
 								// console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
 							} else if (window.language == 'es_MX') {
 								// console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
-								currentMembership = window.localize('membership') + " " + loggedUser.currentMembership.plan.name;
+								currentMembership = `${window.localize('membership')} ${loggedUser.currentMembership.plan.name}`;
 							}
 						}
 

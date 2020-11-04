@@ -325,15 +325,18 @@
                 });
                 sessionStorage.on_demand = JSON.stringify(toggle_demand.checked);
 
+                var isUploading = false;
+
                 $$('.progress-cont .desc').find('#total').text(maxmb);
                 $$('.progress-cont .desc').find('#prog').text(maxmb);
 
-                if (repeat != undefined && (repeat === "Weekly" || repeat === "Semanalmente"))
+                //Selecciona por default "Nunca" y esconde la fecha si no hay repeat o el repeat es nunca
+                if (repeat === undefined || (repeat === "Never" || repeat === "Nunca"))
                 {
                     hideRepeatFields();
                 }
 
-                //Checa si hay contacts, los agrega si si como no
+                //Checa si hay contacts, los agrega si si hay, como no
                 if (contacts) {
                     contacts = JSON.parse(contacts);
                     $$('.contacts-cont .contacts .person.contact').remove();
@@ -425,9 +428,11 @@
                     $$('#accept-deliver-date').addClass('popup-close');
                     $$('#accept-deliver-date').off('click').click(x => deliverAccept());
                 }
-
+                
+                // Esconde los campos de repeat
                 function hideRepeatFields()
                 {
+                    console.log("Escondiendo los repeatFields como no");
                     $$('.list-btn.never.popover-close').addClass('checked');
                     $$('#date-end').val("");
                     $$('.pop-deliver-inputs#date-end').addClass('grey');
@@ -726,61 +731,72 @@
 
                 /* aqui guarda la memoria */
                 $$('#create-btn-memory').click(async e => {
-                    let ss = sessionStorage;
-                    // console.log("Create-btn-memory.click");
-                    let immediately = $$("#send-immediately-toggle").prop("checked");
-                    let repeat = $$("#select-repeat-value")[0].innerText;
-                    // console.log(repeat);
-                    let date = $$("#deliver-date").val();
-                    // console.log(immediately);
+                    if (!isUploading)
+                    {
+                        isUploading = true;
+                        let ss = sessionStorage;
+                        // console.log("Create-btn-memory.click");
+                        let immediately = $$("#send-immediately-toggle").prop("checked");
+                        let repeat = $$("#select-repeat-value")[0].innerText;
+                        // console.log(repeat);
+                        let date = $$("#deliver-date").val();
+                        // console.log(immediately);
 
-                    let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.time, ss.repeat, ss.date_end, ss.on_demand);
+                        let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.time, ss.repeat, ss.date_end, ss.on_demand);
 
-                    /* datos que sean completamente necesarios */
-                    let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
-                    if (result.valid) {
-                        // CREATE MEMORY
-                        app.preloader.show("blue");
-                        await app.request.promise.postJSON(`${app.data.server}/memories`, result.memory).then(async function (res) {
-                            var createdMemory = res.data;
+                        /* datos que sean completamente necesarios */
+                        let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
+                        if (result.valid) {
+                            // CREATE MEMORY
+                            app.preloader.show("blue");
+                            await app.request.promise.postJSON(`${app.data.server}/memories`, result.memory).then(async function (res) {
+                                var createdMemory = res.data;
 
-                            //UPLOAD COVER
-                            if (await uploadCover(result.memoryFiles.cover, createdMemory.id)) {
+                                //UPLOAD COVER
+                                if (await uploadCover(result.memoryFiles.cover, createdMemory.id)) {
 
-                                //UPLOAD OTHER FILES
-                                if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
-                                    app.preloader.hide();
-                                    //Localize
-                                    app.dialog.alert("The memory has been created successfully!");
+                                    //UPLOAD OTHER FILES
+                                    if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
+                                        app.preloader.hide();
+                                        //Localize
+                                        app.dialog.alert("The memory has been created successfully!");
 
-                                    // sessionStorage.clear();
-                                    app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
+                                        sessionStorage.clear();
+                                        isUploading = false;
+                                        app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
+                                    }
+                                    else {
+                                        //Localize
+                                        app.dialog.alert("Error uploading files, memory wasn't created!");
+                                    }
                                 }
                                 else {
-                                    //Localize
-                                    app.dialog.alert("Error uploading files, memory wasn't created!");
+                                    console.log("!!!!!! Error uploading cover !!!!!!");
                                 }
-                            }
-                            else {
-                                console.log("!!!!!! Error uploading cover !!!!!!");
-                            }
 
 
-                        })
-                            .catch(function (err) {
-                                app.preloader.hide();
-                                console.log("error adding memory!");
-                                console.log(err);
-                                //Localize
-                                app.dialog.alert("There was an unexpected error when trying to create the memory!");
                             })
-                        app.preloader.hide();
+                                .catch(function (err) {
+                                    app.preloader.hide();
+                                    console.log("error adding memory!");
+                                    console.log(err);
+                                    //Localize
+                                    app.dialog.alert("There was an unexpected error when trying to create the memory!");
+                                    isUploading = false;
+                                })
+                            app.preloader.hide();
+                        }
+                        else {
+                            console.log("Failed to pass the check thing");
+                            console.log(result);
+                            //Localize
+                            app.dialog.alert(`You missed one or more important fields, please fill them; ${result.message}`);
+                            isUploading = false;
+                        }
                     }
-                    else {
-                        console.log("Failed to pass the check thing");
-                        console.log(result);
-                        //Localize
-                        app.dialog.alert(`You missed one or more important fields, please fill them; ${result.message}`);
+                    else
+                    {
+                        console.log("Ya estoy subiendo perate");
                     }
                 });
 
@@ -1004,12 +1020,12 @@
                                 if (result.memory.reminderType === "none") {
                                     result.memory.reminderType = "date"
                                 }
-                                result.valid = false;
-                                result.message = "Test";
-                                let asd = moment().startOf('day').fromNow();
-                                let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-                                let todayThing = new Date(date);
-                                console.log("-------Dates y asi\r\n", `  ${date}\r\n  ${Date.now()}\r\n   ${todayThing}\r\n   ${today}`);
+                                // result.valid = false;
+                                // result.message = "Test";
+                                // let asd = moment().startOf('day').fromNow();
+                                // let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                                // let todayThing = new Date(date);
+                                // console.log("-------Dates y asi\r\n", `  ${date}\r\n  ${Date.now()}\r\n   ${todayThing}\r\n   ${today}`);
                                 result.memory.reminder.date = date;
                             }
                             if (!time) {

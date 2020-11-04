@@ -371,6 +371,8 @@
                 var footer = sessionStorage.footer;
                 var on_demand = sessionStorage.on_demand;
 
+                console.log("***Home session storage things***\r\n", `Repeat: ${repeat}, date_end: ${date_end}`);
+
                 var files = [];
                 var mb = space * 1000;
                 var cover /* = sessionStorage.cover */;
@@ -392,6 +394,15 @@
                 $$('.progress-cont .desc').find('#prog').text(maxmb);
 
                 progressBar(mb);
+
+                if (repeat === undefined || (repeat === "\"Never\"" || repeat === "\"Nunca\""))
+                {
+                    hideRepeatFields();
+                }
+                // else
+                // {
+                //     console.log(`No pude esconder los destos <${repeat}>\r\n`, `und? (${repeat === undefined})\r\nNever || Nunca: (${repeat === "Never"} || ${repeat === "Nunca"})`);
+                // }
 
                 switch (plan) {
                     case "basic":
@@ -467,6 +478,18 @@
                     $$('#accept-deliver-date').addClass('popup-close');
                     $$('#accept-deliver-date').off('click').click(x => deliverAccept());
                 }
+                
+                // Esconde los campos de repeat
+                function hideRepeatFields()
+                {
+                    console.log("Escondiendo los repeatFields como no");
+                    $$('.list-btn.never.popover-close').addClass('checked');
+                    $$('#date-end').val("");
+                    $$('.pop-deliver-inputs#date-end').addClass('grey');
+                    $$('.end-repeat-cont').addClass('none');
+                    $$('.pop-deliver-inputs').trigger('change');
+                    $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_footer_never'));
+                }
 
                 /* habilita deshabilita end repetition dependiendo de lo que selecciones en repeat */
                 $$('.popover-repeat .popover-close').click(function (el) {
@@ -493,7 +516,6 @@
 
                 /* verifica que los inputs necesarios esten llenos en el popover */
                 $$('.pop-deliver-inputs').change(function (e) {
-                    console.log("Some shit changed");
                     var inputs = $$('.pop-deliver-inputs:not(.grey)');
                     console.log(inputs);
                     var nonempty = inputs.filter(function () {
@@ -987,9 +1009,6 @@
                         time = undefined;
                     }
 
-                    // console.log("Checking title [validateFields]");
-                    // console.log(title);
-                    // console.log(!title);
                     if (!title) {
                         result.valid = false;
                         result.message += "No title";
@@ -1001,9 +1020,6 @@
                         result.memory.title = title.substring(1, title.length - 1);
                     }
 
-                    // console.log("Checking desc [validateFields]");
-                    // console.log(desc);
-                    // console.log(!desc);
                     if (!desc) {
                         result.valid = false;
                         result.message += result.errors > 0 ? ", no description" : "No description";
@@ -1013,9 +1029,6 @@
                         result.memory.description = desc.substring(1, desc.length - 1);
                     }
 
-                    // console.log("Checking cover [validateFields]");
-                    // console.log(cover);
-                    // console.log(!cover);
                     if (!cover) {
                         // if (!editing)
                         // {
@@ -1028,9 +1041,6 @@
                         result.memoryFiles.cover = cover;
                     }
 
-                    // console.log("Checking files [validateFields]");
-                    // console.log(files);
-                    // console.log(!(files.length > 0));
                     if (!(files.length > 0)) {
                         // if (!editing)
                         // {
@@ -1043,9 +1053,6 @@
                         result.memoryFiles.media = files;
                     }
 
-                    // console.log("Checking contacts [validateFields]");
-                    // console.log(contacts);
-                    // console.log(!(contacts.length > 0));
                     if (!contacts || !(contacts.length > 0)) {
                         result.valid = false;
                         result.message += result.errors > 0 ? ", no contacts" : "No contacts";
@@ -1055,9 +1062,6 @@
                         result.memory.recipients = contacts;
                     }
 
-                    // console.log("Checking latlng [validateFields]");
-                    // console.log(latlng);
-                    // console.log(!latlng);
                     if (plan === "premium") {
                         if (!latlng) {
                             // result.valid = false;
@@ -1072,14 +1076,7 @@
                         }
                     }
 
-                    //Send date
-                    // console.log("Checking immediately [validateFields]");
-                    // console.log(immediately);
-                    // console.log(!immediately);
                     if (!immediately) {
-                        // console.log("Checking date [validateFields]");
-                        // console.log(date);
-                        // console.log(!date);
                         if (!latlng) {
                             //Date is a must!
                             if (!date) {
