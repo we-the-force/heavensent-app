@@ -292,7 +292,7 @@
                 var app = self.$app;
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
 
-
+                let currentPlan = page.route.context.CurrentPlan.plan;
 
                 /* var latlng = sessionStorage.latlng;
                 var addr = sessionStorage.addr; */
@@ -335,6 +335,7 @@
                 {
                     hideRepeatFields();
                 }
+                displayMembershipElements();
 
                 //Checa si hay contacts, los agrega si si hay, como no
                 if (contacts) {
@@ -350,26 +351,7 @@
                     });
                 }
 
-                switch (plan) {
-                    case "basic":
-                        $$('.location-cont #add-location-btn').removeAttr('href');
-                        $$('.location-cont').addClass('none');
-                        $$('.location-title').addClass('none');
-                        $$('.ondemand-cont').addClass('none');
-                        $$('.media-cont #add-media input').attr("accept", "image/*");
-                        break;
-                    case "standard":
-                        $$('.location-cont #add-location-btn').removeAttr('href');
-                        $$('.location-cont').addClass('none');
-                        $$('.location-title').addClass('none');
-                        $$('.ondemand-cont').addClass('none');
-                        break;
-                    case "premium":
-
-                        break;
-                    default:
-                        break;
-                }
+                
                 if (on_demand) {
                     toggle_demand.checked = JSON.parse(on_demand);
                 }
@@ -429,6 +411,26 @@
                     $$('#accept-deliver-date').off('click').click(x => deliverAccept());
                 }
                 
+                //Esconde las cosas que no esten habilitadas por las memberships
+                function displayMembershipElements()
+                {
+                    //Hide location
+                    if (!currentPlan.canAddLocation)
+                    {
+                        $$('.location-cont #add-location-btn').removeAttr('href');
+                        $$('.location-cont').addClass('none');
+                        $$('.location-title').addClass('none');
+                    }
+                    if (!currentPlan.canAddVideo)
+                    {
+                        $$('.media-cont #add-media input').attr("accept", "image/*");
+                    }
+                    if (!currentPlan.canUseOnDemand)
+                    {
+                        $$('.ondemand-cont').addClass('none');
+                    }
+                }
+
                 // Esconde los campos de repeat
                 function hideRepeatFields()
                 {
@@ -833,7 +835,6 @@
                     return result;
                 }
 
-
                 async function uploadFiles(files, captions, memoryRefId) {
                     console.log("Uploading files");
                     const data = new FormData();
@@ -990,7 +991,8 @@
                     // console.log("Checking latlng [validateFields]");
                     // console.log(latlng);
                     // console.log(!latlng);
-                    if (plan === "premium") {
+                    // if (plan === "premium") {
+                    if (currentPlan.canAddLocation) {
                         if (!latlng) {
                             // result.valid = false;
                             // result.message += result.errors > 0 ? ", no location" : "No location";
@@ -1126,15 +1128,14 @@
                             }
                     }
 
-                    if (plan == "premium") {
-                        // result.memory.onDemand = on_demand;
+                    if (currentPlan.canUseOnDemand) {
+                        result.memory.onDemand = on_demand;
                     }
                     else {
-                        // result.memory.onDemand = false;
+                        result.memory.onDemand = false;
                     }
 
-                    console.log("Resulting memory [validateMemory]");
-                    console.log(result.memory);
+                    console.log("Resulting memory [validateMemory]\r\n", result.memory);
                     console.log(result.memoryFiles);
                     //title, desc, cover, files, contacts, latlng, addr, immediately, date, time, repeat, date_end, on_demand
                     return result;

@@ -103,6 +103,8 @@
 				console.log("RouterEdit:\r\n", app.views.main.router.history);
 				var loggedUser = await app.methods.getLocalValue('loggedUser');
 				var contactInfo = this.ContactInfo;
+
+				console.log("Thingies:\r\n", loggedUser, "\r\n\r\nNuevito:\r\n", contactInfo);
 				console.log("Writing contact info:\r\n", contactInfo);
 
 				var c;
