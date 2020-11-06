@@ -232,6 +232,19 @@
 					if (!validateText(birthday, 'Plase, enter your birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.')) {
 						return false;
 					}
+					else
+					{
+						let newBirthday = birthday.toString().replaceAll("-", "/");
+						let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+						let birthdayDate = new Date(newBirthday);
+						if (birthdayDate > today)
+						{
+							//Localize
+							app.dialog.alert("Please enter a valid date (birthday hasn't happened yet)");
+							return false;
+						}
+						console.log(`Fechita: ${newBirthday}\r\n  date: ${birthdayDate}\r\n  today: ${today}\r\n   GT? '${birthdayDate > today}'`);
+					}
 					if (!validateText(mobile, 'Plase, enter your mobile phone number.', 'Your phone number may not have spaces before or after the text')) {
 						return false;
 					}
