@@ -1056,8 +1056,22 @@
                                 }
                                 else
                                 {
-                                    console.log("Check if there is an end_date");
-                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                    let dateEnd = new Date(date_end.substring(1, date_end.length-1));
+                                    // let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                                    // let repeatsBefore = dateEnd <= today;
+                                    // console.log(`Check if there is an end_date\r\n  end: ${dateEnd}\r\n  tod: ${today}\r\n  --Res--: ${repeatsBefore}`);
+
+                                    if (!dateHappensBeforeToday(dateEnd))
+                                    {
+                                        result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                    }
+                                    else
+                                    {
+                                        console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
+                                        result.valid = false;
+                                        //localize
+                                        result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                    }
                                 }
                             }
                         }
@@ -1094,7 +1108,22 @@
                                 else
                                 {
                                     console.log("Check if there is an end_date");
-                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                    let dateEnd = new Date(date_end.substring(1, date_end.length-1));
+                                    // let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                                    // let repeatsBefore = dateEnd <= today;
+                                    // console.log(`Check if there is an end_date\r\n  end: ${dateEnd}\r\n  tod: ${today}\r\n  --Res--: ${repeatsBefore}`);
+
+                                    if (!dateHappensBeforeToday(dateEnd))
+                                    {
+                                        result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                    }
+                                    else
+                                    {
+                                        console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
+                                        result.valid = false;
+                                        //localize
+                                        result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                    }
                                 }
                             }
                         }
@@ -1123,7 +1152,22 @@
                                 else
                                 {
                                     console.log("Check if there is an end_date");
-                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                    let dateEnd = new Date(date_end.substring(1, date_end.length-1));
+                                    // let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                                    // let repeatsBefore = dateEnd <= today;
+                                    // console.log(`Check if there is an end_date\r\n  end: ${dateEnd}\r\n  tod: ${today}\r\n  --Res--: ${repeatsBefore}`);
+
+                                    if (!dateHappensBeforeToday(dateEnd))
+                                    {
+                                        result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                    }
+                                    else
+                                    {
+                                        console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
+                                        result.valid = false;
+                                        //localize
+                                        result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                    }
                                 }
                             }
                     }
@@ -1137,8 +1181,17 @@
 
                     console.log("Resulting memory [validateMemory]\r\n", result.memory);
                     console.log(result.memoryFiles);
+
+                    // result.valid = false;
+                    // result.message += ", Test";
                     //title, desc, cover, files, contacts, latlng, addr, immediately, date, time, repeat, date_end, on_demand
                     return result;
+                }
+
+                function dateHappensBeforeToday(toCompare)
+                {
+                    let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                    return (toCompare <= today);
                 }
 
                 function getContacts(contactString) {
