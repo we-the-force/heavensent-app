@@ -1019,16 +1019,24 @@
                                 result.memory.reminder.date = null;
                             }
                             else {
-                                if (result.memory.reminderType === "none") {
-                                    result.memory.reminderType = "date"
+                                if (time)
+                                {
+                                    if (result.memory.reminderType === "none") {
+                                        result.memory.reminderType = "date"
+                                    }
+                                    if (dateHappensBeforeToday(date, time))
+                                    {
+                                        result.valid = false;
+                                        //Localize
+                                        result.message += result.errors > 0 ? `, delivery date occurs in the past` : `Delivery date occurs in the past`;
+                                        result.errors++;
+                                        console.log("Si es como no");
+                                    }
+                                    else
+                                    {
+                                        result.memory.reminder.date = date;
+                                    }
                                 }
-                                // result.valid = false;
-                                // result.message = "Test";
-                                // let asd = moment().startOf('day').fromNow();
-                                // let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-                                // let todayThing = new Date(date);
-                                // console.log("-------Dates y asi\r\n", `  ${date}\r\n  ${Date.now()}\r\n   ${todayThing}\r\n   ${today}`);
-                                result.memory.reminder.date = date;
                             }
                             if (!time) {
                                 // result.valid = false;
@@ -1061,7 +1069,7 @@
                                     // let repeatsBefore = dateEnd <= today;
                                     // console.log(`Check if there is an end_date\r\n  end: ${dateEnd}\r\n  tod: ${today}\r\n  --Res--: ${repeatsBefore}`);
 
-                                    if (!dateHappensBeforeToday(dateEnd))
+                                    if (!dateEndHappensBeforeReleaseDay(date, dateEnd))
                                     {
                                         result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
                                     }
@@ -1071,6 +1079,7 @@
                                         result.valid = false;
                                         //localize
                                         result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                        result.errors++;
                                     }
                                 }
                             }
@@ -1083,8 +1092,23 @@
 
                             }
                             else {
-                                result.memory.reminderType = "date"
-                                result.memory.reminder.date = date;
+                                if (time)
+                                {
+                                    if (result.memory.reminderType === "none") {
+                                        result.memory.reminderType = "date"
+                                    }
+                                    if (dateHappensBeforeToday(date, time))
+                                    {
+                                        result.valid = false;
+                                        //Localize
+                                        result.message += result.errors > 0 ? `, delivery date occurs in the past` : `Delivery date occurs in the past`;
+                                        result.errors++;
+                                    }
+                                    else
+                                    {
+                                        result.memory.reminder.date = date;
+                                    }
+                                }
                             }
                             if (!time) {
                                 // result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
@@ -1113,7 +1137,7 @@
                                     // let repeatsBefore = dateEnd <= today;
                                     // console.log(`Check if there is an end_date\r\n  end: ${dateEnd}\r\n  tod: ${today}\r\n  --Res--: ${repeatsBefore}`);
 
-                                    if (!dateHappensBeforeToday(dateEnd))
+                                    if (!dateEndHappensBeforeReleaseDay(date, dateEnd))
                                     {
                                         result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
                                     }
@@ -1123,6 +1147,7 @@
                                         result.valid = false;
                                         //localize
                                         result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                        result.errors++;
                                     }
                                 }
                             }
@@ -1132,7 +1157,7 @@
                         console.log("Immediately!");
                         let today = new Date();
                         result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
-                        result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                        result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes() + 10).padStart(2, 0)}:00.000`;
                         // result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
                         if (!repeat) {
                                 // result.valid = false;
@@ -1157,7 +1182,7 @@
                                     // let repeatsBefore = dateEnd <= today;
                                     // console.log(`Check if there is an end_date\r\n  end: ${dateEnd}\r\n  tod: ${today}\r\n  --Res--: ${repeatsBefore}`);
 
-                                    if (!dateHappensBeforeToday(dateEnd))
+                                    if (!dateEndHappensBeforeReleaseDay(date, dateEnd))
                                     {
                                         result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
                                     }
@@ -1167,6 +1192,7 @@
                                         result.valid = false;
                                         //localize
                                         result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                        result.errors++;
                                     }
                                 }
                             }
@@ -1182,16 +1208,29 @@
                     console.log("Resulting memory [validateMemory]\r\n", result.memory);
                     console.log(result.memoryFiles);
 
-                    // result.valid = false;
-                    // result.message += ", Test";
+                    result.valid = false;
+                    result.message += ", Test";
                     //title, desc, cover, files, contacts, latlng, addr, immediately, date, time, repeat, date_end, on_demand
                     return result;
                 }
 
-                function dateHappensBeforeToday(toCompare)
+                function dateHappensBeforeToday(date, time)
                 {
+                    let dateElements = date.split("-");
+                    let timeElements = time.split(":");
+                    let today = new Date();
+                    let dateAsDate = new Date(dateElements[0], dateElements[1] - 1, dateElements[2] - 1, timeElements[0], timeElements[1]);
+                    console.log(`Original Date: ${date}, ${time}\r\n  asDate: ${dateAsDate}\r\n  asDate: ${today}\r\nEarlier: ${dateAsDate <= today}`);
+
+                    return dateAsDate <= today;
+                }
+                function dateEndHappensBeforeReleaseDay(releaseDate, endDate)
+                {
+                    let dateElements = releaseDate.split("-");
+                    let relDate = new Date(dateElements[0], dateElements[1] - 1, dateElements[2] - 1);
                     let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-                    return (toCompare <= today);
+                    console.log(`dateEndHappensBeforeReleaseDay\r\n  rel: ${relDate}\r\n  end: ${endDate}\r\nRes: ${endDate < relDate}`);
+                    return endDate < relDate;
                 }
 
                 function getContacts(contactString) {
