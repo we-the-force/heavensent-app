@@ -192,18 +192,25 @@
             <div class="date_time inputs list">
                 <ul>
                     <li class="item-content item-input two-inputs">
+                        <div class="item-media" style="position: absolute; right: 15px; top: 39%; z-index: 10; color: #7ecadd; cursor: pointer;">
+                          <!-- <i class="icon demo-list-icon"></i> -->
+                          
+                        </div>
                         <div class="item-inner">
                             <label for="deliver-date" class="label">{{localize "create_mem_date"}}</label>
                             <div class="item-input-wrap">
                                 <input type="date" class="pop-deliver-inputs" id="deliver-date" required validate />
+                                
+                                    <i class="icons material-icons" style="color: #7ecadd;">event</i>
+                                
                             </div>
                         </div>
-                        <div class="item-inner">
+                        <!-- <div class="item-inner">
                             <label for="deliver-date" class="label">{{localize "create_mem_time"}}</label>
                             <div class="item-input-wrap">
                                 <input type="time" class="pop-deliver-inputs" id="deliver-time" required validate />
                             </div>
-                        </div>
+                        </div> -->
                     </li>
                 </ul>
             </div>
@@ -337,6 +344,8 @@
                 }
                 displayMembershipElements();
 
+
+                
                 //Checa si hay contacts, los agrega si si hay, como no
                 if (contacts) {
                     contacts = JSON.parse(contacts);
