@@ -132,8 +132,7 @@
 									$$(".img-btn").off("click");
 									readFile(file);
 								} else {
-									//ToLocalize
-									alert("Not a valid image!");
+									alert(window.localize('edit_contact_invalid_image'));
 									console.log("Not a valid image!");
 								}
 							} else {
@@ -141,8 +140,7 @@
 							}
 						});
 					} else {
-						//ToLocalize
-						alert("File upload is not supported!");
+						alert(window.localize('edit_contact_unsupported_upload'));
 						console.log("File upload is not supported!");
 					}
 				});
@@ -177,13 +175,14 @@
 							app.views.main.router.navigate({url:'/memories/home/user/' + loggedUser.id, options: {reloadCurrent: true}});
 						}
 						else {
-							//ToLocalize
 							//"This contact relation doesn't exist, how did you manage to do this?";
+							app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_relation_not_found")}`);
+							
 						}
 					}).catch(function (error) {
 						console.log("Errorsote:\r\n", error);
-						//ToLocalize
 						//"No such contact was found lmao";
+						app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_contact_not_found")}`);
 					});
 				}
 

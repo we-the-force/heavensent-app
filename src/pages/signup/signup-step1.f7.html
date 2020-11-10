@@ -195,8 +195,7 @@
 									$$(".img-btn").off("click");
 									readFile(file);
 								} else {
-									//// alert("Not a valid image!");
-									app.dialog.alert("Not a valid image!");
+									app.dialog.alert(window.localize("edit_contact_invalid_image"));
 									console.log("Not a valid image! [pageInit.img-btn.onClick]");
 								}
 							} else {
@@ -204,7 +203,7 @@
 							}
 						});
 					} else {
-						app.dialog.alert("File upload is not supported!");
+						app.dialog.alert(window.localize("edit_contact_unsupported_upload"));
 						console.log("File upload is not supported! [pageInit.img-btn.onClick]");
 					}
 				});
@@ -225,11 +224,12 @@
 					// 	app.dialog.alert('Please upload an image');
 					// 	return false;
 					// }
-					if (!validateText(username, 'Please, enter your desired username.', 'Your username may not have spaces before or after the text.')) {
+					if (!validateText(username, window.localize("signup_username"), window.localize("signup_username_error"))) {
 						console.log("username not valid [pageInit.create-btn.onClick]");
 						return false;
 					}
-					if (!validateText(birthday, 'Plase, enter your birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.')) {
+					// if (!validateText(birthday, 'Plase, enter your birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.')) {
+					if (!validateText(birthday, window.localize("signup_birthday"), window.localize("signup_birthday_error"))) {
 						return false;
 					}
 					else
@@ -240,19 +240,19 @@
 						if (birthdayDate > today)
 						{
 							//Localize
-							app.dialog.alert("Please enter a valid date (birthday hasn't happened yet)");
+							app.dialog.alert(window.localize("signup_birthday_continuity_error"));
 							return false;
 						}
 						console.log(`Fechita: ${newBirthday}\r\n  date: ${birthdayDate}\r\n  today: ${today}\r\n   GT? '${birthdayDate > today}'`);
 					}
-					if (!validateText(mobile, 'Plase, enter your mobile phone number.', 'Your phone number may not have spaces before or after the text')) {
+					if (!validateText(mobile, window.localize("signup_mobile"), window.localize("signup_mobile_error"))) {
 						return false;
 					}
 					if (!validateEmail(email)) {
-						app.dialog.alert('Please enter a valid email');
+						app.dialog.alert(window.localize("signup_email"));
 						return false;
 					}
-					if (!validateText(password, 'Plase, enter your desired password.', 'Your password may not have spaces before or after the text', false)) {
+					if (!validateText(password, window.localize("signup_pass"), window.localize("signup_pass_error"), false)) {
 						return false;
 					}
 
@@ -317,7 +317,7 @@
 						}
 						else
 						{
-							app.dialog.alert("That email appears to be taken already. If you forgot your password, please request a password change");
+							app.dialog.alert(window.localize("signup_email_taken"));
 						}
 					}
 					else
@@ -372,7 +372,7 @@
 							console.log("Errorerror! [pageInit.create-btn.onClick]");
 							console.log(err);
 							var obj = JSON.parse(err.xhr.response);
-							app.dialog.alert('Some fields are incomplete or incorrect, please try again.' + '\r\n' + obj.message[0].messages[0].message);
+							app.dialog.alert(window.localize("signup_register_error") + '\r\n' + obj.message[0].messages[0].message);
 						});
 					}
 
@@ -446,7 +446,7 @@
 									})
 							}
 							else {
-								app.dialog.alert('You already have that user as a contact!');
+								app.dialog.alert(window.localize("signup_contact_error"));
 							}
 						});
 				}
@@ -500,7 +500,7 @@
 					};
 
 					reader.onerror = function () {
-						alert("There was an error reading the file!");
+						alert(window.localize("signup_file_read_error"));
 					};
 
 					reader.readAsDataURL(file);
@@ -550,7 +550,7 @@
 					};
 
 					image.onerror = function () {
-						alert("There was an error processing your file!");
+						alert(window.localize("signup_file_processing_error"));
 					};
 				}
 
