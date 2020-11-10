@@ -760,20 +760,19 @@
                                     //UPLOAD OTHER FILES
                                     if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
                                         app.preloader.hide();
-                                        //Localize
-                                        app.dialog.alert("The memory has been created successfully!");
+                                        app.dialog.alert(window.localize("create_mem_success"));
 
                                         sessionStorage.clear();
                                         isUploading = false;
                                         app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
                                     }
                                     else {
-                                        //Localize
-                                        app.dialog.alert("Error uploading files, memory wasn't created!");
+                                        app.dialog.alert(window.localize("create_mem_file_failure"));
                                     }
                                 }
                                 else {
-                                    console.log("!!!!!! Error uploading cover !!!!!!");
+                                    // console.log("!!!!!! Error uploading cover !!!!!!");
+                                    app.dialog.alert(window.localize("create_mem_cover_failure"));
                                 }
 
 
@@ -782,8 +781,7 @@
                                     app.preloader.hide();
                                     console.log("error adding memory!");
                                     console.log(err);
-                                    //Localize
-                                    app.dialog.alert("There was an unexpected error when trying to create the memory!");
+                                    app.dialog.alert(window.localize("create_mem_failure"));
                                     isUploading = false;
                                 })
                             app.preloader.hide();
@@ -791,8 +789,7 @@
                         else {
                             console.log("Failed to pass the check thing");
                             console.log(result);
-                            //Localize
-                            app.dialog.alert(`You missed one or more important fields, please fill them; ${result.message}`);
+                            app.dialog.alert(`${window.localize("create_mem_missing_field")} ${result.message}`);
                             isUploading = false;
                         }
                     }
@@ -1027,10 +1024,8 @@
                                     if (dateHappensBeforeToday(date, time))
                                     {
                                         result.valid = false;
-                                        //Localize
-                                        result.message += result.errors > 0 ? `, delivery date occurs in the past` : `Delivery date occurs in the past`;
+                                        result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
                                         result.errors++;
-                                        console.log("Si es como no");
                                     }
                                     else
                                     {
@@ -1077,8 +1072,7 @@
                                     {
                                         console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
                                         result.valid = false;
-                                        //localize
-                                        result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                        result.message += result.errors > 0 ? ", " + window.localize("mem_repetition_date_error") : window.localize("mem_repetition_date_error");
                                         result.errors++;
                                     }
                                 }
@@ -1100,8 +1094,7 @@
                                     if (dateHappensBeforeToday(date, time))
                                     {
                                         result.valid = false;
-                                        //Localize
-                                        result.message += result.errors > 0 ? `, delivery date occurs in the past` : `Delivery date occurs in the past`;
+                                        result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
                                         result.errors++;
                                     }
                                     else
@@ -1145,8 +1138,7 @@
                                     {
                                         console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
                                         result.valid = false;
-                                        //localize
-                                        result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                        result.message += result.errors > 0 ? ", " + window.localize("mem_repetition_date_error") : window.localize("mem_repetition_date_error");
                                         result.errors++;
                                     }
                                 }
@@ -1190,8 +1182,7 @@
                                     {
                                         console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
                                         result.valid = false;
-                                        //localize
-                                        result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                        result.message += result.errors > 0 ? ", " + window.localize("mem_repetition_date_error") : window.localize("mem_repetition_date_error");
                                         result.errors++;
                                     }
                                 }
