@@ -1095,10 +1095,8 @@
                                     if (dateHappensBeforeToday(date, time))
                                     {
                                         result.valid = false;
-                                        //Localize
-                                        result.message += result.errors > 0 ? `, delivery date occurs in the past` : `Delivery date occurs in the past`;
+                                        result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
                                         result.errors++;
-                                        console.log("Si es como no");
                                     }
                                     else
                                     {
@@ -1147,8 +1145,7 @@
                                     {
                                         console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
                                         result.valid = false;
-                                        //localize
-                                        result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                        result.message += result.errors > 0 ? ", " + window.localize("mem_repetition_date_error") : window.localize("mem_repetition_date_error");
                                     }
                                     }
                                     else
@@ -1175,8 +1172,7 @@
                                     if (dateHappensBeforeToday(date, time))
                                     {
                                         result.valid = false;
-                                        //Localize
-                                        result.message += result.errors > 0 ? `, delivery date occurs in the past` : `Delivery date occurs in the past`;
+                                        result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
                                         result.errors++;
                                     }
                                     else
@@ -1219,8 +1215,7 @@
                                     {
                                         console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
                                         result.valid = false;
-                                        //localize
-                                        result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                        result.message += result.errors > 0 ? ", " + window.localize("mem_repetition_date_error") : window.localize("mem_repetition_date_error");
                                     }
                                 }
                             }
@@ -1259,7 +1254,7 @@
                                     console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
                                     result.valid = false;
                                     //localize
-                                    result.message += result.errors > 0 ? ", " + "repetition end date happens before the memory is released" : "repetition end date happens before the memory is released";
+                                    result.message += result.errors > 0 ? ", " + window.localize("mem_repetition_date_error") : window.localize("mem_repetition_date_error");
                                 }
                             }
                         }
