@@ -370,16 +370,17 @@ var app = new Framework7({
     on: {
         init: function () {
             var f7 = this;
-            if ('addEventListener' in document) {
-                document.addEventListener('DOMContentLoaded', function() {
-                    FastClick.attach(document.body);
-                }, false);
-            }
+            
             if (f7.device.cordova) {
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
                 f7.statusbar.show();
                 console.log('navigateURL');
+                if ('addEventListener' in document) {
+                    document.addEventListener('DOMContentLoaded', function() {
+                        FastClick.attach(document.body);
+                    }, false);
+                }
             }
 
         },
