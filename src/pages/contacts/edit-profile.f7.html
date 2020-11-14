@@ -1,94 +1,79 @@
 <template>
-	<div class="page" data-name="create-contact" id="create-contact">
-		<div class="artwork"></div>
-		<div class="navbar">
-			<div class="navbar-inner sliding">
-				<div class="header-cont">
-					<div class="header">
-						<a href="" class="back-btn back">
-							<i class="icons material-icons">chevron_left</i>
-						</a>
-						<h1 class="title">{{localize "edit_contact"}}</h1>
-						<div class="none"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="page-content">
-			<div class="sqr_bck" id="sqr1"></div>
-			<div class="sqr_bck" id="sqr2"></div>
-			<div class="sqr_bck" id="sqr3"></div>
-			<div class="upload-cont">
-				<div class="upload-img">
-					<div class="photo avatar-fab" id="contact-photo">
+    <div class="page" data-name="edit-profile" id="edit-profile">
+        <div class="artwork"></div>
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="back-btn back">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title">{{localize "edit_profile"}}</h1>
+                        <div class="none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="sqr_bck" id="sqr1"></div>
+            <div class="sqr_bck" id="sqr2"></div>
+            <div class="sqr_bck" id="sqr3"></div>
+            <div class="upload-cont">
+                <div class="upload-img" style="position: relative;margin-bottom: 15px;">
+                    <div class="photo avatar-fab" id="contact-photo">
 
-					</div>
-				</div>
-				<!-- <label class="img-btn" for="file-upload">
-					<i class="icons material-icons">photo_camera</i>
-					<input id="file-upload" type="file" style="display: none;" />
-				</label> -->
-			</div>
-			<div class="inputs list">
-				<ul>
-
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-nickname" placeholder="{{localize 'nickname'}}"
-									required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-relation" placeholder="{{localize 'relation'}}"
-									required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-name" placeholder="name" required validate
-									readonly />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="email" id="create-cont-email" placeholder="email" required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-mobile" placeholder="mobile" required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="date" id="create-cont-birthday" placeholder="birthday" required validate />
-							</div>
-						</div>
-					</li>
-					<!-- falta checar la edad -->
-				</ul>
-			</div>
-			<div class="btns-cont center">
-				<a id="save-member-btn" class="button color-blue round large">{{localize "save_changes"}}</a>
-			</div>
-			<div class="footer">
-				<div class="sqr_bck" id="sqr4"></div>
-				<div class="sqr_bck" id="sqr5"></div>
-			</div>
-		</div>
-	</div>
+                    </div>
+                    <label class="img-btn" for="file-upload" style="position: absolute;bottom: 0px;right: 0;">
+                        <i class="icons material-icons">photo_camera</i>
+                        <input id="file-upload" type="file" style="display: none;" />
+                    </label>
+                </div>
+            </div>
+            <div class="inputs list">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="create-cont-name" placeholder="{{localize 'name'}}" required
+                                    validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="email" id="create-cont-email" placeholder="{{localize 'mail'}}" required
+                                    validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="create-cont-mobile" placeholder="{{localize 'phone'}}" required
+                                    validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="date" id="create-cont-birthday" placeholder="{{localize 'birthday'}}"
+                                    required validate />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="btns-cont center" style="margin-top: 30px;">
+                <a id="save-member-btn" class="button color-blue round large">{{localize "save_changes"}}</a>
+            </div>
+            <div class="footer">
+                <div class="sqr_bck" id="sqr4"></div>
+                <div class="sqr_bck" id="sqr5"></div>
+            </div>
+        </div>
+    </div>
 
 </template>
 <script>
@@ -99,27 +84,15 @@
             pageInit: async function(e, page) {
                 var self = this;
                 var app = self.$app;
-
-                console.log("RouterEdit:\r\n", app.views.main.router.history);
-                var loggedUser = await app.methods.getLocalValue('loggedUser');
-                var contactInfo = this.ContactInfo;
-
-                console.log("Thingies:\r\n", loggedUser, "\r\n\r\nNuevito:\r\n", contactInfo);
-                console.log("Writing contact info:\r\n", contactInfo);
-
+                var userInfo = this.UserInfo.data;
                 var c;
-                var username = "";
+                var name = "";
                 var email = "";
                 var mobile = "";
-                var relation = "";
                 var birthday = "";
-                var isAdmin = "";
-                var editMemories = "";
-                var isMinor = "";
 
                 fillData();
 
-                //upload photo
                 $$(".img-btn").on("click", function() {
                     if (window.File && window.FileReader && window.FormData) {
                         var inputField = $$("#file-upload");
@@ -145,128 +118,68 @@
                     }
                 });
 
-                async function updateRelation(nickname, relationship, mobile, email) {
-                    let result = {
-                        result: false,
-                        message: ""
-                    };
-                    await app.request.promise.get(`${app.data.server}/contacts/${contactInfo.id}`)
-                        .then(async function(res) {
-                            if (res.data != "[]") {
-                                let resJson = JSON.parse(res.data);
-                                if (resJson.nickname === nickname && resJson.relation === relationship && resJson.contactMobile === mobile) {
+                $$("#save-member-btn").on("click", function(val) {
+                    updateRelation(
+                        $$("#create-cont-name").val(),
+                        $$("#create-cont-email").val(),
+                        $$("#create-cont-mobile").val(),
+                        $$("#create-cont-birthday").val(),
+                    );
+                });
 
-                                } else {
-                                    await app.request({
-                                        url: app.data.server + '/contacts/' + contactInfo.id,
-                                        method: 'PUT',
-                                        data: {
-                                            "nickname": nickname,
-                                            "relation": relationship,
-                                            "contactMobile": mobile,
-                                            "contactEmail": email
-                                        }
-                                    });
-                                }
-                                // await app.views.main.router.navigate('/memories/home/user/'+loggedUser.id);
+                async function updateRelation(name, email, mobile, birthday) {
+                    if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+                        app.request.promise({
+                            url: app.data.server + '/users/' + userInfo.id,
+                            method: 'PUT',
+                            data: {
+                                "mobile": mobile,
+                                "birthday": birthday,
+                                "name": name,
+                                "email": email,
+                            }
+                        }).then(function(res) {
+                            if (c) {
+                                c.result('blob', 'png').then(blob => {
+                                    const data = new FormData();
+                                    data.append("files", blob, 'profile.png');
+                                    data.append("refId", userInfo.id);
+                                    data.append("ref", "user");
+                                    data.append('source', 'users-permissions');
+                                    data.append('field', 'profilePicture');
+                                    app.request.promise({
+                                        url: app.data.server + '/upload',
+                                        method: "POST",
+                                        crossDomain: true,
+                                        contentType: "multipart/form-data",
+                                        data: data
+                                    }).then(function(res2) {
+                                        app.views.main.router.navigate({
+                                            url: '/memories/home/user/' + userInfo.id,
+                                            options: {
+                                                reloadCurrent: true
+                                            }
+                                        });
+                                    }).catch(function(res2) {
+                                        console.log('Error al cargar photo' + res2);
+                                    });;
+                                });
+                            } else {
                                 app.views.main.router.navigate({
-                                    url: '/memories/home/user/' + loggedUser.id,
+                                    url: '/memories/home/user/' + userInfo.id,
                                     options: {
                                         reloadCurrent: true
                                     }
                                 });
-                            } else {
-                                //"This contact relation doesn't exist, how did you manage to do this?";
-                                app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_relation_not_found")}`);
-
                             }
-                        }).catch(function(error) {
-                            console.log("Errorsote:\r\n", error);
-                            //"No such contact was found lmao";
-                            app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_contact_not_found")}`);
+                        }).catch(function(res) {
+                            console.log('Error al cargar datos' + res);
                         });
-                }
-
-                $$("#save-member-btn").on("click", async function(val) {
-                    await updateRelation(
-                        $$('#create-cont-nickname').val(),
-                        $$('#create-cont-relation').val(),
-                        $$("#create-cont-mobile").val(),
-                        $$("#create-cont-email").val()
-                    );
-                })
-
-                function fillData() {
-                    // console.log("Info del contacto:\r\n", contactInfo.contact.profilePicture.url);
-                    // Poner tambien la imagen pero no tiene el objetito de la imagen porque croppie lo hace de una forma rara.
-                    // $$('#contact-photo').append('<img src="'+app.data.server+contactInfo.picture+'" alt="">');
-                    $$('#contact-photo').append('<img src="' + app.data.server + contactInfo.contact.profilePicture.url + '" alt="" style="height:114px;width:114px;">');
-                    $$("#create-cont-nickname").val(contactInfo.nickname);
-                    $$("#create-cont-relation").val(contactInfo.relation);
-                    $$("#create-cont-name").val(contactInfo.contact.name);
-                    $$("#create-cont-email").val(contactInfo.contactEmail);
-                    $$("#create-cont-mobile").val(contactInfo.contactMobile);
-                    $$("#create-cont-birthday").val(contactInfo.contact.birthday);
-                }
-
-                function userHasContact(user, contact) {
-                    app.request.promise.get(`${app.data.server}/contacts/?owner=${user}&contact=${contact}`)
-                        .then(function(res) {
-                            console.log("right after get");
-                            console.log(res);
-                            if (res.data === "[]") {
-                                // console.log("user doesnt have contact");
-                                // console.log(res.data);
-                                return (false);
-                            } else {
-                                // console.log("user has contact");
-                                // console.log(res.data);
-                                return (true);
-                            }
-                        });
-                }
-
-                function validateEmail(mail) {
-                    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
-                        return (true);
-                    }
-                    // alert("You have entered an invalid email address!")
-                    return (false);
-                }
-
-                function validateText(text, emptyText, trimmedText, checkTrimmed = true) {
-                    console.log(`${text}, trim?: ${checkTrimmed}`);
-                    if (isTextEmptyOrWhitespace(text)) {
-                        app.dialog.alert(emptyText);
-                        return false;
-                    } else {
-                        if (checkTrimmed) {
-                            if (!isTextTrimmed(text)) {
-                                app.dialog.alert(trimmedText);
-                                return false;
-                            }
-                        }
-                        return true;
+                        //
                     }
                 }
 
-                function isTextValid(value) {
-                    return !isTextEmptyOrWhitespace(value) && isTextTrimmed(value);
-                }
 
-                function isTextEmptyOrWhitespace(value) {
-                    if (!value || !value.trim()) {
-                        return true;
-                    }
-                    return false;
-                }
-
-                function isTextTrimmed(value) {
-                    return (value == value.trim());
-                }
-
-
-                //funcion para leer la foto
                 function readFile(file) {
                     var reader = new FileReader();
 
@@ -281,7 +194,6 @@
                     reader.readAsDataURL(file);
                 }
 
-                //procesar foto
                 function processFile(dataURL, fileType) {
                     var maxWidth = 440;
                     var maxHeight = 440;
@@ -329,22 +241,30 @@
                     };
                 }
 
-                //poner foto en la pagina
-                function sendFile(dataURL) {
+                async function sendFile(dataURL) {
                     var imgHtml = '<img id="web-img" src="' + dataURL + '" alt="">';
-                    $$(".photo").html(imgHtml);
+                    await $$(".photo").empty();
+                    await $$(".photo").html(imgHtml);
                     c = new croppie(document.getElementById("web-img"), {
                         viewport: {
-                            width: 114,
-                            height: 114,
+                            width: 178,
+                            height: 178,
                             type: "circle",
                         },
                         boundary: {
-                            width: 114,
-                            height: 114,
+                            width: 178,
+                            height: 178,
                         },
                         showZoomer: false,
                     });
+                }
+
+                function fillData() {
+                    $$('#contact-photo').append('<img src="' + app.data.server + userInfo.profilePicture.url + '" alt="" style="height:178px;width:178px;">');
+                    $$("#create-cont-name").val(userInfo.name);
+                    $$("#create-cont-email").val(userInfo.email);
+                    $$("#create-cont-mobile").val(userInfo.mobile);
+                    $$("#create-cont-birthday").val(userInfo.birthday);
                 }
             },
         },

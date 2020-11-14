@@ -19,7 +19,7 @@ import routes from './routes.js';
 import App from '../app.f7.html';
 
 
-Template7.registerHelper('localize', function (value, options) {
+Template7.registerHelper('localize', function(value, options) {
     return window.localize(value)
 });
 
@@ -39,10 +39,10 @@ var app = new Framework7({
     data: {
         // keyConfig
         // testKey: keyConfig.SECRET_KEY,
-        server: 'https://api.heavensentnow.com',
-        domain: 'https://app.heavensentnow.com',
-        // server: 'http://localhost:1337',
-        // domain: 'http://localhost:8080',
+        //server: 'https://api.heavensentnow.com',
+        //domain: 'https://app.heavensentnow.com',
+        server: 'http://localhost:1337',
+        domain: 'http://localhost:8080',
         stripe: {
             stripeApiUrl: 'https://api.stripe.com/v1/',
             stripeUrl: 'https://api.stripe.com/v1/checkout/sessions',
@@ -61,12 +61,12 @@ var app = new Framework7({
             //         price: 'price_1HCTv3ANVxwYjCOlU0cpZD49'
             //     }
             // },
-            testKeys:{
+            testKeys: {
                 pk: keyConf.Keys.PUBLISHABLE,
                 sk: keyConf.Keys.SECRET,
             },
         },
-        
+
         // server: 'http://localhost:1337',
         locales: {
             es: es,
@@ -75,33 +75,33 @@ var app = new Framework7({
     },
 
     methods: {
-        loadscript: function(url, callback){
+        loadscript: function(url, callback) {
 
-            var script = document.createElement( "script" )
+            var script = document.createElement("script")
             script.type = "text/javascript";
-            if(script.readyState) {  // only required for IE <9
-              script.onreadystatechange = function() {
-                if ( script.readyState === "loaded" || script.readyState === "complete" ) {
-                  script.onreadystatechange = null;
-                  callback();
-                }
-              };
-            } else {  //Others
-              script.onload = function() {
-                callback();
-              };
+            if (script.readyState) { // only required for IE <9
+                script.onreadystatechange = function() {
+                    if (script.readyState === "loaded" || script.readyState === "complete") {
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else { //Others
+                script.onload = function() {
+                    callback();
+                };
             }
 
             script.src = url;
-            document.getElementsByTagName( "head" )[0].appendChild( script );
+            document.getElementsByTagName("head")[0].appendChild(script);
         },
         clearingUser: false,
         //Los datos a cambiar van a ser todos los del usuario.
         async getLocalValue(key) {
             let result = null;
-            await localforage.getItem(key).then(function (lsValue) {
+            await localforage.getItem(key).then(function(lsValue) {
                 result = lsValue;
-            }).catch(function (glvError) {
+            }).catch(function(glvError) {
                 // console.log("Error getting value [getLocalValue()]");
                 // console.log(glvError);
                 result = null;
@@ -117,9 +117,9 @@ var app = new Framework7({
                 // console.log(key);
             }
             let result = false;
-            await localforage.setItem(key, value).then(function (value) {
+            await localforage.setItem(key, value).then(function(value) {
                 result = true;
-            }).catch(function (err) {
+            }).catch(function(err) {
                 // console.log("Error [setLocalValueToKey()]")
                 // console.log(err);
                 result = false;
@@ -133,21 +133,20 @@ var app = new Framework7({
             // console.log(currentLocalUser);
             let result = false;
             if (currentLocalUser != null && !app.methods.clearingUser) {
-                await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function (getResult) {
+                await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult) {
                     var user = JSON.parse(getResult.data);
                     // console.log("currentLocalUser wasn't null, setting value to loggedUser");
                     result = await app.methods.setLocalValueToKey(user, 'loggedUser');
                     await app.methods.loadContacts();
                     await app.methods.loadAdminedContacts();
                     // console.log("Update User Result:" + result + " [updateCurrentUser()]");
-                }).catch(async function (error) {
+                }).catch(async function(error) {
                     // console.log("Error updating current user!!! [updateCurrentUser()]");
                     // console.log(error);
                     await app.methods.clearCurrentUser();
                     result = false;
                 });
-            }
-            else {
+            } else {
                 // console.log("Couldn't update current user; user was null [updateCurrentUser()]")
             }
             return result;
@@ -187,7 +186,7 @@ var app = new Framework7({
             if (currentUser != null) {
                 // console.log("Requesting JSON");
                 // console.log(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`);
-                await this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`).then(async function (res) {
+                await this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}&isAdmin=true`).then(async function(res) {
                     // console.log("user has something? [userHasAdmin()]");
                     // console.log(res.data);
                     let hasAdmins = (res.data.length > 0);
@@ -195,17 +194,15 @@ var app = new Framework7({
                     if (hasAdmins) {
                         // console.log(`user has at least 1 admin (${res.data.length}) [userHasAdmin()]`);
                         result = true;
-                    }
-                    else {
+                    } else {
                         // console.log("Had no admins [userHasAdmin()]")
                         result = false;
                     }
-                }).catch(function(error){
+                }).catch(function(error) {
                     // console.log("Error checking if it's admin or not");
                     console.log(error);
                 })
-            }
-            else {
+            } else {
                 // console.log("Had no loggedUser [userHasAdmin()]");
                 result = false;
             }
@@ -222,18 +219,15 @@ var app = new Framework7({
                     if (currentUser.currentMembership.isActive) {
                         // console.log("current user's membership is active! [userHasValidMembership()]");
                         result = true;
-                    }
-                    else {
+                    } else {
                         // console.log("current user's membership was inactive unu [userHasValidMembership()]");
                         result = false;
                     }
-                }
-                else {
+                } else {
                     // console.log("current membership is null!!! [userHasValidMembership()]");
                     result = false;
                 }
-            }
-            else {
+            } else {
                 // console.log("current user is null!!! [userHasValidMembership()]");
                 result = false;
             }
@@ -246,7 +240,7 @@ var app = new Framework7({
             var contacts = [];
             var result = false;
             if (currentUser != null) {
-                this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}`).then(async function (res) {
+                this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}`).then(async function(res) {
                     result = await app.methods.setLocalValueToKey(res.data, 'loggedUserContacts');
                     // return true;
                 })
@@ -263,7 +257,7 @@ var app = new Framework7({
             var result = false;
             if (currentUser != null) {
                 //http://localhost:1337/contacts/?contact=12&isAdmin=true
-                this.request.promise.json(`${app.data.server}/contacts/?contact=${currentUser.id}&isAdmin=true`).then(async function (res) {
+                this.request.promise.json(`${app.data.server}/contacts/?contact=${currentUser.id}&isAdmin=true`).then(async function(res) {
                     result = await app.methods.setLocalValueToKey(res.data, 'loggedUserAdminedContacts');
                     // return true;
                 })
@@ -368,9 +362,9 @@ var app = new Framework7({
         androidOverlaysWebView: false,
     },
     on: {
-        init: function () {
+        init: function() {
             var f7 = this;
-            
+
             if (f7.device.cordova) {
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
@@ -387,11 +381,11 @@ var app = new Framework7({
     },
 });
 //Aqui metes algo pa redirigirte
-$$(document).on('page:init', function (e) {
+$$(document).on('page:init', function(e) {
     // console.log(window.locales);
 
     $$('.page-content').off('scroll');
-    $$('.page-content').scroll(function () {
+    $$('.page-content').scroll(function() {
         if ($$('.page-current .page-content').scrollTop() > 30) {
             $$('.navbar').addClass('bg-white');
         } else {
@@ -402,7 +396,7 @@ $$(document).on('page:init', function (e) {
 
 window.language = (localStorage.getItem('language') || (app.language || 'en_US')).replace(/-/g, "_");
 
-window.localize = function (key) {
+window.localize = function(key) {
     var language = window.language
     language = language.replace(/-/g, "_");
     if (!app.data.locales[language])

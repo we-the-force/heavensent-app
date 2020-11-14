@@ -11,7 +11,9 @@
 				<div class="text">
 					<div class="name-cont">
 						<h1 id="side-logged-user-name" class="name capitalize"></h1>
-						<span class="material-icons">edit</span>
+						<a href="" id="edit-profile" class="panel-close">
+							<span class="material-icons">edit</span>
+						</a>
 					</div>
 					<p id="side-logged-user-membership">Membership</p>
 				</div>
@@ -140,135 +142,134 @@
 	</div>
 </template>
 <script>
-	import $$ from "dom7";
-	export default {
-		data() {
-			return {
-				user: {
-					firstName: "John",
-					lastName: "Doe",
-				},
-				// Login screen demo data
-				username: "",
-				password: "",
-			};
-		},
-		methods: {
-			helloWorld() {
-				this.$f7.dialog.alert("Hello World!");
-			},
-			updateUsername(e) {
-				this.username = e.target.value;
-				this.$update();
-			},
-			updatePassword(e) {
-				this.password = e.target.value;
-				this.$update();
-			},
-			alertLoginData() {
-				this.$f7.dialog.alert("Username: " + this.username + "<br>Password: " + this.password, () => {
-					this.$f7.loginScreen.close();
-				});
-			},
-		},
-		on: {
-			pageInit: async function () {
-				var self = this;
-				var app = self.$app;
-				var loggedUser = null;
+    import $$ from "dom7";
+    export default {
+        data() {
+            return {
+                user: {
+                    firstName: "John",
+                    lastName: "Doe",
+                },
+                // Login screen demo data
+                username: "",
+                password: "",
+            };
+        },
+        methods: {
+            helloWorld() {
+                this.$f7.dialog.alert("Hello World!");
+            },
+            updateUsername(e) {
+                this.username = e.target.value;
+                this.$update();
+            },
+            updatePassword(e) {
+                this.password = e.target.value;
+                this.$update();
+            },
+            alertLoginData() {
+                this.$f7.dialog.alert("Username: " + this.username + "<br>Password: " + this.password, () => {
+                    this.$f7.loginScreen.close();
+                });
+            },
+        },
+        on: {
+            pageInit: async function() {
+                var self = this;
+                var app = self.$app;
+                var loggedUser = null;
+                // console.log(app.views.main.router.url);
+                if (app.views.main.router.url != "/") {
+                    // console.log(loggedUser);
+                    loggedUser = await updateUser();
 
-				console.log("PageInit, user: ");
-				// console.log(app.views.main.router.url);
-				if (app.views.main.router.url != "/") {
-					// console.log(loggedUser);
-					loggedUser = await updateUser();
+                    updateControls();
 
-					updateControls();
+                    $$("#edit-profile").off("click").on("click", async function(e) {
+                        app.views.main.router.navigate(`/user/edit/${loggedUser.id}`);
+                    });
 
-					$$("#sign-out-btn").off("click").on("click", async function (e) {
-						e.preventDefault();
-						loggedUser = null;
-						await app.methods.clearCurrentUser();
-						console.log("User cleared [app.f7.signout]");
-						await app.views.main.router.navigate('/');
-						// console.log("Logging out [pageInit.sign-out-btn.onClick]");
-						// if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
-						// {
-						// 	console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
-						// 	app.views.main.router.navigate({ name: "login" });
-						// }
-					})
+                    $$("#sign-out-btn").off("click").on("click", async function(e) {
+                        e.preventDefault();
+                        loggedUser = null;
+                        await app.methods.clearCurrentUser();
+                        console.log("User cleared [app.f7.signout]");
+                        await app.views.main.router.navigate('/');
+                        // console.log("Logging out [pageInit.sign-out-btn.onClick]");
+                        // if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
+                        // {
+                        // 	console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
+                        // 	app.views.main.router.navigate({ name: "login" });
+                        // }
+                    })
 
-					$$('#lenguage').click(function (elem) {
-						let leng = "";
-						let val = $$(this).text();
-						if (val == 'English (US)') {
-							leng = 'en_US';
-						} else if (val == 'Español (MX)') {
-							leng = 'es_MX';
-						}
-						localStorage.setItem('language', leng)
-						window.language = leng;
-						if(window.language==''){
-							window.language='en_US';
-						}
-						self.$update();
-						app.views.main.router.refreshPage();
-						/* app.views.main.router.refreshPage() */
-						//let leng = ''
-						//localStorage.setItem('language',e.target.value)
-						//window.language = e.target.value;
-						//self.$update();
-					})
+                    $$('#lenguage').click(function(elem) {
+                        let leng = "";
+                        let val = $$(this).text();
+                        if (val == 'English (US)') {
+                            leng = 'en_US';
+                        } else if (val == 'Español (MX)') {
+                            leng = 'es_MX';
+                        }
+                        localStorage.setItem('language', leng)
+                        window.language = leng;
+                        if (window.language == '') {
+                            window.language = 'en_US';
+                        }
+                        self.$update();
+                        app.views.main.router.refreshPage();
+                        /* app.views.main.router.refreshPage() */
+                        //let leng = ''
+                        //localStorage.setItem('language',e.target.value)
+                        //window.language = e.target.value;
+                        //self.$update();
+                    })
 
-					async function updateUser() {
-						console.log("Get user method");
-						let auxUser = await app.methods.getLocalValue("loggedUser");
-						// console.log(auxUser);
-						return auxUser;
-					}
+                    async function updateUser() {
+                        let auxUser = await app.methods.getLocalValue("loggedUser");
+                        // console.log(auxUser);
+                        return auxUser;
+                    }
 
-					function updateControls() {
-						// console.log("Updating controls [pageInit.updateControls()]");
-						if (loggedUser != null) {
-							var currentMembership = loggedUser.currentMembership;
-							if (currentMembership === null || currentMembership.plan === null) {
-								if (window.language == 'en_US') {
-									currentMembership = 'No ' + window.localize('membership');
-								} else if (window.language == 'es_MX') {
-									currentMembership = 'Sin ' + window.localize('membership');
-								}
-								//currentMembership = "No Membership";
-							}
-							else {
-								if (window.language == 'en_US') {
-									currentMembership = loggedUser.currentMembership.plan.name + " "+ window.localize('membership');
-								} else if (window.language == 'es_MX') {
-									currentMembership = window.localize('membership') + " "+ loggedUser.currentMembership.plan.name ;
-								} else {
-									currentMembership = loggedUser.currentMembership.plan.name + " "+ window.localize('membership');
-								}
-								//currentMembership = loggedUser.currentMembership.plan.name + " membership";
-							}
+                    function updateControls() {
+                        // console.log("Updating controls [pageInit.updateControls()]");
+                        if (loggedUser != null) {
+                            var currentMembership = loggedUser.currentMembership;
+                            if (currentMembership === null || currentMembership.plan === null) {
+                                if (window.language == 'en_US') {
+                                    currentMembership = 'No ' + window.localize('membership');
+                                } else if (window.language == 'es_MX') {
+                                    currentMembership = 'Sin ' + window.localize('membership');
+                                }
+                                //currentMembership = "No Membership";
+                            } else {
+                                if (window.language == 'en_US') {
+                                    currentMembership = loggedUser.currentMembership.plan.name + " " + window.localize('membership');
+                                } else if (window.language == 'es_MX') {
+                                    currentMembership = window.localize('membership') + " " + loggedUser.currentMembership.plan.name;
+                                } else {
+                                    currentMembership = loggedUser.currentMembership.plan.name + " " + window.localize('membership');
+                                }
+                                //currentMembership = loggedUser.currentMembership.plan.name + " membership";
+                            }
 
-							$$("#side-logged-user-name")[0].textContent = loggedUser.name != undefined ? loggedUser.name : loggedUser.username;
-							$$("#side-logged-user-membership")[0].textContent = currentMembership;
-							$$("#profile-btn")[0].href = ``;
-							if (loggedUser.profilePicture != null) {
-								$$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
-							}
+                            $$("#side-logged-user-name")[0].textContent = loggedUser.name != undefined ? loggedUser.name : loggedUser.username;
+                            $$("#side-logged-user-membership")[0].textContent = currentMembership;
+                            $$("#profile-btn")[0].href = ``;
+                            if (loggedUser.profilePicture != null) {
+                                $$("#side-logged-user-picture")[0].src = `${app.data.server}${loggedUser.profilePicture.url}`;
+                            }
 
-							$$("#app-plan-button")[0].href = `/membership/view/user/${loggedUser.id}`;
-						}
-						else {
-							currentMembership = "No membership";
-							$$("#side-logged-user-name")[0].textContent = "No user";
-							$$("#side-logged-user-membership")[0].textContent = "No membership";
-							$$("#side-logged-user-picture")[0].src = ``;
-						}
-					}
-				}
-			},
-		},
-	}; 
+                            $$("#app-plan-button")[0].href = `/membership/view/user/${loggedUser.id}`;
+                        } else {
+                            currentMembership = "No membership";
+                            $$("#side-logged-user-name")[0].textContent = "No user";
+                            $$("#side-logged-user-membership")[0].textContent = "No membership";
+                            $$("#side-logged-user-picture")[0].src = ``;
+                        }
+                    }
+                }
+            },
+        },
+    };
 </script>
