@@ -924,7 +924,7 @@ var routes = [
             var loggedUser = await app.methods.getLocalValue('loggedUser');
             console.log('session-ID: ' + sessionId);
             console.log('plan-ID: ' + planId);
-            console.log('Logged Usr: ' + loggedUser);
+            console.log('Logged Usr: ', loggedUser);
 
             var plan;
             await app.request.promise.get(`${app.data.server}/memberships/${planId}`).then(function(planRes) {
@@ -939,6 +939,7 @@ var routes = [
                 'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk,
             }
 
+            console.log("before stripe session promise");
             app.request.promise({
                 url: stripeUrl + '/' + sessionId,
                 method: "GET",
@@ -946,18 +947,77 @@ var routes = [
             }).then(async function(sessionRes) {
                 // console.log('get session result');
                 // console.log(sessionRes.data);
-
+            
                 app.preloader.show('blue');
                 var sessionData = JSON.parse(sessionRes.data);
-                // console.log("sessionData");
+                console.log("sessionData", sessionData);
                 // console.log(sessionData);
-                var subId = sessionData.subscription;
+                // var subId = sessionData.subscription;
 
+                /*
+                    Get paymentIntent
+                    Get paymentMethod from paymentIntent
+                    Check if it's different from the current one
+                      if it isn't:
+                        Just resolve to wherever the user is supposed to go
+                      if it is:
+                        Assign plan and stuff.
+                */
                 app.request.promise({
+                    url: `${stripeApiUrl}payment_intents/${sessionData.payment_intent}`,
+                    method: "GET",
+                    headers: headers
+                }).then(async function(payIntResult) {
+                    let paymentIntentData = JSON.parse(payIntResult.data);
+
+                    let paymentMethodData = await app.request.promise({
+                        // url: `${stripeApiUrl}payment_methods/pm_1HC5gbANVxwYjCOlpqvWnOYe`,
+                        url: `${stripeApiUrl}payment_methods/${paymentIntentData.payment_method}`,
+                        method: "GET",
+                        headers: headers
+                    });
+                    paymentMethodData = JSON.parse(paymentMethodData.data);
+                    
+
+                    let creationDate = new Date(paymentMethodData.created * 1000);
+                    console.log("PaymentIntent: ", paymentIntentData);
+                    console.log("PaymentMethod: ", paymentMethodData);
+                    let membershipObject = createMembershipObject(paymentIntentData.id, creationDate, paymentMethodData.card.last4, paymentMethodData.card.brand, planId);
+                    let paymentObject = createPaymentObject(paymentIntentData.id, loggedUser.id, creationDate, plan.name, (sessionData.amount_total / 100), sessionData.customer_email);
+                    
+                    console.log("Membership:\r\n", membershipObject);
+                    console.log("Payment:\r\n", paymentObject);
+
+                    await assignPlan(membershipObject, paymentObject);
+
+                }).catch(function(err){
+                    console.log("Error!\r\n",err);
+                });
+
+                /*
+                    Gets the subscription id through the session data.
+                    Looks for the specific subscription and gets its data
+                    Gets the current period's start and end date.
+                    Gets the payment method data
+                    Checks if the subscription's status is active
+                      If it is:
+                        Creates a membershipObject and a paymentObject.
+                        Gets the currently logged user's info from DB
+                        Checks if the membership info is the same as the one currently on DB.
+                          If it is:
+                            No need to update anything, just take the user to PaymentConfirmMembership.
+                          if it isn't:
+                            assigns the new membership & payment info to the user and then takes the user to PaymentConfirmMembership.
+                      If it isn't:
+                        The current membership isn't active, this shouldn't even happen tho.
+                */
+
+                /*app.request.promise({
                     url: `${subscriptionUrl}/${subId}`,
                     method: "GET",
                     headers: headers
                 }).then(async function(subRes) {
+                    console.log("Then start");
                     var subData = JSON.parse(subRes.data);
                     // console.log("Get subscription intent");
                     // console.log(subData);
@@ -967,6 +1027,7 @@ var routes = [
                     let readableStartDate = new Date(epochStartDate * 1000);
                     let readableEndDate = new Date(epochEndDate * 1000);
 
+                    console.log("Before paymentMethodData");
                     var paymentMethodData = await app.request.promise({
                         // url: `${stripeApiUrl}payment_methods/pm_1HC5gbANVxwYjCOlpqvWnOYe`,
                         url: `${stripeApiUrl}payment_methods/${subData.default_payment_method}`,
@@ -979,7 +1040,7 @@ var routes = [
                     // console.log("PaymentMethod info");
                     // console.log(paymentMethodData);
 
-                    if (subData.status === "active") {
+                    // if (subData.status === "active") {
                         let membershipObject = createMembershipObject(subData.id, readableEndDate, paymentMethodData.card.last4, paymentMethodData.card.brand, planId);
                         let paymentObject = createPaymentObject(subData.id, loggedUser.id, readableStartDate, plan.name, (sessionData.amount_total / 100), sessionData.customer_email);
                         // let userInfo = await app.request({url: `${app.data.server}/users/${loggedUser.id}`, method: 'GET'});
@@ -1006,10 +1067,13 @@ var routes = [
                             resolve({ component: PaymentConfirmMembership });
                         }
 
-                    } else {
-                        console.log("Subscription isn't active, what do? This shouldn't even be possible D:");
-                    }
-                })
+                    // } else {
+                    //     console.log("Subscription isn't active, what do? This shouldn't even be possible D:");
+                    // }
+                })*/
+            }).catch(function(err) {
+                console.log("Error on sessionID promise");
+                console.log(err);
             })
 
             function isMembershipTheSame(userMembership, newMembership) {
@@ -1063,7 +1127,7 @@ var routes = [
                     "currentMembership": {
                         "token": token,
                         "isActive": true,
-                        "nextBillingDate": formatDate(nextBillingDate, true),
+                        "nextBillingDate": formatDate(nextBillingDate, true, true),
                         "plan": planId,
                         "billedCard": `${cardBrand} **** **** **** ${billedCard}`
                     }
@@ -1075,7 +1139,7 @@ var routes = [
                 let object = {
                     "token": token,
                     "user": userId,
-                    "date": formatDate(date, false),
+                    "date": formatDate(date, false, false),
                     "concept": `${capitalize(planName)} membership for HeavenSent`,
                     "amountUSD": `${amountUSD}`,
                     "userEmail": userEmail
@@ -1083,11 +1147,11 @@ var routes = [
                 return object;
             }
 
-            function formatDate(date, includeTime) {
+            function formatDate(date, includeTime, futureDate) {
                 let hour = date.getHours();
                 let dd = String(date.getDate()).padStart(2, '0');
                 let mm = String(date.getMonth() + 1).padStart(2, '0');
-                let yyyy = date.getFullYear();
+                let yyyy = futureDate ? date.getFullYear() + 10 : date.getFullYear();
 
                 let result;
 
