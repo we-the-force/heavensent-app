@@ -296,12 +296,12 @@ var routes = [
                 //})
 
                 /* await app.request.promise.json(`${app.data.server}/contacts/?owner=${loggedUser.id}&contact=${contactId}`).then(function (res){
-                relationInfo = res.data; 
-            }).catch(function(err){
-                console.log("Error fetching relationship info [edit-contact.async]");
-                console.log(err);
-            });
- */
+        relationInfo = res.data; 
+    }).catch(function(err){
+        console.log("Error fetching relationship info [edit-contact.async]");
+        console.log(err);
+    });
+*/
                 if (userInfo.status === 200) {
                     resolve({
                         component: EditProfile,
@@ -586,7 +586,7 @@ var routes = [
                         contactsObject.push({
                             id: getRelation ? relation.id : relation.owner.id,
                             name: admin ? ((relation.owner.name != null && relation.owner.name.trim() != "") ? relation.owner.name : relation.owner.username) : (relation.nickname != null && relation.nickname.trim() != "") ? relation.nickname : ((relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username),
-                            picture: relation.contact.profilePicture != null ? relation.contact.profilePicture.url : '',
+                            picture: relation.contactPicture ? relation.contactPicture.url : relation.contact.profilePicture ? relation.contact.profilePicture.url : '',
                             admin: relation.isAdmin
                         });
                     });

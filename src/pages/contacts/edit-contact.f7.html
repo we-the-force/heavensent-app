@@ -104,12 +104,8 @@
                 var self = this;
                 var app = self.$app;
 
-                console.log("RouterEdit:\r\n", app.views.main.router.history);
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
                 var contactInfo = this.ContactInfo;
-
-                console.log("Thingies:\r\n", loggedUser, "\r\n\r\nNuevito:\r\n", contactInfo);
-                console.log("Writing contact info:\r\n", contactInfo);
 
                 var c;
                 var username = "";
@@ -154,6 +150,8 @@
                         result: false,
                         message: ""
                     };
+
+                    app.preloader.show("blue");
                     app.request.promise.get(`${app.data.server}/contacts/${contactInfo.id}`)
                         .then(async function(res) {
                             if (res.data != "[]") {
@@ -202,20 +200,15 @@
                                     });
                                 }
                                 if ((res1.status === 200 && res2.status === 200) || (res1.status === 200 && !c) || (res2.status === 200 && valid)) {
+                                    await app.methods.updateCurrentUser();
+                                    app.preloader.hide();
                                     app.views.main.router.navigate({
                                         url: '/memories/home/user/' + loggedUser.id,
-                                        options: {
-                                            reloadCurrent: true
-                                        }
                                     });
+                                } else {
+                                    app.preloader.hide();
+                                    app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_error_1")}`);
                                 }
-                                // await app.views.main.router.navigate('/memories/home/user/'+loggedUser.id);
-                                /* app.views.main.router.navigate({
-                                    url: '/memories/home/user/' + loggedUser.id,
-                                    options: {
-                                        reloadCurrent: true
-                                    }
-                                }); */
                             } else {
                                 //"This contact relation doesn't exist, how did you manage to do this?";
                                 app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_relation_not_found")}`);

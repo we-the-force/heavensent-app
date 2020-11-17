@@ -415,14 +415,11 @@
             pageInit: async function(e, page) {
                 var self = this;
                 var app = self.$app;
-                console.log("RouterHome:\r\n", app.views.main.router.history);
                 // console.log(page.route.context);
                 var isEditing = page.route.context.IsEditing;
                 var currentUser = page.route.context.CurrentUser;
                 var fundations = page.route.context.Fundations;
                 var paymentToken;
-
-                console.log(currentUser);
                 // console.log("home-memories pageInit [pageInit], updating user");
 
                 // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
@@ -434,7 +431,6 @@
 
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
 
-                console.log("loggedUser:\r\n", loggedUser);
 
                 if (loggedUser == null) {
                     app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
@@ -448,7 +444,6 @@
 
 
 
-                console.log("---------------------------------Not ios");
                 const baseRequest = {
                     apiVersion: 2,
                     apiVersionMinor: 0
