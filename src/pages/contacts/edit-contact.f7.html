@@ -149,19 +149,23 @@
                     }
                 });
 
-                async function updateRelation(nickname, relationship, mobile, email) {
+                function updateRelation(nickname, relationship, mobile, email) {
                     let result = {
                         result: false,
                         message: ""
                     };
-                    await app.request.promise.get(`${app.data.server}/contacts/${contactInfo.id}`)
+                    app.request.promise.get(`${app.data.server}/contacts/${contactInfo.id}`)
                         .then(async function(res) {
                             if (res.data != "[]") {
                                 let resJson = JSON.parse(res.data);
-                                if (resJson.nickname === nickname && resJson.relation === relationship && resJson.contactMobile === mobile) {
-
-                                } else {
-                                    await app.request({
+                                let valid = resJson.nickname === nickname &&
+                                    resJson.relation === relationship &&
+                                    resJson.contactMobile === mobile &&
+                                    resJson.contactEmail === email
+                                var res1 = false,
+                                    res2 = false;
+                                if (!valid) {
+                                    await app.request.promise({
                                         url: app.data.server + '/contacts/' + contactInfo.id,
                                         method: 'PUT',
                                         data: {
@@ -170,15 +174,48 @@
                                             "contactMobile": mobile,
                                             "contactEmail": email
                                         }
+                                    }).then(function(res) {
+                                        res1 = res;
+                                    }).catch(function(res2) {
+                                        console.log('Error al cargar los datos' + res2);
+                                    });
+                                }
+                                if (c) {
+                                    await c.result('blob', 'png').then(async blob => {
+                                        const data = new FormData();
+                                        data.append("files", blob, 'profile.png');
+                                        data.append("refId", contactInfo.id);
+                                        data.append("ref", "contact");
+                                        //data.append('source', 'users-permissions');
+                                        data.append('field', 'contactPicture');
+                                        await app.request.promise({
+                                            url: app.data.server + '/upload',
+                                            method: "POST",
+                                            crossDomain: true,
+                                            contentType: "multipart/form-data",
+                                            data: data
+                                        }).then(function(res) {
+                                            res2 = res;
+                                        }).catch(function(res2) {
+                                            console.log('Error al cargar la foto' + res2);
+                                        });
+                                    });
+                                }
+                                if ((res1.status === 200 && res2.status === 200) || (res1.status === 200 && !c) || (res2.status === 200 && valid)) {
+                                    app.views.main.router.navigate({
+                                        url: '/memories/home/user/' + loggedUser.id,
+                                        options: {
+                                            reloadCurrent: true
+                                        }
                                     });
                                 }
                                 // await app.views.main.router.navigate('/memories/home/user/'+loggedUser.id);
-                                app.views.main.router.navigate({
+                                /* app.views.main.router.navigate({
                                     url: '/memories/home/user/' + loggedUser.id,
                                     options: {
                                         reloadCurrent: true
                                     }
-                                });
+                                }); */
                             } else {
                                 //"This contact relation doesn't exist, how did you manage to do this?";
                                 app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_relation_not_found")}`);
@@ -204,12 +241,13 @@
                     // console.log("Info del contacto:\r\n", contactInfo.contact.profilePicture.url);
                     // Poner tambien la imagen pero no tiene el objetito de la imagen porque croppie lo hace de una forma rara.
                     // $$('#contact-photo').append('<img src="'+app.data.server+contactInfo.picture+'" alt="">');
-                    $$('#contact-photo').append('<img src="' + app.data.server + contactInfo.contact.profilePicture.url + '" alt="" style="height:178px;width:178px;">');
+                    let urlPic = contactInfo.contactPicture ? contactInfo.contactPicture.url : contactInfo.contact.profilePicture.url;
+                    $$('#contact-photo').append('<img src="' + app.data.server + urlPic + '" alt="" style="height:178px;width:178px;">');
                     $$("#create-cont-nickname").val(contactInfo.nickname);
                     $$("#create-cont-relation").val(contactInfo.relation);
                     $$("#create-cont-name").val(contactInfo.contact.name);
-                    $$("#create-cont-email").val(contactInfo.contactEmail);
-                    $$("#create-cont-mobile").val(contactInfo.contactMobile);
+                    $$("#create-cont-email").val(contactInfo.contactEmail ? contactInfo.contactEmail : contactInfo.contact.email);
+                    $$("#create-cont-mobile").val(contactInfo.contactMobile ? contactInfo.contactMobile : contactInfo.contact.mobile);
                     $$("#create-cont-birthday").val(contactInfo.contact.birthday);
                 }
 
