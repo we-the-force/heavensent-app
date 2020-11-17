@@ -408,442 +408,427 @@
 	</div>
 </template>
 <script>
-	import $$ from "dom7";
-	import localforage from "localforage";
-	export default {
-		on: {
-			pageInit: async function (e, page) {
-				var self = this;
-				var app = self.$app;
-				console.log("RouterHome:\r\n", app.views.main.router.history);
-				// console.log(page.route.context);
-				var isEditing = page.route.context.IsEditing;
-				var currentUser = page.route.context.CurrentUser;
-				var fundations = page.route.context.Fundations;
-				var paymentToken;
+    import $$ from "dom7";
+    import localforage from "localforage";
+    export default {
+        on: {
+            pageInit: async function(e, page) {
+                var self = this;
+                var app = self.$app;
+                // console.log(page.route.context);
+                var isEditing = page.route.context.IsEditing;
+                var currentUser = page.route.context.CurrentUser;
+                var fundations = page.route.context.Fundations;
+                var paymentToken;
+                // console.log("home-memories pageInit [pageInit], updating user");
 
-				console.log(currentUser);
-				// console.log("home-memories pageInit [pageInit], updating user");
+                // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
+                // console.log(app.device);
+                // app.dialog.alert(app.device.os + ", ver 0.0.2.26");
 
-				// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
-				// console.log(app.device);
-				// app.dialog.alert(app.device.os + ", ver 0.0.2.26");
+                await app.methods.updateCurrentUser();
+                await app.methods.loadContacts();
 
-				await app.methods.updateCurrentUser();
-				await app.methods.loadContacts();
+                var loggedUser = await app.methods.getLocalValue('loggedUser');
 
-				var loggedUser = await app.methods.getLocalValue('loggedUser');
 
-				console.log("loggedUser:\r\n", loggedUser);
+                if (loggedUser == null) {
+                    app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
+                    app.views.main.router.navigate('/');
+                }
 
-				if (loggedUser == null) {
-					app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
-					app.views.main.router.navigate('/');
-				}
+                updateControls();
+                if (isOverflown($$('.header h1.title')[0])) {
+                    $$('.header h1.title').css('font-size', '18px');
+                }
 
-				await updateControls();
-				if (isOverflown($$('.header h1.title')[0])) {
-					$$('.header h1.title').css('font-size', '18px');
-				}
 
-				
 
-					console.log("---------------------------------Not ios");
-					const baseRequest = {
-					apiVersion: 2,
-					apiVersionMinor: 0
-					};
+                const baseRequest = {
+                    apiVersion: 2,
+                    apiVersionMinor: 0
+                };
 
-					const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
-					const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+                const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+                const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
 
-					const tokenizationSpecification = {
-						type: 'PAYMENT_GATEWAY',
-						parameters: {
-								'gateway': 'example',
-								'gatewayMerchantId': 'exampleGatewayMerchantId'
-						}
-					};
+                const tokenizationSpecification = {
+                    type: 'PAYMENT_GATEWAY',
+                    parameters: {
+                        'gateway': 'example',
+                        'gatewayMerchantId': 'exampleGatewayMerchantId'
+                    }
+                };
 
-					const baseCardPaymentMethod = {
-						type: 'CARD',
-						parameters: {
-								allowedAuthMethods: allowedCardAuthMethods,
-								allowedCardNetworks: allowedCardNetworks
-						}
-					};
+                const baseCardPaymentMethod = {
+                    type: 'CARD',
+                    parameters: {
+                        allowedAuthMethods: allowedCardAuthMethods,
+                        allowedCardNetworks: allowedCardNetworks
+                    }
+                };
 
-					const cardPaymentMethod = Object.assign(
-						{},
-						baseCardPaymentMethod,
-						{
-								tokenizationSpecification: tokenizationSpecification
-						}
-					);
-					
-					let paymentsClient = null;
+                const cardPaymentMethod = Object.assign({},
+                    baseCardPaymentMethod, {
+                        tokenizationSpecification: tokenizationSpecification
+                    }
+                );
 
-					function getGoogleIsReadyToPayRequest() {
-						return Object.assign(
-										{},
-										baseRequest,
-										{
-												allowedPaymentMethods: [baseCardPaymentMethod]
-										}
-						);
-					}
+                let paymentsClient = null;
 
-					function getGooglePaymentDataRequest() {
-						const paymentDataRequest = Object.assign({}, baseRequest);
-						paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
-						paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
-						paymentDataRequest.merchantInfo = {
-								// @todo a merchant ID is available for a production environment after approval by Google
-								// See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
-								merchantId: '247883957',
-								merchantName: 'HeavenSent'
-						};
-						return paymentDataRequest;
-					}
-				
-					function getGooglePaymentsClient() {
-						if ( paymentsClient === null ) {
-								paymentsClient = new google.payments.api.PaymentsClient({environment: 'TEST'});
-						}
-						return paymentsClient;
-					}
+                function getGoogleIsReadyToPayRequest() {
+                    return Object.assign({},
+                        baseRequest, {
+                            allowedPaymentMethods: [baseCardPaymentMethod]
+                        }
+                    );
+                }
 
-					// function onGooglePayLoaded() {
-					// 	const paymentsClient = getGooglePaymentsClient();
-					// 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
-					// 					.then(function(response) {
-					// 							if (response.result) {
-					// 									addGooglePayButton();
-					// 									// @todo prefetch payment data to improve performance after confirming site functionality
-					// 									// prefetchGooglePaymentData();
-					// 							}
-					// 					})
-					// 					.catch(function(err) {
-					// 							// show error in developer console for debugging
-					// 							console.error(err);
-					// 					});
-					// }
-					
-					function addGooglePayButton(buttonId) {
+                function getGooglePaymentDataRequest() {
+                    const paymentDataRequest = Object.assign({}, baseRequest);
+                    paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
+                    paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+                    paymentDataRequest.merchantInfo = {
+                        // @todo a merchant ID is available for a production environment after approval by Google
+                        // See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
+                        merchantId: '247883957',
+                        merchantName: 'HeavenSent'
+                    };
+                    return paymentDataRequest;
+                }
 
-						const paymentsClient = getGooglePaymentsClient();
-						var i;
-						var donationThings = document.getElementsByClassName("donation-cont");
-						for (i = 0; i < donationThings.length; i++)
-						{
-							let currentId = $$(donationThings[i]).prop("dataset").fundation;
+                function getGooglePaymentsClient() {
+                    if (paymentsClient === null) {
+                        paymentsClient = new google.payments.api.PaymentsClient({
+                            environment: 'TEST'
+                        });
+                    }
+                    return paymentsClient;
+                }
 
-							const button = paymentsClient.createButton({onClick: onGooglePaymentButtonClicked});
-							// console.log(button);
-							// const button = paymentsClient.createButton({onClick: testDonate});
-							$$(button).find('.gpay-button').attr('data-fundation', currentId);
-							$$(button).find('.gpay-button').addClass('card-prevent-open');
-							//btn-card card-prevent-open
+                // function onGooglePayLoaded() {
+                // 	const paymentsClient = getGooglePaymentsClient();
+                // 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+                // 					.then(function(response) {
+                // 							if (response.result) {
+                // 									addGooglePayButton();
+                // 									// @todo prefetch payment data to improve performance after confirming site functionality
+                // 									// prefetchGooglePaymentData();
+                // 							}
+                // 					})
+                // 					.catch(function(err) {
+                // 							// show error in developer console for debugging
+                // 							console.error(err);
+                // 					});
+                // }
 
-							donationThings[i].appendChild(button);
-						}
-						// document.getElementById('btn-cont').appendChild(button);
-					}
-					function getGoogleTransactionInfo(amount) {
-						let aux = {
-								countryCode: 'US',
-								currencyCode: 'USD',
-								totalPriceStatus: 'FINAL',
-								// set to cart total
-								// totalPrice: selectedPlan != undefined ? selectedPlan.cost.toString() : '5.00'
-								totalPrice: amount != undefined ? amount.toString() : '0.00'
-						};
-						return aux;
-					}
+                function addGooglePayButton(buttonId) {
 
-					function prefetchGooglePaymentData() {
-						const paymentDataRequest = getGooglePaymentDataRequest();
-						// transactionInfo must be set but does not affect cache
-						paymentDataRequest.transactionInfo = {
-								totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
-								currencyCode: 'USD'
-						};
-						const paymentsClient = getGooglePaymentsClient();
-						paymentsClient.prefetchPaymentData(paymentDataRequest);
-					}
+                    const paymentsClient = getGooglePaymentsClient();
+                    var i;
+                    var donationThings = document.getElementsByClassName("donation-cont");
+                    for (i = 0; i < donationThings.length; i++) {
+                        let currentId = $$(donationThings[i]).prop("dataset").fundation;
 
-					function onGooglePaymentButtonClicked() {
-						let fundationId = $$(this).prop("dataset").fundation;
-						let fund = getFundation(fundationId);
+                        const button = paymentsClient.createButton({
+                            onClick: onGooglePaymentButtonClicked
+                        });
+                        // console.log(button);
+                        // const button = paymentsClient.createButton({onClick: testDonate});
+                        $$(button).find('.gpay-button').attr('data-fundation', currentId);
+                        $$(button).find('.gpay-button').addClass('card-prevent-open');
+                        //btn-card card-prevent-open
 
-						const paymentDataRequest = getGooglePaymentDataRequest();
-						paymentDataRequest.transactionInfo = getGoogleTransactionInfo(fund.suggestedAmount);
+                        donationThings[i].appendChild(button);
+                    }
+                    // document.getElementById('btn-cont').appendChild(button);
+                }
 
-						const paymentsClient = getGooglePaymentsClient();
-						paymentsClient.loadPaymentData(paymentDataRequest)
-										.then(function(paymentData) {
-												// handle the response
-												processPayment(paymentData);
-												donate(fund);
-												// assignPlan(paymentData);
-										})
-										.catch(function(err) {
-												// show error in developer console for debugging
-												console.error(err);
-										});
-					}
+                function getGoogleTransactionInfo(amount) {
+                    let aux = {
+                        countryCode: 'US',
+                        currencyCode: 'USD',
+                        totalPriceStatus: 'FINAL',
+                        // set to cart total
+                        // totalPrice: selectedPlan != undefined ? selectedPlan.cost.toString() : '5.00'
+                        totalPrice: amount != undefined ? amount.toString() : '0.00'
+                    };
+                    return aux;
+                }
 
-					function processPayment(paymentData) {
-						// show returned data in developer console for debugging
-						// @todo pass payment token to your gateway to process payment
-						paymentToken = paymentData.paymentMethodData.tokenizationData.token;
-					}
+                function prefetchGooglePaymentData() {
+                    const paymentDataRequest = getGooglePaymentDataRequest();
+                    // transactionInfo must be set but does not affect cache
+                    paymentDataRequest.transactionInfo = {
+                        totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
+                        currencyCode: 'USD'
+                    };
+                    const paymentsClient = getGooglePaymentsClient();
+                    paymentsClient.prefetchPaymentData(paymentDataRequest);
+                }
 
-					// app.methods.loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
-					// 	const paymentsClient = getGooglePaymentsClient();
-					// 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
-					// 					.then(function(response) {
-					// 							if (response.result) {
-					// 									addGooglePayButton();
-					// 									// @todo prefetch payment data to improve performance after confirming site functionality
-					// 									// prefetchGooglePaymentData();
-					// 							}
-					// 					})
-					// 					.catch(function(err) {
-					// 							// show error in developer console for debugging
-					// 							console.error(err);
-					// 					});
-					// } )
+                function onGooglePaymentButtonClicked() {
+                    let fundationId = $$(this).prop("dataset").fundation;
+                    let fund = getFundation(fundationId);
 
-				function getFundation(id)
-				{
-					let result = undefined;
-					fundations.forEach(fund => {
-						if (fund.id == id)
-						{
-							result = fund;
-						}
-					});
-					return result;
-				}
-				function formatConcept(fund)
-				{
-					let result = `Donation towards ${fund.name}`;
-					return result;
-				}
-				function formatDate()
-				{
-					let date = new Date();
-					let dd = String(date.getDate()).padStart(2, '0');
-					let mm = String(date.getMonth() + 1).padStart(2, '0');
-					let yyyy = date.getFullYear();
+                    const paymentDataRequest = getGooglePaymentDataRequest();
+                    paymentDataRequest.transactionInfo = getGoogleTransactionInfo(fund.suggestedAmount);
 
-					let result = `${yyyy}-${mm}-${dd}`;
+                    const paymentsClient = getGooglePaymentsClient();
+                    paymentsClient.loadPaymentData(paymentDataRequest)
+                        .then(function(paymentData) {
+                            // handle the response
+                            processPayment(paymentData);
+                            donate(fund);
+                            // assignPlan(paymentData);
+                        })
+                        .catch(function(err) {
+                            // show error in developer console for debugging
+                            console.error(err);
+                        });
+                }
 
-					return result;
-				}
+                function processPayment(paymentData) {
+                    // show returned data in developer console for debugging
+                    // @todo pass payment token to your gateway to process payment
+                    paymentToken = paymentData.paymentMethodData.tokenizationData.token;
+                }
 
-				/* aqui esta este pedo */
+                // app.methods.loadscript('https://pay.google.com/gp/p/js/pay.js', function(){
+                // 	const paymentsClient = getGooglePaymentsClient();
+                // 	paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+                // 					.then(function(response) {
+                // 							if (response.result) {
+                // 									addGooglePayButton();
+                // 									// @todo prefetch payment data to improve performance after confirming site functionality
+                // 									// prefetchGooglePaymentData();
+                // 							}
+                // 					})
+                // 					.catch(function(err) {
+                // 							// show error in developer console for debugging
+                // 							console.error(err);
+                // 					});
+                // } )
 
-				$$('select#users').change(async function (el) {
-					let select = app.smartSelect.get('.smart-select');
-					let indexValue = select.getValue();
-					let indexValueTwo = $$(this)[0].value;
-					let id = $$(this)[0][indexValueTwo - 1].id;
-					let targetUserId = $$(`#${id}`).attr("asd");
+                function getFundation(id) {
+                    let result = undefined;
+                    fundations.forEach(fund => {
+                        if (fund.id == id) {
+                            result = fund;
+                        }
+                    });
+                    return result;
+                }
 
-					let item = select.items[indexValue - 1];
+                function formatConcept(fund) {
+                    let result = `Donation towards ${fund.name}`;
+                    return result;
+                }
 
-					select.close();
+                function formatDate() {
+                    let date = new Date();
+                    let dd = String(date.getDate()).padStart(2, '0');
+                    let mm = String(date.getMonth() + 1).padStart(2, '0');
+                    let yyyy = date.getFullYear();
 
-					await app.views.main.router.navigate(`/memories/home/user/${targetUserId}`, { reloadCurrent: true });
-					// app.views.main.router.refreshPage();
-				});
+                    let result = `${yyyy}-${mm}-${dd}`;
 
-				$$('.avatar-person').on('click', function (val) {
-					$$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
-				})
-				var searchbar1 = app.searchbar.create({
-					el: '.searchbar1',
-					searchContainer: '.list-search1',
-					searchIn: '.item-title',
-					on: {
-							search(sb, query, previousQuery) {
-									console.log(query, previousQuery);
-							}
-					}
-				});
-				// var searchbar2 = app.searchbar.create({
-				// 	el: '.searchbar2',
-				// 	searchContainer: '.list-search2',
-				// 	searchIn: '.item-title',
-				// 	on: {
-				// 			search(sb, query, previousQuery) {
-				// 					console.log(query, previousQuery);
-				// 			}
-				// 	}
-				// });
-				$$('.switch1').on('click',function(eve){
-					var listswitch = $$('.switch1').text();
-					console.log($$('.switch1').text())
-					if(listswitch=='view_list'){
-						console.log('array');
-						$$('.view_list1').show();
-						$$('.view_array1').hide();
-						$$('.switch1').text('view_array');
+                    return result;
+                }
 
-					} else {
-						console.log('lista');
+                /* aqui esta este pedo */
 
-						$$('.view_list1').hide();
-						$$('.view_array1').show();
-						$$('.switch1').text('view_list');
+                $$('select#users').change(async function(el) {
+                    let select = app.smartSelect.get('.smart-select');
+                    let indexValue = select.getValue();
+                    let indexValueTwo = $$(this)[0].value;
+                    let id = $$(this)[0][indexValueTwo - 1].id;
+                    let targetUserId = $$(`#${id}`).attr("asd");
 
-					}
-				});
-				$$('.switch2').on('click',function(eve){
-					var listswitch = $$('.switch2').text();
-					console.log($$('.switch2').text())
-					if(listswitch=='view_list'){
-						console.log('array');
-						$$('.view_list2').show();
-						$$('.view_array2').hide();
-						$$('.switch2').text('view_array');
+                    let item = select.items[indexValue - 1];
 
-					} else {
-						console.log('lista');
+                    select.close();
 
-						$$('.view_list2').hide();
-						$$('.view_array2').show();
-						$$('.switch2').text('view_list');
+                    await app.views.main.router.navigate(`/memories/home/user/${targetUserId}`, {
+                        reloadCurrent: true
+                    });
+                    // app.views.main.router.refreshPage();
+                });
 
-					}
-				});
+                $$('.avatar-person').on('click', function(val) {
+                    $$('#edit-contact-btn')[0].href = "/contact/edit/contact/" + $$(this).prop("dataset").user;
+                })
+                var searchbar1 = app.searchbar.create({
+                    el: '.searchbar1',
+                    searchContainer: '.list-search1',
+                    searchIn: '.item-title',
+                    on: {
+                        search(sb, query, previousQuery) {
+                            console.log(query, previousQuery);
+                        }
+                    }
+                });
+                // var searchbar2 = app.searchbar.create({
+                // 	el: '.searchbar2',
+                // 	searchContainer: '.list-search2',
+                // 	searchIn: '.item-title',
+                // 	on: {
+                // 			search(sb, query, previousQuery) {
+                // 					console.log(query, previousQuery);
+                // 			}
+                // 	}
+                // });
+                $$('.switch1').on('click', function(eve) {
+                    var listswitch = $$('.switch1').text();
+                    console.log($$('.switch1').text())
+                    if (listswitch == 'view_list') {
+                        console.log('array');
+                        $$('.view_list1').show();
+                        $$('.view_array1').hide();
+                        $$('.switch1').text('view_array');
 
-				$$('.memory-options').on('click', function (val) {
-					$$('#edit-memory-btn')[0].href = "/memories/edit/memory/" + $$(this).prop("dataset").memory;
-				})
+                    } else {
+                        console.log('lista');
 
-				$$('.card.memory').click(function (val) {
-					// console.log($$(this).attr('id'));
-					switch ($$(this).attr('id')) {
-						case 'new':
-							app.views.main.router.navigate('/memories/create');
-							break;
-						case 'birthday':
-							app.views.main.router.navigate('/memories/birthday');
-							break;
-						case 'colagge':
-							break;
-						case 'special':
-							break;
-					}
-				});
+                        $$('.view_list1').hide();
+                        $$('.view_array1').show();
+                        $$('.switch1').text('view_list');
 
-				$$('.card-expandable').on('card:open', x => {
-					let swiper = app.swiper.get('.donate-swiper');
-					swiper.allowTouchMove = false;
-				});
+                    }
+                });
+                $$('.switch2').on('click', function(eve) {
+                    var listswitch = $$('.switch2').text();
+                    console.log($$('.switch2').text())
+                    if (listswitch == 'view_list') {
+                        console.log('array');
+                        $$('.view_list2').show();
+                        $$('.view_array2').hide();
+                        $$('.switch2').text('view_array');
 
-				$$('.card-expandable').on('card:close', x => {
-					let swiper = app.swiper.get('.donate-swiper');
-					swiper.allowTouchMove = true;
-				});
+                    } else {
+                        console.log('lista');
 
-				$$('.card-expandable .btn-card').click(x => {
-					// console.log('make somthing');
+                        $$('.view_list2').hide();
+                        $$('.view_array2').show();
+                        $$('.switch2').text('view_list');
 
-				});
+                    }
+                });
 
-				function updateControls() {
-					if (currentUser != null) {
-						// console.log("=-=-=-=-=-=-=-=-=-=-=-=Update controls");
-						// console.log(currentUser);
-						var currentMembership = currentUser.currentMembership;
-						if (currentMembership === null) {
-							if (window.language == 'en_US') {
-								currentMembership = 'No ' + window.localize('membership');
-							} else if (window.language == 'es_MX') {
-								currentMembership = 'Sin ' + window.localize('membership');
-							}
-						}
-						else {
-							if (window.language == 'en_US') {
-								currentMembership = `${loggedUser.currentMembership.plan.name} ${window.localize('membership')}`;
-								// console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
-							} else if (window.language == 'es_MX') {
-								// console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
-								currentMembership = `${window.localize('membership')} ${loggedUser.currentMembership.plan.name}`;
-							}
-						}
+                $$('.memory-options').on('click', function(val) {
+                    $$('#edit-memory-btn')[0].href = "/memories/edit/memory/" + $$(this).prop("dataset").memory;
+                })
 
-						$$("#logged-user-name")[0].textContent = isEditing ? (currentUser.name != undefined ? `Managing ${currentUser.name}'s memories` : `Managing ${currentUser.username}'s memories`) : currentUser.name != undefined ? currentUser.name : currentUser.username;
-						$$("#logged-user-membership")[0].textContent = currentMembership;
-						console.log(JSON.stringify(currentMembership));
-						if (currentUser.profilePicture != null) {
-							$$("#logged-user-picture")[0].src = `${app.data.server}${currentUser.profilePicture.url}`;
-						}
-					}
-					else {
-						console.log("User was null, not updating anything [pageInit.updateControls]");
-					}
-				}
+                $$('.card.memory').click(function(val) {
+                    // console.log($$(this).attr('id'));
+                    switch ($$(this).attr('id')) {
+                        case 'new':
+                            app.views.main.router.navigate('/memories/create');
+                            break;
+                        case 'birthday':
+                            app.views.main.router.navigate('/memories/birthday');
+                            break;
+                        case 'colagge':
+                            break;
+                        case 'special':
+                            break;
+                    }
+                });
 
-				function isOverflown(element) {
-					return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
-				}
+                $$('.card-expandable').on('card:open', x => {
+                    let swiper = app.swiper.get('.donate-swiper');
+                    swiper.allowTouchMove = false;
+                });
 
-				async function donate(fund)
-				{
-					if (fund != undefined)
-					{
-						await app.request.promise.postJSON(`${app.data.server}/donations`,{
-							"amountUSD": fund.suggestedAmount,
-							"fundation": fund.id,
-							"user": loggedUser.id,
-							"date": formatDate(),
-							"token": paymentToken != undefined ? paymentToken : "EmptyTokenHopefullyATest",
-							"concept": formatConcept(fund)
-						}).then(function(res){
-							console.log("Donation done successfully");
-							app.dialog.alert("Thank you so much for your donation!");
-						}).catch(function(err){
-							console.log("Error adding donation");
-							console.log(err);
-						})
-					}
-					else
-					{
-						console.log("fundation was undefined lmao");
-					}
-				}
+                $$('.card-expandable').on('card:close', x => {
+                    let swiper = app.swiper.get('.donate-swiper');
+                    swiper.allowTouchMove = true;
+                });
 
-				async function testDonate()
-				{
-					let fundationId = $$(this).prop("dataset").fundation;
-					let fund = getFundation(fundationId);
-					if (fund != undefined)
-					{
-						await app.request.promise.postJSON(`${app.data.server}/donations`,{
-							"amountUSD": fund.suggestedAmount,
-							"fundation": fund.id,
-							"user": loggedUser.id,
-							"date": formatDate(),
-							"token": paymentToken != undefined ? paymentToken : "EmptyTokenHopefullyATest",
-							"concept": formatConcept(fund)
-						}).then(function(res){
-							app.dialog.alert("Thank you so much for your donation!");
-						}).catch(function(err){
-							console.log("Error adding donation");
-							console.log(err);
-						})
-					}
-					else
-					{
-						console.log("fundation was undefined lmao");
-					}
-				}
-			},
-		},
-	};
+                $$('.card-expandable .btn-card').click(x => {
+                    // console.log('make somthing');
+
+                });
+
+                function updateControls() {
+                    if (currentUser != null) {
+                        // console.log("=-=-=-=-=-=-=-=-=-=-=-=Update controls");
+                        // console.log(currentUser);
+                        var currentMembership = currentUser.currentMembership;
+                        if (currentMembership === null) {
+                            if (window.language == 'en_US') {
+                                currentMembership = 'No ' + window.localize('membership');
+                            } else if (window.language == 'es_MX') {
+                                currentMembership = 'Sin ' + window.localize('membership');
+                            }
+                        } else {
+                            if (window.language == 'en_US') {
+                                currentMembership = `${loggedUser.currentMembership.plan.name} ${window.localize('membership')}`;
+                                // console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
+                            } else if (window.language == 'es_MX') {
+                                // console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
+                                currentMembership = `${window.localize('membership')} ${loggedUser.currentMembership.plan.name}`;
+                            }
+                        }
+
+                        $$("#logged-user-name")[0].textContent = isEditing ? (currentUser.name != undefined ? `Managing ${currentUser.name}'s memories` : `Managing ${currentUser.username}'s memories`) : currentUser.name != undefined ? currentUser.name : currentUser.username;
+                        $$("#logged-user-membership")[0].textContent = currentMembership;
+                        console.log(JSON.stringify(currentMembership));
+                        if (currentUser.profilePicture != null) {
+                            $$("#logged-user-picture")[0].src = `${app.data.server}${currentUser.profilePicture.url}`;
+                        }
+                    } else {
+                        console.log("User was null, not updating anything [pageInit.updateControls]");
+                    }
+                }
+
+                function isOverflown(element) {
+                    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+                }
+
+                async function donate(fund) {
+                    if (fund != undefined) {
+                        await app.request.promise.postJSON(`${app.data.server}/donations`, {
+                            "amountUSD": fund.suggestedAmount,
+                            "fundation": fund.id,
+                            "user": loggedUser.id,
+                            "date": formatDate(),
+                            "token": paymentToken != undefined ? paymentToken : "EmptyTokenHopefullyATest",
+                            "concept": formatConcept(fund)
+                        }).then(function(res) {
+                            console.log("Donation done successfully");
+                            app.dialog.alert("Thank you so much for your donation!");
+                        }).catch(function(err) {
+                            console.log("Error adding donation");
+                            console.log(err);
+                        })
+                    } else {
+                        console.log("fundation was undefined lmao");
+                    }
+                }
+
+                async function testDonate() {
+                    let fundationId = $$(this).prop("dataset").fundation;
+                    let fund = getFundation(fundationId);
+                    if (fund != undefined) {
+                        await app.request.promise.postJSON(`${app.data.server}/donations`, {
+                            "amountUSD": fund.suggestedAmount,
+                            "fundation": fund.id,
+                            "user": loggedUser.id,
+                            "date": formatDate(),
+                            "token": paymentToken != undefined ? paymentToken : "EmptyTokenHopefullyATest",
+                            "concept": formatConcept(fund)
+                        }).then(function(res) {
+                            app.dialog.alert("Thank you so much for your donation!");
+                        }).catch(function(err) {
+                            console.log("Error adding donation");
+                            console.log(err);
+                        })
+                    } else {
+                        console.log("fundation was undefined lmao");
+                    }
+                }
+            },
+        },
+    };
 </script>

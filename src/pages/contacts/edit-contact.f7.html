@@ -1,94 +1,98 @@
 <template>
-	<div class="page" data-name="create-contact" id="create-contact">
-		<div class="artwork"></div>
-		<div class="navbar">
-			<div class="navbar-inner sliding">
-				<div class="header-cont">
-					<div class="header">
-						<a href="" class="back-btn back">
-							<i class="icons material-icons">chevron_left</i>
-						</a>
-						<h1 class="title">{{localize "edit_contact"}}</h1>
-						<div class="none"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="page-content">
-			<div class="sqr_bck" id="sqr1"></div>
-			<div class="sqr_bck" id="sqr2"></div>
-			<div class="sqr_bck" id="sqr3"></div>
-			<div class="upload-cont">
-				<div class="upload-img">
-					<div class="photo avatar-fab" id="contact-photo">
+    <div class="page" data-name="create-contact" id="create-contact">
+        <div class="artwork"></div>
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="" class="back-btn back">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title">{{localize "edit_contact"}}</h1>
+                        <div class="none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="sqr_bck" id="sqr1"></div>
+            <div class="sqr_bck" id="sqr2"></div>
+            <div class="sqr_bck" id="sqr3"></div>
+            <div class="upload-cont">
+                <div class="upload-img" style="position: relative;">
+                    <div class="photo avatar-fab" id="contact-photo">
 
-					</div>
-				</div>
-				<!-- <label class="img-btn" for="file-upload">
+                    </div>
+                    <label class="img-btn" for="file-upload" style="position: absolute;bottom: 0px;right: 0;">
+                        <i class="icons material-icons">photo_camera</i>
+                        <input id="file-upload" type="file" style="display: none;" />
+                    </label>
+                </div>
+                <!-- <label class="img-btn" for="file-upload">
 					<i class="icons material-icons">photo_camera</i>
 					<input id="file-upload" type="file" style="display: none;" />
 				</label> -->
-			</div>
-			<div class="inputs list">
-				<ul>
+            </div>
+            <div class="inputs list">
+                <ul>
 
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-nickname" placeholder="{{localize 'nickname'}}"
-									required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-relation" placeholder="{{localize 'relation'}}"
-									required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-name" placeholder="name" required validate
-									readonly />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="email" id="create-cont-email" placeholder="email" required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-mobile" placeholder="mobile" required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="date" id="create-cont-birthday" placeholder="birthday" required validate />
-							</div>
-						</div>
-					</li>
-					<!-- falta checar la edad -->
-				</ul>
-			</div>
-			<div class="btns-cont center">
-				<a id="save-member-btn" class="button color-blue round large">{{localize "save_changes"}}</a>
-			</div>
-			<div class="footer">
-				<div class="sqr_bck" id="sqr4"></div>
-				<div class="sqr_bck" id="sqr5"></div>
-			</div>
-		</div>
-	</div>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="create-cont-nickname" placeholder="{{localize 'nickname'}}"
+                                    required validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="create-cont-relation" placeholder="{{localize 'relation'}}"
+                                    required validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="create-cont-name" placeholder="name" required validate
+                                    readonly />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="email" id="create-cont-email" placeholder="email" required validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="create-cont-mobile" placeholder="mobile" required validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="date" id="create-cont-birthday" placeholder="birthday" required validate />
+                            </div>
+                        </div>
+                    </li>
+                    <!-- falta checar la edad -->
+                </ul>
+            </div>
+            <div class="btns-cont center">
+                <a id="save-member-btn" class="button color-blue round large">{{localize "save_changes"}}</a>
+            </div>
+            <div class="footer">
+                <div class="sqr_bck" id="sqr4"></div>
+                <div class="sqr_bck" id="sqr5"></div>
+            </div>
+        </div>
+    </div>
 
 </template>
 <script>
@@ -100,12 +104,8 @@
                 var self = this;
                 var app = self.$app;
 
-                console.log("RouterEdit:\r\n", app.views.main.router.history);
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
                 var contactInfo = this.ContactInfo;
-
-                console.log("Thingies:\r\n", loggedUser, "\r\n\r\nNuevito:\r\n", contactInfo);
-                console.log("Writing contact info:\r\n", contactInfo);
 
                 var c;
                 var username = "";
@@ -145,19 +145,25 @@
                     }
                 });
 
-                async function updateRelation(nickname, relationship, mobile, email) {
+                function updateRelation(nickname, relationship, mobile, email) {
                     let result = {
                         result: false,
                         message: ""
                     };
-                    await app.request.promise.get(`${app.data.server}/contacts/${contactInfo.id}`)
+
+                    app.preloader.show("blue");
+                    app.request.promise.get(`${app.data.server}/contacts/${contactInfo.id}`)
                         .then(async function(res) {
                             if (res.data != "[]") {
                                 let resJson = JSON.parse(res.data);
-                                if (resJson.nickname === nickname && resJson.relation === relationship && resJson.contactMobile === mobile) {
-
-                                } else {
-                                    await app.request({
+                                let valid = resJson.nickname === nickname &&
+                                    resJson.relation === relationship &&
+                                    resJson.contactMobile === mobile &&
+                                    resJson.contactEmail === email
+                                var res1 = false,
+                                    res2 = false;
+                                if (!valid) {
+                                    await app.request.promise({
                                         url: app.data.server + '/contacts/' + contactInfo.id,
                                         method: 'PUT',
                                         data: {
@@ -166,15 +172,43 @@
                                             "contactMobile": mobile,
                                             "contactEmail": email
                                         }
+                                    }).then(function(res) {
+                                        res1 = res;
+                                    }).catch(function(res2) {
+                                        console.log('Error al cargar los datos' + res2);
                                     });
                                 }
-                                // await app.views.main.router.navigate('/memories/home/user/'+loggedUser.id);
-                                app.views.main.router.navigate({
-                                    url: '/memories/home/user/' + loggedUser.id,
-                                    options: {
-                                        reloadCurrent: true
-                                    }
-                                });
+                                if (c) {
+                                    await c.result('blob', 'png').then(async blob => {
+                                        const data = new FormData();
+                                        data.append("files", blob, 'profile.png');
+                                        data.append("refId", contactInfo.id);
+                                        data.append("ref", "contact");
+                                        //data.append('source', 'users-permissions');
+                                        data.append('field', 'contactPicture');
+                                        await app.request.promise({
+                                            url: app.data.server + '/upload',
+                                            method: "POST",
+                                            crossDomain: true,
+                                            contentType: "multipart/form-data",
+                                            data: data
+                                        }).then(function(res) {
+                                            res2 = res;
+                                        }).catch(function(res2) {
+                                            console.log('Error al cargar la foto' + res2);
+                                        });
+                                    });
+                                }
+                                if ((res1.status === 200 && res2.status === 200) || (res1.status === 200 && !c) || (res2.status === 200 && valid)) {
+                                    await app.methods.updateCurrentUser();
+                                    app.preloader.hide();
+                                    app.views.main.router.navigate({
+                                        url: '/memories/home/user/' + loggedUser.id,
+                                    });
+                                } else {
+                                    app.preloader.hide();
+                                    app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_error_1")}`);
+                                }
                             } else {
                                 //"This contact relation doesn't exist, how did you manage to do this?";
                                 app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_relation_not_found")}`);
@@ -200,12 +234,13 @@
                     // console.log("Info del contacto:\r\n", contactInfo.contact.profilePicture.url);
                     // Poner tambien la imagen pero no tiene el objetito de la imagen porque croppie lo hace de una forma rara.
                     // $$('#contact-photo').append('<img src="'+app.data.server+contactInfo.picture+'" alt="">');
-                    $$('#contact-photo').append('<img src="' + app.data.server + contactInfo.contact.profilePicture.url + '" alt="" style="height:114px;width:114px;">');
+                    let urlPic = contactInfo.contactPicture ? contactInfo.contactPicture.url : contactInfo.contact.profilePicture.url;
+                    $$('#contact-photo').append('<img src="' + app.data.server + urlPic + '" alt="" style="height:178px;width:178px;">');
                     $$("#create-cont-nickname").val(contactInfo.nickname);
                     $$("#create-cont-relation").val(contactInfo.relation);
                     $$("#create-cont-name").val(contactInfo.contact.name);
-                    $$("#create-cont-email").val(contactInfo.contactEmail);
-                    $$("#create-cont-mobile").val(contactInfo.contactMobile);
+                    $$("#create-cont-email").val(contactInfo.contactEmail ? contactInfo.contactEmail : contactInfo.contact.email);
+                    $$("#create-cont-mobile").val(contactInfo.contactMobile ? contactInfo.contactMobile : contactInfo.contact.mobile);
                     $$("#create-cont-birthday").val(contactInfo.contact.birthday);
                 }
 
@@ -335,13 +370,13 @@
                     $$(".photo").html(imgHtml);
                     c = new croppie(document.getElementById("web-img"), {
                         viewport: {
-                            width: 114,
-                            height: 114,
+                            width: 178,
+                            height: 178,
                             type: "circle",
                         },
                         boundary: {
-                            width: 114,
-                            height: 114,
+                            width: 178,
+                            height: 178,
                         },
                         showZoomer: false,
                     });
