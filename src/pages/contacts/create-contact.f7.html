@@ -1,94 +1,101 @@
 <template>
-	<div class="page" data-name="create-contact" id="create-contact">
-		<div class="artwork"></div>
-		<div class="navbar">
-			<div class="navbar-inner sliding">
-				<div class="header-cont">
-					<div class="header">
-						<a href="#" class="back-btn back link">
-							<i class="icons material-icons">chevron_left</i>
-						</a>
-						<h1 class="title">{{localize "create_contact"}}</h1>
-						<div class="none"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="page-content">
-			<div class="sqr_bck" id="sqr1"></div>
-			<div class="sqr_bck" id="sqr2"></div>
-			<div class="sqr_bck" id="sqr3"></div>
-			<div class="upload-cont">
-				<div class="upload-img">
-					<div class="photo"></div>
-					<label class="img-btn" for="file-upload">
-						<i class="icons material-icons">photo_camera</i>
-						<input id="file-upload" type="file" style="display: none;" />
-					</label>
-				</div>
-			</div>
-			<div class="inputs list">
-				<ul>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-name" placeholder="{{localize 'name'}}" required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="email" id="create-cont-email" placeholder="{{localize 'mail'}}" required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-mobile" placeholder="{{localize 'phone'}}" required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-relation" placeholder="{{localize 'relation'}}" required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="date" id="create-cont-birthday" placeholder="Birthday" class="aft" required validate />
-							</div>
-						</div>
-					</li>
-					<li class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" id="create-cont-password" placeholder="{{localize 'pass'}}" required validate />
-							</div>
-						</div>
-					</li>
-					<!-- falta checar la edad -->
-				</ul>
-			</div>
-			<div class="btns-cont center none" style="flex-direction: column;">
-				
-				<p style="width: 70%; text-align: center; margin-bottom: 30px;">{{localize "guardian_info"}}</p>
+    <div class="page" data-name="create-contact" id="create-contact">
+        <div class="artwork"></div>
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a href="#" class="back-btn back link">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title">{{localize "create_contact"}}</h1>
+                        <div class="none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="sqr_bck" id="sqr1"></div>
+            <div class="sqr_bck" id="sqr2"></div>
+            <div class="sqr_bck" id="sqr3"></div>
+            <div class="upload-cont">
+                <div class="upload-img">
+                    <div class="photo"></div>
+                    <label class="img-btn" for="file-upload">
+                        <i class="icons material-icons">photo_camera</i>
+                        <input id="file-upload" type="file" style="display: none;" />
+                    </label>
+                </div>
+            </div>
+            <div class="inputs list">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="create-cont-name" placeholder="{{localize 'name'}}" required
+                                    validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="email" id="create-cont-email" placeholder="{{localize 'mail'}}" required
+                                    validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="create-cont-mobile" placeholder="{{localize 'phone'}}" required
+                                    validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="create-cont-relation" placeholder="{{localize 'relation'}}"
+                                    required validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="date" id="create-cont-birthday" placeholder="Birthday" class="aft" required
+                                    validate />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" id="create-cont-password" placeholder="{{localize 'pass'}}" required
+                                    validate />
+                            </div>
+                        </div>
+                    </li>
+                    <!-- falta checar la edad -->
+                </ul>
+            </div>
+            <div class="btns-cont center none" style="flex-direction: column;">
 
-				<a href="/guardian/create" id="create-guardian-btn" class="button color-white round large">Select / Create guardian</a>
-			</div>
-			<div class="btns-cont center">
-				<a id="create-member-btn" class="button color-blue round large">{{localize "create_contact"}}</a>
-			</div>
-			<div class="footer">
-				<div class="sqr_bck" id="sqr4"></div>
-				<div class="sqr_bck" id="sqr5"></div>
-			</div>
-		</div>
-	</div>
+                <p style="width: 70%; text-align: center; margin-bottom: 30px;">{{localize "guardian_info"}}</p>
+
+                <a href="/guardian/create" id="create-guardian-btn" class="button color-white round large">Select /
+                    Create guardian</a>
+            </div>
+            <div class="btns-cont center">
+                <a id="create-member-btn" class="button color-blue round large">{{localize "create_contact"}}</a>
+            </div>
+            <div class="footer">
+                <div class="sqr_bck" id="sqr4"></div>
+                <div class="sqr_bck" id="sqr5"></div>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
     import $$ from "dom7";
@@ -165,13 +172,7 @@
                 });
 
                 $$("#create-member-btn").on("click", async function(e) {
-                    console.log("create-member-btn click");
-                    console.log(app.data.server);
                     e.preventDefault();
-
-                    //obtiene la foto ya cortada en formato blob
-                    // c.result("blob").then((blob) => {console.log(blob);});
-
                     username = $$("#create-cont-name").val();
                     email = $$("#create-cont-email").val();
                     mobile = $$("#create-cont-mobile").val();
@@ -179,48 +180,45 @@
                     birthday = $$("#create-cont-birthday").val();
                     password = $$("#create-cont-password").val();
 
-                    // if (!c)
-                    // {
-                    // 	app.dialog.alert('Please upload an image');
-                    // 	return false;
-                    // }
                     if (!validateText(username, 'Please, enter your family member\'s desired username.', 'Your username may not have spaces before or after the text.')) {
                         console.log("username not valid");
-                        return false;
-                    }
-                    if (!validateText(password, 'Please, enter your family member\'s desired password.', '')) {
-                        console.log("password not valid");
-                        return false;
-                    }
-                    if (!validateText(mobile, 'Plase, enter your family member\'s mobile phone number.', 'Your phone number may not have spaces before or after the text')) {
                         return false;
                     }
                     if (!validateEmail(email)) {
                         app.dialog.alert('Please enter a valid email');
                         return false;
                     }
+                    if (!validateText(mobile, 'Plase, enter your family member\'s mobile phone number.', 'Your phone number may not have spaces before or after the text')) {
+                        return false;
+                    }
+                    if (!validateText(relation, 'Plase, enter your relation with the family member.', 'How did you even manage to do that? No spaces before or after the text on your relation please.')) {
+                        return false;
+                    }
                     if (!validateText(birthday, 'Plase, enter your family member\'s birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.')) {
                         return false;
                     }
-
+                    if (!validateText(password, 'Please, enter your family member\'s desired password.', '')) {
+                        return false;
+                    }
+                    if (!c) {
+                        app.dialog.alert('Please upload a photo!');
+                        return false;
+                    }
                     app.preloader.show("blue");
 
                     app.request.promise.get(`${app.data.server}/users/?email=${email.toLowerCase()}`)
                         .then(async function(res) {
                             if (res.data === "[]") {
-                                console.log(`result was empty\r\nCreating user\r\n${res.data}`);
                                 app.request.promise.postJSON(`${app.data.server}/auth/local/register`, {
                                         "username": email,
                                         "password": password,
                                         "email": email,
                                     })
                                     .then(async function(res2) {
-                                        console.log(`User created successfully\r\n\r\n${res2.data}`);
-                                        console.log(res2);
-                                        console.log("res.data")
-                                        console.log(res2.data);
+                                        let resp = false,
+                                            resp2 = false;
 
-                                        await app.request({
+                                        await app.request.promise({
                                             url: app.data.server + '/users/' + res2.data.user.id,
                                             method: 'PUT',
                                             data: {
@@ -229,35 +227,52 @@
                                                 "name": username,
                                                 "created_as_receiver": true,
                                             }
+                                        }).then(function(res) {
+                                            resp = res;
+                                        }).catch(function(res2) {
+                                            console.log('Error al cargar los datos' + res2);
                                         });
-                                        c.result('blob', 'png').then(async blob => {
+
+                                        await c.result('blob', 'png').then(async blob => {
                                             const data = new FormData();
                                             data.append("files", blob, 'profile.png');
                                             data.append("refId", res2.data.user.id);
                                             data.append("ref", "user");
                                             data.append('source', 'users-permissions');
                                             data.append('field', 'profilePicture');
-                                            await app.request({
+                                            await app.request.promise({
                                                 url: app.data.server + '/upload',
                                                 method: "POST",
                                                 crossDomain: true,
                                                 contentType: "multipart/form-data",
                                                 data: data
+                                            }).then(function(res) {
+                                                resp2 = res;
+                                            }).catch(function(res2) {
+                                                console.log('Error al cargar la foto' + res2);
                                             });
                                         });
 
-                                        console.log("Inserting contact to newly created temp contact");
-                                        let assignResult = await assignRelation(loggedUser, res2.data.user, username, relation, false, false, false);
-                                        app.preloader.hide();
-                                        console.log("assignResult from temp user");
-                                        console.log(assignResult);
-                                        if (assignResult.result) {
-                                            app.dialog.alert("Contact added successfully!, updating user");
-                                            await app.methods.updateCurrentUser();
-                                            // app.views.main.router.navigate({name: 'invite-admin'})
-                                            await app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
+                                        if (resp.status === 200 && resp2.status === 200) {
+                                            let photo = JSON.parse(resp2.data)[0];
+                                            let assignResult = await assignRelation(loggedUser, res2.data.user, username, relation, false, false, false, photo.id);
+                                            if (assignResult.result) {
+                                                await app.methods.updateCurrentUser();
+                                                app.preloader.hide();
+                                                await app.dialog.alert("Contact added successfully!");
+                                                app.views.main.router.navigate({
+                                                    url: '/memories/home/user/' + loggedUser.id,
+                                                });
+                                            } else {
+                                                app.dialog.alert("couldn't add contact! " + assignResult.message);
+                                            }
                                         } else {
-                                            app.dialog.alert("couldn't add contact! " + assignResult.message);
+                                            app.preloader.hide();
+                                            if (resp.status !== 200) {
+                                                app.dialog.alert('Something happened trying to upload the data for the user.' + '\r\n' + resp.message[0].messages[0].message);
+                                            } else if (resp2.status === 200) {
+                                                app.dialog.alert('Something happened trying to upload the photo for the user.' + '\r\n' + resp2.message[0].messages[0].message);
+                                            }
                                         }
                                     })
                                     .catch(function(err) {
@@ -269,18 +284,13 @@
                                     })
                             } else {
                                 let user = JSON.parse(res.data)[0];
-                                console.log(`result wasn't empty!\r\nassigning user\r\n${user} [create-member-btn.onClick]`)
-                                console.log(user)
                                 try {
-
-                                    console.log("Inserting contact to existing contact [create-member-btn.onClick]");
-                                    let assignResult = await assignRelation(loggedUser, user, username, relation, false, false, false);
-                                    app.preloader.hide();
-                                    console.log("assignResult from existing user");
-                                    console.log(assignResult);
+                                    let assignResult = await assignRelation(loggedUser, user, username, relation, false, false, false, '');
                                     if (assignResult.result) {
-                                        app.dialog.alert("Contact added successfully!");
-                                        await app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
+                                        await app.methods.updateCurrentUser();
+                                        app.preloader.hide();
+                                        await app.dialog.alert("Contact added successfully!");
+                                        app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
                                     } else {
                                         app.dialog.alert("couldn't add contact! " + assignResult.message);
                                     }
@@ -299,30 +309,14 @@
                         })
                 });
 
-                async function assignRelation(targetUser, contactUser, contactNickname, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories) {
-                    console.log("user");
-                    console.log(contactUser);
-                    console.log("nickname");
-                    console.log(contactNickname);
-                    console.log("relation");
-                    console.log(contactRelation);
-                    console.log("isAdmin");
-                    console.log(contactIsAdmin);
-                    console.log("editMemories");
-                    console.log(contactEditMemories);
-                    console.log("isMinor");
-                    console.log(contactIsMinor);
-
+                async function assignRelation(targetUser, contactUser, contactNickname, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories, photo) {
                     let result = {
                         result: false,
                         message: ""
                     };
                     await app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUser.id}&contact=${contactUser.id}`)
                         .then(async function(res) {
-                            // console.log("right after get");
-                            // console.log(res);
                             if (res.data === "[]") {
-                                // console.log('Already has contact');
                                 await app.request.promise.postJSON(`${app.data.server}/contacts`, {
                                         "relation": contactRelation,
                                         "owner": {
@@ -334,7 +328,8 @@
                                         "isAdmin": contactIsAdmin,
                                         "isMinor": contactIsMinor,
                                         "editMemories": contactEditMemories,
-                                        "nickname": contactNickname
+                                        "nickname": contactNickname,
+                                        "contactPicture": photo,
                                     })
                                     .then(function(res) {
                                         console.log("response assignRelation");
@@ -352,10 +347,9 @@
                                 // console.log('doesnt have contact');
                                 result.result = false;
                                 result.message = "You already have that user as a contact";
+
                             }
                         });
-                    console.log("return of assignContact")
-                    console.log(result);
                     return result;
                 }
 
@@ -385,7 +379,6 @@
                 }
 
                 function validateText(text, emptyText, trimmedText, checkTrimmed = true) {
-                    console.log(`${text}, trim?: ${checkTrimmed}`);
                     if (isTextEmptyOrWhitespace(text)) {
                         app.dialog.alert(emptyText);
                         return false;
@@ -485,13 +478,13 @@
                     $$(".photo").html(imgHtml);
                     c = new croppie(document.getElementById("web-img"), {
                         viewport: {
-                            width: 114,
-                            height: 114,
+                            width: 178,
+                            height: 178,
                             type: "circle",
                         },
                         boundary: {
-                            width: 114,
-                            height: 114,
+                            width: 178,
+                            height: 178,
                         },
                         showZoomer: false,
                     });
