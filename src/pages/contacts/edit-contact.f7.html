@@ -207,7 +207,11 @@
                                     });
                                 } else {
                                     app.preloader.hide();
-                                    app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_error_1")}`);
+                                    if (valid) {
+                                        app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_error_2")}`);
+                                    } else {
+                                        app.dialog.alert(`ERROR: \r\n${window.localize("edit_contact_error_1")}`);
+                                    }
                                 }
                             } else {
                                 //"This contact relation doesn't exist, how did you manage to do this?";

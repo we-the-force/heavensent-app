@@ -25,7 +25,7 @@
 							<div class="item-input-wrap">
 								<input type="password" id="password" placeholder='{{localize "pass"}}' required validate />
 								<i id="pass-edit-icon" class="icons material-icons">edit</i>
-								<span class="show" style="display: none;">Show</span>
+								<span class="show" style="display: none;">{{localize "show"}}</span>
 								<!-- <span class="input-clear-button"></span> -->
 							</div>
 						</div>
@@ -48,250 +48,219 @@
 	</div>
 </template>
 <script>
-	import $$ from "dom7";
-	import localforage from "localforage";
+    import $$ from "dom7";
+    import localforage from "localforage";
 
 
-	export default {
-		on: {
-			pageBeforeIn: async function(){
-				var self = this;
-				var app = self.$app;
-				
-				console.log("---pageBeforeIn, updating user")
-				var localUser = await app.methods.getLocalValue('loggedUser');
-				if (localUser != null)
-				{
-					app.request.promise.get(`${app.data.server}/users/${localUser.id}`).then(async function(getResult){
-						let user = JSON.parse(getResult.data);
-						
-						if (user.confirmed)
-						{
-							
-						}
-						else
-						{
-							app.dialog.alert(`That user is no longer confirmed! Please check your email or contact an admin`);
-						}
-					}).catch(async function(error){
-						let result = await app.methods.clearCurrentUser();
-						if (result === true)
-						{
-							console.log("Cleared user data succesfully [pageBeforeIn]");
-						}
-						else
-						{
-							console.log("Couldn't clear user [pageBeforeIn]");
-						}
-					})
-				}
-				else
-				{
-					console.log("User wasn't logged in [pageBeforeIn]");
-				}
-				
-				function isTextEmptyOrWhitespace(value)
-				{
-					if (!value || !value.trim())
-					{
-						return true;
-					}
-					return false;
-				}
-			},
-			pageInit: async function (e, page) {
-				var self = this;
-				var emailInputValue = "";
-				var passwordInputValue = "";
-				function getBrowserLocales(options = {}) {
-					const defaultOptions = {
-							languageCodeOnly: false,
-					};
+    export default {
+        on: {
+            pageBeforeIn: async function() {
+                var self = this;
+                var app = self.$app;
 
-					const opt = {
-							...defaultOptions,
-							...options,
-					};
+                console.log("---pageBeforeIn, updating user")
+                var localUser = await app.methods.getLocalValue('loggedUser');
+                if (localUser != null) {
+                    app.request.promise.get(`${app.data.server}/users/${localUser.id}`).then(async function(getResult) {
+                        let user = JSON.parse(getResult.data);
 
-					const browserLocales =
-							navigator.languages === undefined
-									? [navigator.language]
-									: navigator.languages;
+                        if (user.confirmed) {
 
-					if (!browserLocales) {
-							return undefined;
-					}
+                        } else {
+                            app.dialog.alert(`That user is no longer confirmed! Please check your email or contact an admin`);
+                        }
+                    }).catch(async function(error) {
+                        let result = await app.methods.clearCurrentUser();
+                        if (result === true) {
+                            console.log("Cleared user data succesfully [pageBeforeIn]");
+                        } else {
+                            console.log("Couldn't clear user [pageBeforeIn]");
+                        }
+                    })
+                } else {
+                    console.log("User wasn't logged in [pageBeforeIn]");
+                }
 
-					return browserLocales.map(locale => {
-							const trimmedLocale = locale.trim();
+                function isTextEmptyOrWhitespace(value) {
+                    if (!value || !value.trim()) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            pageInit: async function(e, page) {
+                var self = this;
+                var emailInputValue = "";
+                var passwordInputValue = "";
 
-							return opt.languageCodeOnly
-									? trimmedLocale.split(/-|_/)[0]
-									: trimmedLocale;
-					});
-				}
-				var app = self.$app;
-				console.log(getBrowserLocales());
-				console.log(window.language);
-				if (window.language == 'es_MX') {
-					$$('#login-btn').css('font-size', '14px');
-				}
+                function getBrowserLocales(options = {}) {
+                    const defaultOptions = {
+                        languageCodeOnly: false,
+                    };
 
-				$$(".show").click(function (val) {
-					let type = $$("#password").attr("type");
-					if (type == "password") {
-						$$("#password").attr("type", "text");
-					} else {
-						$$("#password").attr("type", "password");
-					}
-				});
+                    const opt = {
+                        ...defaultOptions,
+                        ...options,
+                    };
 
-				////mostrar span de show
-				$$("#password").on("input:notempty", function (val) {
-					$$(".show").css("display", "block");
-					$$("#pass-edit-icon").css("display", "none");
-				});
+                    const browserLocales =
+                        navigator.languages === undefined ?
+                        [navigator.language] :
+                        navigator.languages;
 
-				////ocultar span cuando el input este vacio
-				$$("#signup-password").on("input:empty", function (val) {
-					$$(".show").css("display", "none");
-					$$("#pass-edit-icon").css("display", "block");
-				});
-				
-				$$("#login-btn").on("click", async function (e) {
-					e.preventDefault();
-					emailInputValue = $$("#email").val();
-					passwordInputValue = $$("#password").val();
-					
-					if (!validateEmail(emailInputValue, 'enter a valid email'))
-					{
-						console.log('username not valid [pageInit.login-btn.onClick]');
-						return false;
-					}
-					if (!validateText(passwordInputValue, 'enter a valid password'))
-					{
-						console.log('password not valid [pageInit.login-btn.onClick]');
-						return false;
-					}
-					
-					app.preloader.show("blue");
-					// console.log(`Posting to "${app.data.server}/auth/local"`);
-					app.request.promise.postJSON(app.data.server + "/auth/local", {
-						identifier: emailInputValue,
-						password: passwordInputValue,
-					})
-					.then(async function (res) {
-						console.log("Getting inside 'then' [pageInit.login-btn.onClick]");
-						console.log(res);
-						app.preloader.hide();
-						
-						let user = res.data.user;
-						if (!user.confirmed)
-						{
-							app.dialog.alert("This account has not been confirmed yet, please check your email");
-							return false;
-						}
-						else
-						{
-							console.log("Setting logged user to localStorage [pageInit.login-btn.onClick]");
-							if (await app.methods.setLocalValueToKey(user, 'loggedUser'))
-							{
-								let hasAdmin = await app.methods.userHasAdmin();
-								console.log("Has admin? [pageInit.login-btn.onClick]");
-								console.log(hasAdmin);
-								if (hasAdmin)
-								{
-									console.log("Successfully logged in [pageInit.login-btn.onClick]");
-									// console.log(await app.methods.getLocalValue('loggedUser'))
-									
-									if (await app.methods.userHasValidMembership())
-									{
-										await app.methods.loadContacts();
-										await app.methods.loadAdminedContacts();
-										console.log("User has a valid membership! [pageInit.login-btn.onClick]");
-										// app.views.main.router.navigate({ name: "home-memories" });
-										app.views.main.router.navigate(`/memories/home/user/${user.id}`);
-									}
-									else
-									{
-										console.log("User doesn't have a valid membership! [pageInit.login-btn.onClick]");
-										await app.views.main.router.navigate({
-											name: 'select-membership',
-											params: { 
-												userID: user.id,
-												clearOnBack: "1"
-											}
-										})
-									}
-									
-								}
-								else
-								{
-									app.dialog.alert('Your account has no admin assigned to it currently, please fill out your admin info.');
-									await app.views.main.router.navigate({
-										name: 'invite-admin',
-										params: { userID: user.id }
-									})
-								}
-							}
-							else
-							{
-								console.log("Couldn't set the user");
-							}
-						}
-					})
-					.catch(async function (err) {
-						app.preloader.hide();
-						console.log("Errorerror [pageInit.login-btn.onClick]");
-						console.log(err);
-						var obj = JSON.parse(err.xhr.response);
-						app.dialog.alert('Some fields are incomplete or incorrect, please try again.'+'\r\n'+obj.message[0].messages[0].message);
-					});
-				});
-				
-				function validateEmail(mail, errorText) 
-				{
-					if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
-					{
-						return (true);
-					}
-					app.dialog.alert(errorText);
-					return (false);
-				}
-				function validateText(text, emptyText, trimmedText, checkTrimmed = true)
-				{
-					if (isTextEmptyOrWhitespace(text))
-					{
-						app.dialog.alert(emptyText);
-						return false;
-					}
-					else
-					{
-						if (checkTrimmed)
-						{
-							if (!isTextTrimmed(text))
-							{
-								app.dialog.alert(trimmedText);
-								return false;
-							}
-						}
-						return true;
-					}
-				}
-				function isTextEmptyOrWhitespace(value)
-				{
-					if (!value || !value.trim())
-					{
-						return true;
-					}
-					return false;
-				}
-				
-				function isTextTrimmed(value)
-				{
-					return (value == value.trim());
-				}
-			},
-		},
-	};
+                    if (!browserLocales) {
+                        return undefined;
+                    }
+
+                    return browserLocales.map(locale => {
+                        const trimmedLocale = locale.trim();
+
+                        return opt.languageCodeOnly ?
+                            trimmedLocale.split(/-|_/)[0] :
+                            trimmedLocale;
+                    });
+                }
+                var app = self.$app;
+                console.log(getBrowserLocales());
+                console.log(window.language);
+                if (window.language == 'es_MX') {
+                    $$('#login-btn').css('font-size', '14px');
+                }
+
+                $$(".show").click(function(val) {
+                    let type = $$("#password").attr("type");
+                    if (type == "password") {
+                        $$("#password").attr("type", "text");
+                    } else {
+                        $$("#password").attr("type", "password");
+                    }
+                });
+
+                ////mostrar span de show
+                $$("#password").on("input:notempty", function(val) {
+                    $$(".show").css("display", "block");
+                    $$("#pass-edit-icon").css("display", "none");
+                });
+
+                ////ocultar span cuando el input este vacio
+                $$("#signup-password").on("input:empty", function(val) {
+                    $$(".show").css("display", "none");
+                    $$("#pass-edit-icon").css("display", "block");
+                });
+
+                $$("#login-btn").on("click", async function(e) {
+                    e.preventDefault();
+                    emailInputValue = $$("#email").val();
+                    passwordInputValue = $$("#password").val();
+
+                    if (!validateEmail(emailInputValue, 'enter a valid email')) {
+                        console.log('username not valid [pageInit.login-btn.onClick]');
+                        return false;
+                    }
+                    if (!validateText(passwordInputValue, 'enter a valid password')) {
+                        console.log('password not valid [pageInit.login-btn.onClick]');
+                        return false;
+                    }
+
+                    app.preloader.show("blue");
+                    // console.log(`Posting to "${app.data.server}/auth/local"`);
+                    app.request.promise.postJSON(app.data.server + "/auth/local", {
+                            identifier: emailInputValue,
+                            password: passwordInputValue,
+                        })
+                        .then(async function(res) {
+                            console.log("Getting inside 'then' [pageInit.login-btn.onClick]");
+                            console.log(res);
+                            app.preloader.hide();
+
+                            let user = res.data.user;
+                            if (!user.confirmed) {
+                                app.dialog.alert("This account has not been confirmed yet, please check your email");
+                                return false;
+                            } else {
+                                console.log("Setting logged user to localStorage [pageInit.login-btn.onClick]");
+                                if (await app.methods.setLocalValueToKey(user, 'loggedUser')) {
+                                    let hasAdmin = await app.methods.userHasAdmin();
+                                    console.log("Has admin? [pageInit.login-btn.onClick]");
+                                    console.log(hasAdmin);
+                                    if (hasAdmin) {
+                                        console.log("Successfully logged in [pageInit.login-btn.onClick]");
+                                        // console.log(await app.methods.getLocalValue('loggedUser'))
+
+                                        if (await app.methods.userHasValidMembership()) {
+                                            await app.methods.loadContacts();
+                                            await app.methods.loadAdminedContacts();
+                                            console.log("User has a valid membership! [pageInit.login-btn.onClick]");
+                                            // app.views.main.router.navigate({ name: "home-memories" });
+                                            app.views.main.router.navigate(`/memories/home/user/${user.id}`);
+                                        } else {
+                                            console.log("User doesn't have a valid membership! [pageInit.login-btn.onClick]");
+                                            await app.views.main.router.navigate({
+                                                name: 'select-membership',
+                                                params: {
+                                                    userID: user.id,
+                                                    clearOnBack: "1"
+                                                }
+                                            })
+                                        }
+
+                                    } else {
+                                        app.dialog.alert('Your account has no admin assigned to it currently, please fill out your admin info.');
+                                        await app.views.main.router.navigate({
+                                            name: 'invite-admin',
+                                            params: {
+                                                userID: user.id
+                                            }
+                                        })
+                                    }
+                                } else {
+                                    console.log("Couldn't set the user");
+                                }
+                            }
+                        })
+                        .catch(async function(err) {
+                            app.preloader.hide();
+                            console.log("Errorerror [pageInit.login-btn.onClick]");
+                            console.log(err);
+                            var obj = JSON.parse(err.xhr.response);
+                            app.dialog.alert('Some fields are incomplete or incorrect, please try again.' + '\r\n' + obj.message[0].messages[0].message);
+                        });
+                });
+
+                function validateEmail(mail, errorText) {
+                    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+                        return (true);
+                    }
+                    app.dialog.alert(errorText);
+                    return (false);
+                }
+
+                function validateText(text, emptyText, trimmedText, checkTrimmed = true) {
+                    if (isTextEmptyOrWhitespace(text)) {
+                        app.dialog.alert(emptyText);
+                        return false;
+                    } else {
+                        if (checkTrimmed) {
+                            if (!isTextTrimmed(text)) {
+                                app.dialog.alert(trimmedText);
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                }
+
+                function isTextEmptyOrWhitespace(value) {
+                    if (!value || !value.trim()) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                function isTextTrimmed(value) {
+                    return (value == value.trim());
+                }
+            },
+        },
+    };
 </script>

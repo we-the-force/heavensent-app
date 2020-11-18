@@ -3,8 +3,10 @@
 
     "lenguage": "Español (MX)",
     "edit_contact_error_1": "There was an error updating your contact!",
+    "edit_contact_error_2": "All fields are equal please change something",
     "hello": "Hello",
     "bye": "Bye",
+    "show": "Show",
     "mail": "E-mail",
     "pass": "Password",
     "sign_up": "Sign up",
