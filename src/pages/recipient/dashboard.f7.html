@@ -36,9 +36,7 @@
             <div class="sqr_bck" id="sqr2"></div>
             <div class="sqr_bck" id="sqr3"></div>
 
-
-
-            <div data-space-between="20" data-slides-per-view="1.1" data-centered-slides="true"
+            <div data-initial-slide="{{Swiper}}" data-space-between="20" data-slides-per-view="1.1" data-centered-slides="true"
                 class="swiper-container swiper-init memories-swiper">
                 <div class="swiper-wrapper">
                     {{#js_if "this.Memories.toString() != []"}}
@@ -75,7 +73,7 @@
                             <div class="card-footer">
                                 <div class="btns-cont center">
                                     <!-- <a href="/memories/view/memory/{{id}}" class="button color-blue round small">See</a> -->
-                                    <a href="/memory/{{id}}"
+                                    <a href="/user/{{@root.CurrentUser}}/memory/{{id}}/{{@index}}"
                                         class="button color-blue round small">{{localize "see"}}</a>
                                 </div>
                             </div>
@@ -153,6 +151,7 @@
             pageInit: function(e, page) {
                 var self = this;
                 var app = self.$app;
+                console.log(this);
                 var searchbar1 = app.searchbar.create({
                     el: '.searchbar1',
                     searchContainer: '.list-search1',
@@ -174,7 +173,6 @@
                 // memory.audio = false; /* checa si hay audios */
                 // memory.location = false; /* checa si hay ubicacion */
                 // memory.ondemand = true; /* checa si on demand esta activo */
-
                 // $$('<div class="swiper-slide">' +
                 //     '<div class="card complete v_dashboard_memory">' +
                 //     '<div class="card-header">' +

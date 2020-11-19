@@ -646,11 +646,12 @@ var routes = [
     }, */
     {
         name: 'memory-dashboard',
-        path: '/memories/dashboard/user/:userID',
+        path: '/memories/dashboard/user/:userID/:swiper',
         async: async function(routeTo, routeFrom, resolve, reject) {
                 var router = this;
                 var app = router.app;
                 var userID = routeTo.params.userID;
+                var swiper = routeTo.params.swiper;
 
                 var baseMemories = null;
                 await app.request.promise.get(`${app.data.server}/memories/?recipients.id=${userID}`).then(function(memResult) {
@@ -659,6 +660,7 @@ var routes = [
                     console.log("Error getting memories!");
                     console.log(err);
                 })
+                console.log(swiper);
 
                 // getMemories(baseMemories);
 
@@ -668,7 +670,8 @@ var routes = [
                     context: {
                         Server: app.data.server,
                         Memories: getMemories(baseMemories),
-                        CurrentUser: userID
+                        CurrentUser: userID,
+                        Swiper: swiper
                     }
                 })
 
@@ -709,11 +712,13 @@ var routes = [
     },
     {
         name: 'view-memory',
-        path: '/memory/:memoryID',
+        path: '/user/:currentUserID/memory/:memoryID/:swiperID',
         async: async function(routeTo, routeFrom, resolve, reject) {
                 var router = this;
                 var app = router.app;
                 var memoryID = routeTo.params.memoryID;
+                var currentUserID = routeTo.params.currentUserID;
+                var swiperID = routeTo.params.swiperID;
 
                 var baseMem = null;
                 await app.request.promise.get(`${app.data.server}/memories/${memoryID}`).then(function(memResult) {
@@ -734,6 +739,8 @@ var routes = [
                         context: {
                             Server: app.data.server,
                             Memory: getMemory(baseMem),
+                            CurrentUser: currentUserID,
+                            SwiperID: swiperID,
                         }
                     })
                 } else {
