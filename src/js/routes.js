@@ -129,7 +129,7 @@ async function isLoggedIn(to, from, resolve, reject) {
     if (valid) {
         reject();
         if (!await app.methods.userHasAdmin()) {
-            app.dialog.alert(`Your account has no admin associated with it, please fill out your admin information.`);
+            app.dialog.alert(`${window.localize('no_admin_please_fill')}`);
             await router.navigate({
                 name: 'invite-admin',
                 params: { userID: user.id }
@@ -947,7 +947,7 @@ var routes = [
             }).then(async function(sessionRes) {
                 // console.log('get session result');
                 // console.log(sessionRes.data);
-            
+
                 app.preloader.show('blue');
                 var sessionData = JSON.parse(sessionRes.data);
                 console.log("sessionData", sessionData);
@@ -977,21 +977,21 @@ var routes = [
                         headers: headers
                     });
                     paymentMethodData = JSON.parse(paymentMethodData.data);
-                    
+
 
                     let creationDate = new Date(paymentMethodData.created * 1000);
                     console.log("PaymentIntent: ", paymentIntentData);
                     console.log("PaymentMethod: ", paymentMethodData);
                     let membershipObject = createMembershipObject(paymentIntentData.id, creationDate, paymentMethodData.card.last4, paymentMethodData.card.brand, planId);
                     let paymentObject = createPaymentObject(paymentIntentData.id, loggedUser.id, creationDate, plan.name, (sessionData.amount_total / 100), sessionData.customer_email);
-                    
+
                     console.log("Membership:\r\n", membershipObject);
                     console.log("Payment:\r\n", paymentObject);
 
                     await assignPlan(membershipObject, paymentObject);
 
-                }).catch(function(err){
-                    console.log("Error!\r\n",err);
+                }).catch(function(err) {
+                    console.log("Error!\r\n", err);
                 });
 
                 /*

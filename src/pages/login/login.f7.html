@@ -104,8 +104,7 @@
                     };
 
                     const browserLocales =
-                        navigator.languages === undefined ?
-                        [navigator.language] :
+                        navigator.languages === undefined ? [navigator.language] :
                         navigator.languages;
 
                     if (!browserLocales) {
@@ -205,7 +204,7 @@
                                         }
 
                                     } else {
-                                        app.dialog.alert('Your account has no admin assigned to it currently, please fill out your admin info.');
+                                        app.dialog.alert(`${window.localize('no_admin_please_fill')}`);
                                         await app.views.main.router.navigate({
                                             name: 'invite-admin',
                                             params: {
