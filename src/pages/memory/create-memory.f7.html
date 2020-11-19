@@ -307,7 +307,7 @@
                 var desc = sessionStorage.desc;
                 var immediately = sessionStorage.immediately;
                 var date = sessionStorage.date;
-                var time = sessionStorage.time;
+                // var time = sessionStorage.time;
                 var repeat = sessionStorage.repeat;
                 var date_end = sessionStorage.date_end;
                 var footer = sessionStorage.footer;
@@ -377,7 +377,8 @@
 				//	currentMembership = 'Sin ' + window.localize('membership');
 				//}
 
-                if (date && time && repeat) {
+                // if (date && time && repeat) {
+                if (date && repeat) {
                     $$('.date-title .edit-btn').removeClass('none');
                     $$('.deliver-cont .btns-cont').addClass('none');
                     $$('.deliver-cont .deliver-info').removeClass('none');
@@ -391,7 +392,7 @@
                         $$('.deliver-cont .deliver-info .time-info').addClass('none');
                     } else {
                         $$('#deliver-date').val(JSON.parse(sessionStorage.date));
-                        $$('#deliver-time').val(JSON.parse(sessionStorage.time));
+                        // $$('#deliver-time').val(JSON.parse(sessionStorage.time));
                     }
                     $$('#select-repeat p').text(JSON.parse(sessionStorage.repeat))
                     if (JSON.parse(sessionStorage.date_end) != "") {
@@ -410,10 +411,11 @@
                     }
                     $$('.deliver-cont .deliver-info .footer-deliver').text(JSON.parse(sessionStorage.footer));
                     $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date));
-                    $$('.deliver-cont .deliver-info .time-info .val').text(JSON.parse(sessionStorage.time));
+                    // $$('.deliver-cont .deliver-info .time-info .val').text(JSON.parse(sessionStorage.time));
                 }
 
-                if (sessionStorage.date && sessionStorage.time && sessionStorage.repeat) {
+                // if (sessionStorage.date && sessionStorage.time && sessionStorage.repeat) {
+                if (sessionStorage.date && sessionStorage.repeat) {
                     $$('#accept-deliver-date').prop('disabled', false);
                     $$('#accept-deliver-date').removeClass('grey');
                     $$('#accept-deliver-date').addClass('popup-close');
@@ -753,10 +755,12 @@
                         let date = $$("#deliver-date").val();
                         // console.log(immediately);
 
-                        let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.time, ss.repeat, ss.date_end, ss.on_demand);
+                        // let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.time, ss.repeat, ss.date_end, ss.on_demand);
+                        let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.repeat, ss.date_end, ss.on_demand);
 
                         /* datos que sean completamente necesarios */
-                        let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
+                        // let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
+                        let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.repeat && ss.date_end && ss.on_demand;
                         if (result.valid) {
                             // CREATE MEMORY
                             app.preloader.show("blue");
@@ -889,7 +893,8 @@
                     return result;
                 }
 
-                function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand) {
+                // function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand) {
+                function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, repeat, date_end, on_demand) {
                     console.log("Starting validateFields");
                     // console.log(date_end);
                     var result = {
@@ -906,7 +911,7 @@
                             "reminderType": "none",
                             "reminder": {
                                 "date": null,
-                                "time": null,
+                                // "time": null,
                                 "repeat": "",
                                 "locationLat": "",
                                 "locationLng": "",
@@ -926,11 +931,11 @@
                     if (oldContacts != undefined) {
                         contacts = getContacts(oldContacts);
                     }
-                    if (time && !(time == "null" || time == "undefined" ||  time == "\"\"")) {
-                        let auxTime = time.substring(1, time.length - 1).split(':');
-                        time = `${String(auxTime[0]).padStart(2, 0)}:${String(auxTime[1]).padStart(2, 0)}:00.000`;
-                        // `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
-                    }
+                    // if (time && !(time == "null" || time == "undefined" ||  time == "\"\"")) {
+                    //     let auxTime = time.substring(1, time.length - 1).split(':');
+                    //     time = `${String(auxTime[0]).padStart(2, 0)}:${String(auxTime[1]).padStart(2, 0)}:00.000`;
+                    //     // `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                    // }
 
                     // console.log("Checking title [validateFields]");
                     // console.log(title);
@@ -1025,12 +1030,12 @@
                                 result.memory.reminder.date = null;
                             }
                             else {
-                                if (time)
-                                {
+                                // if (time)
+                                // {
                                     if (result.memory.reminderType === "none") {
                                         result.memory.reminderType = "date"
                                     }
-                                    if (dateHappensBeforeToday(date, time))
+                                    if (dateHappensBeforeToday(date))
                                     {
                                         result.valid = false;
                                         result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
@@ -1040,17 +1045,17 @@
                                     {
                                         result.memory.reminder.date = date;
                                     }
-                                }
+                                // }
                             }
-                            if (!time) {
-                                // result.valid = false;
-                                // result.message += result.errors > 0 ? ", no time" : "No time";
-                                // result.errors++;
-                                result.memory.reminder.time = null;
-                            }
-                            else {
-                                result.memory.reminder.time = time;
-                            }
+                            // if (!time) {
+                            //     // result.valid = false;
+                            //     // result.message += result.errors > 0 ? ", no time" : "No time";
+                            //     // result.errors++;
+                            //     result.memory.reminder.time = null;
+                            // }
+                            // else {
+                            //     result.memory.reminder.time = time;
+                            // }
                             if (!repeat) {
                                 // result.valid = false;
                                 // result.message += result.errors > 0 ? ", no repeat" : "No repeat";
@@ -1095,12 +1100,12 @@
 
                             }
                             else {
-                                if (time)
-                                {
+                                // if (time)
+                                // {
                                     if (result.memory.reminderType === "none") {
                                         result.memory.reminderType = "date"
                                     }
-                                    if (dateHappensBeforeToday(date, time))
+                                    if (dateHappensBeforeToday(date))
                                     {
                                         result.valid = false;
                                         result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
@@ -1110,15 +1115,15 @@
                                     {
                                         result.memory.reminder.date = date;
                                     }
-                                }
+                                // }
                             }
-                            if (!time) {
-                                // result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
-                                result.memory.reminder.time = null;
-                            }
-                            else {
-                                result.memory.reminder.time = time;
-                            }
+                            // if (!time) {
+                            //     // result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                            //     result.memory.reminder.time = null;
+                            // }
+                            // else {
+                            //     result.memory.reminder.time = time;
+                            // }
                             if (!repeat) {
                                 result.memory.reminder.repeat = "not";
                                 result.memory.reminder.date_end = null;
@@ -1158,7 +1163,7 @@
                         console.log("Immediately!");
                         let today = new Date();
                         result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
-                        result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes() + 10).padStart(2, 0)}:00.000`;
+                        // result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes() + 10).padStart(2, 0)}:00.000`;
                         // result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
                         if (!repeat) {
                                 // result.valid = false;
@@ -1214,13 +1219,17 @@
                     return result;
                 }
 
-                function dateHappensBeforeToday(date, time)
+                // function dateHappensBeforeToday(date, time)
+                function dateHappensBeforeToday(date)
                 {
                     let dateElements = date.split("-");
-                    let timeElements = time.split(":");
+                    // let timeElements = time == undefined ? new Date().time() : time.split(":");
+                    // console.log("Time elements: ", timeElements);
                     let today = new Date();
-                    let dateAsDate = new Date(dateElements[0], dateElements[1] - 1, dateElements[2] - 1, timeElements[0], timeElements[1]);
-                    console.log(`Original Date: ${date}, ${time}\r\n  asDate: ${dateAsDate}\r\n  asDate: ${today}\r\nEarlier: ${dateAsDate <= today}`);
+                    // let dateAsDate = new Date(dateElements[0], dateElements[1] - 1, dateElements[2] - 1, timeElements[0], timeElements[1]);
+                    let dateAsDate = new Date(dateElements[0], dateElements[1] - 1, dateElements[2] - 1);
+                    // console.log(`Original Date: ${date}, ${time}\r\n  asDate: ${dateAsDate}\r\n  asDate: ${today}\r\nEarlier: ${dateAsDate <= today}`);
+                    console.log(`Original Date: ${date}\r\n  asDate: ${dateAsDate}\r\n  asDate: ${today}\r\nEarlier: ${dateAsDate <= today}`);
 
                     return dateAsDate <= today;
                 }
@@ -1270,7 +1279,7 @@
                     let date_end = repeat == "Never" ? "" : $$('#date-end').val();
                     $$('.deliver-cont .deliver-info .footer-deliver').text($$('.popup-deliver .footer').text());
                     sessionStorage.date = JSON.stringify(date);
-                    sessionStorage.time = JSON.stringify(time);
+                    // sessionStorage.time = JSON.stringify(time);
                     sessionStorage.immediately = JSON.stringify(immediately);
                     sessionStorage.repeat = JSON.stringify(repeat);
                     sessionStorage.date_end = JSON.stringify(date_end);
