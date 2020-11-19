@@ -397,7 +397,8 @@
 					<ul>
 						<li><a id="edit-memory-btn" class="list-button item-link popover-close"
 								href="#">{{localize "edit"}}</a></li>
-						<li><a id="delete-memory-btn" class="list-button item-link" href="#">{{localize "delete"}}</a>
+						<li><a id="delete-memory-btn" class="list-button item-link popover-close"
+								href="#">{{localize "delete"}}</a>
 						</li>
 					</ul>
 				</div>
@@ -727,7 +728,43 @@
 
 				$$('.memory-options').on('click', function (val) {
 					$$('#edit-memory-btn')[0].href = "/memories/edit/memory/" + $$(this).prop("dataset").memory;
-				})
+					$$('#delete-memory-btn').off("click").click(x => {
+						let memory_id = $$(this).data('memory');
+						app.dialog.confirm(window.localize('delete_mem'), window.localize('delete_mem_title'), function (params) {
+							app.dialog.confirm(window.localize('delete_mem_2'), window.localize('delete_mem_title'), function (params) {
+								app.request.promise.get(app.data.server + '/memories/' + memory_id)
+									.then(async function (res) {
+										app.preloader.show('blue');
+										let data = JSON.parse(res.data);
+										await data.media.forEach(async el => {
+											await app.request.promise({
+												url: app.data.server + '/upload/files/' + el.id,
+												method: 'DELETE',
+											});
+											console.count('media');
+										});
+										app.request.promise({
+											url: app.data.server + '/memories/' + memory_id,
+											method: 'DELETE',
+										}).then(async function (res) {
+											await app.methods.updateCurrentUser();
+											app.preloader.hide();
+											app.dialog.alert(window.localize('delete_mem_success'));
+											app.views.main.router.refreshPage();
+
+										}).catch(function (res2) {
+											app.preloader.hide();
+											app.dialog.alert(window.localize('delete_mem_error'));
+
+										});
+									}).catch(function (res2) {
+										app.preloader.hide();
+										app.dialog.alert(window.localize('delete_mem_error'));
+									});
+							});
+						});
+					});
+				});
 
 				$$('.card.memory').click(function (val) {
 					// console.log($$(this).attr('id'));
