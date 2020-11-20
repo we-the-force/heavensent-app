@@ -450,6 +450,8 @@ var routes = [
         beforeEnter: [checkAuth, isMembershipValid],
         options: {
             reloadAll: true,
+            ignoreCache: true,
+            clearPreviousHistory: true
         },
         async: async function(routeTo, routeFrom, resolve, reject) {
             var router = this;
@@ -462,7 +464,6 @@ var routes = [
             var adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
             // console.log(contacts);
             // console.log(`Async function to home-memories, server: ${server}`);
-
             var currentUser;
             if (userID == -1) {
                 currentUser = loggedUser;
@@ -713,6 +714,11 @@ var routes = [
     {
         name: 'view-memory',
         path: '/user/:currentUserID/memory/:memoryID/:swiperID',
+        options: {
+            reloadAll: true,
+            ignoreCache: true,
+            clearPreviousHistory: true
+        },
         async: async function(routeTo, routeFrom, resolve, reject) {
                 var router = this;
                 var app = router.app;
