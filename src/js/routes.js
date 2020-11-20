@@ -19,6 +19,7 @@ import BirthdayMemory from '../pages/memory/birthday-memory.f7.html';
 import HomeMemories from '../pages/memory/home-memories.f7.html';
 import LocationMemory from '../pages/memory/add-location.f7.html';
 import ContactsMemory from '../pages/memory/add-contacts.f7.html';
+import OnBoarding from '../pages/onboarding/onboarding.f7.html';
 
 import MemoryDashboard from '../pages/recipient/dashboard.f7.html';
 import MemoryView from '../pages/recipient/view-memory.f7.html';
@@ -126,6 +127,8 @@ async function isLoggedIn(to, from, resolve, reject) {
     var user = await app.methods.getLocalValue('loggedUser');
     console.log(user);
     var valid = (await app.methods.userIsValid());
+    
+    
     if (valid) {
         reject();
         if (!await app.methods.userHasAdmin()) {
@@ -174,6 +177,12 @@ var routes = [
     },
 
     /* ----------------------------------- pages -------------------------------------------- */
+    {
+        name: 'onboarding',
+        path: '/onboarding',
+        // beforeEnter: isLoggedIn,
+        component: OnBoarding,
+    },
     {
         name: 'login',
         path: '/',
