@@ -125,7 +125,7 @@ async function isLoggedIn(to, from, resolve, reject) {
     await app.methods.updateCurrentUser();
     var user = await app.methods.getLocalValue('loggedUser');
     console.log(user);
-    var valid = (await app.methods.userIsValid());
+    var valid = await app.methods.userIsValid();
     if (valid) {
         reject();
         if (!await app.methods.userHasAdmin()) {
@@ -476,8 +476,8 @@ var routes = [
                     app.dialog.alert("We have problems loading this user's account, it looks like it no longer exists. Please contact support.");
                 });
             }
-
-            var isEditing = (currentUser.id != loggedUser.id);
+            let loggedID = loggedUser ? loggedUser.id : -1;
+            var isEditing = (currentUser.id != loggedID);
             // console.log(`IsEditing? ${isEditing} (${currentUser.id} != ${loggedUser.id})`);
 
             var ownedMemories;
