@@ -46,7 +46,7 @@
 					<i class="icon material-icons cloud">cloud</i>
 					<span class="tabbar-label">{{localize "my_memories"}}</span>
 				</a>
-				<a class="item-link" href="/memories/dashboard/user/{{CurrentUser.id}}">
+				<a class="item-link" href="/memories/dashboard/user/{{CurrentUser.id}}/0">
 					<div class="custom-icon">
 						<i class="icon material-icons cloud grey">cloud</i>
 						<i class="icon material-icons people">people</i>
@@ -132,36 +132,40 @@
 			{{/if}}
 			{{#js_if "(this.Memories.pending.length + this.Memories.scheduled.length) > 0"}}
 			{{#js_if "this.Memories.scheduled.length > 0"}}
-			<div class="scheduled-title">{{localize "scheduled"}}<span class="button switch1 material-icons active">view_list</span></div>
+			<div class="scheduled-title">{{localize "scheduled"}}<span
+					class="button switch1 material-icons active">view_list</span></div>
 			<div class="list view_list1 inset searchbar-found">
 				<form class="searchbar searchbar1">
-				<div class="searchbar-inner">
-					<div class="searchbar-input-wrap">
-					<input type="search" placeholder="Search">
-					<i class="searchbar-icon"></i>
-					<span class="input-clear-button"></span>
+					<div class="searchbar-inner">
+						<div class="searchbar-input-wrap">
+							<input type="search" placeholder="Search">
+							<i class="searchbar-icon"></i>
+							<span class="input-clear-button"></span>
+						</div>
+						<span class="searchbar-disable-button if-not-aurora">Cancel</span>
 					</div>
-					<span class="searchbar-disable-button if-not-aurora">Cancel</span>
-				</div>
 				</form>
 				<ul class="list-search list-search1">
 					{{#each Memories.scheduled}}
 					<li>
-						<a href="#" class="item-link item-content memory-options edit popover-open" data-popover=".popover-opt"
-						data-memory="{{id}}">
-							<div class="item-med">
+						<a href="#" class="item-link item-content memory-options edit popover-open"
+							data-popover=".popover-opt" data-memory="{{id}}">
+							<div class="item-med" style="width: min-content;">
 								{{#each contacts.limitedUrls}}
 								{{#js_if "this != ''"}}
-								<img src="{{@root.Server}}{{this}}" width="30px" height="auto" style="margin-right: 5px;" alt="" class="person">
+								<img src="{{@root.Server}}{{this}}" width="30px" height="auto"
+									style="margin-right: 5px;" alt="" class="person">
 								{{else}}
-								<img src="static/img/Busto.png" alt="" class="person">
+								<img src="static/img/Busto.png"
+									style="width: 30px;height: auto;border-radius: 50%;margin-right: 5px;" alt=""
+									class="person">
 								{{/js_if}}
 								{{/each}}
 							</div>
 							<div class="item-inner">
 
 								<div class="item-title-row">
-									
+
 									<div class="item-title">
 										<div class="item-header">{{deliveryDate}}</div>
 										{{name}}
@@ -174,7 +178,7 @@
 
 								</div>
 								<div class="item-subtitle"></div>
-								
+
 							</div>
 						</a>
 					</li>
@@ -185,7 +189,7 @@
 				class="view_array1 swiper-container swiper-init sheduled-swiper">
 				<div class="swiper-wrapper">
 					{{#each Memories.scheduled}}
-					
+
 					<div class="swiper-slide">
 						<div class="card complete v1">
 							<div class="card-header">
@@ -251,14 +255,15 @@
 			</div>
 			{{/js_if}}
 			{{#js_if "this.Memories.pending.length > 0"}}
-			<div class="later-title">{{localize "send_later"}}<span class="button switch2 material-icons active">view_list</span></div>
+			<div class="later-title">{{localize "send_later"}}<span
+					class="button switch2 material-icons active">view_list</span></div>
 			<div class="list view_list2 inset ">
-				
+
 				<ul class="list-search list-search2">
 					{{#each Memories.scheduled}}
 					<li>
-						<a href="#" class="item-link item-content memory-options edit popover-open" data-popover=".popover-opt"
-						data-memory="{{id}}">
+						<a href="#" class="item-link item-content memory-options edit popover-open"
+							data-popover=".popover-opt" data-memory="{{id}}">
 							<div class="item-inner">
 								<div class="item-title-row">
 									<div class="item-title">{{name}}</div>
@@ -272,7 +277,8 @@
 					{{/each}}
 				</ul>
 			</div>
-			<div data-space-between="10" data-slides-per-view="1.1" class="view_array2 swiper-container swiper-init later-swiper">
+			<div data-space-between="10" data-slides-per-view="1.1"
+				class="view_array2 swiper-container swiper-init later-swiper">
 				<div class="swiper-wrapper">
 					{{#each Memories.pending}}
 					<div class="swiper-slide">
@@ -346,7 +352,8 @@
 			{{#if IsEditing}}
 
 			{{else}}
-			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init donate-swiper"></div>
+			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init donate-swiper">
+			</div>
 			<!-- <div class="donate-title">{{localize "donate"}}</div>
 			<div data-space-between="10" data-slides-per-view="1.1" class="swiper-container swiper-init donate-swiper">
 				<div class="swiper-wrapper">
@@ -388,8 +395,11 @@
 			<div class="popover-inner">
 				<div class="list">
 					<ul>
-						<li><a id="edit-memory-btn" class="list-button item-link popover-close" href="#">{{localize "edit"}}</a></li>
-						<li><a id="delete-memory-btn" class="list-button item-link" href="#">{{localize "delete"}}</a></li>
+						<li><a id="edit-memory-btn" class="list-button item-link popover-close"
+								href="#">{{localize "edit"}}</a></li>
+						<li><a id="delete-memory-btn" class="list-button item-link popover-close"
+								href="#">{{localize "delete"}}</a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -398,7 +408,8 @@
 			<div class="popover-inner">
 				<div class="list">
 					<ul>
-						<li><a id="edit-contact-btn" class="list-button item-link popover-close" href="#">{{localize "edit_profile"}}</a>
+						<li><a id="edit-contact-btn" class="list-button item-link popover-close"
+								href="#">{{localize "edit_profile"}}</a>
 						</li>
 						<!-- <li><a class="list-button item-link popover-close" href="#">{{localize "create_memory"}}</a></li> -->
 					</ul>
@@ -717,7 +728,43 @@
 
                 $$('.memory-options').on('click', function(val) {
                     $$('#edit-memory-btn')[0].href = "/memories/edit/memory/" + $$(this).prop("dataset").memory;
-                })
+                    $$('#delete-memory-btn').off("click").click(x => {
+                        let memory_id = $$(this).data('memory');
+                        app.dialog.confirm(window.localize('delete_mem'), window.localize('delete_mem_title'), function(params) {
+                            app.dialog.confirm(window.localize('delete_mem_2'), window.localize('delete_mem_title'), function(params) {
+                                app.request.promise.get(app.data.server + '/memories/' + memory_id)
+                                    .then(async function(res) {
+                                        app.preloader.show('blue');
+                                        let data = JSON.parse(res.data);
+                                        await data.media.forEach(async el => {
+                                            await app.request.promise({
+                                                url: app.data.server + '/upload/files/' + el.id,
+                                                method: 'DELETE',
+                                            });
+                                            console.count('media');
+                                        });
+                                        app.request.promise({
+                                            url: app.data.server + '/memories/' + memory_id,
+                                            method: 'DELETE',
+                                        }).then(async function(res) {
+                                            await app.methods.updateCurrentUser();
+                                            app.preloader.hide();
+                                            app.dialog.alert(window.localize('delete_mem_success'));
+                                            app.views.main.router.refreshPage();
+
+                                        }).catch(function(res2) {
+                                            app.preloader.hide();
+                                            app.dialog.alert(window.localize('delete_mem_error'));
+
+                                        });
+                                    }).catch(function(res2) {
+                                        app.preloader.hide();
+                                        app.dialog.alert(window.localize('delete_mem_error'));
+                                    });
+                            });
+                        });
+                    });
+                });
 
                 $$('.card.memory').click(function(val) {
                     // console.log($$(this).attr('id'));

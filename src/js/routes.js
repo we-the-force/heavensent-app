@@ -133,7 +133,7 @@ async function isLoggedIn(to, from, resolve, reject) {
     if (valid) {
         reject();
         if (!await app.methods.userHasAdmin()) {
-            app.dialog.alert(`Your account has no admin associated with it, please fill out your admin information.`);
+            app.dialog.alert(`${window.localize('no_admin_please_fill')}`);
             await router.navigate({
                 name: 'invite-admin',
                 params: { userID: user.id }
@@ -662,11 +662,12 @@ var routes = [
     }, */
     {
         name: 'memory-dashboard',
-        path: '/memories/dashboard/user/:userID',
+        path: '/memories/dashboard/user/:userID/:swiper',
         async: async function(routeTo, routeFrom, resolve, reject) {
                 var router = this;
                 var app = router.app;
                 var userID = routeTo.params.userID;
+                var swiper = routeTo.params.swiper;
 
                 var baseMemories = null;
                 await app.request.promise.get(`${app.data.server}/memories/?recipients.id=${userID}`).then(function(memResult) {
@@ -675,6 +676,7 @@ var routes = [
                     console.log("Error getting memories!");
                     console.log(err);
                 })
+                console.log(swiper);
 
                 // getMemories(baseMemories);
 
@@ -684,7 +686,8 @@ var routes = [
                     context: {
                         Server: app.data.server,
                         Memories: getMemories(baseMemories),
-                        CurrentUser: userID
+                        CurrentUser: userID,
+                        Swiper: swiper
                     }
                 })
 
@@ -725,11 +728,13 @@ var routes = [
     },
     {
         name: 'view-memory',
-        path: '/memory/:memoryID',
+        path: '/user/:currentUserID/memory/:memoryID/:swiperID',
         async: async function(routeTo, routeFrom, resolve, reject) {
                 var router = this;
                 var app = router.app;
                 var memoryID = routeTo.params.memoryID;
+                var currentUserID = routeTo.params.currentUserID;
+                var swiperID = routeTo.params.swiperID;
 
                 var baseMem = null;
                 await app.request.promise.get(`${app.data.server}/memories/${memoryID}`).then(function(memResult) {
@@ -750,6 +755,8 @@ var routes = [
                         context: {
                             Server: app.data.server,
                             Memory: getMemory(baseMem),
+                            CurrentUser: currentUserID,
+                            SwiperID: swiperID,
                         }
                     })
                 } else {
@@ -963,7 +970,7 @@ var routes = [
             }).then(async function(sessionRes) {
                 // console.log('get session result');
                 // console.log(sessionRes.data);
-            
+
                 app.preloader.show('blue');
                 var sessionData = JSON.parse(sessionRes.data);
                 console.log("sessionData", sessionData);
@@ -993,21 +1000,21 @@ var routes = [
                         headers: headers
                     });
                     paymentMethodData = JSON.parse(paymentMethodData.data);
-                    
+
 
                     let creationDate = new Date(paymentMethodData.created * 1000);
                     console.log("PaymentIntent: ", paymentIntentData);
                     console.log("PaymentMethod: ", paymentMethodData);
                     let membershipObject = createMembershipObject(paymentIntentData.id, creationDate, paymentMethodData.card.last4, paymentMethodData.card.brand, planId);
                     let paymentObject = createPaymentObject(paymentIntentData.id, loggedUser.id, creationDate, plan.name, (sessionData.amount_total / 100), sessionData.customer_email);
-                    
+
                     console.log("Membership:\r\n", membershipObject);
                     console.log("Payment:\r\n", paymentObject);
 
                     await assignPlan(membershipObject, paymentObject);
 
-                }).catch(function(err){
-                    console.log("Error!\r\n",err);
+                }).catch(function(err) {
+                    console.log("Error!\r\n", err);
                 });
 
                 /*
