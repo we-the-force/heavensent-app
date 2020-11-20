@@ -152,13 +152,18 @@ var app = new Framework7({
             return result;
         },
         async clearCurrentUser() {
+            console.log('paso 1');
             var app = this;
             app.methods.clearingUser = true;
+            console.log('paso 2');
             // console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
             let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
+            console.log('paso 3');
             await app.methods.setLocalValueToKey([], 'loggedUserContacts')
             await app.methods.setLocalValueToKey([], 'loggedUserAdminedContacts')
+            console.log('paso 4');
             app.methods.clearingUser = false;
+            console.log('paso 5');
             return result;
         },
         async userIsEmpty() {
