@@ -39,16 +39,16 @@
         on: {
             pageInit: async function (e, page) 
             {
-                // var self = this;
-                // var app = self.$app;
-                // let newUser = localStorage.getItem('newUser');
-                // console.log(newUser);
-                // if(newUser === null){
-                //     localStorage.setItem('newUser', false)
-                // } else {
-                //     console.log('navigate to ligin');
-                //     app.views.main.router.navigate({name: 'login'});
-                // }
+                var self = this;
+                var app = self.$app;
+                let newUser = localStorage.getItem('newUser');
+                console.log(newUser);
+                if(newUser === null){
+                    localStorage.setItem('newUser', false)
+                } else {
+                    console.log('navigate to ligin');
+                    app.views.main.router.navigate({name: 'login'});
+                }
             }
         }
     };
