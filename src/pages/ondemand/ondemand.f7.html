@@ -1,0 +1,46 @@
+<template>
+    <div class="page" data-name="ondemand-screen" id="ondemand-screen">
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a class="back-btn link back">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title">{{localize "header-ondemand"}}</h1>
+                        <div class="none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            
+            <div class="ondemand-cont" style="text-align: center;">
+                <img src="/static/img/onboarding06.svg" alt="">
+                <form class="list" id="my-form">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title">On Demand</div>
+                                <div class="item-after">
+                                  <label class="toggle toggle-init">
+                                    <input type="checkbox" name="toggle" value="yes"><i class="toggle-icon"></i>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+                <p class="ondemand-description">
+                    {{localize "description-ondemand"}}
+                </p>
+            </div>
+            
+        </div>
+    </div> 
+</template>
+<script>
+    export default {};
+</script>

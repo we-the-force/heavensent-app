@@ -19,6 +19,8 @@ import BirthdayMemory from '../pages/memory/birthday-memory.f7.html';
 import HomeMemories from '../pages/memory/home-memories.f7.html';
 import LocationMemory from '../pages/memory/add-location.f7.html';
 import ContactsMemory from '../pages/memory/add-contacts.f7.html';
+import OnBoarding from '../pages/onboarding/onboarding.f7.html';
+import OnDemand from '../pages/ondemand/ondemand.f7.html';
 
 import MemoryDashboard from '../pages/recipient/dashboard.f7.html';
 import MemoryView from '../pages/recipient/view-memory.f7.html';
@@ -181,8 +183,20 @@ var routes = [
 
     /* ----------------------------------- pages -------------------------------------------- */
     {
-        name: 'login',
+        name: 'ondemand',
+        path: '/ondemand',
+        // beforeEnter: isLoggedIn,
+        component: OnDemand,
+    },
+    {
+        name: 'onboarding',
         path: '/',
+        // beforeEnter: isLoggedIn,
+        component: OnBoarding,
+    },
+    {
+        name: 'login',
+        path: '/login',
         beforeEnter: isLoggedIn,
         component: Login,
     },

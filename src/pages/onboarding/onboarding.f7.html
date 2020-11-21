@@ -1,0 +1,55 @@
+<template>
+    <div class="page" data-name="onboarding-screen" id="onboarding-screen">
+        <div data-pagination='{"el": ".swiper-pagination"}' data-space-between="10" data-slides-per-view="auto" data-centered-slides="true" class="swiper-container swiper-init demo-swiper demo-swiper-auto" style="height: 80%">
+            <div class="swiper-pagination"></div>
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="/static/img/onboarding01.svg" alt="">
+                    <p class="text-align-center onboarding-title">{{localize "features_01-title"}}</p>
+                    <p class="text-align-center onboarding-description">{{localize "features_01-description"}}</p>
+                </div>
+                <div class="swiper-slide">
+                    <img src="/static/img/onboarding02.svg" alt="">
+                    <p class="text-align-center onboarding-title">{{localize "features_02-title"}}</p>
+                    <p class="text-align-center onboarding-description">{{localize "features_02-description"}}</p>
+                </div>
+                <div class="swiper-slide">
+                    <img src="/static/img/onboarding06.svg" alt="">
+                    <p class="text-align-center onboarding-title">{{localize "features_06-title"}}</p>
+                    <p class="text-align-center onboarding-description">{{localize "features_06-description"}}</p>
+                </div>
+                <div class="swiper-slide">
+                    <img src="/static/img/onboarding05.svg" alt="">
+                    <p class="text-align-center onboarding-title">{{localize "features_05-title"}}</p>
+                    <p class="text-align-center onboarding-description">{{localize "features_05-description"}}</p>
+                </div>
+
+              </div>
+              
+        </div>
+        
+        <a href="/login" class="col button button-raised button-fill button-round link external">Skip</a>
+    </div>
+</template>
+<script>
+    import $$ from "dom7";
+    import localforage from "localforage";
+
+    export default{
+        on: {
+            pageInit: async function (e, page) 
+            {
+                var self = this;
+                var app = self.$app;
+                let newUser = localStorage.getItem('newUser');
+                console.log(newUser);
+                if(newUser === null){
+                    localStorage.setItem('newUser', false)
+                } else {
+                    console.log('navigate to ligin');
+                    app.views.main.router.navigate({name: 'login'});
+                }
+            }
+        }
+    };
+</script>
