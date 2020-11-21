@@ -145,6 +145,12 @@ async function isLoggedIn(to, from, resolve, reject) {
                     }
                 })
             } else {
+                /* 
+                    puedo tener cuandos admin quiera
+                    si si resolve
+                    si no 
+                        si 
+                */
                 // console.log("Going to memories/home [isLoggedIn()]");
                 await router.navigate('/memories/home/user/' + user.id);
             }
@@ -339,6 +345,24 @@ var routes = [
         name: 'invite-admin',
         path: '/admin/invite/user/:userID',
         component: InviteAdmin,
+        async: async function(routeTo, routeFrom, resolve, reject) {
+            var router = this;
+            var app = router.app;
+            var currentUser = await app.methods.getLocalValue('loggedUser');
+            var userID = routeTo.params.userID;
+            console.log(currentUser);
+            if (currentUser === null || currentUser === undefined) {
+                reject();
+                await router.navigate('/');
+            } else {
+                if (currentUser.id === userID) {
+                    resolve();
+                } else {
+                    reject();
+                    await router.navigate('/memories/home/user/' + currentUser.id);
+                }
+            }
+        }
     },
     {
         name: 'view-family',
