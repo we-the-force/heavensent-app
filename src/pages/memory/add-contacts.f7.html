@@ -10,10 +10,10 @@
                         </a>
 
                         <h1 class="title">{{localize 'my_family'}}</h1>
-
-                        <a href="/contact/create" class="add-btn link">
+                        <div class="none"></div>
+                        <!-- <a href="" class="add-btn link">
                             <i class="icons material-icons">add</i>
-                        </a>
+                        </a> -->
                     </div>
                 </div>
                 <div class="subnavbar">
@@ -52,7 +52,7 @@
     import $$ from "dom7";
     export default {
         on: {
-            popupOpen: async function (e, page) {
+            popupOpen: async function(e, page) {
                 var self = this;
                 var app = self.$app;
 
@@ -76,13 +76,20 @@
                     });
                 }
 
-                $$('.chckbx').change(function (val) {
+                $$('.chckbx').change(function(val) {
                     $$(this).parent().parent().toggleClass('checked');
                 });
 
-                $$('#add-contact-btn').click(function (params) {
+                //$$('.add-btn').click(x => {
+                //    e.preventDefault();
+                //    app.views.main.router.navigate(`/contact/create`, {
+                //        clearPreviousHistory: true
+                //    });
+                //});
+
+                $$('#add-contact-btn').click(function(params) {
                     let contacts = [];
-                    $$('input[type=checkbox]:checked').each(function (val) {
+                    $$('input[type=checkbox]:checked').each(function(val) {
                         let contact = {};
                         contact.id = $$(this).parent().data('id');
                         contact.img = $$(this).next().children('img').attr('src');
@@ -115,12 +122,12 @@
                         },
                     },
                 });
-            }, 
-            popupClose: async function (e, page) {
+            },
+            popupClose: async function(e, page) {
                 var self = this;
                 var app = self.$app;
                 var contacts = sessionStorage.contacts;
-                
+
                 if (contacts) {
                     contacts = JSON.parse(contacts);
                     $$('.contacts-cont .contacts .person.contact').remove();
@@ -134,7 +141,7 @@
                     });
                 }
 
-                $$('.person.contact .close').click(function (val) {
+                $$('.person.contact .close').click(function(val) {
                     contacts.splice(contacts.indexOf(contacts.find(x => x.id == $$(this).parent().data('id'))), 1);
                     sessionStorage.contacts = JSON.stringify(contacts);
                     $$(this).parent().remove();
