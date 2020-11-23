@@ -442,7 +442,6 @@
 
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
 
-
                 if (loggedUser == null) {
                     app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
                     app.views.main.router.navigate('/');
@@ -452,8 +451,6 @@
                 if (isOverflown($$('.header h1.title')[0])) {
                     $$('.header h1.title').css('font-size', '18px');
                 }
-
-
 
                 const baseRequest = {
                     apiVersion: 2,
@@ -798,7 +795,7 @@
                 });
 
                 function updateControls() {
-                    if (currentUser != null) {
+                    if (currentUser != null && currentUser != '') {
                         // console.log("=-=-=-=-=-=-=-=-=-=-=-=Update controls");
                         // console.log(currentUser);
                         var currentMembership = currentUser.currentMembership;
@@ -818,11 +815,28 @@
                             }
                         }
 
-                        $$("#logged-user-name")[0].textContent = isEditing ? (currentUser.name != undefined ? `Managing ${currentUser.name}'s memories` : `Managing ${currentUser.username}'s memories`) : currentUser.name != undefined ? currentUser.name : currentUser.username;
-                        $$("#logged-user-membership")[0].textContent = currentMembership;
-                        console.log(JSON.stringify(currentMembership));
+                        let user_name = '';
+                        if (isEditing) {
+                            if (currentUser.name != undefined) {
+                                user_name = `Managing ${currentUser.name}'s memories`;
+                            } else {
+                                user_name = `Managing ${currentUser.username}'s memories`
+                            }
+                        } else {
+                            if (currentUser.name != undefined) {
+                                user_name = currentUser.name;
+                            } else {
+                                user_name = currentUser.username;
+                            }
+                        }
+
+                        $$("#logged-user-name").text(user_name);
+                        $$("#logged-user-membership").text(currentMembership);
+
+                        //$$("#logged-user-name")[0].textContent = isEditing ? (currentUser.name != undefined ? `Managing ${currentUser.name}'s memories` : `Managing ${currentUser.username}'s memories`) : currentUser.name != undefined ? currentUser.name : currentUser.username;
+                        //$$("#logged-user-membership")[0].textContent = currentMembership;
                         if (currentUser.profilePicture != null) {
-                            $$("#logged-user-picture")[0].src = `${app.data.server}${currentUser.profilePicture.url}`;
+                            $$("#logged-user-picture").attr("src", `${app.data.server}${currentUser.profilePicture.url}`);
                         }
                     } else {
                         console.log("User was null, not updating anything [pageInit.updateControls]");

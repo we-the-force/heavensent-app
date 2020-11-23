@@ -60,7 +60,8 @@
 
                 console.log("---pageBeforeIn, updating user")
                 var localUser = await app.methods.getLocalValue('loggedUser');
-                if (localUser != null) {
+                console.log(localUser);
+                if (localUser !== null && localUser !== '') {
                     app.request.promise.get(`${app.data.server}/users/${localUser.id}`).then(async function(getResult) {
                         let user = JSON.parse(getResult.data);
 
@@ -149,6 +150,7 @@
 
                 $$("#login-btn").on("click", async function(e) {
                     e.preventDefault();
+                    console.log('esta entrando');
                     emailInputValue = $$("#email").val();
                     passwordInputValue = $$("#password").val();
 

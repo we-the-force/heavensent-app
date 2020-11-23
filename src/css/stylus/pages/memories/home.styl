@@ -4,18 +4,22 @@
 
         .page-content
             .searchbar
-                border-radius none 
+                border-radius none
                 box-shadow none
+
             .searchbar-inner
                 position relative
-            .list.inset.view_list1,.list.inset.view_list2
+
+            .list.inset.view_list1, .list.inset.view_list2
                 margin-top 0
                 display none
+
             span.switch1, span.switch2
                 vertical-align bottom
                 float right
                 color blue_dark
                 padding-right 25px
+
             .sqr_bck
                 deg = -36deg
 
@@ -74,12 +78,18 @@
                     width 80px
                     height 106px
                     flex-cont(column, space-between, center)
-                    .badge
-                        width 200px
+
                     .avatar-person
                         height 80px
                         width 80px
                         display flex
+
+                        .badge
+                            width 50px
+                            position absolute
+                            top 0px
+                            right 0px
+                            transform translate(50%, 0px)
 
                         img
                             width 100%
@@ -117,7 +127,6 @@
                 font-template(500, 20px, 23px)
                 color Grey_dark_3
 
-    
     &.page-with-card-opened
         &#home-memories
             .swiper-container

@@ -109,18 +109,11 @@ var app = new Framework7({
             return result;
         },
         async setLocalValueToKey(value, key) {
-            if (key === "loggedUser") {
-                // console.log("Setting local value [setLocalValueToKey]");
-                // console.log("---Value---");
-                // console.log(value);
-                // console.log("Key");
-                // console.log(key);
-            }
             let result = false;
             await localforage.setItem(key, value).then(function(value) {
                 result = true;
             }).catch(function(err) {
-                // console.log("Error [setLocalValueToKey()]")
+                //console.log("Error [setLocalValueToKey()]")
                 // console.log(err);
                 result = false;
             })
@@ -132,7 +125,7 @@ var app = new Framework7({
             var currentLocalUser = await app.methods.getLocalValue('loggedUser');
             // console.log(currentLocalUser);
             let result = false;
-            if (currentLocalUser != null && !app.methods.clearingUser) {
+            if (currentLocalUser != null && currentLocalUser != '' && !app.methods.clearingUser) {
                 await this.request.promise.get(`${app.data.server}/users/${currentLocalUser.id}`).then(async function(getResult) {
                     var user = JSON.parse(getResult.data);
                     // console.log("currentLocalUser wasn't null, setting value to loggedUser");
@@ -147,14 +140,13 @@ var app = new Framework7({
                     result = false;
                 });
             } else {
-                // console.log("Couldn't update current user; user was null [updateCurrentUser()]")
+                console.log("Couldn't update current user; user was null [updateCurrentUser()]")
             }
             return result;
         },
         async clearCurrentUser() {
             var app = this;
             app.methods.clearingUser = true;
-            // console.log("! ! ! ! ! ! ! ! ! Clearing User Data ! ! ! ! ! ! ! ! ! !")
             let result = await app.methods.setLocalValueToKey(null, 'loggedUser');
             await app.methods.setLocalValueToKey([], 'loggedUserContacts')
             await app.methods.setLocalValueToKey([], 'loggedUserAdminedContacts')
@@ -170,7 +162,7 @@ var app = new Framework7({
         },
         async userIsValid() {
             var currentUser = await this.methods.getLocalValue('loggedUser');
-            if (currentUser != null) {
+            if (currentUser != null && currentUser != '') {
                 if (currentUser.confirmed) {
                     // console.log("User Is Valid [userIsValid()]");
                     return true;

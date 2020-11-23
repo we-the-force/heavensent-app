@@ -18,7 +18,7 @@
         <!-- agregar o quitar none de toolbar para quitarlo y ponerlo -->
         <div class="toolbar toolbar-bottom">
             <div class="toolbar-inner">
-                <a class="item-link" href="/memories/home/user/{{CurrentUser}}">
+                <a class="item-link" id="home-link" href="/memories/home/user/{{CurrentUser}}">
                     <i class="icon material-icons cloud grey">cloud</i>
                     <span class="tabbar-label">{{localize "my_memories"}}</span>
                 </a>
@@ -36,8 +36,8 @@
             <div class="sqr_bck" id="sqr2"></div>
             <div class="sqr_bck" id="sqr3"></div>
 
-            <div data-initial-slide="{{Swiper}}" data-space-between="20" data-slides-per-view="1.1" data-centered-slides="true"
-                class="swiper-container swiper-init memories-swiper">
+            <div data-initial-slide="{{Swiper}}" data-space-between="20" data-slides-per-view="1.1"
+                data-centered-slides="true" class="swiper-container swiper-init memories-swiper">
                 <div class="swiper-wrapper">
                     {{#js_if "this.Memories.toString() != []"}}
                     {{#each Memories}}
@@ -73,7 +73,7 @@
                             <div class="card-footer">
                                 <div class="btns-cont center">
                                     <!-- <a href="/memories/view/memory/{{id}}" class="button color-blue round small">See</a> -->
-                                    <a href="/user/{{@root.CurrentUser}}/memory/{{id}}/{{@index}}"
+                                    <a href="/user/{{@root.CurrentUser}}/memory/{{id}}/{{@index}}" id="view-memory"
                                         class="button color-blue round small">{{localize "see"}}</a>
                                 </div>
                             </div>
@@ -151,7 +151,6 @@
             pageInit: function(e, page) {
                 var self = this;
                 var app = self.$app;
-                console.log(this);
                 var searchbar1 = app.searchbar.create({
                     el: '.searchbar1',
                     searchContainer: '.list-search1',
@@ -161,6 +160,17 @@
                             console.log(query, previousQuery);
                         }
                     }
+                });
+
+                $$('#home-link').click(async x => {
+                    e.preventDefault();
+                    console.log(this.CurrentUser);
+                    await app.methods.updateCurrentUser();
+                    app.views.main.router.navigate(`/memories/home/user/${this.CurrentUser}`, {
+                        reloadAll: true,
+                        ignoreCache: true,
+                        clearPreviousHistory: true
+                    });
                 });
                 // var memory = {};
                 // memory.name = "nombre";

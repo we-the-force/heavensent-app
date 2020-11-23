@@ -325,17 +325,13 @@
                 //     $$('#view-memory-back-btn').css('display','none')
                 // }
 
-                // $$('#view-memory-back-btn').on('click', function(params){
-                //     console.log("Click!");
-                //     if (loggedUser)
-                //     {
-                //         app.views.main.router.navigate(`/memories/dashboard/user/${loggedUser.id}`);
-                //     }
-                //     else
-                //     {
-                //         app.views.main.router.navigate(`/memories/dashboard/user/12`);
-                //     }
-                // });
+                $$('#view-memory-back-btn').on('click', function(params) {
+                    e.preventDefault();
+                    app.views.main.router.back(`/memories/dashboard/user/${CurrentUser}/${SwiperID}`, {
+                        force: true,
+                        ignoreCache: true,
+                    });
+                });
 
                 function galleryFunc(index) {
                     let gallery = app.photoBrowser.create({

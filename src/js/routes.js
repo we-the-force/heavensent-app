@@ -127,9 +127,7 @@ async function isLoggedIn(to, from, resolve, reject) {
     await app.methods.updateCurrentUser();
     var user = await app.methods.getLocalValue('loggedUser');
     console.log(user);
-    var valid = (await app.methods.userIsValid());
-    
-    
+    var valid = await app.methods.userIsValid();
     if (valid) {
         reject();
         if (!await app.methods.userHasAdmin()) {
@@ -149,6 +147,12 @@ async function isLoggedIn(to, from, resolve, reject) {
                     }
                 })
             } else {
+                /* 
+                    puedo tener cuandos admin quiera
+                    si si resolve
+                    si no 
+                        si 
+                */
                 // console.log("Going to memories/home [isLoggedIn()]");
                 await router.navigate('/memories/home/user/' + user.id);
             }
@@ -355,6 +359,24 @@ var routes = [
         name: 'invite-admin',
         path: '/admin/invite/user/:userID',
         component: InviteAdmin,
+        async: async function(routeTo, routeFrom, resolve, reject) {
+            var router = this;
+            var app = router.app;
+            var currentUser = await app.methods.getLocalValue('loggedUser');
+            var userID = routeTo.params.userID;
+            console.log(currentUser);
+            if (currentUser === null || currentUser === undefined) {
+                reject();
+                await router.navigate('/');
+            } else {
+                if (currentUser.id === userID) {
+                    resolve();
+                } else {
+                    reject();
+                    await router.navigate('/memories/home/user/' + currentUser.id);
+                }
+            }
+        }
     },
     {
         name: 'view-family',
@@ -466,6 +488,8 @@ var routes = [
         beforeEnter: [checkAuth, isMembershipValid],
         options: {
             reloadAll: true,
+            ignoreCache: true,
+            clearPreviousHistory: true
         },
         async: async function(routeTo, routeFrom, resolve, reject) {
             var router = this;
@@ -478,7 +502,6 @@ var routes = [
             var adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
             // console.log(contacts);
             // console.log(`Async function to home-memories, server: ${server}`);
-
             var currentUser;
             if (userID == -1) {
                 currentUser = loggedUser;
@@ -492,8 +515,8 @@ var routes = [
                     app.dialog.alert("We have problems loading this user's account, it looks like it no longer exists. Please contact support.");
                 });
             }
-
-            var isEditing = (currentUser.id != loggedUser.id);
+            let loggedID = loggedUser ? loggedUser.id : -1;
+            var isEditing = (currentUser.id != loggedID);
             // console.log(`IsEditing? ${isEditing} (${currentUser.id} != ${loggedUser.id})`);
 
             var ownedMemories;
@@ -729,6 +752,11 @@ var routes = [
     {
         name: 'view-memory',
         path: '/user/:currentUserID/memory/:memoryID/:swiperID',
+        options: {
+            reloadAll: true,
+            ignoreCache: true,
+            clearPreviousHistory: true
+        },
         async: async function(routeTo, routeFrom, resolve, reject) {
                 var router = this;
                 var app = router.app;
