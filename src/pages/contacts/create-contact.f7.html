@@ -137,6 +137,10 @@
                     $$(this).removeClass('aft');
                 });
 
+                $$('#create-cont-birthday').focus(function(el) {
+                    $$(this).removeClass('aft');
+                });
+
                 //upload photo
                 $$(".img-btn").on("click", function() {
                     if (window.File && window.FileReader && window.FormData) {
@@ -164,11 +168,11 @@
                 });
 
                 $$('input#create-cont-birthday').change(function(el) {
-                    if (moment().diff(moment($$(this).val()), 'years') < 18) {
-                        $$('#create-guardian-btn').parent().removeClass('none');
-                    } else {
-                        $$('#create-guardian-btn').parent().addClass('none');
-                    }
+                    /*  if (moment().diff(moment($$(this).val()), 'years') < 18) {
+                         $$('#create-guardian-btn').parent().removeClass('none');
+                     } else {
+                         $$('#create-guardian-btn').parent().addClass('none');
+                     } */
                 });
 
                 $$("#create-member-btn").on("click", async function(e) {

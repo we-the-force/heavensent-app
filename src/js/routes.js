@@ -197,6 +197,11 @@ var routes = [
     {
         name: 'login',
         path: '/login',
+        options: {
+            reloadAll: true,
+            ignoreCache: true,
+            clearPreviousHistory: true
+        },
         beforeEnter: isLoggedIn,
         component: Login,
     },
@@ -316,11 +321,11 @@ var routes = [
                 //})
 
                 /* await app.request.promise.json(`${app.data.server}/contacts/?owner=${loggedUser.id}&contact=${contactId}`).then(function (res){
-        relationInfo = res.data; 
-    }).catch(function(err){
-        console.log("Error fetching relationship info [edit-contact.async]");
-        console.log(err);
-    });
+    relationInfo = res.data; 
+}).catch(function(err){
+    console.log("Error fetching relationship info [edit-contact.async]");
+    console.log(err);
+});
 */
                 if (userInfo.status === 200) {
                     resolve({

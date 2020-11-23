@@ -49,50 +49,48 @@
 	</div>
 </template>
 <script>
-	import $$ from "dom7";
-	export default {
-		on: {
-			pageInit: async function (e, page) {
-				var self = this;
-				var app = self.$app;
-				// var isEditing = page.route.context.IsEditing;
-				// var currentUser = page.route.context.CurrentUser;
+    import $$ from "dom7";
+    export default {
+        on: {
+            pageInit: async function(e, page) {
+                var self = this;
+                var app = self.$app;
+                // var isEditing = page.route.context.IsEditing;
+                // var currentUser = page.route.context.CurrentUser;
 
-				// /recovery/mailSend
+                // /recovery/mailSend
 
-				$$('#recover-pass-btn').click(async function (val) {
-					console.log("Ayyy click");
-					let emailVal = $$('#email').val();
-					if (validateEmail(emailVal))
-					{
-						console.log("Doing the email thing");
-						app.request.promise.post(`${app.data.server}/auth/forgot-password`, {email: emailVal}).then(function(res){
-							console.log("email sent");
-							console.log(res);
-							app.views.main.router.navigate('/recovery/mailSend');
-						}).catch(function(err){
-							console.log("Error sending email");
-							console.log(err);
-						});
-					}
-					else
-					{
-						app.dialog.alert(window.localize("recovery_invalid_email"));
-					}
-				});
+                $$('#recover-pass-btn').click(async function(val) {
+                    console.log("Ayyy click");
+                    let emailVal = $$('#email').val();
+                    if (validateEmail(emailVal)) {
+                        console.log("Doing the email thing");
+                        app.request.promise.post(`${app.data.server}/auth/forgot-password`, {
+                            email: emailVal
+                        }).then(function(res) {
+                            console.log("email sent");
+                            console.log(res);
+                            app.views.main.router.navigate('/recovery/mailSend');
+                        }).catch(function(err) {
+                            console.log("Error sending email");
+                            console.log(err);
+                        });
+                    } else {
+                        app.dialog.alert(window.localize("recovery_invalid_email"));
+                    }
+                });
 
-				function validateEmail(mail) 
-				{
-					// if (/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/.test(mail))
-					// if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)z*(\.\w{2,3})+$/.test(mail))
-					if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
-					{
-						return (true);
-					}
-					// alert("You have entered an invalid email address!")
-					return (false);
-				}
-			},
-		},
-	};
+                function validateEmail(mail) {
+                    // if (/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/.test(mail))
+                    // if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)z*(\.\w{2,3})+$/.test(mail))
+                    //if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
+                    if (/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(mail)) {
+                        return (true);
+                    }
+                    // alert("You have entered an invalid email address!")
+                    return (false);
+                }
+            },
+        },
+    };
 </script>
