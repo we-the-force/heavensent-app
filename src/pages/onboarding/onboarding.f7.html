@@ -1,5 +1,18 @@
 <template>
     <div class="page" data-name="onboarding-screen" id="onboarding-screen">
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="header-cont">
+                    <div class="header">
+                        <a class="back-btn link back">
+                            <i class="icons material-icons">chevron_left</i>
+                        </a>
+                        <h1 class="title">{{localize "header-onboarding"}}</h1>
+                        <div class="none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div data-pagination='{"el": ".swiper-pagination"}' data-space-between="10" data-slides-per-view="auto" data-centered-slides="true" class="swiper-container swiper-init demo-swiper demo-swiper-auto" style="height: 80%">
             <div class="swiper-pagination"></div>
               <div class="swiper-wrapper">
@@ -37,19 +50,17 @@
 
     export default{
         on: {
-            pageInit: async function (e, page) 
-            {
-                var self = this;
-                var app = self.$app;
-                let newUser = localStorage.getItem('newUser');
-                console.log(newUser);
-                if(newUser === null){
-                    localStorage.setItem('newUser', false)
-                } else {
-                    console.log('navigate to ligin');
-                    app.views.main.router.navigate({name: 'login'});
-                }
-            }
+            // pageInit: async function (e, page) 
+            // {
+            //     var self = this;
+            //     var app = self.$app;
+            //     let newUser = localStorage.getItem('newUser');
+            //     if(newUser === null){
+            //         localStorage.setItem('newUser', false);
+            //     } else {
+            //         app.views.main.router.navigate({name: 'login'});
+            //     }
+            // }
         }
     };
 </script>

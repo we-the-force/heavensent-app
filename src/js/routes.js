@@ -186,13 +186,13 @@ var routes = [
     },
     {
         name: 'onboarding',
-        path: '/',
+        path: '/onboarding',
         // beforeEnter: isLoggedIn,
         component: OnBoarding,
     },
     {
         name: 'login',
-        path: '/login',
+        path: '/',
         beforeEnter: isLoggedIn,
         component: Login,
     },
