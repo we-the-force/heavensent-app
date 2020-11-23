@@ -811,7 +811,7 @@
                                     console.log(response);
 
                                     app.preloader.hide();
-                                    app.dialog.alert("The memory has been edited succesfully!");
+                                    app.dialog.alert(""+window.localize("create_mem_success"));
                                     sessionStorage.clear();
                                     app.views.main.router.navigate("/memories/home/user/" + memoryOwner.id);
                                 }).catch(function(err){
