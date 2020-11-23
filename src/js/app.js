@@ -40,9 +40,9 @@ var app = new Framework7({
         // keyConfig
         // testKey: keyConfig.SECRET_KEY,
         server: 'https://api.heavensentnow.com',
-        //domain: 'https://app.heavensentnow.com',
+        domain: 'https://app.heavensentnow.com',
         //server: 'http://localhost:1337',
-        domain: 'http://localhost:8080',
+        // domain: 'http://localhost:8080',
         stripe: {
             stripeApiUrl: 'https://api.stripe.com/v1/',
             stripeUrl: 'https://api.stripe.com/v1/checkout/sessions',
