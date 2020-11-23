@@ -190,13 +190,13 @@ var routes = [
     },
     {
         name: 'onboarding',
-        path: '/',
+        path: '/onboarding',
         // beforeEnter: isLoggedIn,
         component: OnBoarding,
     },
     {
         name: 'login',
-        path: '/login',
+        path: '/',
         options: {
             reloadAll: true,
             ignoreCache: true,
@@ -321,10 +321,10 @@ var routes = [
                 //})
 
                 /* await app.request.promise.json(`${app.data.server}/contacts/?owner=${loggedUser.id}&contact=${contactId}`).then(function (res){
-    relationInfo = res.data; 
+relationInfo = res.data; 
 }).catch(function(err){
-    console.log("Error fetching relationship info [edit-contact.async]");
-    console.log(err);
+console.log("Error fetching relationship info [edit-contact.async]");
+console.log(err);
 });
 */
                 if (userInfo.status === 200) {
