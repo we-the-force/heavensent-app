@@ -62,7 +62,7 @@
 
                 $$('#recover-pass-btn').click(async function(val) {
                     console.log("Ayyy click");
-                    let emailVal = $$('#email').val();
+                    let emailVal = await $$('#email').val();
                     if (validateEmail(emailVal)) {
                         console.log("Doing the email thing");
                         app.request.promise.post(`${app.data.server}/auth/forgot-password`, {
@@ -81,6 +81,7 @@
                 });
 
                 function validateEmail(mail) {
+                    console.log(mail);
                     // if (/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/.test(mail))
                     // if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)z*(\.\w{2,3})+$/.test(mail))
                     //if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
