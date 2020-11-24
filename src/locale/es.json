@@ -26,6 +26,8 @@
     "mail": "Correo electrónico",
     "pass": "Contraseña",
     "sign_up": "Regístrate",
+    "fill_out": "Por favor, complete este campo",
+    "login_password": "Por favor introduce una contraseña válida.",
     "signup_username": "Por favor, indroduzca su nombre de usuario.",
     "signup_username_error": "Su nombre de usuario no debe tener espacios antes o después del texto.",
     "signup_birthday": "Por favor, introduzca su cumpleaños.",

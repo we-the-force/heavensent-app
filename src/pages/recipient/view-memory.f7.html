@@ -190,15 +190,20 @@
                     <img src="static/icons/sms.png" alt="">
                     <p>{{localize "message"}}</p>
                 </a>
-                <a class="face">
+                <!-- <a class="face"> -->
+                <a target="_blank"
+                    href="https://www.facebook.com/sharer/sharer.php?u={{$app.data.domain}}/%23%21/user/{{CurrentUser}}/memory/{{Memory.id}}/{{SwiperID}}src=sdkpreparse"
+                    class="fb-xfbml-parse-ignore face external">
                     <img src="static/icons/face.png" alt="">
                     <p>Facebook</p>
                 </a>
-                <a target="_blank" class="whats external" href="whatsapp://send?text={{$app.data.domain}}/%23%21/user/{{CurrentUser}}/memory/{{Memory.id}}/{{SwiperID}}">
+                <a target="_blank" class="whats external"
+                    href="whatsapp://send?text={{$app.data.domain}}/%23%21/user/{{CurrentUser}}/memory/{{Memory.id}}/{{SwiperID}}">
                     <img src="static/icons/whats.png" alt="">
                     <p>What’sApp</p>
                 </a>
-                <a target="_blank" class="twit external twitter-share-button" href="https://twitter.com/intent/tweet?url={{$app.data.domain}}/%23%21/user/{{CurrentUser}}/memory/{{Memory.id}}/{{SwiperID}}">
+                <a target="_blank" class="twit external twitter-share-button"
+                    href="https://twitter.com/intent/tweet?url={{$app.data.domain}}/%23%21/user/{{CurrentUser}}/memory/{{Memory.id}}/{{SwiperID}}">
                     <img src="static/icons/twitter.png" alt="">
                     <p>Twitter</p>
                 </a>

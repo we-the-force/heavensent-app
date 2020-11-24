@@ -26,6 +26,8 @@
     "mail": "E-mail",
     "pass": "Password",
     "sign_up": "Sign up",
+    "fill_out": "Please fill out this field",
+    "login_password": "Please, enter a valid password.",
     "signup_username": "Please, enter your desired username.",
     "signup_username_error": "Your username may not have spaces before or after the text.",
     "signup_birthday": "Please, enter your birthday.",

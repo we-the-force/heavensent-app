@@ -14,7 +14,7 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="email" placeholder='{{localize "mail"}}' required validate />
+								<input type="email" id="email" placeholder='{{localize "mail"}}' required validate data-error-message="{{localize 'signup_email'}}"/>
 								<i class="icons material-icons">edit</i>
 								<!-- <span class="input-clear-button"></span> -->
 							</div>
@@ -23,7 +23,7 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="password" id="password" placeholder='{{localize "pass"}}' required validate />
+								<input type="password" id="password" placeholder='{{localize "pass"}}' required validate data-error-message="{{localize 'fill_out'}}"/>
 								<i id="pass-edit-icon" class="icons material-icons">edit</i>
 								<span class="show" style="display: none;">{{localize "show"}}</span>
 								<!-- <span class="input-clear-button"></span> -->
@@ -154,11 +154,11 @@
                     emailInputValue = $$("#email").val();
                     passwordInputValue = $$("#password").val();
 
-                    if (!validateEmail(emailInputValue, 'enter a valid email')) {
+                    if (!validateEmail(emailInputValue, window.localize('signup_email'))) {
                         console.log('username not valid [pageInit.login-btn.onClick]');
                         return false;
                     }
-                    if (!validateText(passwordInputValue, 'enter a valid password')) {
+                    if (!validateText(passwordInputValue, window.localize('login_password'))) {
                         console.log('password not valid [pageInit.login-btn.onClick]');
                         return false;
                     }
