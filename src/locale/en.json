@@ -188,6 +188,7 @@
     "create_mem_repeat_footer_until": "until",
     "create_mem_success": "The memory has been created successfully!",
     "create_mem_failure": "There was an unexpected error when trying to create the memory!",
+    "create_mem_repeat_every": "The message will repeat itself every year until",
     "create_mem_missing_field": "You missed one or more important fields, please fill them out;",
     "create_mem_file_failure": "There was an error uploading your files!",
     "create_mem_cover_failure": "There was an error uploading your cover!",

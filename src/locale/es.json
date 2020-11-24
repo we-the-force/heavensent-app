@@ -188,6 +188,8 @@
     "create_mem_yearly": "Anualmente",
     "create_mem_repeat_end": "Término de repetición",
     "create_mem_repeat_footer_immediately": "El mensaje se enviará inmediatamente",
+    "create_mem_repeat_every": "El mensaje se repetirá cada año hasta...",
+
     "create_mem_repeat_footer_never": "El mensaje nunca se repetirá",
     "create_mem_repeat_footer_date": "El mensaje se repetirá",
     "create_mem_repeat_footer_until": "hasta",
