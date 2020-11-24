@@ -164,7 +164,6 @@
 
                 $$('#home-link').click(async x => {
                     e.preventDefault();
-                    console.log(this.CurrentUser);
                     await app.methods.updateCurrentUser();
                     app.views.main.router.navigate(`/memories/home/user/${this.CurrentUser}`, {
                         reloadAll: true,

@@ -2,8 +2,8 @@
 <html>
 
 <head>
-	<meta charset="utf-8" />
-	<!--
+    <meta charset="utf-8" />
+    <!--
   Customize this policy to fit your own app's needs. For more guidance, see:
       https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
   Some notes:
@@ -12,16 +12,14 @@
     * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
       * Enable inline JS: add 'unsafe-inline' to default-src
   -->
-	<meta http-equiv="Content-Security-Policy"
-		content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' blob: data: gap: content: " />
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover" />
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' blob: data: gap: content: " />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover" />
 
-	<!-- <meta name="theme-color" content="#007aff" /> -->
-	<meta name="format-detection" content="telephone=no" />
-	<meta name="msapplication-tap-highlight" content="no" />
-	<title>HeavenSent</title>
-	<!-- <% if (process.env.TARGET === 'web') { %>
+    <!-- <meta name="theme-color" content="#007aff" /> -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <title>HeavenSent</title>
+    <!-- <% if (process.env.TARGET === 'web') { %>
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 	<link rel="apple-touch-icon" href="static/icons/apple-touch-icon.png" />
@@ -30,37 +28,42 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700&display=swap">
 
 	<% } %> -->
-		<link rel="apple-touch-icon" sizes="57x57" href="static/icons/apple-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="static/icons/apple-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="static/icons/apple-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="static/icons/apple-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="static/icons/apple-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="static/icons/apple-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="static/icons/apple-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="static/icons/apple-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="static/icons/apple-icon-180x180.png">
-	<link rel="icon" type="image/png" sizes="192x192"  href="static/icons/android-icon-192x192.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="static/icons/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="static/icons/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="static/icons/favicon-16x16.png">
-	<link rel="manifest" href="static/icons/manifest.json">
-	<meta name="msapplication-TileColor" content="#ffffff">
-	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-	<meta name="theme-color" content="#ffffff">
-	<!-- built styles file will be auto injected -->
+    <link rel="apple-touch-icon" sizes="57x57" href="static/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="static/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="static/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="static/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="static/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="static/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="static/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="static/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="static/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="static/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="static/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/icons/favicon-16x16.png">
+    <link rel="manifest" href="static/icons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@Twitter" />
+    <meta name="twitter:title" content="HeavenSent" />
+    <meta name="twitter:description" content="See the message" />
+    <meta name="twitter:image" content="https://app.heavensentnow.com/static/img/LOGO.svg" />
+    <!-- built styles file will be auto injected -->
 </head>
 
 <body>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwNusY50qvAGldKbnz-rn4EalzS8m20wk&libraries=places"></script>
-	<div id="app"></div>
-	<% if (process.env.TARGET === 'cordova') { %>
-	<script src="cordova.js"></script>
-	<% } %>
-    <script src="https://js.stripe.com/v3/"></script>
-    <script src="static/js/fastclick.js"></script>
-	<!-- built script files will be auto injected -->
-	<!-- <script type='text/javascript' src="conf.js"></script> -->
-	<!-- <script src="src/js/app.js"></script> -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwNusY50qvAGldKbnz-rn4EalzS8m20wk&libraries=places"></script>
+    <div id="app"></div>
+    <% if (process.env.TARGET === 'cordova') { %>
+        <script src="cordova.js"></script>
+        <% } %>
+            <script src="https://js.stripe.com/v3/"></script>
+            <script src="static/js/fastclick.js"></script>
+            <!-- built script files will be auto injected -->
+            <!-- <script type='text/javascript' src="conf.js"></script> -->
+            <!-- <script src="src/js/app.js"></script> -->
 </body>
 
 </html>

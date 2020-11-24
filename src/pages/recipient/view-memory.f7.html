@@ -5,7 +5,8 @@
             <div class="navbar-inner sliding">
                 <div class="header-cont">
                     <div class="header">
-                        <a id="view-memory-back-btn" href="/memories/dashboard/user/{{CurrentUser}}/{{SwiperID}}" class="back-btn">
+                        <a id="view-memory-back-btn" href="/memories/dashboard/user/{{CurrentUser}}/{{SwiperID}}"
+                            class="back-btn">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
                         <h1 class="title"></h1>
@@ -184,7 +185,8 @@
                 <div class="sqr_bck" id="sqr3"></div>
             </div>
             <div class="pop-header">
-                <a class="sms">
+                <a class="external sms"
+                    href="sms:?&body={{$app.data.domain}}/%23%21/user/{{CurrentUser}}/memory/{{Memory.id}}/{{SwiperID}}">
                     <img src="static/icons/sms.png" alt="">
                     <p>{{localize "message"}}</p>
                 </a>
@@ -192,11 +194,11 @@
                     <img src="static/icons/face.png" alt="">
                     <p>Facebook</p>
                 </a>
-                <a class="whats">
+                <a target="_blank" class="whats external" href="whatsapp://send?text={{$app.data.domain}}/%23%21/user/{{CurrentUser}}/memory/{{Memory.id}}/{{SwiperID}}">
                     <img src="static/icons/whats.png" alt="">
                     <p>What’sApp</p>
                 </a>
-                <a class="twit">
+                <a target="_blank" class="twit external twitter-share-button" href="https://twitter.com/intent/tweet?url={{$app.data.domain}}/%23%21/user/{{CurrentUser}}/memory/{{Memory.id}}/{{SwiperID}}">
                     <img src="static/icons/twitter.png" alt="">
                     <p>Twitter</p>
                 </a>
@@ -232,6 +234,8 @@
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
 
                 var memory = page.route.context.Memory;
+                var currentUser = page.route.context.CurrentUser;
+                var swiperID = page.route.context.SwiperID;
 
                 /* -------------------------- temp fill data -------------------------------------*/
                 // var memory = {};
@@ -325,13 +329,18 @@
                 //     $$('#view-memory-back-btn').css('display','none')
                 // }
 
-                $$('#view-memory-back-btn').on('click', function(params) {
-                    e.preventDefault();
-                    app.views.main.router.back(`/memories/dashboard/user/${CurrentUser}/${SwiperID}`, {
-                        force: true,
-                        ignoreCache: true,
-                    });
-                });
+                //$$('#view-memory-back-btn').off('click').on('click', function(params) {
+                //    e.preventDefault();
+                //    if (loggedUser === null) {
+                //    }
+                //});
+
+                //$$('.pop-header .face').click(x => {
+                //    FB.ui({
+                //        method: 'share',
+                //        href: `${app.data.domain}/%23%21/user/${currentUser}/memory/${memory.id}/${swiperID}`,
+                //    }, function(response) {});
+                //});
 
                 function galleryFunc(index) {
                     let gallery = app.photoBrowser.create({

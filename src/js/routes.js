@@ -691,6 +691,16 @@ console.log(err);
     {
         name: 'memory-dashboard',
         path: '/memories/dashboard/user/:userID/:swiper',
+        beforeEnter: async function(routeTo, routeFrom, resolve, reject) {
+            var router = this;
+            var app = router.app;
+            let currentUser = await app.methods.getLocalValue('loggedUser');
+            if (currentUser !== null) {
+                resolve();
+            } else {
+                reject();
+            }
+        },
         async: async function(routeTo, routeFrom, resolve, reject) {
                 var router = this;
                 var app = router.app;
