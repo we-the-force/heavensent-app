@@ -86,7 +86,7 @@
                     console.log(loggedUser.currentMembership.token);
                     let updateResponse;
 
-                    await app.request.promise({
+                    /* await app.request.promise({
                         url: `${app.data.stripe.subscriptionUrl}/${loggedUser.currentMembership.token}?cancel_at_period_end=true`,
                         method: "POST",
                         headers: {
@@ -117,7 +117,7 @@
                         await app.methods.updateCurrentUser();
 
                         app.views.main.router.refreshPage();
-                    });
+                    }); */
 
                 }
 

@@ -977,6 +977,7 @@ console.log(err);
         async: async function(routeTo, routeFrom, resolve, reject) {
             var router = this;
             var app = router.app;
+            console.log('----------------------------aqui -------------------------');
             console.log(app.data.stripe);
 
             var stripeUrl = app.data.stripe.stripeUrl;
@@ -1045,7 +1046,7 @@ console.log(err);
                     let creationDate = new Date(paymentMethodData.created * 1000);
                     console.log("PaymentIntent: ", paymentIntentData);
                     console.log("PaymentMethod: ", paymentMethodData);
-                    let membershipObject = createMembershipObject(paymentIntentData.id, creationDate, paymentMethodData.card.last4, paymentMethodData.card.brand, planId);
+                    let membershipObject = createMembershipObject(paymentIntentData.id, creationDate, paymentMethodData.card.last4, paymentMethodData.card.brand, planId, paymentIntentData.created);
                     let paymentObject = createPaymentObject(paymentIntentData.id, loggedUser.id, creationDate, plan.name, (sessionData.amount_total / 100), sessionData.customer_email);
 
                     console.log("Membership:\r\n", membershipObject);
@@ -1185,13 +1186,14 @@ console.log(err);
                 })
             }
 
-            function createMembershipObject(token, nextBillingDate, billedCard, cardBrand, planId) {
+            function createMembershipObject(token, nextBillingDate, billedCard, cardBrand, planId, created_at) {
                 let object = {
                     "currentMembership": {
                         "token": token,
                         "isActive": true,
                         "nextBillingDate": formatDate(nextBillingDate, true, true),
                         "plan": planId,
+                        "creation_date": created_at,
                         "billedCard": `${cardBrand} **** **** **** ${billedCard}`
                     }
                 }
