@@ -84,8 +84,9 @@
                     console.log(mail);
                     // if (/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/.test(mail))
                     // if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)z*(\.\w{2,3})+$/.test(mail))
-                    //if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
-                    if (/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(mail)) {
+                    // if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
+                    // if (/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(mail)) {
+                    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
                         return (true);
                     }
                     // alert("You have entered an invalid email address!")
