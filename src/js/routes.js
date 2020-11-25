@@ -974,13 +974,10 @@ console.log(err);
         name: 'payment-confirm-membership',
         path: '/membership/confirmed/session/:sessionId/plan/:planId',
         beforeEnter: [checkAuth],
-        // component: PaymentConfirmMembership,
         async: async function(routeTo, routeFrom, resolve, reject) {
             var router = this;
             var app = router.app;
-            console.log('enter route successuRL');
-            //
-            // console.log("Membership/confirmed/session/ thing");
+            console.log(app.data.stripe);
 
             var stripeUrl = app.data.stripe.stripeUrl;
             var subscriptionUrl = app.data.stripe.subscriptionUrl;

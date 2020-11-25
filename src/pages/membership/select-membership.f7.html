@@ -18,7 +18,7 @@
 		<div class="page-content">
 			<div class="text-cont">
 				<h1 class="title2">{{localize "choose_plan"}}</h1>
-				<p class="text">{{localize "down_and_up"}}</p>
+				<!-- <p class="text">{{localize "down_and_up"}}</p> -->
 			</div>
 			<div class="plans-cont">
 				<div class="btns-cont">
@@ -34,7 +34,7 @@
 						<h2 class="title-plan">{{localize "standard"}}</h2>
 						<div class="price-cont">
 							<p class="symbol">$</p>
-							<p class="price">99.99</p>
+							<p class="price">69.99</p>
 						</div>
 						<p class="per-month">{{localize "per_month"}}</p>
 					</a>
@@ -61,26 +61,26 @@
 				</div>
 				<p class="title3">{{localize "pictures"}}</p>
 				<div class="icons-cont" id="pictures">
-					<div class="icon">
-						<span id="package-a-pictures" class="plan plan-a material-icons active">done</span>
+					<div class="text">
+						<span id="package-a-pictures" class="plan plan-a active">6 {{localize "pictures"}}</span>
 					</div>
-					<div class="icon">
-						<span id="package-b-pictures" class="plan plan-b material-icons">done</span>
+					<div class="text">
+						<span id="package-b-pictures" class="plan plan-b">12 {{localize "pictures"}}</span>
 					</div>
-					<div class="icon">
-						<span id="package-c-pictures" class="plan plan-c material-icons">done</span>
+					<div class="text">
+						<span id="package-c-pictures" class="plan plan-c">18 {{localize "pictures"}}</span>
 					</div>
 				</div>
 				<p class="title3">Video</p>
 				<div class="icons-cont" id="video">
-					<div class="icon">
-						<span id="package-a-video" class="plan plan-a material-icons active">clear</span>
+					<div class="text">
+						<span id="package-a-video" class="plan plan-a active">4 videos (30" {{localize "each"}})</span>
 					</div>
-					<div class="icon">
-						<span id="package-b-video" class="plan plan-b material-icons">done</span>
+					<div class="text">
+						<span id="package-b-video" class="plan plan-b ">8 videos (30" {{localize "each"}})</span>
 					</div>
-					<div class="icon">
-						<span id="package-c-video" class="plan plan-c material-icons">done</span>
+					<div class="text">
+						<span id="package-c-video" class="plan plan-c ">12 videos (30" {{localize "each"}})</span>
 					</div>
 				</div>
 				<p class="title3">GPS</p>
@@ -109,15 +109,22 @@
 				</div>
 				<div class="desc-cont">
 					<div class="item">
-						<p id="package-a-desc" class="plan plan-a active">1 {{localize "desc_select_membership"}}</p>
+						<p id="package-a-desc" class="plan plan-a active">10 {{localize "desc_select_membership"}}</p>
 					</div>
 					<div class="item">
-						<p id="package-b-desc" class="plan plan-b">6 {{localize "desc_select_membership"}}</p>
+						<p id="package-b-desc" class="plan plan-b">20 {{localize "desc_select_membership"}}</p>
 					</div>
 					<div class="item">
-						<p id="package-c-desc" class="plan plan-c">6 {{localize "desc_select_membership"}}</p>
+						<p id="package-c-desc" class="plan plan-c">30 {{localize "desc_select_membership"}}</p>
 					</div>
 				</div>
+            </div>
+            <div class="disclaimer btns-cont center">
+				<!-- <a id="confirm-plan-btn" href="/membership/card/" class="button color-blue round large">Select plan</a> -->
+				<!-- <a id="confirm-plan-btn" href="/membership/card/?plan=basic" class="button color-blue round large">{{localize "select_plan"}}</a> -->
+                <!-- <a id="confirm-plan-btn" href="" class="button color-blue round large">{{localize "select_plan"}}</a> -->
+                <p>{{localize "disclaimer_membership"}}</p>
+                <p>{{localize "prices_member"}}</p>
 			</div>
 			<div id="btn-cont" class="btns-cont center">
 				<!-- <a id="confirm-plan-btn" href="/membership/card/" class="button color-blue round large">Select plan</a> -->
@@ -331,6 +338,7 @@
                             console.log("- - - - - It's the same, ignore - - - - -");
                             app.preloader.hide();
                         } */
+                        app.preloader.hide();
                     } else {
                         console.log('------------------no token or membership---------------');
                         console.log('object', object);

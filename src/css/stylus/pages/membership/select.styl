@@ -3,6 +3,17 @@
         background Grey_light_1
 
         .page-content
+            .disclaimer
+                padding-bottom 25px
+                flex-direction column
+
+                p
+                    font-template(500, 12px, 14px)
+                    line-height 22px
+                    color Grey_dark_3
+                    margin 0px
+                    text-align center
+
             flex-cont(column, flex-start, unset)
 
             .text-cont
@@ -43,6 +54,19 @@
                         span
                             font-size 26px
                             color Grey_light_3
+
+                            &.active
+                                color blue_light
+
+                    .text
+                        width 100px
+                        flex-cont(row, center, center)
+
+                        span
+                            font-template(normal, 10px, 12px)
+                            text-align center
+                            color Grey_light_3
+                            max-width 50px
 
                             &.active
                                 color blue_light

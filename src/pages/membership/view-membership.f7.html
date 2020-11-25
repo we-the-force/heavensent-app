@@ -43,9 +43,9 @@
                 </p> -->
             </div>
             
-            <!-- <div class="btns-cont center">
+            <div class="btns-cont center">
                 <a id="change-plan-btn" class="button color-white round large">{{localize "change_plan"}}</a>
-            </div> -->
+            </div>
             <div class="btns-cont center">  
                 <a id="cancel-plan-btn" class="button color-blue round large">{{localize "cancel_subs"}}</a>
             </div>
@@ -127,7 +127,7 @@
 
                 async function updateControls() {
                     console.log("UpdateControls()")
-                        //$$("#change-plan-btn")[0].href = `/membership/select/user/${loggedUser.id}/clear/0`;
+                    $$("#change-plan-btn")[0].href = `/membership/select/user/${loggedUser.id}/clear/0`;
                     if (loggedUser.currentMembership.cancelOnPeriodEnd) {
                         //console.log($$("#canceled-membership-text")[0]);
 
