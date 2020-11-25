@@ -300,6 +300,11 @@
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
 
                 let currentPlan = page.route.context.CurrentPlan.plan;
+                var moment = require('moment');
+                moment.locale('es');
+                moment().format();
+                console.log(currentPlan);
+                console.log(loggedUser);
 
                 /* var latlng = sessionStorage.latlng;
                 var addr = sessionStorage.addr; */
@@ -1018,21 +1023,19 @@
                                 result.memory.reminderType = "none";
                                 // result.memory.reminder.date = '1900-01-01';
                                 result.memory.reminder.date = null;
-                            }
-                            else {
+                            } else {
                                 // if (time)
                                 // {
-                                    if (result.memory.reminderType === "none") {
-                                        result.memory.reminderType = "date"
-                                    }
-                                    if (dateHappensBeforeToday(date))
-                                    {
-                                        result.valid = false;
-                                        result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
-                                        result.errors++;
-                                    } else {
-                                        result.memory.reminder.date = date;
-                                    }
+                                if (result.memory.reminderType === "none") {
+                                    result.memory.reminderType = "date"
+                                }
+                                if (dateHappensBeforeToday(date)) {
+                                    result.valid = false;
+                                    result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
+                                    result.errors++;
+                                } else {
+                                    result.memory.reminder.date = date;
+                                }
                                 // }
                             }
                             // if (!time) {
@@ -1078,21 +1081,19 @@
                                 // result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
                                 result.memory.reminder.date = null;
 
-                            }
-                            else {
+                            } else {
                                 // if (time)
                                 // {
-                                    if (result.memory.reminderType === "none") {
-                                        result.memory.reminderType = "date"
-                                    }
-                                    if (dateHappensBeforeToday(date))
-                                    {
-                                        result.valid = false;
-                                        result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
-                                        result.errors++;
-                                    } else {
-                                        result.memory.reminder.date = date;
-                                    }
+                                if (result.memory.reminderType === "none") {
+                                    result.memory.reminderType = "date"
+                                }
+                                if (dateHappensBeforeToday(date)) {
+                                    result.valid = false;
+                                    result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
+                                    result.errors++;
+                                } else {
+                                    result.memory.reminder.date = date;
+                                }
                                 // }
                             }
                             // if (!time) {
@@ -1182,8 +1183,7 @@
                 }
 
                 // function dateHappensBeforeToday(date, time)
-                function dateHappensBeforeToday(date)
-                {
+                function dateHappensBeforeToday(date) {
                     let dateElements = date.split("-");
                     // let timeElements = time == undefined ? new Date().time() : time.split(":");
                     // console.log("Time elements: ", timeElements);

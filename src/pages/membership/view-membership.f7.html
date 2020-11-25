@@ -29,24 +29,23 @@
                 <!-- <p class="text-cost" id="package-cost">$15.00 USB /MO</p> -->
                 <h1 class="text-title" id="package-name">{{PlanName}}</h1>
                 <!-- <p class="text-cost" id="package-cost">${{PlanPrice}}.00 USD /MO</p> -->
-                <p class="text-cost" id="package-cost">$0.00 USD {{localize "view_membership_next_month"}}</p>
+                <!-- <p class="text-cost" id="package-cost">$0.00 USD {{localize "view_membership_next_month"}}</p> -->
                 
-                <p class="text">
-                    <!-- Next billing date: <span id="next-bill-date">06/26/2020</span> -->
+                <!-- <p class="text">
                     {{localize "next_billing_date"}} <span id="next-bill-date">{{BillingDate}}</span>
-                </p>
-                <p class="text mar-t15">
+                </p> -->
+                <!-- <p class="text mar-t15">
                     {{localize "billed_with"}} 
                     <a class="card-info" id="billing-info">
                         {{BilledCard}}
                         <span id="edit-billing-info-btn" class="material-icons">edit</span>
                     </a>
-                </p>
+                </p> -->
             </div>
             
-            <div class="btns-cont center">
+            <!-- <div class="btns-cont center">
                 <a id="change-plan-btn" class="button color-white round large">{{localize "change_plan"}}</a>
-            </div>
+            </div> -->
             <div class="btns-cont center">  
                 <a id="cancel-plan-btn" class="button color-blue round large">{{localize "cancel_subs"}}</a>
             </div>
@@ -57,42 +56,43 @@
     import $$ from "dom7";
     export default {
         on: {
-            pageInit: async function(){
+            pageInit: async function() {
                 var self = this;
                 var app = self.$app;
-                
+
                 await app.methods.updateCurrentUser();
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
                 await updateControls();
 
 
-                $$("#cancel-plan-btn").on("click", async function (e) {
-                        e.preventDefault();
-                        
-                        app.dialog.confirm(window.localize('cancel_subs_dialog'), window.localize('cancel_subs'), handleCancel)
+                $$("#cancel-plan-btn").on("click", async function(e) {
+                    e.preventDefault();
 
-						// loggedUser = null;
-						// await app.methods.clearCurrentUser();
-						// console.log("User cleared [app.f7.signout]");
-						// await app.views.main.router.navigate('/');
-						// console.log("Logging out [pageInit.sign-out-btn.onClick]");
-						// if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
-						// {
-						// 	console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
-						// 	app.views.main.router.navigate({ name: "login" });
-						// }
+                    app.dialog.confirm(window.localize('cancel_subs_dialog'), window.localize('cancel_subs'), handleCancel)
+
+                    // loggedUser = null;
+                    // await app.methods.clearCurrentUser();
+                    // console.log("User cleared [app.f7.signout]");
+                    // await app.views.main.router.navigate('/');
+                    // console.log("Logging out [pageInit.sign-out-btn.onClick]");
+                    // if (await app.methods.setLocalValueToKey(null, 'loggedUser'))
+                    // {
+                    // 	console.log("Successfully logged out! [pageInit.sign-out-btn.onClick]");
+                    // 	app.views.main.router.navigate({ name: "login" });
+                    // }
                 });
-                
-                async function handleCancel()
-                {
+
+                async function handleCancel() {
                     console.log(loggedUser.currentMembership.token);
                     let updateResponse;
 
                     await app.request.promise({
                         url: `${app.data.stripe.subscriptionUrl}/${loggedUser.currentMembership.token}?cancel_at_period_end=true`,
                         method: "POST",
-                        headers: {'Authorization': `Bearer ${app.data.stripe.testKeys.sk}`},
-                    }).then(async function (updateResponse){
+                        headers: {
+                            'Authorization': `Bearer ${app.data.stripe.testKeys.sk}`
+                        },
+                    }).then(async function(updateResponse) {
                         let updateData = JSON.parse(updateResponse.data);
                         console.log(updateData);
 
@@ -120,51 +120,47 @@
                     });
 
                 }
-                function nocancelMembership()
-                {
+
+                function nocancelMembership() {
                     console.log("Que dice mi mama que siempre no");
                 }
 
-                async function updateControls()
-                {
+                async function updateControls() {
                     console.log("UpdateControls()")
-                    $$("#change-plan-btn")[0].href = `/membership/select/user/${loggedUser.id}/clear/0`;
-                    if (loggedUser.currentMembership.cancelOnPeriodEnd)
-                    {
-                        console.log($$("#canceled-membership-text")[0]);
-                        
+                        //$$("#change-plan-btn")[0].href = `/membership/select/user/${loggedUser.id}/clear/0`;
+                    if (loggedUser.currentMembership.cancelOnPeriodEnd) {
+                        //console.log($$("#canceled-membership-text")[0]);
+
                         $$("#canceled-membership-text")[0].innerText = window.localize('view_membership_cancel');
 
                         console.log("Canceling membership unu");
-                    }
-                    else
-                    {
+                    } else {
                         await app.request.promise({
                             url: `${app.data.stripe.stripeApiUrl}invoices/upcoming?subscription=${loggedUser.currentMembership.token}`,
                             method: 'GET',
-                            headers: {'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk}
-                        }).then(function (upInvRes){
+                            headers: {
+                                'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk
+                            }
+                        }).then(function(upInvRes) {
                             let data = JSON.parse(upInvRes.data);
-                            let formattedNumber = formatAmountNumber(data.amount_due/100);
+                            let formattedNumber = formatAmountNumber(data.amount_due / 100);
                             let formattedText = `$${formattedNumber} USD ${window.localize('view_membership_next_month')}`
                             $$('#package-cost')[0].innerText = formattedText;
-                        }).catch(function (err){
+                        }).catch(function(err) {
                             console.log("Error in upcomingInvoice");
                             console.log(err);
                         });
                     }
                 }
-                function formatAmountNumber(toFormat)
-                {
+
+                function formatAmountNumber(toFormat) {
                     var splitAmount = toFormat.toString().split('.');
                     var formattedAmount = `${splitAmount[0]}.${(splitAmount.length > 1 ? formatSingleNumber(splitAmount[1]) : "00" )}`;
                     return formattedAmount;
                 }
 
-                function formatSingleNumber(number)
-                {
-                    switch (number.toString().length)
-                    {
+                function formatSingleNumber(number) {
+                    switch (number.toString().length) {
                         case 0:
                             return "00";
                             break;

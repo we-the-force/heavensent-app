@@ -215,7 +215,7 @@
                         // const subscription = await stripe.subscriptions.retrieve('sub_49ty4767H20z6a');
                         // console.log("Ayyy");
 
-                        let subscription;
+                        /* let subscription;
                         await app.request.promise({
                             url: app.data.stripe.stripeApiUrl + "subscriptions/" + loggedUser.currentMembership.token,
                             method: "GET",
@@ -224,10 +224,14 @@
                             }
                         }).then(function(subRes) {
                             subscription = JSON.parse(subRes.data);
+                        }).catch(function(error) {
+                            //console.err(error);
+                            console.error(error);
+                            app.preloader.hide();
+                            app.dialog.alert(`Error`);
                         });
-                        console.log(subscription);
 
-                        if (selectedPlan.stripeId != subscription.items.data[0].plan.product) {
+                        if (subscription !== undefined && selectedPlan.stripeId !== subscription.items.data[0].plan.product) {
                             if (subscription.cancel_at_period_end) {
                                 //Subscription has been canceled, gotta uncancel it first lmao
                                 console.log("Uncanceling subscription");
@@ -326,8 +330,10 @@
                         } else {
                             console.log("- - - - - It's the same, ignore - - - - -");
                             app.preloader.hide();
-                        }
+                        } */
                     } else {
+                        console.log('------------------no token or membership---------------');
+                        console.log('object', object);
                         await app.request.promise({
                             url: stripeUrl,
                             method: "POST",
@@ -335,14 +341,21 @@
                             headers: {
                                 'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk
                             }
-                        }).then(function(res) {
+                        }).then(async function(res) {
                             var sessionData = JSON.parse(res.data);
-                            // console.log(sessionData.id);
+                            console.log('session data ??');
+                            console.log(sessionData);
+                            console.log('---------------------------------------');
                             app.preloader.hide();
-                            console.log(stripeRedirect);
-                            stripeRedirect.redirectToCheckout({
+                            const {
+                                error
+                            } = await stripeRedirect.redirectToCheckout({
                                 sessionId: sessionData.id
                             });
+                            if (error) {
+                                console.log(error);
+                                app.dialog.alert(`Ooops somthing went wrong`);
+                            }
                         }).catch(function(err) {
                             console.log("Error in promise! \r\n", err);
                             app.preloader.hide();
