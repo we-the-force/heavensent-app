@@ -30,7 +30,7 @@
                 <h1 class="text-title" id="package-name">{{PlanName}}</h1>
                 <!-- <p class="text-cost" id="package-cost">${{PlanPrice}}.00 USD /MO</p> -->
                 <!-- <p class="text-cost" id="package-cost">$0.00 USD {{localize "view_membership_next_month"}}</p> -->
-                
+
                 <!-- <p class="text">
                     {{localize "next_billing_date"}} <span id="next-bill-date">{{BillingDate}}</span>
                 </p> -->
@@ -42,11 +42,11 @@
                     </a>
                 </p> -->
             </div>
-            
+
             <div class="btns-cont center">
                 <a id="change-plan-btn" class="button color-white round large">{{localize "change_plan"}}</a>
             </div>
-            <div class="btns-cont center">  
+            <div class="btns-cont center">
                 <a id="cancel-plan-btn" class="button color-blue round large">{{localize "cancel_subs"}}</a>
             </div>
         </div>
@@ -59,6 +59,16 @@
             pageInit: async function() {
                 var self = this;
                 var app = self.$app;
+                var stripeApiUrl = app.data.stripe.stripeApiUrl;
+                var PUBLISHABLE_KEY = app.data.stripe.testKeys.pk;
+                var SECRET_KEY = app.data.stripe.testKeys.sk;
+                //var stripeRedirect = await loadStripe(PUBLISHABLE_KEY);
+
+                const stripe = require('stripe')(SECRET_KEY);
+
+                var moment = require('moment');
+                moment.locale('es');
+                moment().format();
 
                 await app.methods.updateCurrentUser();
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
@@ -83,10 +93,88 @@
                 });
 
                 async function handleCancel() {
-                    console.log(loggedUser.currentMembership.token);
                     let updateResponse;
+                    let token = loggedUser.currentMembership.token;
+                    let headers = {
+                        'Authorization': 'Bearer ' + SECRET_KEY,
+                    }
+                    let today = moment();
+                    let creation_date = moment.unix(loggedUser.currentMembership.creation_date);
+                    let chargeID, refund;
 
-                    await app.request.promise({
+                    if (!today.isSameOrBefore(creation_date.add(30, 'd'))) {
+                        app.preloader.show('blue');
+                        await app.request.promise({
+                            url: `${stripeApiUrl}payment_intents/${token}`,
+                            method: "GET",
+                            headers: headers
+                        }).then(function(payIntResult) {
+                            let pi = JSON.parse(payIntResult.data);
+                            chargeID = pi.charges.data[0].id;
+                        }).catch(async function(error) {
+                            app.preloader.hide();
+                            await app.dialog.alert(`Oops error consiguiendo el id de tu pago ${error}`)
+                            app.views.main.router.navigate('/');
+                        });
+
+                        await app.request.promise({
+                            url: `${stripeApiUrl}refunds`,
+                            method: "POST",
+                            data: {
+                                charge: chargeID,
+                            },
+                            headers: headers
+                        }).then(function(resRefund) {
+                            let refund = JSON.parse(resRefund.data);
+                        }).catch(async function(error) {
+                            app.preloader.hide();
+                            await app.dialog.alert(`Oops error realizando el reembolso ${error}`)
+                            app.views.main.router.navigate('/');
+                        });
+
+                        await app.request.promise({
+                            url: `${app.data.server}/users/${loggedUser.id}`,
+                            method: 'PUT',
+                            data: {
+                                "currentMembership": {
+                                    "isActive": false,
+                                }
+                            }
+                        }).then(async function(value) {
+                            app.preloader.hide();
+                            await app.dialog.alert("Membership canceled successfully!");
+                            app.views.main.router.navigate('/');
+                        }).catch(async function(error) {
+                            app.preloader.hide();
+                            await app.dialog.alert(`Oops error borrando tu membresia ${error}`)
+                            app.views.main.router.navigate('/');
+                        });
+                    } else {
+                        app.dialog.confirm(window.localize('cancel_subs_no_refund'), window.localize('cancel_subs'), x => {
+                            app.preloader.show('blue');
+                            app.request.promise({
+                                url: `${app.data.server}/users/${loggedUser.id}`,
+                                method: 'PUT',
+                                data: {
+                                    "currentMembership": {
+                                        "isActive": false,
+                                    }
+                                }
+                            }).then(async function(value) {
+                                app.preloader.hide();
+                                await app.dialog.alert("Membership canceled successfully!");
+                                app.views.main.router.navigate('/');
+                            }).catch(async function(error) {
+                                app.preloader.hide();
+                                await app.dialog.alert(`Oops error borrando tu membresia ${error}`)
+                                app.views.main.router.navigate('/');
+                            });
+                        });
+                        //console.log('alert about no refund');
+                        //await stripe.paymentIntents.cancel(token);
+                    }
+
+                    /* await app.request.promise({
                         url: `${app.data.stripe.subscriptionUrl}/${loggedUser.currentMembership.token}?cancel_at_period_end=true`,
                         method: "POST",
                         headers: {
@@ -117,7 +205,7 @@
                         await app.methods.updateCurrentUser();
 
                         app.views.main.router.refreshPage();
-                    });
+                    }); */
 
                 }
 
@@ -155,7 +243,7 @@
 
                 function formatAmountNumber(toFormat) {
                     var splitAmount = toFormat.toString().split('.');
-                    var formattedAmount = `${splitAmount[0]}.${(splitAmount.length > 1 ? formatSingleNumber(splitAmount[1]) : "00" )}`;
+                    var formattedAmount = `${splitAmount[0]}.${(splitAmount.length > 1 ? formatSingleNumber(splitAmount[1]) : "00")}`;
                     return formattedAmount;
                 }
 
