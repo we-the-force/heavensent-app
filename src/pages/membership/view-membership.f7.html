@@ -102,7 +102,7 @@
                     let creation_date = moment.unix(loggedUser.currentMembership.creation_date);
                     let chargeID, refund;
 
-                    if (!today.isSameOrBefore(creation_date.add(30, 'd'))) {
+                    if (today.isSameOrBefore(creation_date.add(30, 'd'))) {
                         app.preloader.show('blue');
                         await app.request.promise({
                             url: `${stripeApiUrl}payment_intents/${token}`,
