@@ -708,7 +708,7 @@ console.log(err);
                 var swiper = routeTo.params.swiper;
 
                 var baseMemories = null;
-                await app.request.promise.get(`${app.data.server}/memories/?recipients.id=${userID}`).then(function(memResult) {
+                await app.request.promise.get(`${app.data.server}/memories/?recipients.id=${userID}&sent=true`).then(function(memResult) {
                     baseMemories = JSON.parse(memResult.data);
                 }).catch(function(err) {
                     console.log("Error getting memories!");
