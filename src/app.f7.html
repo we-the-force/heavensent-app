@@ -207,7 +207,7 @@
                         // }
                     })
 
-                    $$('#lenguage').click(function(elem) {
+                    $$('#lenguage').off('click').click(function(elem) {
                         let leng = "";
                         let val = $$(this).text();
                         if (val == 'English (US)') {
@@ -220,7 +220,7 @@
                         if (window.language == '') {
                             window.language = 'en_US';
                         }
-                        self.$update();
+                        //self.$update();
                         app.views.main.router.refreshPage();
                         /* app.views.main.router.refreshPage() */
                         //let leng = ''
