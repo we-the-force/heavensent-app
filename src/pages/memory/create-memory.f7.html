@@ -539,12 +539,12 @@
                 });
 
                 /* elimina un contacto */
-                /* $$('.person.contact .close').click(function (val) {
+                $$('.person.contact .close').click(function (val) {
                     contacts.splice(contacts.indexOf(contacts.find(x => x.id == $$(this).parent().data('id'))), 1);
                     sessionStorage.contacts = JSON.stringify(contacts);
                     $$(this).parent().remove();
                     if (contacts.length == 0) $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
-                }); */
+                }); 
 
                 /* delete cover img */
                 $$('.popover-opt .list-button#delete').click(function(val) {
