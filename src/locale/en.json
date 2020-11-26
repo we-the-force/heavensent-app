@@ -105,6 +105,7 @@
     "billed_with": "Billed with:",
     "change_plan": "Change plan",
     "cancel_subs": "Cancel Membership",
+    "cancel_subs_no_refund": "More than 30 days have passed since your payment, this operation will not generate a refund and it is permanent, are you sure you want to continue?",
     "cancel_subs_dialog": "Are you sure you want to cancel your membership? No refund will be made if more than 30 days have passed since the payment of your membership",
     "cancel_subs_canceled": "Your membership will no longer be renewed after",
     "delete_mem": "Are you sure you want to delete the memory?",

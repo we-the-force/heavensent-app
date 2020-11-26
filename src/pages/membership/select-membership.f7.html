@@ -198,10 +198,11 @@
 
                     canceled_subscription = false;
                     let hasMembership = loggedUser.currentMembership !== null;
+                    let activeMembership = hasMembership && loggedUser.currentMembership.isActive ? true : false;
                     let hasToken = hasMembership ? loggedUser.currentMembership.token !== null : false;
 
 
-                    if (hasMembership && hasToken) {
+                    if (hasMembership && hasToken && activeMembership) {
                         console.log("Has membership and has token");
                         /*
                         	Retrieve current subscription

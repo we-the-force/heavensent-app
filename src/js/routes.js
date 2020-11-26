@@ -1033,6 +1033,7 @@ console.log(err);
                     headers: headers
                 }).then(async function(payIntResult) {
                     let paymentIntentData = JSON.parse(payIntResult.data);
+                    console.log('PI: ', paymentIntentData);
 
                     let paymentMethodData = await app.request.promise({
                         // url: `${stripeApiUrl}payment_methods/pm_1HC5gbANVxwYjCOlpqvWnOYe`,
