@@ -74,6 +74,16 @@
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
                 await updateControls();
 
+                $$("#change-plan-btn").on("click", async function(x) {
+                    let today = moment();
+                    let creation_date = moment.unix(loggedUser.currentMembership.creation_date);
+                    if (today.isSameOrBefore(creation_date.add(30, 'd'))) {
+                        app.dialog.confirm(window.localize('upgrade_subs_dialog'), window.localize('upgrade_subs'), handleCancel)
+                    } else {
+                        app.dialog.alert(window.localize('30_no_refund'));
+                    }
+                });
+
 
                 $$("#cancel-plan-btn").on("click", async function(e) {
                     e.preventDefault();
@@ -150,7 +160,9 @@
                             app.views.main.router.navigate('/');
                         });
                     } else {
-                        app.dialog.confirm(window.localize('cancel_subs_no_refund'), window.localize('cancel_subs'), x => {
+                        app.dialog.alert(window.localize('30_no_refund'));
+                        /* app.dialog.confirm(window.localize('cancel_subs_no_refund'), window.localize('cancel_subs'),);
+                        x => {
                             app.preloader.show('blue');
                             app.request.promise({
                                 url: `${app.data.server}/users/${loggedUser.id}`,
@@ -160,16 +172,16 @@
                                         "isActive": false,
                                     }
                                 }
-                            }).then(async function(value) {
+                            }).then(async function (value) {
                                 app.preloader.hide();
                                 await app.dialog.alert("Membership canceled successfully!");
                                 app.views.main.router.navigate('/');
-                            }).catch(async function(error) {
+                            }).catch(async function (error) {
                                 app.preloader.hide();
                                 await app.dialog.alert(`Oops error borrando tu membresia ${error}`)
                                 app.views.main.router.navigate('/');
                             });
-                        });
+                        } */
                         //console.log('alert about no refund');
                         //await stripe.paymentIntents.cancel(token);
                     }
@@ -215,7 +227,7 @@
 
                 async function updateControls() {
                     console.log("UpdateControls()")
-                    $$("#change-plan-btn")[0].href = `/membership/select/user/${loggedUser.id}/clear/0`;
+                        //$$("#change-plan-btn")[0].href = `/membership/select/user/${loggedUser.id}/clear/0`;
                     if (loggedUser.currentMembership.cancelOnPeriodEnd) {
                         //console.log($$("#canceled-membership-text")[0]);
 
