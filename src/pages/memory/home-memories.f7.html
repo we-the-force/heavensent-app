@@ -80,7 +80,8 @@
 								{{#js_if "this.profilePicture != ''"}}
 								<img src="{{@root.Server}}{{picture}}" alt="" srcset="">
 								{{else}}
-								<img src="" alt="" srcset="">
+                                <img src="/static/img/Busto.png" alt="" srcset="">
+                                {{/js_if}}
 								{{#if admin}}
 								<span class="badge color-orange">Admin</span>
 								{{/if}}
