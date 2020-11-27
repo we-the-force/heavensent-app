@@ -363,19 +363,20 @@ console.log(err);
     {
         name: 'invite-admin',
         path: '/admin/invite/user/:userID',
-        component: InviteAdmin,
+        //component: InviteAdmin,
         async: async function(routeTo, routeFrom, resolve, reject) {
             var router = this;
             var app = router.app;
             var currentUser = await app.methods.getLocalValue('loggedUser');
             var userID = routeTo.params.userID;
-            console.log(currentUser);
             if (currentUser === null || currentUser === undefined) {
                 reject();
                 await router.navigate('/');
             } else {
-                if (currentUser.id === userID) {
-                    resolve();
+                if (currentUser.id == userID) {
+                    resolve({
+                        component: InviteAdmin,
+                    });
                 } else {
                     reject();
                     await router.navigate('/memories/home/user/' + currentUser.id);

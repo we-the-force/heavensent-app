@@ -60,10 +60,10 @@
 
                 // /recovery/mailSend
 
-                $$('#recover-pass-btn').click(async function(val) {
+                $$('#recover-pass-btn').off('click').click(function(val) {
                     console.log("Ayyy click");
-					let emailVal = await $$('#email').val();
-					console.log("EmailVal: ", emailVal);
+                    let emailVal = $$('#email').val();
+                    console.log("EmailVal: ", emailVal);
                     if (validateEmail(emailVal)) {
                         console.log("Doing the email thing");
                         app.request.promise.post(`${app.data.server}/auth/forgot-password`, {
