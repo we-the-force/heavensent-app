@@ -155,10 +155,10 @@
                             <p class="title">{{localize "create_mem_date"}}:</p>
                             <p class="val"></p>
                         </div>
-                        <div class="time-info">
+                        <!-- <div class="time-info">
                             <p class="title">{{localize "create_mem_time"}}:</p>
                             <p class="val"></p>
-                        </div>
+                        </div> -->
                         <p class="immediatly-info none">{{localize "create_mem_repeat_footer_immediately"}}</p>
                     </div>
                     <div class="footer-deliver">The memory will repeat itself every year until 08/22/2024</div>
@@ -544,12 +544,12 @@
                 });
 
                 /* elimina un contacto */
-                $$('.person.contact .close').click(function (val) {
+                $$('.person.contact .close').click(function(val) {
                     contacts.splice(contacts.indexOf(contacts.find(x => x.id == $$(this).parent().data('id'))), 1);
                     sessionStorage.contacts = JSON.stringify(contacts);
                     $$(this).parent().remove();
                     if (contacts.length == 0) $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
-                }); 
+                });
 
                 /* delete cover img */
                 $$('.popover-opt .list-button#delete').click(function(val) {
