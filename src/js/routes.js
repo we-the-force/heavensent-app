@@ -733,11 +733,10 @@ console.log(err);
                     let memObject = [];
 
                     baseMem.forEach(mem => {
-                        memObject.push(getMemory(mem));
+                        if (mem.owners[0].currentMembership.isActive)
+                            memObject.push(getMemory(mem));
                     })
 
-                    // console.log("Resulting memories");
-                    // console.log(memObject);
                     return memObject;
                 }
 
@@ -779,7 +778,8 @@ console.log(err);
                 var currentUserID = routeTo.params.currentUserID;
                 var swiperID = routeTo.params.swiperID;
 
-                var baseMem = null;
+                var baseMem = false,
+                    isActive = false;
                 await app.request.promise.get(`${app.data.server}/memories/${memoryID}`).then(function(memResult) {
                     baseMem = JSON.parse(memResult.data);
                     // console.log("Base memory");
@@ -788,9 +788,15 @@ console.log(err);
                     console.log("Error fetching memories!");
                     console.log(err);
                     baseMem = null;
-                })
+                });
 
-                if (baseMem) {
+                baseMem.recipients.forEach(el => {
+                    if (el.id == currentUserID) {
+                        isActive = true;
+                    }
+                });
+
+                if (baseMem.owners[0].currentMembership.isActive && isActive) {
 
                     resolve({
                         component: MemoryView,
@@ -804,6 +810,7 @@ console.log(err);
                     })
                 } else {
                     reject();
+                    await router.navigate('/');
                 }
 
                 function getMemory(baseMem) {
