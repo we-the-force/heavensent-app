@@ -20,15 +20,16 @@
                     <li class="item-content item-input">
                         <div class="item-inner">
                             <div class="item-input-wrap">
-                                <input type="text" id="title" placeholder="{{localize 'create_mem_title'}}" required validate>
+                                <input type="text" id="title" placeholder="{{localize 'create_mem_title'}}" required
+                                    validate>
                             </div>
                         </div>
                     </li>
                     <li class="item-content item-input">
                         <div class="item-inner">
                             <div class="item-input-wrap textarea">
-                                <textarea id="description" placeholder="{{localize 'create_mem_message'}}" class="resizable"
-                                    maxlength="140"></textarea>
+                                <textarea id="description" placeholder="{{localize 'create_mem_message'}}"
+                                    class="resizable" maxlength="140"></textarea>
                                 <span class="contador">0/140</span>
                             </div>
                         </div>
@@ -51,7 +52,8 @@
             <div class="upload-cont">
                 <div class="progress-cont">
                     <p class="bar"><span data-progress="0" class="progressbar" id="space-progressbar"></span></p>
-                    <div class="desc">{{localize "create_mem_space"}} <div id="prog">100</div>MB {{localize "create_mem_out_of"}} <div id="total">100</div>MB
+                    <div class="desc">{{localize "create_mem_space"}} <div id="prog">100</div>MB
+                        {{localize "create_mem_out_of"}} <div id="total">100</div>MB
                     </div>
                 </div>
                 <div class="media-cont">
@@ -118,7 +120,8 @@
             </div>
             <div class="location-cont">
                 <div class="btns-cont center location-btn" id="b_04">
-                    <a id="add-location-btn" href="/memories/location" class="button color-blue round large">{{localize "create_mem_add_location"}}</a>
+                    <a id="add-location-btn" href="/memories/location"
+                        class="button color-blue round large">{{localize "create_mem_add_location"}}</a>
                 </div>
                 <div class="location-map none">
                     <div class="map" id="map-static"></div>
@@ -192,17 +195,18 @@
             <div class="date_time inputs list">
                 <ul>
                     <li class="item-content item-input two-inputs">
-                        <div class="item-media" style="position: absolute; right: 15px; top: 39%; z-index: 10; color: #7ecadd; cursor: pointer;">
-                          <!-- <i class="icon demo-list-icon"></i> -->
-                          
+                        <div class="item-media"
+                            style="position: absolute; right: 15px; top: 39%; z-index: 10; color: #7ecadd; cursor: pointer;">
+                            <!-- <i class="icon demo-list-icon"></i> -->
+
                         </div>
                         <div class="item-inner">
                             <label for="deliver-date" class="label">{{localize "create_mem_date"}}</label>
                             <div class="item-input-wrap">
                                 <input type="date" class="pop-deliver-inputs" id="deliver-date" required validate />
-                                
-                                    <i class="icons material-icons" style="color: #7ecadd;">event</i>
-                                
+
+                                <i class="icons material-icons" style="color: #7ecadd;">event</i>
+
                             </div>
                         </div>
                         <!-- <div class="item-inner">
@@ -262,11 +266,13 @@
                         <li><a class="list-btn weekly popover-close" href="#">{{localize "create_mem_weekly"}}</a></li>
                         <!-- <li><a class="list-btn biweekly popover-close" href="#">Biweekly</a></li> -->
                         <!-- <li><a class="list-btn each_month popover-close" href="#">Each month </a></li> -->
-                        <li><a class="list-btn each_month popover-close" href="#">{{localize "create_mem_monthly"}}</a></li>
+                        <li><a class="list-btn each_month popover-close" href="#">{{localize "create_mem_monthly"}}</a>
+                        </li>
                         <!-- <li><a class="list-btn every_3_months popover-close" href="#">Every 3 months</a></li> -->
                         <!-- <li><a class="list-btn every_6_months popover-close" href="#">Every 6 months</a></li> -->
                         <!-- <li><a class="list-btn every_year popover-close checked" href="#">Every year</a></li> -->
-                        <li><a class="list-btn every_year popover-close" href="#">{{localize "create_mem_yearly"}}</a></li>
+                        <li><a class="list-btn every_year popover-close" href="#">{{localize "create_mem_yearly"}}</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -303,8 +309,6 @@
                 var moment = require('moment');
                 moment.locale('es');
                 moment().format();
-                console.log(currentPlan);
-                console.log(loggedUser);
 
                 /* var latlng = sessionStorage.latlng;
                 var addr = sessionStorage.addr; */
@@ -747,6 +751,7 @@
                 /* aqui guarda la memoria */
                 $$('#create-btn-memory').click(async e => {
                     if (!isUploading) {
+
                         isUploading = true;
                         let ss = sessionStorage;
                         // console.log("Create-btn-memory.click");
@@ -762,41 +767,73 @@
                         /* datos que sean completamente necesarios */
                         // let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
                         let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.repeat && ss.date_end && ss.on_demand;
+
                         if (result.valid) {
                             // CREATE MEMORY
-                            app.preloader.show("blue");
-                            await app.request.promise.postJSON(`${app.data.server}/memories`, result.memory).then(async function(res) {
-                                    var createdMemory = res.data;
+                            let user_memories,
+                                max_memories = currentPlan.memoriesPerYear,
+                                membershipStart = moment.unix(loggedUser.currentMembership.creation_date),
+                                memoriesInYear = 0,
+                                date_to_check = moment(result.memory.reminder.date),
+                                start_date, end_date;
+                            await app.request.promise.get(`${app.data.server}/users?id=${loggedUser.id}`).then(function(result) {
+                                let res = JSON.parse(result.data);
+                                user_memories = res[0].ownedMemories;
+                            });
 
-                                    //UPLOAD COVER
-                                    if (await uploadCover(result.memoryFiles.cover, createdMemory.id)) {
+                            for (let i = 0; i < 10; i++) {
+                                if (date_to_check.isBetween(moment(membershipStart), moment(membershipStart).add(1, 'y'))) {
+                                    start_date = moment(membershipStart);
+                                    end_date = moment(membershipStart).add(1, 'y');
+                                    break;
+                                }
+                                membershipStart.add(1, 'y');
+                            }
 
-                                        //UPLOAD OTHER FILES
-                                        if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
-                                            app.preloader.hide();
-                                            app.dialog.alert(window.localize("create_mem_success"));
+                            user_memories.forEach(element => {
+                                let this_date = moment(element.reminder.date);
+                                if (this_date.isBetween(start_date, end_date)) {
+                                    memoriesInYear++;
+                                }
+                            });
 
-                                            sessionStorage.clear();
-                                            isUploading = false;
-                                            app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
+                            if (max_memories > memoriesInYear) {
+                                app.preloader.show("blue");
+                                await app.request.promise.postJSON(`${app.data.server}/memories`, result.memory).then(async function(res) {
+                                        var createdMemory = res.data;
+
+                                        //UPLOAD COVER
+                                        if (await uploadCover(result.memoryFiles.cover, createdMemory.id)) {
+
+                                            //UPLOAD OTHER FILES
+                                            if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
+                                                app.preloader.hide();
+                                                app.dialog.alert(window.localize("create_mem_success"));
+
+                                                sessionStorage.clear();
+                                                isUploading = false;
+                                                app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
+                                            } else {
+                                                app.dialog.alert(window.localize("create_mem_file_failure"));
+                                            }
                                         } else {
-                                            app.dialog.alert(window.localize("create_mem_file_failure"));
+                                            // console.log("!!!!!! Error uploading cover !!!!!!");
+                                            app.dialog.alert(window.localize("create_mem_cover_failure"));
                                         }
-                                    } else {
-                                        // console.log("!!!!!! Error uploading cover !!!!!!");
-                                        app.dialog.alert(window.localize("create_mem_cover_failure"));
-                                    }
-
-
-                                })
-                                .catch(function(err) {
-                                    app.preloader.hide();
-                                    console.log("error adding memory!");
-                                    console.log(err);
-                                    app.dialog.alert(window.localize("create_mem_failure"));
-                                    isUploading = false;
-                                })
-                            app.preloader.hide();
+                                    })
+                                    .catch(function(err) {
+                                        app.preloader.hide();
+                                        console.log("error adding memory!");
+                                        console.log(err);
+                                        app.dialog.alert(window.localize("create_mem_failure"));
+                                        isUploading = false;
+                                    })
+                                app.preloader.hide();
+                            } else {
+                                console.log("demasiadas memorias por año");
+                                app.dialog.alert(`${window.localize("create_mem_memories_limit")} ${result.message}`);
+                                isUploading = false;
+                            }
                         } else {
                             console.log("Failed to pass the check thing");
                             console.log(result);
@@ -992,6 +1029,11 @@
                         result.message += result.errors > 0 ? ", " + window.localize('no_contacts') : window.localize('no_contacts');
                         result.errors++;
                     } else {
+                        if (contacts.length > 10) {
+                            result.valid = false;
+                            result.message += result.errors > 0 ? ", " + window.localize('more_ten_contacts') : window.localize('more_ten_contacts');
+                            result.errors++;
+                        }
                         result.memory.recipients = contacts;
                     }
 
@@ -1029,12 +1071,21 @@
                                 if (result.memory.reminderType === "none") {
                                     result.memory.reminderType = "date"
                                 }
-                                if (dateHappensBeforeToday(date)) {
+                                if (moment(date).isSameOrBefore(moment())) {
                                     result.valid = false;
                                     result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
                                     result.errors++;
                                 } else {
-                                    result.memory.reminder.date = date;
+                                    let mom_date = moment(date);
+                                    let membership = loggedUser.currentMembership;
+                                    let creation_date = moment.unix(membership.creation_date);
+                                    if (mom_date.isSameOrBefore(creation_date.add(10, 'y'))) {
+                                        result.memory.reminder.date = date;
+                                    } else {
+                                        result.valid = false;
+                                        result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error_2")}` : `${window.localize("mem_delivery_date_error_2")}`;
+                                        result.errors++;
+                                    }
                                 }
                                 // }
                             }
@@ -1087,7 +1138,8 @@
                                 if (result.memory.reminderType === "none") {
                                     result.memory.reminderType = "date"
                                 }
-                                if (dateHappensBeforeToday(date)) {
+                                if (moment(date).isSameOrBefore(moment())) {
+                                    //if (dateHappensBeforeToday(date)) {
                                     result.valid = false;
                                     result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
                                     result.errors++;
