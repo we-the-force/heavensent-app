@@ -260,7 +260,9 @@
                 }
 
                 function fillData() {
-                    $$('#contact-photo').append('<img src="' + app.data.server + userInfo.profilePicture.url + '" alt="" style="height:178px;width:178px;">');
+                    if (userInfo.profilePicture) {
+                        $$('#contact-photo').append('<img src="' + app.data.server + userInfo.profilePicture.url + '" alt="" style="height:178px;width:178px;">');
+                    }
                     $$("#create-cont-name").val(userInfo.name);
                     $$("#create-cont-email").val(userInfo.email);
                     $$("#create-cont-mobile").val(userInfo.mobile);

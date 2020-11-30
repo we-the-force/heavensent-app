@@ -46,6 +46,7 @@
     "signup_contact_error": "You already have that user as a contact!",
     "signup_file_read_error": "There was an error reading the file!",
     "signup_file_processing_error": "There was an error processing your file!",
+    "sign_up_error": "Ooops something went wrong with the registration, try again later.",
     "no_admin_please_fill": "Your account has no admin associated with it, please fill out your admin information.",
     "login": "Login",
     "accept": "Accept",
