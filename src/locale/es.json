@@ -46,6 +46,7 @@
     "signup_contact_error": "¡Ya tiene ese usuario como contacto!",
     "signup_file_read_error": "¡Hubo un error al leer el archivo!",
     "signup_file_processing_error": "¡Hubo un error procesando el archivo!",
+    "sign_up_error": "Vaya, algo salió mal con el registro, inténtalo de nuevo más tarde.",
     "no_admin_please_fill": "Su cuenta no tiene ningún administrador asociado, complete su información de administrador.",
     "login": "Iniciar sesión",
     "accept": "Aceptar",

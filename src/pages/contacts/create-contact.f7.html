@@ -141,6 +141,13 @@
                     $$(this).removeClass('aft');
                 });
 
+                $$('#create-cont-birthday').blur(function(el) {
+                    if ($$(this).val() === '') {
+                        $$(this).addClass('aft');
+                    }
+                });
+
+
                 //upload photo
                 $$(".img-btn").on("click", function() {
                     if (window.File && window.FileReader && window.FormData) {
@@ -204,10 +211,10 @@
                     if (!validateText(password, 'Please, enter your family member\'s desired password.', '')) {
                         return false;
                     }
-                    if (!c) {
-                        app.dialog.alert('Please upload a photo!');
-                        return false;
-                    }
+                    //if (!c) {
+                    //    app.dialog.alert('Please upload a photo!');
+                    //    return false;
+                    //}
                     app.preloader.show("blue");
 
                     app.request.promise.get(`${app.data.server}/users/?email=${email.toLowerCase()}`)
@@ -239,29 +246,30 @@
                                         }).catch(function(res2) {
                                             console.log('Error al cargar los datos' + res2);
                                         });
-
-                                        await c.result('blob', 'png').then(async blob => {
-                                            const data = new FormData();
-                                            data.append("files", blob, 'profile.png');
-                                            data.append("refId", res2.data.user.id);
-                                            data.append("ref", "user");
-                                            data.append('source', 'users-permissions');
-                                            data.append('field', 'profilePicture');
-                                            await app.request.promise({
-                                                url: app.data.server + '/upload',
-                                                method: "POST",
-                                                crossDomain: true,
-                                                contentType: "multipart/form-data",
-                                                data: data
-                                            }).then(function(res) {
-                                                resp2 = res;
-                                            }).catch(function(res2) {
-                                                console.log('Error al cargar la foto' + res2);
+                                        if (c) {
+                                            await c.result('blob', 'png').then(async blob => {
+                                                const data = new FormData();
+                                                data.append("files", blob, 'profile.png');
+                                                data.append("refId", res2.data.user.id);
+                                                data.append("ref", "user");
+                                                data.append('source', 'users-permissions');
+                                                data.append('field', 'profilePicture');
+                                                await app.request.promise({
+                                                    url: app.data.server + '/upload',
+                                                    method: "POST",
+                                                    crossDomain: true,
+                                                    contentType: "multipart/form-data",
+                                                    data: data
+                                                }).then(function(res) {
+                                                    resp2 = res;
+                                                }).catch(function(res2) {
+                                                    console.log('Error al cargar la foto' + res2);
+                                                });
                                             });
-                                        });
-
-                                        if (resp.status === 200 && resp2.status === 200) {
-                                            let photo = JSON.parse(resp2.data)[0];
+                                        }
+                                        //&& resp2.status === 200
+                                        if (resp.status === 200) {
+                                            let photo = resp2 ? JSON.parse(resp2.data)[0] : '';
                                             let assignResult = await assignRelation(loggedUser, res2.data.user, username, relation, false, false, false, photo.id);
                                             if (assignResult.result) {
                                                 await app.methods.updateCurrentUser();
@@ -286,13 +294,56 @@
                                         console.log(`An error occurred [create-member-btn.onClick]`);
                                         console.log(err);
                                         app.preloader.hide();
-                                        var obj = JSON.parse(err.xhr.response);
                                         app.dialog.alert('Some fields are incomplete or incorrect, please try again.' + '\r\n' + obj.message[0].messages[0].message);
                                     })
                             } else {
                                 let user = JSON.parse(res.data)[0];
+                                //let response = false;
                                 try {
+                                    /* if (c) {
+                                        await c.result('blob', 'png').then(async blob => {
+                                            const data = new FormData();
+                                            data.append("files", blob, 'profile.png');
+                                            data.append("refId", res2.data.user.id);
+                                            data.append("ref", "user");
+                                            data.append('source', 'users-permissions');
+                                            data.append('field', 'profilePicture');
+                                            await app.request.promise({
+                                                url: app.data.server + '/upload',
+                                                method: "POST",
+                                                crossDomain: true,
+                                                contentType: "multipart/form-data",
+                                                data: data
+                                            }).then(function(res) {
+                                                response = res;
+                                            }).catch(function(res2) {
+                                                console.log('Error al cargar la foto' + res2);
+                                            });
+                                        });
+                                    }
+                                    let photo = response ? JSON.parse(response.data)[0] : ''; */
                                     let assignResult = await assignRelation(loggedUser, user, username, relation, false, false, false, '');
+                                    if (c) {
+                                        await c.result('blob', 'png').then(async blob => {
+                                            const data = new FormData();
+                                            data.append("files", blob, 'profile.png');
+                                            data.append("refId", assignResult.id);
+                                            data.append("ref", "contact");
+                                            //data.append('source', 'users-permissions');
+                                            data.append('field', 'contactPicture');
+                                            await app.request.promise({
+                                                url: app.data.server + '/upload',
+                                                method: "POST",
+                                                crossDomain: true,
+                                                contentType: "multipart/form-data",
+                                                data: data
+                                            }).then(function(res) {
+                                                console.log(res);
+                                            }).catch(function(res2) {
+                                                console.log('Error al cargar la foto' + res2);
+                                            });
+                                        });
+                                    }
                                     if (assignResult.result) {
                                         await app.methods.updateCurrentUser();
                                         app.preloader.hide();
@@ -319,7 +370,8 @@
                 async function assignRelation(targetUser, contactUser, contactNickname, contactRelation, contactIsAdmin, contactIsMinor, contactEditMemories, photo) {
                     let result = {
                         result: false,
-                        message: ""
+                        message: "",
+                        id: ''
                     };
                     await app.request.promise.get(`${app.data.server}/contacts/?owner=${targetUser.id}&contact=${contactUser.id}`)
                         .then(async function(res) {
@@ -341,6 +393,7 @@
                                     .then(function(res) {
                                         console.log("response assignRelation");
                                         console.log(res);
+                                        result.id = res.data.id;
                                         result.result = true;
                                         result.message = "Contact added successfully";
                                     })
