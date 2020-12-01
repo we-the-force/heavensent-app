@@ -815,6 +815,7 @@
                                                 isUploading = false;
                                                 app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
                                             } else {
+                                                isUploading = false;
                                                 app.dialog.alert(window.localize("create_mem_file_failure"));
                                             }
                                         } else {
@@ -892,7 +893,7 @@
                     data.append("refId", memoryRefId);
                     data.append("ref", "memory");
                     data.append('field', 'media');
-                    console.log("Post media request [upload cover]");
+                    console.log("Post media request [upload files]");
 
                     try {
                         let lmao = await app.request.promise({
