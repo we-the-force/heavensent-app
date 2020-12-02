@@ -791,11 +791,18 @@ console.log(err);
                     baseMem = null;
                 });
 
-                baseMem.recipients.forEach(el => {
-                    if (el.id == currentUserID) {
-                        isActive = true;
-                    }
-                });
+                if(baseMem.owners[0].id == currentUserID)
+                {
+                    isActive = true;
+                }
+                else
+                {
+                    baseMem.recipients.forEach(el => {
+                        if (el.id == currentUserID) {
+                            isActive = true;
+                        }
+                    });
+                }
 
                 if (baseMem.owners[0].currentMembership.isActive && isActive) {
 
