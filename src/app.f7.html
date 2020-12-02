@@ -29,9 +29,9 @@
 				<a id="app-plan-button" href="/onboarding"
 					class="btn-panel panel-close ">On Boarding</a>
 				<div class="block">
-					<a href=""><span class="title">Memories<span> <br>09 de 10 disponibles</a>
-					<div  class="progressbar" data-progress="50">
-					<span  ></span>
+					<a href="">{{localize "messages"}} <br> <span id="memsleft"></span> {{localize "of"}} <span id="memsperyear"></span> {{localize "membership-available"}}</a>
+					<div  class="progressbar" id="memsprogress" data-progress="50">
+						<span></span>
 					</div>
 				</div>
 				
@@ -192,7 +192,7 @@
                 var loggedUser = null;
                 // console.log(app.views.main.router.url);
                 if (app.views.main.router.url != "/") {
-                    // console.log(loggedUser);
+                    console.log(loggedUser);
                     loggedUser = await updateUser();
 					app.progressbar.set('#memories-progress');
                     updateControls();

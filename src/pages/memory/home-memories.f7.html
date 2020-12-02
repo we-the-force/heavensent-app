@@ -427,7 +427,15 @@
             pageInit: async function(e, page) {
                 var self = this;
                 var app = self.$app;
-                // console.log(page.route.context);
+                var user = {memories: page.route.context.Memories, memoriesUsed: 0, memoriesLeft: 0};
+                user.memoriesUsed=user.memories.scheduled.length+user.memories.pending.length;
+                user.memoriesLeft= page.route.context.CurrentUser.currentMembership.plan.memoriesPerYear;
+                console.log(user);
+                console.log(page.route.context);
+                var mempercent = (user.memoriesUsed *100)/user.memoriesLeft
+                $$('#memsperyear').html(user.memoriesLeft);
+                $$('#memsleft').html(user.memoriesLeft-user.memoriesUsed);
+                $$('#memsprogress span').css('transform', 'translate3d(-'+mempercent+'%, 0,0)');
                 var isEditing = page.route.context.IsEditing;
                 var currentUser = page.route.context.CurrentUser;
                 var fundations = page.route.context.Fundations;
