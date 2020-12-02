@@ -238,7 +238,7 @@
                     // console.log("Info del contacto:\r\n", contactInfo.contact.profilePicture.url);
                     // Poner tambien la imagen pero no tiene el objetito de la imagen porque croppie lo hace de una forma rara.
                     // $$('#contact-photo').append('<img src="'+app.data.server+contactInfo.picture+'" alt="">');
-                    let urlPic = contactInfo.contactPicture ? contactInfo.contactPicture.url : contactInfo.contact.profilePicture.url;
+                    let urlPic = contactInfo.contactPicture ? contactInfo.contactPicture.url : contactInfo.contact.profilePicture ? contactInfo.contact.profilePicture.url : "";
                     $$('#contact-photo').append('<img src="' + app.data.server + urlPic + '" alt="" style="height:178px;width:178px;">');
                     $$("#create-cont-nickname").val(contactInfo.nickname);
                     $$("#create-cont-relation").val(contactInfo.relation);
