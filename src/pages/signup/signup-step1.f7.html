@@ -245,13 +245,16 @@
                     } else {
                         birthday=birthday.toString();
                         console.log(birthday);
+                        let newBirthday = '';
                         if(birthday.includes("-")){
-                            let newBirthday = birthday.replace("-", "/");
+                            newBirthday = birthday.replace("-", "/");
 
                         } else {
-                        let newBirthday = birthday.replace(" ", "/");
+                        newBirthday = birthday.replace(" ", "/");
 
                         }
+                        console.log(newBirthday);
+
                         let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
                         let birthdayDate = new Date(newBirthday);
                         if (birthdayDate > today) {
