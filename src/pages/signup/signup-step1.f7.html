@@ -241,8 +241,16 @@
                     // if (!validateText(birthday, 'Plase, enter your birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.')) {
                     if (!validateText(birthday, window.localize("signup_birthday"), window.localize("signup_birthday_error"))) {
                         return false;
+                        birthday=birthday.toString();
+                        console.log(birthday);
                     } else {
-                        let newBirthday = birthday.toString().replaceAll("-", "/");
+                        if(birthday.includes("-")){
+                            let newBirthday = birthday.replaceAll("-", "/");
+
+                        } else {
+                        let newBirthday = birthday.replaceAll(" ", "/");
+
+                        }
                         let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
                         let birthdayDate = new Date(newBirthday);
                         if (birthdayDate > today) {
