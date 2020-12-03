@@ -173,7 +173,9 @@
                                             "contactEmail": email
                                         }
                                     }).then(function(res) {
+                                        app.dialog.alert(window.localize('success'), window.localize('contact-edited-success'));
                                         res1 = res;
+
                                     }).catch(function(res2) {
                                         console.log('Error al cargar los datos' + res2);
                                     });
