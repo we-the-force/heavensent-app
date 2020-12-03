@@ -279,6 +279,7 @@
                                                     url: '/memories/home/user/' + loggedUser.id,
                                                 });
                                             } else {
+                                                app.preloader.hide();
                                                 app.dialog.alert("couldn't add contact! " + assignResult.message);
                                             }
                                         } else {

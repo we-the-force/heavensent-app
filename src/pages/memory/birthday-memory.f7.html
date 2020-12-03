@@ -8,7 +8,7 @@
                         <a class="back-btn">
                             <i class="icons material-icons">chevron_left</i>
                         </a>
-                        <h1 class="title">Birthday Memory</h1>
+                        <h1 class="title">{{localize "birthday_memory"}}</h1>
                         <div class="none"></div>
                     </div>
                 </div>
@@ -20,15 +20,16 @@
                     <li class="item-content item-input">
                         <div class="item-inner">
                             <div class="item-input-wrap">
-                                <input type="text" id="title" placeholder="Happy Birthday" required validate>
+                                <input type="text" id="title" placeholder="{{localize 'create_mem_title'}}" required
+                                    validate>
                             </div>
                         </div>
                     </li>
                     <li class="item-content item-input">
                         <div class="item-inner">
                             <div class="item-input-wrap textarea">
-                                <textarea id="description" placeholder="Message" class="resizable"
-                                    maxlength="140"></textarea>
+                                <textarea id="description" placeholder="{{localize 'create_mem_message'}}"
+                                    class="resizable" maxlength="140"></textarea>
                                 <span class="contador">0/140</span>
                             </div>
                         </div>
@@ -47,17 +48,47 @@
             <!-- <div class="btns-cont center" id="b_01">
                 <a id="add-note-btn" class="button color-blue round large">Add note</a>
             </div> -->
-            <div class="upload-title">Upload files</div>
+            <div class="contacts-title">{{localize "create_mem_add_contacts"}}
+            </div>
+            <div class="contacts-cont">
+                <div class="contacts">
+                    <div class="person no_contact">
+                        <!-- cuando no hay contactos agregados quitar la clase none -->
+                    </div>
+                    <!-- <div class="person">
+                    <span class="material-icons close">close</span>
+                    <img src="static/img/envy.jpg" alt="">
+                </div>
+                <div class="person">
+                    <span class="material-icons close">close</span>
+                    <img src="static/img/ramona.jpeg" alt="">
+                </div>
+                <div class="person">
+                    <span class="material-icons close">close</span>
+                    <img src="static/img/scott.jpeg" alt="">
+                </div>
+                <div class="person">
+                    <span class="material-icons close">close</span>
+                    <img src="static/img/kim.jpeg" alt="">
+                </div> -->
+                </div>
+                <div class="btns-cont center add" id="b_03">
+                    <a id="add-contact" href="/memories/contacts" class="add-btn">
+                        <i class="icons material-icons">add</i>
+                    </a>
+                </div>
+            </div>
+            <div class="upload-title">{{localize "create_mem_upload"}}</div>
             <div class="upload-cont">
-
                 <div class="progress-cont">
                     <p class="bar"><span data-progress="0" class="progressbar" id="space-progressbar"></span></p>
-                    <div class="desc">Available space <div id="prog">100</div>MB out of <div id="total">100</div>MB
+                    <div class="desc">{{localize "create_mem_space"}} <div id="prog">100</div>MB
+                        {{localize "create_mem_out_of"}} <div id="total">100</div>MB
                     </div>
                 </div>
                 <div class="media-cont">
                     <label class="cover" for="add-cover">
-                        <img src="" alt="">
+                        <img src="" alt="" style="opacity: 0;">
                         <a class="edit popover-open" data-popover=".popover-opt">
                             <span class="material-icons">more_horiz</span>
                         </a>
@@ -85,81 +116,112 @@
                     </label>
                 </div>
             </div>
-            <div class="date-title">Deliver date
+            
+            <div class="location-title">{{localize "create_mem_location"}}
+            </div>
+            <div class="location-cont">
+                <div class="btns-cont center location-btn" id="b_04">
+                    <a id="add-location-btn" href="/memories/location"
+                        class="button color-blue round large">{{localize "create_mem_add_location"}}</a>
+                </div>
+                <div class="location-map none">
+                    <div class="map" id="map-static"></div>
+                    <div class="map-info">
+                        <div class="address">
+                            <h1 class="title">Address</h1>
+                            <p class="addr">6th Ave 1274b</p>
+                        </div>
+                        <a href="/memories/location" class="edit-btn addr">
+                            <i class="icons material-icons">edit</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="date-title">{{localize "create_mem_deliver_date"}}
+                <!-- quitar none cuando este moestrando informacion o agregar none cuando no haya info -->
                 <a href="" class="edit-btn deliver popup-open none" data-popup=".popup-deliver">
                     <i class="icons material-icons">edit</i>
                 </a>
             </div>
+            <!-- aggrega la clase none alboton cuando se vaya a mostrar informacion y quitar none de el div deliver info -->
             <div class="deliver-cont">
-                <div class="btns-cont center date-btn">
+                <div class="btns-cont center date-btn" id="b_05">
                     <a id="add-deliver-date" class="button color-blue round large popup-open"
-                        data-popup=".popup-deliver">{{localize 'create_mem_set_deliver_date'}}</a>
+                        data-popup=".popup-deliver"> {{localize "create_mem_set_deliver_date"}}</a>
                 </div>
                 <div class="deliver-info none">
                     <div class="info-cont">
                         <div class="date-info">
-                            <p class="title">Date:</p>
-                            <p class="val">09/22/2020</p>
+                            <p class="title">{{localize "create_mem_date"}}:</p>
+                            <p class="val"></p>
                         </div>
-                        <div class="time-info">
-                            <p class="title">Time:</p>
-                            <p class="val">07:15</p>
-                        </div>
+                        <!-- <div class="time-info">
+                            <p class="title">{{localize "create_mem_time"}}:</p>
+                            <p class="val"></p>
+                        </div> -->
+                        <p class="immediatly-info none">{{localize "create_mem_repeat_footer_immediately"}}</p>
                     </div>
                     <div class="footer-deliver">The memory will repeat itself every year until 08/22/2024</div>
                 </div>
             </div>
             <div class="ondemand-cont">
                 <div class="ondemand">
-                    <h1>On Demand</h1>
+                    <h1>{{localize "create_mem_on_demand"}}</h1>
                     <a class="popup-open" href="#" data-popup=".popup-demand">
                         <i class="info icons material-icons">info</i>
                     </a>
                 </div>
                 <label class="toggle toggle-init" id="on-demand-toggle">
-                    <input id="on-demand-toggle" type="checkbox">
-                    <span class="toggle-icon"></span>
-                </label>
-            </div>
-            <div class="btns-cont center create" id="b_04">
-                <a id="create-memory" class="button color-white round large">{{localize 'create_memory'}}</a>
-            </div>
-        </div>
-        <div class="popup popup-demand">
-            <div class="block">
-                <p>The user can access the content as many times as they can and wherever</p>
-            </div>
-        </div>
-        <div class="popup popup-deliver">
-            <div class="immediately-cont">
-                <h1>Send immediately</h1>
-                <label class="toggle toggle-init" id="immediately-toggle">
                     <input type="checkbox">
                     <span class="toggle-icon"></span>
                 </label>
             </div>
-
-            <div class="inputs list">
+            <div class="btns-cont center create" id="b_04">
+                <a id="create-btn-memory" class="button color-white round large">{{localize "create_mem_create"}}</a>
+            </div>
+        </div>
+        <div class="popup popup-demand">
+            <div class="block">
+                <p>{{localize "create_mem_on_demand_desc"}}</p>
+            </div>
+        </div>
+        <div class="popup popup-deliver">
+            <div class="immediately-cont">
+                <h1>{{localize "create_mem_immediately"}}</h1>
+                <label class="toggle toggle-init" id="immediately-toggle">
+                    <input id="send-immediately-toggle" type="checkbox">
+                    <span class="toggle-icon"></span>
+                </label>
+            </div>
+            <div class="date_time inputs list">
                 <ul>
                     <li class="item-content item-input two-inputs">
-                        <div class="item-inner">
-                            <label for="deliver-date" class="label">Date</label>
-                            <div class="item-input-wrap">
-                                <input type="date" class="pop-deliver-inputs" id="deliver-date" required validate />
-                            </div>
+                        <div class="item-media"
+                            style="position: absolute; right: 15px; top: 39%; z-index: 10; color: #7ecadd; cursor: pointer;">
+                            <!-- <i class="icon demo-list-icon"></i> -->
+
                         </div>
                         <div class="item-inner">
-                            <label for="deliver-time" class="label">Time</label>
+                            <label for="deliver-date" class="label">{{localize "create_mem_date"}}</label>
+                            <div class="item-input-wrap">
+                                <input type="date" class="pop-deliver-inputs" id="deliver-date" required validate />
+
+                                <i class="icons material-icons" style="color: #7ecadd;">event</i>
+
+                            </div>
+                        </div>
+                        <!-- <div class="item-inner">
+                            <label for="deliver-date" class="label">{{localize "create_mem_time"}}</label>
                             <div class="item-input-wrap">
                                 <input type="time" class="pop-deliver-inputs" id="deliver-time" required validate />
                             </div>
-                        </div>
+                        </div> -->
                     </li>
                 </ul>
             </div>
 
             <div class="repeat-cont">
-                <h1>Repeat</h1>
+                <h1>{{localize "create_mem_repeat"}}</h1>
                 <div class="inputs list">
                     <ul>
                         <li class="item-content item-input two-inputs">
@@ -168,7 +230,7 @@
                                     <a id="select-repeat" class="select color-white round small popover-open"
                                         data-popover=".popover-repeat">
                                         <i class="material-icons">keyboard_arrow_down</i>
-                                        <p> Every Year</p>
+                                        <p id="select-repeat-value">{{localize "create_mem_never"}}</p>
                                     </a>
                                 </div>
                             </div>
@@ -177,7 +239,7 @@
                 </div>
             </div>
             <div class="end-repeat-cont">
-                <h1>End repetition</h1>
+                <h1>{{localize "create_mem_repeat_end"}}</h1>
                 <div class="inputs list">
                     <ul>
                         <li class="item-content item-input">
@@ -190,23 +252,28 @@
                     </ul>
                 </div>
             </div>
-            <div class="footer">The memory will repeat itself every year until --/--/----</div>
+            <div class="footer">The memory will repeat itself every year until <div>--/--/----</div>
+            </div>
             <div class="btns-cont center" id="date">
-                <a id="accept-deliver-date" class="button color-blue round grey small popup-close" disabled="true">Accept</a>
+                <a id="accept-deliver-date" class="button color-blue grey round small" disabled="true">Accept</a>
             </div>
         </div>
-        <div class="popover popover-repeat">
+        <div class="popover popover-repeat space-on-right">
             <div class="popover-inner">
                 <div class="list">
                     <ul>
-                        <li><a class="list-btn never popover-close" href="#">Never</a></li>
-                        <li><a class="list-btn every_day popover-close" href="#">Every day</a></li>
-                        <li><a class="list-btn weekly popover-close" href="#">Weekly</a></li>
-                        <li><a class="list-btn biweekly popover-close" href="#">Biweekly</a></li>
-                        <li><a class="list-btn each_month popover-close" href="#">Each month </a></li>
-                        <li><a class="list-btn every_3_months popover-close" href="#">Every 3 months</a></li>
-                        <li><a class="list-btn every_6_months popover-close" href="#">Every 6 months</a></li>
-                        <li><a class="list-btn every_year popover-close checked" href="#">Every year</a></li>
+                        <li><a class="list-btn never popover-close" href="#">{{localize "create_mem_never"}}</a></li>
+                        <!-- <li><a class="list-btn every_day popover-close" href="#">Every day</a></li> -->
+                        <li><a class="list-btn weekly popover-close" href="#">{{localize "create_mem_weekly"}}</a></li>
+                        <!-- <li><a class="list-btn biweekly popover-close" href="#">Biweekly</a></li> -->
+                        <!-- <li><a class="list-btn each_month popover-close" href="#">Each month </a></li> -->
+                        <li><a class="list-btn each_month popover-close" href="#">{{localize "create_mem_monthly"}}</a>
+                        </li>
+                        <!-- <li><a class="list-btn every_3_months popover-close" href="#">Every 3 months</a></li> -->
+                        <!-- <li><a class="list-btn every_6_months popover-close" href="#">Every 6 months</a></li> -->
+                        <!-- <li><a class="list-btn every_year popover-close checked" href="#">Every year</a></li> -->
+                        <li><a class="list-btn every_year popover-close" href="#">{{localize "create_mem_yearly"}}</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -234,55 +301,74 @@
     import $$ from "dom7";
     export default {
         on: {
-            pageInit: async function (e, page) {
+            pageInit: async function(e, page) {
                 var self = this;
                 var app = self.$app;
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
 
-                var cover
-                var files = [];
-                var mb = 0;
-                var maxmb = page.route.context.CurrentPlan.plan.memoryQuota;
-                var plan = page.route.context.CurrentPlan.plan.name;
-                var maxbytes = maxmb * 1000000;
+                let currentPlan = page.route.context.CurrentPlan.plan;
+                var moment = require('moment');
+                moment.locale('es');
+                moment().format();
 
+                /* var latlng = sessionStorage.latlng;
+                var addr = sessionStorage.addr; */
                 var title = sessionStorage.title;
                 var desc = sessionStorage.desc;
                 var immediately = sessionStorage.immediately;
                 var date = sessionStorage.date;
-                var time = sessionStorage.time;
+                // var time = sessionStorage.time;
                 var repeat = sessionStorage.repeat;
                 var date_end = sessionStorage.date_end;
                 var footer = sessionStorage.footer;
                 var on_demand = sessionStorage.on_demand;
 
+                console.log("***Home session storage things***\r\n", `Repeat: ${repeat}, date_end: ${date_end}`);
+
+                var files = [];
+                var mb = 0;
+                var cover /* = sessionStorage.cover */ ;
+                var contacts = sessionStorage.contacts;
+                var maxmb = page.route.context.CurrentPlan.plan.memoryQuotaMB;
+                // console.log("- - - plan - - -");
+                // console.log(page.route.context.CurrentPlan);
+                var maxbytes = maxmb * 1000000;
+                var plan = page.route.context.CurrentPlan.plan.name;
                 var toggle_immediately = app.toggle.create({
                     el: '#immediately-toggle'
                 });
                 var toggle_demand = app.toggle.create({
                     el: '#on-demand-toggle'
                 });
+                sessionStorage.on_demand = JSON.stringify(toggle_demand.checked);
 
-                switch (plan) {
-                    case "basic":
-                        $$('.location-cont #add-location-btn').removeAttr('href');
-                        $$('.location-cont').addClass('none');
-                        $$('.location-title').addClass('none');
-                        $$('.ondemand-cont').addClass('none');
-                        $$('.media-cont #add-media input').attr("accept", "image/*");
-                        break;
-                    case "standard":
-                        $$('.location-cont #add-location-btn').removeAttr('href');
-                        $$('.location-cont').addClass('none');
-                        $$('.location-title').addClass('none');
-                        $$('.ondemand-cont').addClass('none');
-                        break;
-                    case "premium":
+                var isUploading = false;
 
-                        break;
-                    default:
-                        break;
+                $$('.progress-cont .desc').find('#total').text(maxmb);
+                $$('.progress-cont .desc').find('#prog').text(maxmb);
+
+                //Selecciona por default "Nunca" y esconde la fecha si no hay repeat o el repeat es nunca
+                if (repeat === undefined || (repeat === "Never" || repeat === "Nunca")) {
+                    hideRepeatFields();
                 }
+                displayMembershipElements();
+
+
+
+                //Checa si hay contacts, los agrega si si hay, como no
+                if (contacts) {
+                    contacts = JSON.parse(contacts);
+                    $$('.contacts-cont .contacts .person.contact').remove();
+                    contacts.length > 0 ? $$('.contacts-cont .contacts .person.no_contact').addClass('none') : $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
+                    contacts.forEach(el => {
+                        let contact = $$('<div class="person contact" data-id="' + el.id + '">' +
+                            '<span class="material-icons close">close</span>' +
+                            '<img src="' + el.img + '" alt="">' +
+                            '</div>')
+                        contact.appendTo($$('.contacts-cont .contacts'));
+                    });
+                }
+
 
                 if (on_demand) {
                     toggle_demand.checked = JSON.parse(on_demand);
@@ -293,72 +379,112 @@
                 if (desc) {
                     $$('textarea#description').val(JSON.parse(desc));
                 }
-                if (date && time && repeat) {
+
+                //if (window.language == 'en_US') {
+                //	currentMembership = 'No ' + window.localize('membership');
+                //} else if (window.language == 'es_MX') {
+                //	currentMembership = 'Sin ' + window.localize('membership');
+                //}
+
+                // if (date && time && repeat) {
+                if (date && repeat) {
                     $$('.date-title .edit-btn').removeClass('none');
                     $$('.deliver-cont .btns-cont').addClass('none');
                     $$('.deliver-cont .deliver-info').removeClass('none');
                     toggle_immediately.checked = JSON.parse(sessionStorage.immediately);
-                    $$('#deliver-date').val(JSON.parse(sessionStorage.date));
-                    $$('#deliver-time').val(JSON.parse(sessionStorage.time));
+                    if (toggle_immediately.checked) {
+                        $$('.popup-deliver .date_time.inputs').addClass('none');
+                        $$('#deliver-time').addClass('grey');
+                        $$('#deliver-date').addClass('grey');
+                        $$('.immediatly-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .date-info').addClass('none');
+                        $$('.deliver-cont .deliver-info .time-info').addClass('none');
+                    } else {
+                        $$('#deliver-date').val(JSON.parse(sessionStorage.date));
+                        // $$('#deliver-time').val(JSON.parse(sessionStorage.time));
+                    }
                     $$('#select-repeat p').text(JSON.parse(sessionStorage.repeat))
                     if (JSON.parse(sessionStorage.date_end) != "") {
-                        $$('#date-end').val(JSON.parse(sessionStorage.date_end))
+                        $$('#date-end').val(JSON.parse(sessionStorage.date_end));
+                        /* frace al inicio */
+                        let repeat = JSON.parse(sessionStorage.footer).split(window.language == 'en_US' ? ' until ' : (window.language == 'es_MX' ? " hasta " : ""));
+                        let date_foot = repeat[1];
+                        repeat = repeat[0].split(window.language == 'en_US' ? ' itself ' : (window.language == 'es_MX' ? ' repetirá ' : ''))[1];
+                        $$('.popup-deliver .footer').children('div').text(JSON.parse(sessionStorage.date_end));
+                        $$('.popup-deliver .footer').html(window.localize('create_mem_repeat_footer_date') + ' ' + repeat + ' ' + window.localize('create_mem_repeat_footer_until') + ' <div>' + date_foot + '</div>');
                     } else {
                         /* disable and grey */
                         $$('#date-end.pop-deliver-inputs').addClass('grey');
-                        $$('#date-end.pop-deliver-inputs').prop("disabled", true);
+                        $$('.end-repeat-cont').addClass('none');
+                        $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_never'));
                     }
                     $$('.deliver-cont .deliver-info .footer-deliver').text(JSON.parse(sessionStorage.footer));
                     $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date));
-                    $$('.deliver-cont .deliver-info .time-info .val').text(JSON.parse(sessionStorage.time));
+                    // $$('.deliver-cont .deliver-info .time-info .val').text(JSON.parse(sessionStorage.time));
                 }
-                if (sessionStorage.date && sessionStorage.time && sessionStorage.repeat) {
+
+                // if (sessionStorage.date && sessionStorage.time && sessionStorage.repeat) {
+                if (sessionStorage.date && sessionStorage.repeat) {
                     $$('#accept-deliver-date').prop('disabled', false);
                     $$('#accept-deliver-date').removeClass('grey');
                     $$('#accept-deliver-date').addClass('popup-close');
                     $$('#accept-deliver-date').off('click').click(x => deliverAccept());
                 }
 
+                //Esconde las cosas que no esten habilitadas por las memberships
+                function displayMembershipElements() {
+                    //Hide location
+                    if (!currentPlan.canAddLocation) {
+                        $$('.location-cont #add-location-btn').removeAttr('href');
+                        $$('.location-cont').addClass('none');
+                        $$('.location-title').addClass('none');
+                    }
+                    if (!currentPlan.canAddVideo) {
+                        $$('.media-cont #add-media input').attr("accept", "image/*");
+                    }
+                    if (!currentPlan.canUseOnDemand) {
+                        $$('.ondemand-cont').addClass('none');
+                    }
+                }
 
-                $$('.progress-cont .desc').find('#total').text(maxmb);
-                $$('.progress-cont .desc').find('#prog').text(maxmb);
-
-                $$('#on-demand-toggle').on('toggle:change', function (val) {
-                    sessionStorage.on_demand = JSON.stringify(app.toggle.get(this).checked);
-                });
-
-                $$('input#title').on('input:notempty', function (params) {
-                    sessionStorage.title = JSON.stringify($$(this).val());
-                });
-
-                /* guarda los valores de la descripcion si cambia de pantalla */
-                $$('textarea#description').on('input:notempty', function (params) {
-                    sessionStorage.desc = JSON.stringify($$(this).val());
-                });
+                // Esconde los campos de repeat
+                function hideRepeatFields() {
+                    console.log("Escondiendo los repeatFields como no");
+                    $$('.list-btn.never.popover-close').addClass('checked');
+                    $$('#date-end').val("");
+                    $$('.pop-deliver-inputs#date-end').addClass('grey');
+                    $$('.end-repeat-cont').addClass('none');
+                    $$('.pop-deliver-inputs').trigger('change');
+                    $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_footer_never'));
+                }
 
                 /* habilita deshabilita end repetition dependiendo de lo que selecciones en repeat */
-                $$('.popover-repeat .popover-close').click(function (el) {
-                    let input_end = $$('#date-end.pop-deliver-inputs');
+                $$('.popover-repeat .popover-close').click(function(el) {
+                    /* let input_end = $$('#date-end.pop-deliver-inputs'); */
+                    console.log("El clickcito ayyy", $$(this));
                     $$(this).parent().parent().find('.checked').removeClass('checked');
                     $$(this).addClass('checked');
                     $$('.popup-deliver .select p').text($$(this).text());
 
                     if ($$(this).hasClass('never')) {
-                        input_end.addClass('grey');
-                        input_end.prop("disabled", true);
+                        $$('#date-end').val("");
+                        $$('.pop-deliver-inputs#date-end').addClass('grey');
+                        $$('.end-repeat-cont').addClass('none');
                         $$('.pop-deliver-inputs').trigger('change');
-                        $$('.popup-deliver .footer').text(window.localize('memory_will_not_repeat'));
+                        $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_footer_never'));
                     } else {
-                        input_end.removeClass('grey');
-                        input_end.prop("disabled", false);
+                        $$('.pop-deliver-inputs#date-end').removeClass('grey');
+                        $$('.end-repeat-cont').removeClass('none');
                         $$('.pop-deliver-inputs').trigger('change');
-                        $$('.popup-deliver .footer').html(window.localize('memory_will_repeat') + $$(this).text() + ' ' + window.localize('create_mem_repeat_footer_until')+' <div>--/--/----</div>');
+                        $$('.popup-deliver .footer').html(window.localize('create_mem_repeat_footer_date') + ' ' + $$(this).text() + ' ' + window.localize('create_mem_repeat_footer_until') + ' ' + '<div>--/--/----</div>');
                     }
-                })
+                });
 
-                $$('.pop-deliver-inputs').change(function (e) {
+                /* verifica que los inputs necesarios esten llenos en el popover */
+                $$('.pop-deliver-inputs').change(function(e) {
                     var inputs = $$('.pop-deliver-inputs:not(.grey)');
-                    var nonempty = inputs.filter(function () {
+                    console.log(inputs);
+                    var nonempty = inputs.filter(function() {
                         return this.value != ''
                     });
                     if (nonempty.length == inputs.length) {
@@ -373,18 +499,107 @@
                     }
                 });
 
-                $$('.pop-deliver-inputs#date-end').change(function (e) {
+                /* send immmediately toggle disable rest of popup */
+                $$('#immediately-toggle').on('toggle:change', function(val) {
+                    if (toggle_immediately.checked) {
+                        $$('.popup-deliver .date_time.inputs').addClass('none');
+                        $$('#deliver-time').addClass('grey');
+                        $$('#deliver-date').addClass('grey');
+                        $$('.pop-deliver-inputs').trigger('change');
+                    } else {
+                        $$('#deliver-time').removeClass('grey');
+                        $$('#deliver-date').removeClass('grey');
+                        $$('.popup-deliver .date_time.inputs').removeClass('none');
+                        $$('.pop-deliver-inputs').trigger('change');
+                    }
+
+                });
+
+                /* agrega fecha en el footer */
+                $$('.pop-deliver-inputs#date-end').change(function(e) {
                     $$('.popup-deliver .footer').children('div').text($$(this).val());
                 });
 
-                /* add cover img */
-                $$('#add-cover').change(function (val) {
+                /* guarda el valor del toggle cuando cambia */
+                $$('#on-demand-toggle').on('toggle:change', function(val) {
+                    sessionStorage.on_demand = JSON.stringify(app.toggle.get(this).checked);
+                });
+
+                /* guarda el valor del  titulo por si cambia la pantalla*/
+                $$('input#title').on('input:notempty', function(params) {
+                    sessionStorage.title = JSON.stringify($$(this).val());
+                });
+
+                /* guarda los valores de la descripcion si cambia de pantalla */
+                $$('textarea#description').on('input:notempty', function(params) {
+                    sessionStorage.desc = JSON.stringify($$(this).val());
+                });
+
+                /* cuenta palabras de los text area */
+                $$('textarea').on('input:notempty', function(val) {
+                    $$(this).next().text($$(this).val().length + '/140');
+                });
+                $$('textarea').on('input:empty', function(val) {
+                    $$(this).next().text('0/140');
+                });
+
+                /* elimina un contacto */
+                $$('.person.contact .close').click(function(val) {
+                    contacts.splice(contacts.indexOf(contacts.find(x => x.id == $$(this).parent().data('id'))), 1);
+                    sessionStorage.contacts = JSON.stringify(contacts);
+                    $$(this).parent().remove();
+                    if (contacts.length == 0) $$('.contacts-cont .contacts .person.no_contact').removeClass('none');
+                });
+
+                /* delete cover img */
+                $$('.popover-opt .list-button#delete').click(function(val) {
+                    let cover_cont = $$('.media-cont .cover');
+                    mb -= cover.size;
+                    progressBar(mb)
+                    cover = null;
+                    cover_cont.children('img').attr('src', '');
+                    cover_cont.children('img').css('opacity', '0');
+                    cover_cont.removeClass('edit');
+                    $$('#add-cover').off('click');
+                    /* coverSessionstorage(cover); */
+                });
+
+                /* change cover img */
+                $$('#file-cover').change(function(val) {
                     let reader = new FileReader();
                     let cover_cont = $$('.media-cont .cover');
                     if (this.files && this.files[0]) {
                         reader.onload = e => {
                             cover_cont.addClass('edit');
                             cover_cont.children('img').attr('src', e.target.result);
+                            cover_cont.children('img').css('opacity', '1');
+                            /* coverSessionstorage(e.target.result); */
+                        }
+                        let newmb = mb - cover.size;
+                        if ((newmb + this.files[0].size) <= maxbytes) {
+                            reader.readAsDataURL(this.files[0]);
+                            mb -= cover.size;
+                            cover = this.files[0];
+                            mb += cover.size;
+                            progressBar(mb);
+                        } else {
+                            console.log("file-cover.change. newmb thing");
+                            console.log(newmb);
+                            app.dialog.alert('No space available');
+
+                        }
+                    }
+                });
+
+                /* add cover img */
+                $$('#add-cover').change(function(val) {
+                    let reader = new FileReader();
+                    let cover_cont = $$('.media-cont .cover');
+                    if (this.files && this.files[0]) {
+                        reader.onload = e => {
+                            cover_cont.addClass('edit');
+                            cover_cont.children('img').attr('src', e.target.result);
+                            cover_cont.children('img').css('opacity', '1');
                             /* coverSessionstorage(e.target.result); */
                         }
                         if ((mb + this.files[0].size) <= maxbytes) {
@@ -393,16 +608,22 @@
                             mb += cover.size;
                             progressBar(mb);
                         } else {
+                            console.log("add-cover.change. mb thing");
+                            console.log(mb);
+                            console.log(this.files[0].size);
+                            console.log("total");
+                            console.log(mb + this.files[0].size);
+                            console.log(`${mb} + ${this.files[0].size} = ${mb + this.files[0].size}, total size <= ${maxbytes}? ${((mb + this.files[0].size) <= maxbytes)}`);
                             app.dialog.alert('No space available');
                         }
                     }
-                    $$(this).on('click', function (event) {
+                    $$(this).on('click', function(event) {
                         event.preventDefault();
                     });
                 });
 
                 /* add file */
-                $$('#file-inp').change(async function (val) {
+                $$('#file-inp').change(async function(val) {
                     let reader = new FileReader();
                     let medias = $$('.media-cont .medias');
 
@@ -413,7 +634,7 @@
                         '</div>');
                     if (this.files && this.files[0]) {
                         /* si hay archivos */
-                        let file = this.files[0];                        
+                        let file = this.files[0];
                         if (file.type.match('image')) {
                             reader.onload = e => {
                                 if (!medias.find('.media:last-child').hasClass('fill')) {
@@ -427,7 +648,7 @@
                                 newfile.appendTo(medias);
 
                                 $$('.media-cont .media.fill .close').off('click');
-                                $$('.media-cont .media.fill .close').click(function (val) {
+                                $$('.media-cont .media.fill .close').click(function(val) {
                                     /* 
                                     cuando eliminas un archivo 
                                     lo borra del array
@@ -447,24 +668,26 @@
                             }
                         } else if (file.type.match('video')) {
                             reader.onload = e => {
+
                                 if (!medias.find('.media:last-child').hasClass('fill')) {
                                     /* si no hay nada agrega unas clases */
                                     medias.find('.media').addClass('none');
                                     medias.addClass('f_start');
                                 }
                                 var video = document.createElement('video');
-                                var timeupdate = function () {
+                                var timeupdate = function() {
+                                    $$('.page-content').css('background', 'aqua');
                                     if (snapImage()) {
                                         video.removeEventListener('timeupdate', timeupdate);
                                         video.pause();
                                     }
                                 };
-                                video.addEventListener('loadeddata', function () {
+                                video.addEventListener('loadeddata', function() {
                                     if (snapImage()) {
                                         video.removeEventListener('timeupdate', timeupdate);
                                     }
                                 });
-                                var snapImage = function () {
+                                var snapImage = function() {
                                     var canvas = document.createElement('canvas');
                                     canvas.width = video.videoWidth;
                                     canvas.height = video.videoHeight;
@@ -475,12 +698,32 @@
                                         newfile.children('img').attr('src', image);
                                         newfile.children('.type').text('videocam');
                                         newfile.appendTo(medias);
+                                        $$('.media-cont .media.fill .close').off('click');
+                                        $$('.media-cont .media.fill .close').click(function(val) {
+                                            /* 
+                                            cuando eliminas un archivo 
+                                            lo borra del array
+                                            baja la barra de progreso
+                                            elimina el html
+                                            */
+                                            mb -= files[$$(this).parent().index() - 4].size;
+                                            progressBar(mb)
+                                            files.splice($$(this).parent().index() - 4, 1);
+                                            $$(this).parent().remove();
+                                            if (!medias.find('.media:last-child').hasClass('fill')) {
+                                                /* cuando no hay archivos regresa al estado original */
+                                                medias.find('.media').removeClass('none');
+                                                medias.removeClass('f_start');
+                                            }
+                                        });
                                     }
                                     return success;
                                 };
                                 video.addEventListener('timeupdate', timeupdate);
                                 video.preload = 'metadata';
                                 video.src = e.target.result;
+                                video.muted = true;
+                                video.playsInline = true;
                                 video.play();
                             }
                         }
@@ -501,102 +744,584 @@
                     }
                 });
 
-                /* change cover img */
-                $$('#file-cover').change(function (val) {
-                    let reader = new FileReader();
-                    let cover_cont = $$('.media-cont .cover');
-                    if (this.files && this.files[0]) {
-                        reader.onload = e => {
-                            cover_cont.addClass('edit');
-                            cover_cont.children('img').attr('src', e.target.result);
-                            /* coverSessionstorage(e.target.result); */
-                        }
-                        let newmb = mb - cover.size;
-                        if ((newmb + this.files[0].size) <= maxbytes) {
-                            reader.readAsDataURL(this.files[0]);
-                            mb -= cover.size;
-                            cover = this.files[0];
-                            mb += cover.size;
-                            progressBar(mb);
-                        } else {
-                            app.dialog.alert('No space available');
-
-                        }
-                    }
-                });
-
-                /* delete cover img */
-                $$('.popover-opt .list-button#delete').click(function (val) {
-                    let cover_cont = $$('.media-cont .cover');
-                    mb -= cover.size;
-                    progressBar(mb)
-                    cover = null;
-                    cover_cont.children('img').attr('src', '');
-                    cover_cont.removeClass('edit');
-                    $$('#add-cover').off('click');
-                    /* coverSessionstorage(cover); */
-                });
-
                 $$('.navbar .back-btn').click(e => {
-                    sessionStorage.clear();
-                    app.views.main.router.navigate('/memories/home/user/'+loggedUser.id);
-                })
-
-                $$('.popover-repeat .popover-close').click(function (el) {
-                    $$(this).parent().parent().find('.checked').removeClass('checked');
-                    $$(this).addClass('checked');
-                    $$('.popup-deliver .select p').text($$(this).text());
-                })
-
-                $$('textarea').on('input:notempty', function (val) {
-                    $$(this).next().text($$(this).val().length + '/140');
-                });
-                $$('textarea').on('input:empty', function (val) {
-                    $$(this).next().text('0/140');
-                });
-
-
-                /* aqui guarda la memoria */
-                $$('#birthday-memory #create-memory').click(e => {
-                    console.log($$('input#title').val());
-                    console.log($$('textarea#description').val());
-                    console.log(files);
-                    console.log(cover);
-                    console.log(toggle_immediately.checked);
-                    console.log($$('#deliver-date').val());
-                    console.log($$('#deliver-time').val());
-                    console.log($$('#select-repeat p').text());
-                    console.log($$('#date-end').val());
-                    console.log(toggle_demand.checked);
                     sessionStorage.clear();
                     app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
                 });
 
+                /* aqui guarda la memoria */
+                $$('#create-btn-memory').click(async e => {
+                    if (!isUploading) {
+
+                        isUploading = true;
+                        let ss = sessionStorage;
+                        // console.log("Create-btn-memory.click");
+                        let immediately = $$("#send-immediately-toggle").prop("checked");
+                        let repeat = $$("#select-repeat-value")[0].innerText;
+                        // console.log(repeat);
+                        let date = $$("#deliver-date").val();
+                        // console.log(immediately);
+
+                        // let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.time, ss.repeat, ss.date_end, ss.on_demand);
+                        let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.repeat, ss.date_end, ss.on_demand);
+
+                        /* datos que sean completamente necesarios */
+                        // let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.time && ss.repeat && ss.date_end && ss.on_demand;
+                        let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.repeat && ss.date_end && ss.on_demand;
+
+                        if (result.valid) {
+                            // CREATE MEMORY
+                            let user_memories,
+                                max_memories = currentPlan.memoriesPerYear,
+                                membershipStart = moment.unix(loggedUser.currentMembership.creation_date),
+                                memoriesInYear = 0,
+                                date_to_check = moment(result.memory.reminder.date),
+                                start_date, end_date;
+                            await app.request.promise.get(`${app.data.server}/users?id=${loggedUser.id}`).then(function(result) {
+                                let res = JSON.parse(result.data);
+                                user_memories = res[0].ownedMemories;
+                            });
+
+                            for (let i = 0; i < 10; i++) {
+                                if (date_to_check.isBetween(moment(membershipStart), moment(membershipStart).add(1, 'y'))) {
+                                    start_date = moment(membershipStart);
+                                    end_date = moment(membershipStart).add(1, 'y');
+                                    break;
+                                }
+                                membershipStart.add(1, 'y');
+                            }
+
+                            user_memories.forEach(element => {
+                                let this_date = moment(element.reminder.date);
+                                if (this_date.isBetween(start_date, end_date)) {
+                                    memoriesInYear++;
+                                }
+                            });
+
+                            if (max_memories > memoriesInYear) {
+                                app.preloader.show("blue");
+                                await app.request.promise.postJSON(`${app.data.server}/memories`, result.memory).then(async function(res) {
+                                        var createdMemory = res.data;
+
+                                        //UPLOAD COVER
+                                        if (await uploadCover(result.memoryFiles.cover, createdMemory.id)) {
+
+                                            //UPLOAD OTHER FILES
+                                            if (await uploadFiles(result.memoryFiles.media, [], createdMemory.id)) {
+                                                app.preloader.hide();
+                                                app.dialog.alert(window.localize("create_mem_success"));
+
+                                                sessionStorage.clear();
+                                                isUploading = false;
+                                                app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
+                                            } else {
+                                                isUploading = false;
+                                                app.dialog.alert(window.localize("create_mem_file_failure"));
+                                            }
+                                        } else {
+                                            // console.log("!!!!!! Error uploading cover !!!!!!");
+                                            isUploading = false;
+                                            app.dialog.alert(window.localize("create_mem_cover_failure"));
+                                        }
+                                    })
+                                    .catch(function(err) {
+                                        app.preloader.hide();
+                                        console.log("error adding memory!");
+                                        console.log(err);
+                                        app.dialog.alert(window.localize("create_mem_failure"));
+                                        isUploading = false;
+                                    })
+                                app.preloader.hide();
+                            } else {
+                                console.log("demasiadas memorias por año");
+                                app.dialog.alert(`${window.localize("create_mem_memories_limit")} ${result.message}`);
+                                isUploading = false;
+                            }
+                        } else {
+                            console.log("Failed to pass the check thing");
+                            console.log(result);
+                            app.dialog.alert(`${window.localize("create_mem_missing_field")} ${result.message}`);
+                            isUploading = false;
+                        }
+                    } else {
+                        console.log("Ya estoy subiendo perate");
+                    }
+                });
+
+                async function uploadCover(cover, memoryRefId) {
+                    const data = new FormData();
+                    // data.append("files", file);
+                    var result = false;
+                    let captionData = {
+                        caption: "asd",
+                        alternativeText: "asdasd"
+                    };
+                    data.append("files", cover, `mem-${memoryRefId}_cover.png`);
+                    data.append("refId", memoryRefId);
+                    data.append("ref", "memory");
+                    data.append('field', 'cover');
+                    // data.append('source', 'users-permissions');
+                    console.log("Post cover request [upload cover]");
+                    try {
+
+                        await app.request.promise({
+                            url: app.data.server + '/upload',
+                            method: "POST",
+                            crossDomain: true,
+                            contentType: "multipart/form-data",
+                            data: data
+                        }).then(async function(coverResult) {
+                            let resultObject = JSON.parse(coverResult.data);
+                            console.log(resultObject);
+                        });
+                        result = true;
+                    } catch (err) {
+                        console.log("ERROR UPLOADING MEDIA");
+                        console.log(err);
+                        result = false;
+                    }
+                    return result;
+                }
+
+                async function uploadFiles(files, captions, memoryRefId) {
+                    console.log("Uploading files");
+                    const data = new FormData();
+                    var result = false;
+                    for (let i = 0; i < files.length; i++) {
+                        data.append(`files`, files[i], files[i].name.replace(/ /g, "_"));
+                    }
+                    data.append("refId", memoryRefId);
+                    data.append("ref", "memory");
+                    data.append('field', 'media');
+                    console.log("Post media request [upload files]");
+
+                    try {
+                        let lmao = await app.request.promise({
+                            url: app.data.server + '/upload',
+                            method: "POST",
+                            crossDomain: true,
+                            contentType: "multipart/form-data",
+                            data: data
+                        }).then(async function(filesResult) {
+                            console.log("- - - - Then - - - -");
+                            let resultObject = JSON.parse(filesResult.data);
+                            console.log(resultObject);
+                            for (let i = 0; i < resultObject.length; i++) {
+                                var fileCaption = captions.length > i ? captions[i] : `Test_${i}`;
+                                console.log(`File ${i}, caption: ${fileCaption}`);
+                                await app.request({
+                                    url: app.data.server + `/upload?id=${resultObject[i].id}`,
+                                    method: 'POST',
+                                    data: {
+                                        fileInfo: {
+                                            caption: fileCaption
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                        console.log("- - - Files - - -");
+                        console.log(lmao);
+                        result = true;
+
+                    } catch (err) {
+                        console.log("ERROR UPLOADING MEDIA");
+                        console.log(err);
+                        result = false;
+                    }
+                    return result;
+                }
+
+                // function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, time, repeat, date_end, on_demand) {
+                function validateFields(title, desc, cover, files, oldContacts, latlng, immediately, date, repeat, date_end, on_demand) {
+                    console.log("Starting validateFields");
+                    // console.log(date_end);
+                    var result = {
+                        valid: true,
+                        errors: 0,
+                        message: "",
+                        memory: {
+                            "title": "",
+                            "description": "",
+                            "cover": "",
+                            "media": [],
+                            "owners": [{
+                                "id": loggedUser.id
+                            }],
+                            "recipients": [],
+                            "reminderType": "none",
+                            "reminder": {
+                                "date": null,
+                                // "time": null,
+                                "repeat": "",
+                                "locationLat": "",
+                                "locationLng": "",
+                                "date_end": null
+                            },
+                            "sent": false,
+                            "on_demand": on_demand,
+                        },
+                        memoryFiles: {
+                            "cover": "",
+                            "media": []
+                        }
+                    };
+
+                    // console.log("");
+                    var contacts = undefined;
+                    if (oldContacts != undefined) {
+                        contacts = getContacts(oldContacts);
+                    }
+                    // if (time && !(time == "null" || time == "undefined" ||  time == "\"\"")) {
+                    //     let auxTime = time.substring(1, time.length - 1).split(':');
+                    //     time = `${String(auxTime[0]).padStart(2, 0)}:${String(auxTime[1]).padStart(2, 0)}:00.000`;
+                    //     // `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                    // }
+
+                    // console.log("Checking title [validateFields]");
+                    // console.log(title);
+                    // console.log(!title);
+                    if (!title) {
+                        result.valid = false;
+                        result.message += window.localize('no_title');
+                        result.errors++;
+                    } else {
+                        // console.log("Title:");
+                        // console.log(title);
+                        result.memory.title = title.substring(1, title.length - 1);
+                    }
+
+                    // console.log("Checking desc [validateFields]");
+                    // console.log(desc);
+                    // console.log(!desc);
+                    if (!desc) {
+                        result.valid = false;
+                        result.message += result.errors > 0 ? ", " + window.localize('no_description') : window.localize('no_description');
+                        result.errors++;
+                    } else {
+                        result.memory.description = desc.substring(1, desc.length - 1);
+                    }
+
+                    // console.log("Checking cover [validateFields]");
+                    // console.log(cover);
+                    // console.log(!cover);
+                    if (!cover) {
+                        result.valid = false;
+                        result.message += result.errors > 0 ? ", " + window.localize('no_cover') : window.localize('no_cover');
+                        result.errors++;
+                    } else {
+                        result.memoryFiles.cover = cover;
+                    }
+
+                    // console.log("Checking files [validateFields]");
+                    // console.log(files);
+                    // console.log(!(files.length > 0));
+                    if (!(files.length > 0)) {
+                        result.valid = false;
+                        result.message += result.errors > 0 ? ", " + window.localize('no_files') : window.localize('no_files');
+                        result.errors++;
+                    } else {
+                        result.memoryFiles.media = files;
+                    }
+
+                    // console.log("Checking contacts [validateFields]");
+                    // console.log(contacts);
+                    // console.log(!(contacts.length > 0));
+                    if (!contacts || !(contacts.length > 0)) {
+                        result.valid = false;
+                        result.message += result.errors > 0 ? ", " + window.localize('no_contacts') : window.localize('no_contacts');
+                        result.errors++;
+                    } else {
+                        if (contacts.length > 10) {
+                            result.valid = false;
+                            result.message += result.errors > 0 ? ", " + window.localize('more_ten_contacts') : window.localize('more_ten_contacts');
+                            result.errors++;
+                        }
+                        result.memory.recipients = contacts;
+                    }
+
+                    // console.log("Checking latlng [validateFields]");
+                    // console.log(latlng);
+                    // console.log(!latlng);
+                    // if (plan === "premium") {
+                    if (currentPlan.canAddLocation) {
+                        if (!latlng) {
+                            // result.valid = false;
+                            // result.message += result.errors > 0 ? ", no location" : "No location";
+                            // result.errors++;
+                        } else {
+                            let newLatlng = JSON.parse(latlng);
+                            result.memory.reminderType = "location";
+                            result.memory.reminder.locationLat = newLatlng.lat.toString();
+                            result.memory.reminder.locationLng = newLatlng.lng.toString();
+                        }
+                    }
+
+                    //Send date
+                    if (!immediately) {
+                        if (!latlng) {
+                            //Date is a must!
+                            if (!date) {
+                                // result.valid = false;
+                                // result.message += result.errors > 0 ? ", no date" : "No date";
+                                // result.errors++;
+                                result.memory.reminderType = "none";
+                                // result.memory.reminder.date = '1900-01-01';
+                                result.memory.reminder.date = null;
+                            } else {
+                                // if (time)
+                                // {
+                                if (result.memory.reminderType === "none") {
+                                    result.memory.reminderType = "date"
+                                }
+                                if (moment(date).isSameOrBefore(moment())) {
+                                    result.valid = false;
+                                    result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
+                                    result.errors++;
+                                } else {
+                                    let mom_date = moment(date);
+                                    let membership = loggedUser.currentMembership;
+                                    let creation_date = moment.unix(membership.creation_date);
+                                    if (mom_date.isSameOrBefore(creation_date.add(10, 'y'))) {
+                                        result.memory.reminder.date = date;
+                                    } else {
+                                        result.valid = false;
+                                        result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error_2")}` : `${window.localize("mem_delivery_date_error_2")}`;
+                                        result.errors++;
+                                    }
+                                }
+                                // }
+                            }
+                            // if (!time) {
+                            //     // result.valid = false;
+                            //     // result.message += result.errors > 0 ? ", no time" : "No time";
+                            //     // result.errors++;
+                            //     result.memory.reminder.time = null;
+                            // }
+                            // else {
+                            //     result.memory.reminder.time = time;
+                            // }
+                            if (!repeat) {
+                                // result.valid = false;
+                                // result.message += result.errors > 0 ? ", no repeat" : "No repeat";
+                                // result.errors++;
+                                result.memory.reminder.repeat = "not";
+                                result.memory.reminder.date_end = null;
+                            } else {
+                                // result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                result.memory.reminder.repeat = repetitionToApi(repeat.substring(1, repeat.length - 1))
+                                if (result.memory.reminder.repeat === "not") {
+                                    console.log("Not repeating, date_end = null");
+                                    result.memory.reminder.date_end = null;
+                                } else {
+                                    let dateEnd = new Date(date_end.substring(1, date_end.length - 1));
+                                    // let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                                    // let repeatsBefore = dateEnd <= today;
+                                    // console.log(`Check if there is an end_date\r\n  end: ${dateEnd}\r\n  tod: ${today}\r\n  --Res--: ${repeatsBefore}`);
+
+                                    if (!dateEndHappensBeforeReleaseDay(date, dateEnd)) {
+                                        result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                    } else {
+                                        console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
+                                        result.valid = false;
+                                        result.message += result.errors > 0 ? ", " + window.localize("mem_repetition_date_error") : window.localize("mem_repetition_date_error");
+                                        result.errors++;
+                                    }
+                                }
+                            }
+                        } else {
+                            var today = new Date();
+                            if (!date) {
+                                // result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
+                                result.memory.reminder.date = null;
+
+                            } else {
+                                // if (time)
+                                // {
+                                if (result.memory.reminderType === "none") {
+                                    result.memory.reminderType = "date"
+                                }
+                                if (moment(date).isSameOrBefore(moment())) {
+                                    //if (dateHappensBeforeToday(date)) {
+                                    result.valid = false;
+                                    result.message += result.errors > 0 ? `, ${window.localize("mem_delivery_date_error")}` : `${window.localize("mem_delivery_date_error")}`;
+                                    result.errors++;
+                                } else {
+                                    result.memory.reminder.date = date;
+                                }
+                                // }
+                            }
+                            // if (!time) {
+                            //     // result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes()).padStart(2, 0)}:00.000`;
+                            //     result.memory.reminder.time = null;
+                            // }
+                            // else {
+                            //     result.memory.reminder.time = time;
+                            // }
+                            if (!repeat) {
+                                result.memory.reminder.repeat = "not";
+                                result.memory.reminder.date_end = null;
+                            } else {
+                                // result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                                result.memory.reminder.repeat = repetitionToApi(repeat.substring(1, repeat.length - 1))
+                                if (result.memory.reminder.repeat === "not") {
+                                    console.log("Not repeating, date_end = null");
+                                    result.memory.reminder.date_end = null;
+                                } else {
+                                    console.log("Check if there is an end_date");
+                                    let dateEnd = new Date(date_end.substring(1, date_end.length - 1));
+                                    // let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                                    // let repeatsBefore = dateEnd <= today;
+                                    // console.log(`Check if there is an end_date\r\n  end: ${dateEnd}\r\n  tod: ${today}\r\n  --Res--: ${repeatsBefore}`);
+
+                                    if (!dateEndHappensBeforeReleaseDay(date, dateEnd)) {
+                                        result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                    } else {
+                                        console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
+                                        result.valid = false;
+                                        result.message += result.errors > 0 ? ", " + window.localize("mem_repetition_date_error") : window.localize("mem_repetition_date_error");
+                                        result.errors++;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        console.log("Immediately!");
+                        let today = new Date();
+                        result.memory.reminder.date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, 0)}-${String(today.getDate()).padStart(2, 0)}`;
+                        // result.memory.reminder.time = `${String(today.getHours()).padStart(2, 0)}:${String(today.getMinutes() + 10).padStart(2, 0)}:00.000`;
+                        // result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                        if (!repeat) {
+                            // result.valid = false;
+                            // result.message += result.errors > 0 ? ", no repeat" : "No repeat";
+                            // result.errors++;
+                            result.memory.reminder.repeat = "not";
+                            result.memory.reminder.date_end = null;
+                        } else {
+                            // result.memory.reminder.repeat = repeat.substring(1, repeat.length - 1) === "Never" ? "not" : repeat.toLowerCase().substring(1, repeat.length - 1);
+                            result.memory.reminder.repeat = repetitionToApi(repeat.substring(1, repeat.length - 1))
+                            if (result.memory.reminder.repeat === "not") {
+                                console.log("Not repeating, date_end = null");
+                                result.memory.reminder.date_end = null;
+                            } else {
+                                console.log("Check if there is an end_date");
+                                let dateEnd = new Date(date_end.substring(1, date_end.length - 1));
+                                // let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                                // let repeatsBefore = dateEnd <= today;
+                                // console.log(`Check if there is an end_date\r\n  end: ${dateEnd}\r\n  tod: ${today}\r\n  --Res--: ${repeatsBefore}`);
+
+                                if (!dateEndHappensBeforeReleaseDay(date, dateEnd)) {
+                                    result.memory.reminder.date_end = date_end.substring(1, date_end.length - 1);
+                                } else {
+                                    console.log(`Tienes la fecha de fin de repeticion antes de la fecha de salida`);
+                                    result.valid = false;
+                                    result.message += result.errors > 0 ? ", " + window.localize("mem_repetition_date_error") : window.localize("mem_repetition_date_error");
+                                    result.errors++;
+                                }
+                            }
+                        }
+                    }
+
+                    if (currentPlan.canUseOnDemand) {
+                        result.memory.onDemand = on_demand;
+                    } else {
+                        result.memory.onDemand = false;
+                    }
+
+                    console.log("Resulting memory [validateMemory]\r\n", result.memory);
+                    console.log(result.memoryFiles);
+
+                    //result.valid = false;
+                    //result.message += ", Test";
+                    //title, desc, cover, files, contacts, latlng, addr, immediately, date, time, repeat, date_end, on_demand
+                    return result;
+                }
+
+                // function dateHappensBeforeToday(date, time)
+                function dateHappensBeforeToday(date) {
+                    let dateElements = date.split("-");
+                    // let timeElements = time == undefined ? new Date().time() : time.split(":");
+                    // console.log("Time elements: ", timeElements);
+                    let today = new Date();
+                    // let dateAsDate = new Date(dateElements[0], dateElements[1] - 1, dateElements[2] - 1, timeElements[0], timeElements[1]);
+                    let dateAsDate = new Date(dateElements[0], dateElements[1] - 1, dateElements[2] - 1);
+                    // console.log(`Original Date: ${date}, ${time}\r\n  asDate: ${dateAsDate}\r\n  asDate: ${today}\r\nEarlier: ${dateAsDate <= today}`);
+                    console.log(`Original Date: ${date}\r\n  asDate: ${dateAsDate}\r\n  asDate: ${today}\r\nEarlier: ${dateAsDate <= today}`);
+
+                    return dateAsDate <= today;
+                }
+
+                function dateEndHappensBeforeReleaseDay(releaseDate, endDate) {
+                    let dateElements = releaseDate.split("-");
+                    let relDate = new Date(dateElements[0], dateElements[1] - 1, dateElements[2] - 1);
+                    let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                    console.log(`dateEndHappensBeforeReleaseDay\r\n  rel: ${relDate}\r\n  end: ${endDate}\r\nRes: ${endDate < relDate}`);
+                    return endDate < relDate;
+                }
+
+                function getContacts(contactString) {
+                    console.log("getContacts");
+                    console.log(contactString);
+                    let contactObject = JSON.parse(contactString);
+                    var arrayObject = [];
+                    for (let i = 0; i < contactObject.length; i++) {
+                        arrayObject.push({
+                            "id": contactObject[i].id
+                        });
+                    }
+                    console.log(arrayObject);
+                    return arrayObject;
+                }
+
                 function deliverAccept() {
+                    console.log("Entering deliver accept")
                     $$('.date-title .edit-btn').removeClass('none');
                     $$('.deliver-cont .btns-cont').addClass('none');
                     $$('.deliver-cont .deliver-info').removeClass('none');
                     let immediately = app.toggle.get('#immediately-toggle').checked;
                     let date = $$('#deliver-date').val();
                     let time = $$('#deliver-time').val();
+                    if (immediately) {
+                        $$('.immediatly-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .date-info').addClass('none');
+                        $$('.deliver-cont .deliver-info .time-info').addClass('none');
+                        date = "";
+                        time = "";
+                    } else {
+                        $$('.immediatly-info').addClass('none');
+                        $$('.deliver-cont .deliver-info .date-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .time-info').removeClass('none');
+                        $$('.deliver-cont .deliver-info .date-info .val').text(date);
+                        $$('.deliver-cont .deliver-info .time-info .val').text(time);
+                    }
                     let repeat = $$('#select-repeat p').text();
-                    let date_end = $$('#date-end').val();
+                    let date_end = repeat == "Never" ? "" : $$('#date-end').val();
                     $$('.deliver-cont .deliver-info .footer-deliver').text($$('.popup-deliver .footer').text());
-                    $$('.deliver-cont .deliver-info .date-info .val').text(date);
-                    $$('.deliver-cont .deliver-info .time-info .val').text(time);
-                    sessionStorage.immediately = JSON.stringify(immediately);
                     sessionStorage.date = JSON.stringify(date);
-                    sessionStorage.time = JSON.stringify(time);
+                    // sessionStorage.time = JSON.stringify(time);
+                    sessionStorage.immediately = JSON.stringify(immediately);
                     sessionStorage.repeat = JSON.stringify(repeat);
                     sessionStorage.date_end = JSON.stringify(date_end);
                     sessionStorage.footer = JSON.stringify($$('.popup-deliver .footer').text());
                 }
 
-                function progressBar(mb) {/* funcion de barra de progreso */
+                function progressBar(mb) { /* funcion de barra de progreso */
                     let progress = mb / 1000000;
                     let porcent_prog = (progress * 100) / maxmb;
                     app.progressbar.set('#space-progressbar', porcent_prog);
                     $$('.progress-cont .desc #prog').text((maxmb - progress));
+                }
+
+                function repetitionToApi(value) {
+                    if (value === "Never" || value == "Nunca") {
+                        return "not";
+                    } else if (value === "Weekly" || value === "Semanalmente") {
+                        return "weekly";
+                    } else if (value === "Monthly" || value === "Mensualmente") {
+                        return "monthly";
+                    } else if (value === "Yearly" || value === "Anualmente") {
+                        return "yearly";
+                    }
                 }
             },
         },
