@@ -51,7 +51,8 @@
 						<div class="item-inner">
 							<div class="item-input-wrap">
 								<input type="password" id="admin-password" placeholder="{{localize 'admin_password'}}"
-									required validate />
+                                    required validate />
+                                    <span class="show" style="display: none;">{{localize "show"}}</span>
 							</div>
 						</div>
 					</li>
@@ -118,7 +119,18 @@
                     app.methods.clearCurrentUser();
                     app.views.main.router.back();
                 })
-
+                $$(".show").click(function(val) {
+                    let type = $$("#admin-password").attr("type");
+                    if (type == "password") {
+                        $$("#admin-password").attr("type", "text");
+                    } else {
+                        $$("#admin-password").attr("type", "password");
+                    }
+                });
+                $$("#admin-password").on("input:notempty", function(val) {
+                    $$(".show").css("display", "block");
+                    $$("#pass-edit-icon").css("display", "none");
+                });
                 $$("#invite-admin-btn").on('click', async function(e) {
                     //CREATE ADMIN THING
 
