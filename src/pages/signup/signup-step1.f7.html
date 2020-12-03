@@ -241,9 +241,10 @@
                     // if (!validateText(birthday, 'Plase, enter your birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.')) {
                     if (!validateText(birthday, window.localize("signup_birthday"), window.localize("signup_birthday_error"))) {
                         return false;
+                        
+                    } else {
                         birthday=birthday.toString();
                         console.log(birthday);
-                    } else {
                         if(birthday.includes("-")){
                             let newBirthday = birthday.replace("-", "/");
 
