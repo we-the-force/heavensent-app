@@ -35,7 +35,7 @@
 						<div class="item-inner">
 							<div class="item-input-wrap">
 								<input type="password" id="pass" placeholder="{{localize 'new_pass'}}" required validate />
-								<i class="icons material-icons">edit</i>
+								<span class="show" style="display: none;">{{localize "show"}}</span>
 								<!-- <span class="input-clear-button"></span> -->
 							</div>
 						</div>
@@ -44,8 +44,10 @@
 						<div class="item-inner">
 							<div class="item-input-wrap">
 								<input type="password" id="pass_2" placeholder="{{localize 'repeat_pass'}}" required validate />
-								<i class="icons material-icons">edit</i>
+								<span class="show" style="display: none;">{{localize "show"}}</span>
 								<!-- <span class="input-clear-button"></span> -->
+								<!-- <input type="text" id="admin-name" placeholder="{{localize 'admin_name'}}" required
+									validate /> -->
 							</div>
 						</div>
 					</li>
@@ -64,6 +66,18 @@
 			pageInit: function (e, page) {
 				var self = this;
 				var app = self.$app;
+				$$(".show").click(function(val) {
+								let type = $$("#pass, #pass_2").attr("type");
+								if (type == "password") {
+												$$("#pass, #pass_2").attr("type", "text");
+								} else {
+												$$("#pass, #pass_2").attr("type", "password");
+								}
+				});
+				$$("#pass, #pass_2").on("input:notempty", function(val) {
+								$$(".show").css("display", "block");
+								$$("#pass-edit-icon").css("display", "none");
+				});
 				var currentCode = app.views.main.router.currentRoute.params.code;
 
 				console.log(currentCode);
