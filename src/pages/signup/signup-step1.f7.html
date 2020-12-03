@@ -245,10 +245,10 @@
                         console.log(birthday);
                     } else {
                         if(birthday.includes("-")){
-                            let newBirthday = birthday.replaceAll("-", "/");
+                            let newBirthday = birthday.replace("-", "/");
 
                         } else {
-                        let newBirthday = birthday.replaceAll(" ", "/");
+                        let newBirthday = birthday.replace(" ", "/");
 
                         }
                         let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
