@@ -371,7 +371,11 @@ console.log(err);
             var userID = routeTo.params.userID;
             if (currentUser === null || currentUser === undefined) {
                 reject();
-                await router.navigate('/');
+                await router.navigate('/', {
+                    reloadAll: true,
+                    ignoreCache: true,
+                    clearPreviousHistory: true
+                });
             } else {
                 if (currentUser.id == userID) {
                     resolve({

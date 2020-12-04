@@ -322,12 +322,18 @@
                                 console.log("Going to admin thing");
                                 app.preloader.hide();
                                 //CREATE ADMIN THING
-                                app.views.main.router.navigate({
-                                    name: 'invite-admin',
-                                    params: {
-                                        userID: user.id
-                                    }
+                                app.views.main.router.clearPreviousHistory();
+                                app.views.main.router.navigate('/', {
+                                    reloadAll: true,
+                                    ignoreCache: true,
+                                    clearPreviousHistory: true
                                 })
+                                // app.views.main.router.navigate({
+                                //     name: 'invite-admin',
+                                //     params: {
+                                //         userID: user.id
+                                //     }
+                                // })
                             }).catch(function(err) {
                                 app.dialog.alert(window.localize("sign_up_error"));
                             });
@@ -366,7 +372,7 @@
                                         data.append("ref", "user");
                                         data.append('source', 'users-permissions');
                                         data.append('field', 'profilePicture');
-
+                                        
                                         await app.request({
                                             url: app.data.server + '/upload',
                                             method: "POST",
@@ -386,11 +392,11 @@
                                 }
                                 app.preloader.hide();
                                 //CREATE ADMIN THING
-                                app.views.main.router.navigate({
-                                    name: 'invite-admin',
-                                    params: {
-                                        userID: createdUser.id
-                                    }
+                                app.views.main.router.clearPreviousHistory();
+                                app.views.main.router.navigate('/', {
+                                    reloadAll: true,
+                                    ignoreCache: true,
+                                    clearPreviousHistory: true
                                 })
 
                             })
