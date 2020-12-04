@@ -34,7 +34,7 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="password" id="pass" placeholder="{{localize 'new_pass'}}" required validate />
+								<input type="password" id="recover-pass" placeholder="{{localize 'new_pass'}}" required validate />
 								<span class="show" style="display: none;">{{localize "show"}}</span>
 								<!-- <span class="input-clear-button"></span> -->
 							</div>
@@ -43,7 +43,7 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="password" id="pass_2" placeholder="{{localize 'repeat_pass'}}" required validate />
+								<input type="password" id="recover-pass_2" placeholder="{{localize 'repeat_pass'}}" required validate />
 								<span class="show" style="display: none;">{{localize "show"}}</span>
 								<!-- <span class="input-clear-button"></span> -->
 								<!-- <input type="text" id="admin-name" placeholder="{{localize 'admin_name'}}" required
@@ -92,8 +92,8 @@
 					// 	console.log(err);
 					// });
 
-					let pass1 = $$('#pass').val();
-					let pass2 = $$('#pass_2').val();
+					let pass1 = $$('#recover-pass').val();
+					let pass2 = $$('#recover-pass_2').val();
 
 					console.log(`passes: (${pass}, ${pass_2})`);
 					if (pass1 != '' && pass2 != '')

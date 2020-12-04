@@ -34,7 +34,7 @@
 					<li class="item-content item-input">
 						<div class="item-inner">
 							<div class="item-input-wrap">
-								<input type="email" id="email" placeholder='{{localize "mail"}}' required validate />
+								<input type="email" id="recovery-email" placeholder='{{localize "mail"}}' required validate />
 								<i class="icons material-icons">edit</i>
 								<!-- <span class="input-clear-button"></span> -->
 							</div>
@@ -74,7 +74,7 @@
 				}
                 $$('#recover-pass-btn').off('click').click(function(val) {
                     console.log("Ayyy click");
-                    let emailVal = $$('#email').val();
+                    let emailVal = $$('#recovery-email').val();
                     console.log("EmailVal: ", emailVal);
                     if (validateEmail(emailVal)) {
                         console.log("Doing the email thing");
