@@ -322,12 +322,11 @@
                                 console.log("Going to admin thing");
                                 app.preloader.hide();
                                 //CREATE ADMIN THING
-                                app.views.main.router.clearPreviousHistory();
-                                app.views.main.router.navigate('/', {
-                                    reloadAll: true,
-                                    ignoreCache: true,
-                                    clearPreviousHistory: true
-                                })
+                                app.dialog.alert(window.localize("user-created-title"),window.localize("user-created-description"), function(){
+                                    app.views.main.router.clearPreviousHistory();
+                                    app.views.main.router.navigate('/')
+                                });
+                                
                                 // app.views.main.router.navigate({
                                 //     name: 'invite-admin',
                                 //     params: {
@@ -392,12 +391,11 @@
                                 }
                                 app.preloader.hide();
                                 //CREATE ADMIN THING
-                                app.views.main.router.clearPreviousHistory();
-                                app.views.main.router.navigate('/', {
-                                    reloadAll: true,
-                                    ignoreCache: true,
-                                    clearPreviousHistory: true
-                                })
+                                app.dialog.alert(window.localize("user-created-title"),window.localize("user-created-description"), function(){
+                                    app.views.main.router.clearPreviousHistory();
+                                    app.views.main.router.navigate('/');
+                                });
+                                
 
                             })
                             .catch(function(err) {
