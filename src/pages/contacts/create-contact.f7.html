@@ -358,6 +358,7 @@
                                         await app.dialog.alert("Contact added successfully!");
                                         app.views.main.router.navigate('/memories/home/user/' + loggedUser.id);
                                     } else {
+                                        app.preloader.hide();
                                         app.dialog.alert("couldn't add contact! " + assignResult.message);
                                     }
 
