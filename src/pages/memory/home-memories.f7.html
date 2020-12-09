@@ -422,6 +422,7 @@
 <script>
     import $$ from "dom7";
     import localforage from "localforage";
+    import moment from "moment";
     export default {
         on: {
             pageInit: async function(e, page) {
@@ -734,7 +735,25 @@
                 });
 
                 $$('.memory-options').on('click', function(val) {
-                    $$('#edit-memory-btn')[0].href = "/memories/edit/memory/" + $$(this).prop("dataset").memory;
+                    // $$('#edit-memory-btn')[0].href = "/memories/edit/memory/" + $$(this).prop("dataset").memory;
+                    $$('#edit-memory-btn').off("click").click(x => {
+                        let memory_id = $$(this).data('memory');
+                        app.request.promise.get(`${app.data.server}/memories/${memory_id}`).then(function(editRes) {
+                            let editResData = JSON.parse(editRes.data);
+                            console.log("Response: ", editResData);
+
+                            // If the memory hasn't been sent or is being sent still
+                            if (!editResData.sent || editResData.send_repeat)
+                            {
+                                app.views.main.router.navigate(`/memories/edit/memory/${memory_id}`);
+                            }
+                            else
+                            {
+                                //ToLocalize
+                                app.dialog.alert(window.localize('edit_mem_invalid_action'));
+                            }
+                        });
+                    })
                     $$('#delete-memory-btn').off("click").click(x => {
                         let memory_id = $$(this).data('memory');
                         app.dialog.confirm(window.localize('delete_mem'), window.localize('delete_mem_title'), function(params) {
