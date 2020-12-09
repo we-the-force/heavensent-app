@@ -532,8 +532,13 @@ console.log(err);
             var ownedMemories;
             await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function(memoriesResult) {
                 ownedMemories = JSON.parse(memoriesResult.data);
+                // console.log(ownedMemories.Memories);
                 // console.log("-.- memories -.-");
                 // console.log(ownedMemories);
+                ownedMemories.sort(app.methods.sortByDate);
+                // ownedMemories.Memories.scheduled.sort(app.methods.sortByDate);
+                console.log(ownedMemories);
+
             }).catch(function(err) {
                 console.log("Error fetching memories");
                 console.log(err);
