@@ -584,7 +584,7 @@ console.log(err);
 
                         auxMemory.id = memory.id;
                         auxMemory.name = memory.title;
-                        auxMemory.deliveryDate = memory.reminder.date;
+                        auxMemory.deliveryDate = (memory.reminder.date).split("T")[0];
                         auxMemory.cover = memory.cover != null ? memory.cover.url : "";
                         auxMemory.contacts.count = memory.recipients.length;
                         memory.recipients.forEach(contact => {
@@ -719,9 +719,9 @@ console.log(err);
                     console.log("Error getting memories!");
                     console.log(err);
                 })
-                console.log(swiper);
+                console.log("Swiper [routes.js]", swiper);
 
-                // getMemories(baseMemories);
+                log(getMemories(baseMemories));
 
                 resolve({
                     component: MemoryDashboard,
