@@ -80,12 +80,12 @@
                     <!-- falta checar la edad -->
                 </ul>
             </div>
-            <div class="btns-cont center none" style="flex-direction: column;">
+            <div class="btns-cont center none" style="flex-direction: column;" id="create-guardian-btn">
 
                 <p style="width: 70%; text-align: center; margin-bottom: 30px;">{{localize "guardian_info"}}</p>
 
-                <a href="/guardian/create" id="create-guardian-btn" class="button color-white round large">Select /
-                    Create guardian</a>
+                <!-- <a href="/guardian/create" id="create-guardian-btn" class="button color-white round large">Select /
+                    Create guardian</a> -->
             </div>
             <div class="btns-cont center">
                 <a id="create-member-btn" class="button color-blue round large">{{localize "create_contact"}}</a>
@@ -175,11 +175,11 @@
                 });
 
                 $$('input#create-cont-birthday').change(function(el) {
-                    /*  if (moment().diff(moment($$(this).val()), 'years') < 18) {
-                         $$('#create-guardian-btn').parent().removeClass('none');
+                      if (moment().diff(moment($$(this).val()), 'years') < 18) {
+                         $$('#create-guardian-btn').removeClass('none');
                      } else {
-                         $$('#create-guardian-btn').parent().addClass('none');
-                     } */
+                         $$('#create-guardian-btn').addClass('none');
+                     } 
                 });
 
                 $$("#create-member-btn").on("click", async function(e) {

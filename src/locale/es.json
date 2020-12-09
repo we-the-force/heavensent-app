@@ -80,7 +80,7 @@
     "create_acount": "Crear una cuenta",
     "invite_admin": "Invita a un administrador",
     "text_invite_admin": "El administrador será la persona encargada de enviar o editar los recuerdos por usted en un futuro, si así lo desea.",
-    "guardian_info": "En caso que la persona asignada para un mensaje sea menor de edad, es necesario crear un guardián y asignarlo en el mensaje.",
+    "guardian_info": "No es recomendable enviarle mensajes a menores de edad, se sugiere enviarselos a un adulto y que el adulto le muestre el mensaje.",
     "admin": "Admin",
     "admin_name": "Nombre de administrador",
     "admin_mail": "Correo electrónico de administrador",

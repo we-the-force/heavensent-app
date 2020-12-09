@@ -79,7 +79,7 @@
     "invite_admin": "Add an administrator",
     "memory_will_not_repeat": "The message will never repeat",
     "text_invite_admin": "The administrator will be the person in charge of sending or editing the messages for you in the future, if you wish.",
-    "guardian_info": "In case the person assigned for a message is a minor, it is necessary to create a guardian and assign it in the message.",
+    "guardian_info": "It is not recommended to send messages to minors, it is suggested to send them to an adult and that the adult shows the message.",
     "admin": "Admin",
     "admin_name": "Admin name",
     "admin_mail": "Admin email",
