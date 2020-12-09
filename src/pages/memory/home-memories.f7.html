@@ -168,7 +168,7 @@
 								<div class="item-title-row">
 
 									<div class="item-title">
-										<div class="item-header">{{deliveryDate}}</div>
+										<div class="item-header">{{js "this.deliveryDate.split('T')[0]"}}</div>
 										{{name}}
 										<div class="item-footer">
 											{{#each contacts}}
@@ -196,7 +196,7 @@
 							<div class="card-header">
 								<div class="title-card">
 									<h1>{{name}}</h1>
-									<p>{{deliveryDate}}</p>
+									<p>{{js "this.deliveryDate.split('T')[0]"}}</p>
 								</div>
 								<a href="#" class="memory-options edit popover-open" data-popover=".popover-opt"
 									data-memory="{{id}}">
@@ -270,7 +270,7 @@
 									<div class="item-title">{{name}}</div>
 
 								</div>
-								<div class="item-subtitle">{{deliveryDate}}</div>
+								<div class="item-subtitle">{{js "this.deliveryDate.split('T')[0]"}}</div>
 
 							</div>
 						</a>
@@ -287,7 +287,7 @@
 							<div class="card-header">
 								<div class="title-card">
 									<h1>{{name}}</h1>
-									<p>{{deliveryDate}}</p>
+									<p>{{js "this.deliveryDate.split('T')[0]"}}</p>
 								</div>
 								<a href="#" class="memory-options edit popover-open" data-popover=".popover-opt"
 									data-memory="{{id}}">

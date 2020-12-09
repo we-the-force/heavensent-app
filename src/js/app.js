@@ -259,6 +259,9 @@ var app = new Framework7({
         async clearAdminedContacts() {
             await this.methods.setLocalValueToKey([], 'loggedAdminedUserContacts');
         },
+        sortByDate(a, b) {
+          return new Date(a.reminder.date).getTime() - new Date(b.reminder.date).getTime();
+        },
         setCookie(cname, cvalue, exdays) {
             var d = new Date();
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
