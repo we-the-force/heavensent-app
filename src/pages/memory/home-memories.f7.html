@@ -796,7 +796,11 @@
                     // console.log($$(this).attr('id'));
                     switch ($$(this).attr('id')) {
                         case 'new':
-                            app.views.main.router.navigate('/memories/create');
+                            if(user.memoriesUsed < user.memoriesLeft){
+                                app.views.main.router.navigate('/memories/create');
+                            } else {
+                                app.dialog.alert(window.localize('messages_quota_title'),window.localize('messages_quota_description'));
+                            }
                             break;
                         case 'birthday':
                             app.views.main.router.navigate('/memories/birthday');
