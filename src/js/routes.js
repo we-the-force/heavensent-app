@@ -618,7 +618,7 @@ console.log(err);
                         })
                         auxMemory.contacts.extraContacts = auxMemory.contacts.urls.length - auxMemory.contacts.limitedUrls.length;
 
-                        if (auxMemory.deliveryDate == null) {
+                        if (auxMemory.deliveryDate == '') {
                             memoryObject.pending.push(auxMemory);
                         } else {
                             memoryObject.scheduled.push(auxMemory);
