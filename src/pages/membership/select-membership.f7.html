@@ -203,7 +203,8 @@
 
 
                     if (hasMembership && hasToken && activeMembership) {
-                        console.log("Has membership and has token and is active");
+                        app.dialog.alert(window.localize('membership_active_title'),window.localize('membership_active'));
+                        
                         /*
                         	Retrieve current subscription
                         	Update subscription with new values
