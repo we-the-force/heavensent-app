@@ -509,6 +509,7 @@ console.log(err);
             var userID = routeTo.params.userID;
             var loggedUser = await app.methods.getLocalValue('loggedUser');
             var contacts = await app.methods.getLocalValue('loggedUserContacts');
+            console.log(contacts);
             var adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
             // console.log(contacts);
             // console.log(`Async function to home-memories, server: ${server}`);
@@ -589,7 +590,7 @@ console.log(err);
 
                         auxMemory.id = memory.id;
                         auxMemory.name = memory.title;
-                        auxMemory.deliveryDate = (memory.reminder.date).split("T")[0];
+                        auxMemory.deliveryDate = memory.reminder.date != null ?  (memory.reminder.date).split("T")[0] : '';
                         auxMemory.cover = memory.cover != null ? memory.cover.url : "";
                         auxMemory.contacts.count = memory.recipients.length;
                         memory.recipients.forEach(contact => {
