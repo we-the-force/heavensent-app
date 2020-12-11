@@ -140,18 +140,18 @@
                     var adminPassword = $$("#admin-password").val();
                     var adminCouldEdit = $$("#admin-edit").prop('checked');
 
-                    if (!validateText(adminName, 'Please, enter your admin\'s name.', 'Your admin\'s name may not have spaces before or after the text.')) {
+                    if (!validateText(adminName, window.localize("create_admin_name"), window.localize("create_admin_name_error"))) {
                         console.log("username not valid [pageInit.invite-admin-btn.onClick]");
                         return false;
                     }
                     if (!validateEmail(adminEmail)) {
-                        app.dialog.alert('Please enter a valid email');
+                        app.dialog.alert(window.localize('recovery_invalid_email'));
                         return false;
                     }
-                    if (!validateText(adminRelation, 'Plase enter your and your admin\'s relationship.', 'Your answer may not have spaces before or after the text', false)) {
+                    if (!validateText(adminRelation, window.localize("create_admin_relation"), window.localize("create_admin_relation_error"), false)) {
                         return false;
                     }
-                    if (!validateText(adminPassword, 'Plase enter your and your admin\'s relationship.', 'Your answer may not have spaces before or after the text', false)) {
+                    if (!validateText(adminPassword, window.localize("create_admin_pass"), window.localize("create_admin_pass_error"), false)) {
                         return false;
                     }
 
