@@ -94,6 +94,7 @@
     "admin_password": "Contraseña del administrador",
     "admin_relation": "Relación con el administrador",
     "admin_edit": "¿El admr. puede editar?",
+    "create_admin_repeated": "¡Ya tiene a ese usuario como contacto!You already have that user as a contact!",
     "create_admin_name": "Por favor introduzca el nombre de su administrador.",
     "create_admin_name_error": "El nombre de su administrador no puede tener espacios antes o después del texto.",
     "create_admin_relation": "Por favor introduzca la relación que tiene con su administrador.",

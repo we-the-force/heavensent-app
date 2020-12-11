@@ -243,7 +243,7 @@
                                     console.log(assignRelErr);
                                 })
                         } else {
-                            app.dialog.alert('You already have that user as a contact!');
+                            app.dialog.alert(window.localize('create_admin_repeated'));
                         }
                     }).catch(async function(err) {
                         app.preloader.hide();

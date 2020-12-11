@@ -94,6 +94,7 @@
     "admin_password": "Admin password",
     "admin_relation": "Admin relationship",
     "admin_edit": "Admin could edit?",
+    "create_admin_repeated": "You already have that user as a contact!",
     "create_admin_name": "Please enter your admin's name",
     "create_admin_name_error": "Your admin's name may not have spaces before or after the text",
     "create_admin_relation": "Please enter your relationship with your admin",
