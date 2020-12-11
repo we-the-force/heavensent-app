@@ -128,10 +128,10 @@ async function isMembershipValid(to, from, resolve, reject) {
 async function isLoggedIn(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
-    console.log("-Entering isLoggedIn, updating user");
+    // console.log("-Entering isLoggedIn, updating user");
     await app.methods.updateCurrentUser();
     var user = await app.methods.getLocalValue('loggedUser');
-    console.log(user);
+    // console.log(user);
     var valid = await app.methods.userIsValid();
     if (valid) {
         reject();
@@ -449,22 +449,22 @@ console.log(err);
                 canAdminMem = true;
                 plan = currentUser.currentMembership;
             } else {
-                console.log("Not the loggedUser");
+                // console.log("Not the loggedUser");
                 await app.request.promise.get(`${app.data.server}/users/${ownerID}`).then(async function(ownerRes) {
                     plan = JSON.parse(ownerRes.data).currentMembership;
                 });
-                console.log("Checking contacts:");
-                console.log(userContacts);
+                // console.log("Checking contacts:");
+                // console.log(userContacts);
                 userContacts.forEach(contact => {
-                    console.log("Checking owner thing for contact:");
-                    console.log(contact);
-                    console.log(`${contact.owner.id} === ${ownerID}`);
+                    // console.log("Checking owner thing for contact:");
+                    // console.log(contact);
+                    // console.log(`${contact.owner.id} === ${ownerID}`);
                     if (contact.owner.id === ownerID) {
-                        console.log("Yes, is contact the same?");
-                        console.log(`${contact.contact.id} === ${currentUser.id}`);
+                        // console.log("Yes, is contact the same?");
+                        // console.log(`${contact.contact.id} === ${currentUser.id}`);
                         if (contact.contact.id === currentUser.id) {
-                            console.log("Got the contact relationship of the logged user:");
-                            console.log(contact);
+                            // console.log("Got the contact relationship of the logged user:");
+                            // console.log(contact);
                             if (contact.isAdmin) {
                                 canAdminMem = true;
                                 canEdit = contact.canEdit;
@@ -514,7 +514,7 @@ console.log(err);
             var userID = routeTo.params.userID;
             var loggedUser = await app.methods.getLocalValue('loggedUser');
             var contacts = await app.methods.getLocalValue('loggedUserContacts');
-            console.log(contacts);
+            // console.log(contacts);
             var adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
             // console.log(contacts);
             // console.log(`Async function to home-memories, server: ${server}`);
@@ -533,9 +533,9 @@ console.log(err);
             }
             let loggedID = loggedUser ? loggedUser.id : -1;
             var isEditing = (currentUser.id != loggedID);
+            var userAuthorized = false;
             // console.log(`IsEditing? ${isEditing} (${currentUser.id} != ${loggedUser.id})`);
             if (isEditing){
-                var userAuthorized = false;
                 for (const contact in adminContacts) {
                     // if (currentUser.id == contacts[contact].id) {
                     //     const element = contacts[contact];
@@ -554,52 +554,55 @@ console.log(err);
                 if(!userAuthorized){
                     reject();
                     await router.navigate('/');
-                    console.log('reject');
+                    // console.log('reject');
                     app.dialog.alert(window.localize('no_access'),window.localize('sorry_title'),function(){
                         
                         
                     });
-                    
                 }
-
             }
-            var ownedMemories;
-            await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function(memoriesResult) {
-                ownedMemories = JSON.parse(memoriesResult.data);
-                // console.log(ownedMemories.Memories);
-                // console.log("-.- memories -.-");
-                console.log(ownedMemories);
-                ownedMemories.sort(app.methods.sortByDate);
-                // ownedMemories.Memories.scheduled.sort(app.methods.sortByDate);
-                console.log(ownedMemories);
-
-            }).catch(function(err) {
-                console.log("Error fetching memories");
-                console.log(err);
-            });
-
-            var baseFundations;
-            await app.request.promise.get(`${app.data.server}/fundations`).then(function(fundationResult) {
-                baseFundations = JSON.parse(fundationResult.data);
-            }).catch(function(err) {
-                console.log("Error fetching fundations");
-                console.log(err);
-            });
-            console.log('resolve home', userID);
-            resolve({
-                component: HomeMemories,
-            }, {
-                context: {
-                    Server: server,
-                    LoggedUser: loggedUser,
-                    CurrentUser: currentUser,
-                    IsEditing: isEditing,
-                    Contacts: getContacts(contacts, false, true),
-                    AdminedContacts: getContacts(adminContacts, true, false),
-                    Memories: getMemories(ownedMemories),
-                    Fundations: getFundations(baseFundations),
-                }
-            });
+            if (!isEditing || userAuthorized)
+            {
+                // console.log(`Sipsip, esta entrando a el home porque si puede\r\nEdit: ${isEditing}, Authorized: ${userAuthorized}`);
+                var ownedMemories;
+                await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function(memoriesResult) {
+                    ownedMemories = JSON.parse(memoriesResult.data);
+                    // console.log(ownedMemories.Memories);
+                    // console.log("-.- memories -.-");
+                    // console.log(ownedMemories);
+                    ownedMemories.sort(app.methods.sortByDate);
+                    // ownedMemories.Memories.scheduled.sort(app.methods.sortByDate);
+                    // console.log(ownedMemories);
+    
+                }).catch(function(err) {
+                    console.log("Error fetching memories");
+                    console.log(err);
+                });
+    
+                var baseFundations;
+                await app.request.promise.get(`${app.data.server}/fundations`).then(function(fundationResult) {
+                    baseFundations = JSON.parse(fundationResult.data);
+                }).catch(function(err) {
+                    console.log("Error fetching fundations");
+                    console.log(err);
+                });
+                // console.log('resolve home', userID);
+                resolve({
+                    component: HomeMemories,
+                }, {
+                    context: {
+                        Server: server,
+                        LoggedUser: loggedUser,
+                        CurrentUser: currentUser,
+                        IsEditing: isEditing,
+                        Contacts: getContacts(contacts, false, true),
+                        AdminedContacts: getContacts(adminContacts, true, false),
+                        Memories: getMemories(ownedMemories),
+                        Fundations: getFundations(baseFundations),
+                    }
+                });
+            }
+            
 
             function getMemories(baseMemories) {
                 let memoryObject = {
@@ -758,7 +761,7 @@ console.log(err);
                     console.log("Error getting memories!");
                     console.log(err);
                 })
-                console.log("Swiper [routes.js]", swiper);
+                // console.log("Swiper [routes.js]", swiper);
 
                 log(getMemories(baseMemories));
 
@@ -973,7 +976,7 @@ console.log(err);
                         } else if (window.language == 'es_MX') {
                             plan_name = window.localize('membership') + ' ' + plan;
                         }
-                        console.log(res);
+                        // console.log(res);
                         app.preloader.hide();
                         resolve({
                             component: ViewMembership,
@@ -998,8 +1001,8 @@ console.log(err);
             }
 
             function GetPlanName(plan) {
-                console.log("GetPlanName");
-                console.log(plan);
+                // console.log("GetPlanName");
+                // console.log(plan);
                 let isMembershipNull = plan === null;
                 let isPlanNull = plan.plan === null;
                 if (isMembershipNull || isPlanNull) {
@@ -1035,8 +1038,8 @@ console.log(err);
         async: async function(routeTo, routeFrom, resolve, reject) {
             var router = this;
             var app = router.app;
-            console.log('----------------------------aqui -------------------------');
-            console.log(app.data.stripe);
+            // console.log('----------------------------aqui -------------------------');
+            // console.log(app.data.stripe);
 
             var stripeUrl = app.data.stripe.stripeUrl;
             var subscriptionUrl = app.data.stripe.subscriptionUrl;
@@ -1044,9 +1047,9 @@ console.log(err);
             var sessionId = routeTo.params.sessionId;
             var planId = routeTo.params.planId;
             var loggedUser = await app.methods.getLocalValue('loggedUser');
-            console.log('session-ID: ' + sessionId);
-            console.log('plan-ID: ' + planId);
-            console.log('Logged Usr: ', loggedUser);
+            // console.log('session-ID: ' + sessionId);
+            // console.log('plan-ID: ' + planId);
+            // console.log('Logged Usr: ', loggedUser);
 
             var plan;
             await app.request.promise.get(`${app.data.server}/memberships/${planId}`).then(function(planRes) {
@@ -1061,7 +1064,7 @@ console.log(err);
                 'Authorization': 'Bearer ' + app.data.stripe.testKeys.sk,
             }
 
-            console.log("before stripe session promise");
+            // console.log("before stripe session promise");
             app.request.promise({
                 url: stripeUrl + '/' + sessionId,
                 method: "GET",
@@ -1072,7 +1075,7 @@ console.log(err);
 
                 app.preloader.show('blue');
                 var sessionData = JSON.parse(sessionRes.data);
-                console.log("sessionData", sessionData);
+                // console.log("sessionData", sessionData);
                 // console.log(sessionData);
                 // var subId = sessionData.subscription;
 
@@ -1091,7 +1094,7 @@ console.log(err);
                     headers: headers
                 }).then(async function(payIntResult) {
                     let paymentIntentData = JSON.parse(payIntResult.data);
-                    console.log('PI: ', paymentIntentData);
+                    // console.log('PI: ', paymentIntentData);
 
                     let paymentMethodData = await app.request.promise({
                         // url: `${stripeApiUrl}payment_methods/pm_1HC5gbANVxwYjCOlpqvWnOYe`,
@@ -1103,13 +1106,13 @@ console.log(err);
 
 
                     let creationDate = new Date(paymentMethodData.created * 1000);
-                    console.log("PaymentIntent: ", paymentIntentData);
-                    console.log("PaymentMethod: ", paymentMethodData);
+                    // console.log("PaymentIntent: ", paymentIntentData);
+                    // console.log("PaymentMethod: ", paymentMethodData);
                     let membershipObject = createMembershipObject(paymentIntentData.id, creationDate, paymentMethodData.card.last4, paymentMethodData.card.brand, planId, paymentIntentData.created);
                     let paymentObject = createPaymentObject(paymentIntentData.id, loggedUser.id, creationDate, plan.name, (sessionData.amount_total / 100), sessionData.customer_email);
 
-                    console.log("Membership:\r\n", membershipObject);
-                    console.log("Payment:\r\n", paymentObject);
+                    // console.log("Membership:\r\n", membershipObject);
+                    // console.log("Payment:\r\n", paymentObject);
 
                     await assignPlan(membershipObject, paymentObject);
 
@@ -1220,7 +1223,7 @@ console.log(err);
             }
 
             async function assignPlan(membershipObject, paymentObject) {
-                console.log("---- Assigning plan ----");
+                // console.log("---- Assigning plan ----");
                 await app.request.promise.get(`${app.data.server}/users/${loggedUser.id}`).then(async function(userRes) {
                     // console.log("Inserting membership");
                     await app.request({
