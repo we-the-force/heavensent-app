@@ -528,7 +528,7 @@ console.log(err);
                 }).catch(async function(err) {
                     currentUser = loggedUser;
                     // console.log("-----------------------Dude doesn't exist unu");
-                    app.dialog.alert("We have problems loading this user's account, it looks like it no longer exists. Please contact support.");
+                    app.dialog.alert(window.localize('user_not_found'));
                 });
             }
             let loggedID = loggedUser ? loggedUser.id : -1;
