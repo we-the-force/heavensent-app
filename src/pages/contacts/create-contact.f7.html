@@ -203,7 +203,7 @@
                         return false;
                     }
                     if (!validateEmail(email)) {
-                        app.dialog.alert('Please enter a valid email');
+                        app.dialog.alert(window.localize('recovery_invalid_email'));
                         return false;
                     }
                     if (!validateText(mobile, 'Plase, enter your family member\'s mobile phone number.', 'Your phone number may not have spaces before or after the text')) {
