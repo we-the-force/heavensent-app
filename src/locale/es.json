@@ -105,7 +105,7 @@
     "create_contact": "Crear contacto",
     "create_contact_error_data": "Algún error ocurrió intentando subir los datos del usuario.",
     "create_contact_error_photo": "Algún error ocurrió intentando subir la foto del usuario.",
-    "create_contact_incomplete_fields": "Algunos campos estan incompletos o son incorrectos, por favor intente de nuevo.",
+    "incomplete_fields": "Algunos campos estan incompletos o son incorrectos, por favor intente de nuevo.",
     "create_contact_username": "Por favor introduzca el nombre de usuario de su miembro de familia.",
     "create_contact_mobile": "Por favor introduza el número de teléfono de su miembro de familia.",
     "create_contact_relation": "Por favor introduzca la relación que tiene con su miembro de familia.",

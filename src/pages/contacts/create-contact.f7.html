@@ -302,7 +302,7 @@
                                         console.log(`An error occurred [create-member-btn.onClick]`);
                                         console.log(err);
                                         app.preloader.hide();
-                                        app.dialog.alert(window.localize('create_contact_incomplete_fields') + '\r\n' + obj.message[0].messages[0].message);
+                                        app.dialog.alert(window.localize('incomplete_fields') + '\r\n' + obj.message[0].messages[0].message);
                                     })
                             } else {
                                 let user = JSON.parse(res.data)[0];

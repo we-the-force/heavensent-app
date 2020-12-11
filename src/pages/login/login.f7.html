@@ -224,7 +224,7 @@
                             console.log("Errorerror [pageInit.login-btn.onClick]");
                             console.log(err);
                             var obj = JSON.parse(err.xhr.response);
-                            app.dialog.alert('Some fields are incomplete or incorrect, please try again.' + '\r\n' + obj.message[0].messages[0].message);
+                            app.dialog.alert(window.localize("incomplete_fields") + '\r\n' + obj.message[0].messages[0].message);
                         });
                 });
 

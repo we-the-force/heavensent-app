@@ -104,7 +104,7 @@
     "create_contact": "Create contact",
     "create_contact_error_data": "Something happened trying to upload the user's data.",
     "create_contact_error_photo": "Something happened trying to upload the user's photo.",
-    "create_contact_incomplete_fields": "Some fields are incomplete or incorrect, please try again.",
+    "incomplete_fields": "Some fields are incomplete or incorrect, please try again.",
     "create_contact_username": "Please, enter your family member's desired username.",
     "create_contact_mobile": "Please, enter your family member's mobile phone number.",
     "create_contact_relation": "Please, enter your relation with your family member.",
