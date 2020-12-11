@@ -198,7 +198,7 @@
                     birthday = $$("#create-cont-birthday").val();
                     password = $$("#create-cont-password").val();
 
-                    if (!validateText(username, 'Please, enter your family member\'s desired username.', 'Your username may not have spaces before or after the text.')) {
+                    if (!validateText(username, window.localize("create_contact_username"), window.localize("signup_username_error"))) {
                         console.log("username not valid");
                         return false;
                     }
@@ -206,16 +206,16 @@
                         app.dialog.alert(window.localize('recovery_invalid_email'));
                         return false;
                     }
-                    if (!validateText(mobile, 'Plase, enter your family member\'s mobile phone number.', 'Your phone number may not have spaces before or after the text')) {
+                    if (!validateText(mobile, window.localize("create_contact_mobile"), window.localize("signup_mobile_error"))) {
                         return false;
                     }
-                    if (!validateText(relation, 'Plase, enter your relation with the family member.', 'How did you even manage to do that? No spaces before or after the text on your relation please.')) {
+                    if (!validateText(relation, window.localize("create_contact_relation"), window.localize("create_contact_relation_error"))) {
                         return false;
                     }
-                    if (!validateText(birthday, 'Plase, enter your family member\'s birthday.', 'How did you even manage to do that? No spaces before or after the text on your birthday please.')) {
+                    if (!validateText(birthday, window.localize("create_contact_birthday"), window.localize("signup_birthday_error"))) {
                         return false;
                     }
-                    if (!validateText(password, 'Please, enter your family member\'s desired password.', '')) {
+                    if (!validateText(password, window.localize("create_contact_password"), window.localize("signup_pass_error"))) {
                         return false;
                     }
                     //if (!c) {
@@ -292,9 +292,9 @@
                                         } else {
                                             app.preloader.hide();
                                             if (resp.status !== 200) {
-                                                app.dialog.alert('Something happened trying to upload the data for the user.' + '\r\n' + resp.message[0].messages[0].message);
+                                                app.dialog.alert(window.localize('create_contact_error_data') + '\r\n' + resp.message[0].messages[0].message);
                                             } else if (resp2.status === 200) {
-                                                app.dialog.alert('Something happened trying to upload the photo for the user.' + '\r\n' + resp2.message[0].messages[0].message);
+                                                app.dialog.alert(window.localize('create_contact_error_photo') + '\r\n' + resp2.message[0].messages[0].message);
                                             }
                                         }
                                     })
@@ -302,7 +302,7 @@
                                         console.log(`An error occurred [create-member-btn.onClick]`);
                                         console.log(err);
                                         app.preloader.hide();
-                                        app.dialog.alert('Some fields are incomplete or incorrect, please try again.' + '\r\n' + obj.message[0].messages[0].message);
+                                        app.dialog.alert(window.localize('create_contact_incomplete_fields') + '\r\n' + obj.message[0].messages[0].message);
                                     })
                             } else {
                                 let user = JSON.parse(res.data)[0];
