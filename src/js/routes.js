@@ -64,6 +64,11 @@ async function checkAuth(to, from, resolve, reject) {
         // resolve('/asd/');
     }
 }
+// async function isLoggedOrAdmin(to, from, resolve, reject) {
+//     var router = this;
+//     var app = router.app;
+//     if
+// }
 async function isMembershipValid(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
@@ -529,13 +534,41 @@ console.log(err);
             let loggedID = loggedUser ? loggedUser.id : -1;
             var isEditing = (currentUser.id != loggedID);
             // console.log(`IsEditing? ${isEditing} (${currentUser.id} != ${loggedUser.id})`);
+            if (isEditing){
+                var userAuthorized = false;
+                for (const contact in adminContacts) {
+                    // if (currentUser.id == contacts[contact].id) {
+                    //     const element = contacts[contact];
+                        
+                    // }
+                    const element = adminContacts[contact];
+                    if(element.owner.id==currentUser.id){
+                        userAuthorized = true
+                    }
+                }
+                // for contact in contacts{
+                //     if(currentUser.id == contact.contact.id && contact.isAdmin){
+                //         userAuthorized = true
+                //     } 
+                // }
+                if(!userAuthorized){
+                    reject();
+                    await router.navigate('/');
+                    console.log('reject');
+                    app.dialog.alert(window.localize('no_access'),window.localize('sorry_title'),function(){
+                        
+                        
+                    });
+                    
+                }
 
+            }
             var ownedMemories;
             await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function(memoriesResult) {
                 ownedMemories = JSON.parse(memoriesResult.data);
                 // console.log(ownedMemories.Memories);
                 // console.log("-.- memories -.-");
-                // console.log(ownedMemories);
+                console.log(ownedMemories);
                 ownedMemories.sort(app.methods.sortByDate);
                 // ownedMemories.Memories.scheduled.sort(app.methods.sortByDate);
                 console.log(ownedMemories);
@@ -552,7 +585,7 @@ console.log(err);
                 console.log("Error fetching fundations");
                 console.log(err);
             });
-
+            console.log('resolve home', userID);
             resolve({
                 component: HomeMemories,
             }, {
