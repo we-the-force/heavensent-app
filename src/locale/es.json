@@ -9,7 +9,7 @@
     "membership_active": "Ya cuentas con una membresía activa. Si deseas contratar otro plan es necesario que canceles primero tu membresía actual.",
     "contact_alert": "Por favor asegúrese de que la información ingresada es correcta, la modificación del número celular no será posible una vez creado el contacto.",
     "user-created-title": "Tu cuenta ha sido creada",
-    "user-created-description": "Por favor checa tu correo para confirmarla.",
+    "user-created-description": "Por favor cheque tu correo para confirmarla. Si no puede encontrarlo, por favor revise su sección de spam.",
     "success": "Éxito",
     "contact-edited-success": "El contacto se modificó exitosamente.",
     "membership-available": "disponibles",

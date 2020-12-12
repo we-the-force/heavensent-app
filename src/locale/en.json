@@ -9,7 +9,7 @@
     "membership_active": "You already have a membership. If you want to contract another plan, you must first cancel your current membership.",
     "contact_alert": "Please make sure all the information entered is correct, phone number modifications won't be permitted once the contact is created.",
     "user-created-title": "Your account was created",
-    "user-created-description": "Please check your email to confirm the account.",
+    "user-created-description": "Please check your email to confirm the account. If you cannot find said email, please check your spam folder.",
     "success": "success",
     "contact-edited-success": "The contact was modified successfully",
     "membership-available": "available",
