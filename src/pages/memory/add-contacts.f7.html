@@ -60,14 +60,18 @@
                 if (contacts) {
                     //TODO
                     contacts.forEach(element => {
-                        let picture = element.contact.profilePicture != null ? app.data.server + element.contact.profilePicture.url : "";
+                        // console.log(`Loading Contact ${element.nickname}`, element);
+                        // let picture = element.contact.profilePicture != null ? app.data.server + element.contact.profilePicture.url : "";
+                        let picture = element.contactPicture != null ? app.data.server + element.contactPicture.url : (element.contact.profilePicture != null ? app.data.server + element.contact.profilePicture.url : "");
+                        let email = element.contactEmail != null ? element.contactEmail : element.contact.username;
                         $$('<li>' +
                             '<label class="item-checkbox item-content" data-id="' + element.contact.id + '">' +
                             '<input type="checkbox" class="chckbx" name="contact-checkbox" value="" />' +
                             '<div class="item-media"><img src="' + picture + '" width="44" /></div>' +
                             '<div class="item-inner">' +
                             '<div class="item-title-row">' +
-                            '<div class="item-title">' + element.contact.username + '</div>' +
+                            '<div class="item-title">' + element.nickname + '</div>' +
+                            // '<div class="item-text">' + email + '</div>' +
                             '</div>' +
                             '<div class="item-text">' + element.relation + '</div>' +
                             '</div>' +
