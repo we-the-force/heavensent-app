@@ -391,7 +391,7 @@
                                 }
                                 app.preloader.hide();
                                 //CREATE ADMIN THING
-                                app.dialog.alert(window.localize("user-created-title"),window.localize("user-created-description"), function(){
+                                app.dialog.alert(window.localize("user-created-description"),window.localize("user-created-title"), function(){
                                     app.views.main.router.clearPreviousHistory();
                                     app.views.main.router.navigate('/');
                                 });
