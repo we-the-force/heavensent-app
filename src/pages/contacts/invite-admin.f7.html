@@ -166,8 +166,8 @@
                                 app.request.promise.postJSON(`${app.data.server}/auth/local/register`, {
                                         "username": adminEmail,
                                         "password": adminPassword,
-                                        "email": adminEmail,
-                                        "confirmed": true
+                                        "email": adminEmail
+                                        
                                     })
                                     .then(async function(adminAccRes) {
                                         var createdAdmin = adminAccRes.data.user;
@@ -178,6 +178,7 @@
                                             data: {
                                                 "name": adminName,
                                                 "created_as_receiver": true,
+                                                "confirmed": true
                                             }
                                         });
                                         createdAdmin.name = adminName;
