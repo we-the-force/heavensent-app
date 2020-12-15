@@ -130,8 +130,8 @@ var app = new Framework7({
                     var user = JSON.parse(getResult.data);
                     // console.log("currentLocalUser wasn't null, setting value to loggedUser");
                     result = await app.methods.setLocalValueToKey(user, 'loggedUser');
-                    await app.methods.loadContacts();
-                    await app.methods.loadAdminedContacts();
+                    app.methods.loadContacts();
+                    app.methods.loadAdminedContacts();
                     // console.log("Update User Result:" + result + " [updateCurrentUser()]");
                 }).catch(async function(error) {
                     // console.log("Error updating current user!!! [updateCurrentUser()]");
@@ -226,13 +226,17 @@ var app = new Framework7({
 
             return result;
         },
+        async userCanAdminContacts() {
+            let adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
+            return adminContacts != null ? adminContacts.length > 0 : false;
+        },
         async loadContacts() {
             var app = this;
             var currentUser = await app.methods.getLocalValue('loggedUser');
             var contacts = [];
             var result = false;
             if (currentUser != null) {
-                this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}`).then(async function(res) {
+                await this.request.promise.json(`${app.data.server}/contacts/?owner=${currentUser.id}`).then(async function(res) {
                     result = await app.methods.setLocalValueToKey(res.data, 'loggedUserContacts');
                     // return true;
                 })
@@ -249,8 +253,9 @@ var app = new Framework7({
             var result = false;
             if (currentUser != null) {
                 //http://localhost:1337/contacts/?contact=12&isAdmin=true
-                this.request.promise.json(`${app.data.server}/contacts/?contact=${currentUser.id}&isAdmin=true`).then(async function(res) {
+                await this.request.promise.json(`${app.data.server}/contacts/?contact=${currentUser.id}&isAdmin=true`).then(async function(res) {
                     result = await app.methods.setLocalValueToKey(res.data, 'loggedUserAdminedContacts');
+                    // console.log(`[loadAdminedContacts] - (${currentUser.id})`, res.data);
                     // return true;
                 })
             }

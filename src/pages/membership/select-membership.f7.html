@@ -512,11 +512,22 @@
 
                 $$("#membership-select-back").off('click').click(async function(val) {
                     e.preventDefault();
-                    if (await app.methods.userHasValidMembership()) {
-                        console.log("membership was valid, not clearing it c:");
-                        app.views.main.router.navigate(`/membership/view/user/${queryID}`);
-                    } else {
-                        console.log("membership not valid, clearing user");
+                    // console.log(`Returning from select back, clearOnBack: ${clearOnBack}`);
+                    if (clearOnBack === "0")
+                    {
+                        // console.log("membership was valid, not clearing it c:");
+                        if (await app.methods.userHasValidMembership())
+                        {
+                            app.views.main.router.navigate(`/membership/view/user/${queryID}`);
+                        }
+                        else
+                        {
+                            app.views.main.router.navigate(`/memories/home/user/${loggedUser.id}`);
+                        }
+                    }
+                    else
+                    {
+                        // console.log("membership not valid, clearing user");
                         await app.methods.clearCurrentUser();
                         await app.views.main.router.navigate('/', {
                             reloadAll: true,
@@ -524,6 +535,18 @@
                             ignoreCache: true
                         });
                     }
+                    // if (await app.methods.userHasValidMembership()) {
+                    //     console.log("membership was valid, not clearing it c:");
+                    //     app.views.main.router.navigate(`/membership/view/user/${queryID}`);
+                    // } else {
+                    //     console.log("membership not valid, clearing user");
+                    //     await app.methods.clearCurrentUser();
+                    //     await app.views.main.router.navigate('/', {
+                    //         reloadAll: true,
+                    //         clearPreviousHistory: true,
+                    //         ignoreCache: true
+                    //     });
+                    // }
                 })
 
                 function changeConfirmButtonHref(extraRef) {
@@ -565,9 +588,9 @@
                                 }
                             });
 
-                            var loggedUser = await app.methods.getLocalValue('loggedUser');
-                            console.log("Logged user:");
-                            console.log(loggedUser);
+                            // var loggedUser = await app.methods.getLocalValue('loggedUser');
+                            // console.log("Logged user:");
+                            // console.log(loggedUser);
 
                             var userEmail = loggedUser.email;
                             console.log("----- email: " + userEmail);
