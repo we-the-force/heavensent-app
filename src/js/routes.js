@@ -72,11 +72,12 @@ async function checkAuth(to, from, resolve, reject) {
 async function isMembershipValid(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
-    var adminedUsers = await app.methods.getLocalValue('loggedUserAdminedContacts');
+    // var adminedUsers = await app.methods.getLocalValue('loggedUserAdminedContacts');
+    var canAdmin =  await app.methods.userCanAdminContacts();
     let validMembership = await app.methods.userHasValidMembership();
     // console.log(`Admined users? ${adminedUsers.length}`);
 
-    if (validMembership || (adminedUsers.length > 0)) {
+    if (validMembership || canAdmin) {
         // console.log("user has valid membership [isMembershipValid()]");
         // console.log(`Valid? '${validMembership}', Admined? '${adminedUsers.length > 0}'`);
         resolve();
