@@ -72,9 +72,13 @@ async function checkAuth(to, from, resolve, reject) {
 async function isMembershipValid(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
+    var adminedUsers = await app.methods.getLocalValue('loggedUserAdminedContacts');
+    let validMembership = await app.methods.userHasValidMembership();
+    console.log(`Admined users? ${adminedUsers.length}`);
 
-    if (await app.methods.userHasValidMembership()) {
+    if (validMembership || (adminedUsers.length > 0)) {
         // console.log("user has valid membership [isMembershipValid()]");
+        console.log(`Valid? '${validMembership}', Admined? '${adminedUsers.length > 0}'`);
         resolve();
     } else {
         /*
@@ -516,6 +520,7 @@ console.log(err);
             var contacts = await app.methods.getLocalValue('loggedUserContacts');
             // console.log(contacts);
             var adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
+            var validMembership = await app.methods.userHasValidMembership();
             // console.log(contacts);
             // console.log(`Async function to home-memories, server: ${server}`);
             var currentUser;
@@ -534,6 +539,7 @@ console.log(err);
             let loggedID = loggedUser ? loggedUser.id : -1;
             var isEditing = (currentUser.id != loggedID);
             var userAuthorized = false;
+            // console.log(`- - - LoggedID: ${loggedID}, Current: ${currentUser.id}, `);
             // console.log(`IsEditing? ${isEditing} (${currentUser.id} != ${loggedUser.id})`);
             if (isEditing){
                 for (const contact in adminContacts) {
@@ -553,7 +559,7 @@ console.log(err);
                 // }
                 if(!userAuthorized){
                     reject();
-                    await router.navigate('/');
+                    await router.navigate('/memories/home/user/' + loggedUser.id);
                     // console.log('reject');
                     app.dialog.alert(window.localize('no_access'),window.localize('sorry_title'),function(){
                         
@@ -561,9 +567,16 @@ console.log(err);
                     });
                 }
             }
-            if (!isEditing || userAuthorized)
+            if (!isEditing && !validMembership)
             {
-                // console.log(`Sipsip, esta entrando a el home porque si puede\r\nEdit: ${isEditing}, Authorized: ${userAuthorized}`);
+                // console.log(`Nopnop, esta redireccionando el home porque no puede\r\nEdit: ${isEditing}, Authorized: ${userAuthorized}, validMembership: ${validMembership}`);
+                reject();
+                // console.log(`Going to '/memories/home/user/${adminContacts[0].owner.id}'`, adminContacts);
+                await router.navigate(`/memories/home/user/${adminContacts[0].owner.id}`);
+            }
+            else if (!isEditing || userAuthorized)
+            {
+                // console.log(`Sipsip, esta entrando a el home porque si puede\r\nEdit: ${isEditing}, Authorized: ${userAuthorized}, validMembership: ${validMembership}`);
                 var ownedMemories;
                 await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function(memoriesResult) {
                     ownedMemories = JSON.parse(memoriesResult.data);
@@ -587,20 +600,24 @@ console.log(err);
                     console.log(err);
                 });
                 // console.log('resolve home', userID);
-                resolve({
-                    component: HomeMemories,
-                }, {
-                    context: {
-                        Server: server,
-                        LoggedUser: loggedUser,
-                        CurrentUser: currentUser,
-                        IsEditing: isEditing,
-                        Contacts: getContacts(contacts, false, true),
-                        AdminedContacts: getContacts(adminContacts, true, false),
-                        Memories: getMemories(ownedMemories),
-                        Fundations: getFundations(baseFundations),
-                    }
-                });
+
+                
+                    resolve({
+                        component: HomeMemories,
+                    }, {
+                        context: {
+                            Server: server,
+                            LoggedUser: loggedUser,
+                            CurrentUser: currentUser,
+                            IsEditing: isEditing,
+                            validMembership: validMembership,
+                            Contacts: getContacts(contacts, false, true),
+                            AdminedContacts: getContacts(adminContacts, true, false),
+                            Memories: getMemories(ownedMemories),
+                            Fundations: getFundations(baseFundations),
+                        }
+                    });
+                
             }
             
 
@@ -1001,10 +1018,10 @@ console.log(err);
             }
 
             function GetPlanName(plan) {
-                // console.log("GetPlanName");
-                // console.log(plan);
+                console.log("GetPlanName");
+                console.log(plan);
                 let isMembershipNull = plan === null;
-                let isPlanNull = plan.plan === null;
+                let isPlanNull = !isMembershipNull ? plan.plan === null : true;
                 if (isMembershipNull || isPlanNull) {
                     return "None";
                 } else {

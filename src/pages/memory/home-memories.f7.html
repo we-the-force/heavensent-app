@@ -15,16 +15,25 @@
 						<a href="" class="avatar-fab item-link smart-select smart-select-init" data-open-in="popover">
 							<!-- llenar select con usuarios -->
 							<select id="users">
-								<option value="1" id="user-thing-{{LoggedUser.id}}" asd="{{LoggedUser.id}}"
-									{{#js_if "this.LoggedUser.id == this.CurrentUser.id"}} selected {{/js_if}}>
-									{{#js_if "this.LoggedUser.name != null"}} {{LoggedUser.name}} {{else}}
-									{{LoggedUser.email}} {{/js_if}}</option>
-								{{#each AdminedContacts}}
-								<option value='{{js "@index + 2"}}' id="user-thing-{{id}}" asd="{{id}}"
-									{{#js_if "this.id == @root.CurrentUser.id"}} selected {{/js_if}}>
-									{{name}} </option>
-								<!-- <option value="2" selected>Ramona</option> -->
-								{{/each}}
+                                {{#if validMembership}}
+                                    <option value="1" id="user-thing-{{LoggedUser.id}}" asd="{{LoggedUser.id}}"
+                                        {{#js_if "this.LoggedUser.id == this.CurrentUser.id"}} selected {{/js_if}}>
+                                        {{#js_if "this.LoggedUser.name != null"}} {{LoggedUser.name}} {{else}}
+                                        {{LoggedUser.email}} {{/js_if}}</option>
+                                    {{#each AdminedContacts}}
+                                    <option value='{{js "@index + 2"}}' id="user-thing-{{id}}" asd="{{id}}"
+                                        {{#js_if "this.id == @root.CurrentUser.id"}} selected {{/js_if}}>
+                                        {{name}} </option>
+                                    <!-- <option value="2" selected>Ramona</option> -->
+                                    {{/each}}
+                                {{else}}
+                                    {{#each AdminedContacts}}
+                                    <option value='{{js "@index + 1"}}' id="user-thing-{{id}}" asd="{{id}}"
+                                        {{#js_if "this.id == @root.CurrentUser.id"}} selected {{/js_if}}>
+                                        {{name}} </option>
+                                    <!-- <option value="2" selected>Ramona</option> -->
+                                    {{/each}}
+                                {{/if}}
 								<!-- poner selected al usuario que esta actualmente -->
 								<!-- <option value="2">Envy</option> -->
 								<!-- <option value="3">Lisa</option> -->
@@ -430,15 +439,16 @@
                 var app = self.$app;
                 var user = {memories: page.route.context.Memories, memoriesUsed: 0, memoriesLeft: 0};
                 user.memoriesUsed=user.memories.scheduled.length+user.memories.pending.length;
-                user.memoriesLeft= page.route.context.CurrentUser.currentMembership.plan.memoriesPerYear;
-                console.log(user);
-                console.log(page.route.context);
+                user.memoriesLeft= page.route.context.CurrentUser.currentMembership != null ? page.route.context.CurrentUser.currentMembership.plan.memoriesPerYear : 0;
+                // console.log(user);
+                // console.log(page.route.context);
                 var mempercent = (user.memoriesUsed *100)/user.memoriesLeft
                 $$('#memsperyear').html(user.memoriesLeft);
                 $$('#memsleft').html(user.memoriesLeft-user.memoriesUsed);
                 $$('#memsprogress span').css('transform', 'translate3d(-'+mempercent+'%, 0,0)');
                 var isEditing = page.route.context.IsEditing;
                 var currentUser = page.route.context.CurrentUser;
+                // console.log("Asdasdsd currentUser", currentUser);
                 var fundations = page.route.context.Fundations;
                 var paymentToken;
                 // console.log("home-memories pageInit [pageInit], updating user");
@@ -451,12 +461,26 @@
                 await app.methods.loadContacts();
 
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
+                if (currentUser.id === loggedUser.id && !page.route.context.validMembership)
+                {
+                    let newCurrentUser = page.route.context.AdminedContacts[0];
+                    // console.log("********Going to the thing lmao");
+                    app.views.main.router.navigate('/memories/home/user/' + newCurrentUser.id);
+                    // console.log(`Changing user from: `, currentUser);
+                    // console.log(`To: `, newCurrentUser);
+                    await app.request.promise.get(`${app.data.server}/users/${newCurrentUser.id}`).then(async function(getResult) {
+                        let userData = JSON.parse(getResult.data);
+                        currentUser = userData;
+                    }).catch(async function(error) {
+                        console.log(`Got a nasty error finding the user you're going to be redirected to ([${newCurrentUser.id}] ${newCurrentUser.name})`, error);
+                    });
+                }
+                // console.log("CurrentUser: ", currentUser);
 
                 if (loggedUser == null) {
                     app.dialog.alert("There was a problem getting your account, please contact support about this issue.");
                     app.views.main.router.navigate('/');
                 }
-
                 updateControls();
                 if (isOverflown($$('.header h1.title')[0])) {
                     $$('.header h1.title').css('font-size', '18px');
@@ -699,15 +723,15 @@
                 // });
                 $$('.switch1').on('click', function(eve) {
                     var listswitch = $$('.switch1').text();
-                    console.log($$('.switch1').text())
+                    // console.log($$('.switch1').text())
                     if (listswitch == 'view_list') {
-                        console.log('array');
+                        // console.log('array');
                         $$('.view_list1').show();
                         $$('.view_array1').hide();
                         $$('.switch1').text('view_array');
 
                     } else {
-                        console.log('lista');
+                        // console.log('lista');
 
                         $$('.view_list1').hide();
                         $$('.view_array1').show();
@@ -717,15 +741,15 @@
                 });
                 $$('.switch2').on('click', function(eve) {
                     var listswitch = $$('.switch2').text();
-                    console.log($$('.switch2').text())
+                    // console.log($$('.switch2').text())
                     if (listswitch == 'view_list') {
-                        console.log('array');
+                        // console.log('array');
                         $$('.view_list2').show();
                         $$('.view_array2').hide();
                         $$('.switch2').text('view_array');
 
                     } else {
-                        console.log('lista');
+                        // console.log('lista');
 
                         $$('.view_list2').hide();
                         $$('.view_array2').show();
@@ -832,6 +856,7 @@
                         // console.log("=-=-=-=-=-=-=-=-=-=-=-=Update controls");
                         // console.log(currentUser);
                         var currentMembership = currentUser.currentMembership;
+                        // console.log("Current Membership", currentUser);
                         if (currentMembership === null) {
                             if (window.language == 'en_US') {
                                 currentMembership = 'No ' + window.localize('membership');
@@ -840,11 +865,11 @@
                             }
                         } else {
                             if (window.language == 'en_US') {
-                                currentMembership = `${loggedUser.currentMembership.plan.name} ${window.localize('membership')}`;
+                                currentMembership = `${currentUser.currentMembership.plan.name} ${window.localize('membership')}`;
                                 // console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
                             } else if (window.language == 'es_MX') {
                                 // console.log('Membership: '+JSON.stringify(loggedUser.currentMembership));
-                                currentMembership = `${window.localize('membership')} ${loggedUser.currentMembership.plan.name}`;
+                                currentMembership = `${window.localize('membership')} ${currentUser.currentMembership.plan.name}`;
                             }
                         }
 
