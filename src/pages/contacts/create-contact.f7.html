@@ -183,6 +183,7 @@
 
                 $$('input#create-cont-birthday').change(function(el) {
                       if (moment().diff(moment($$(this).val()), 'years') < 18) {
+                            app.dialog.alert(window.localize('minor_detected'),window.localize('minor_detected_description'));
                          $$('#create-guardian-btn').removeClass('none');
                      } else {
                          $$('#create-guardian-btn').addClass('none');

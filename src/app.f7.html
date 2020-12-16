@@ -24,10 +24,10 @@
 					class="btn-panel panel-close active">{{localize "profile"}}</a>
 				<a id="app-plan-button" href="/membership/view/user/"
 					class="btn-panel panel-close ">{{localize "plan"}}</a>
-				<a id="app-plan-button" href="/ondemand"
+				<a id="app-on-demand" href="/ondemand"
 					class="btn-panel panel-close ">{{localize "ondemand"}}</a>
 				<a id="app-plan-button" href="/onboarding"
-					class="btn-panel panel-close ">On Boarding</a>
+					class="btn-panel panel-close ">Tutorial</a>
 				<div class="block">
 					<a href="">{{localize "messages"}} <br> <span id="memsleft"></span> {{localize "of"}} <span id="memsperyear"></span> {{localize "membership-available"}}</a>
 					<div  class="progressbar" id="memsprogress" data-progress="50">
@@ -196,7 +196,9 @@
                     loggedUser = await updateUser();
 					app.progressbar.set('#memories-progress');
                     updateControls();
-
+					if(loggedUser.currentMembership.plan.name=='VIP'){
+						$$('#app-on-demand').css('display', 'block');
+					}
                     $$("#edit-profile").off("click").on("click", async function(e) {
                         app.views.main.router.navigate(`/user/edit/${loggedUser.id}`);
                     });
