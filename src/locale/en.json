@@ -227,7 +227,7 @@
     "create_mem_repeat": "Repeat",
     "create_mem_never": "Never",
     "create_mem_weekly": "Weekly",
-    "create_mem_monthly": "monthly",
+    "create_mem_monthly": "Monthly",
     "create_mem_yearly": "Yearly",
     "create_mem_repeat_end": "End repetition",
     "create_mem_repeat_footer_immediately": "The message will be sent immediately",

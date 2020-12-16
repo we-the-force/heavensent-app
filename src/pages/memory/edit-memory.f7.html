@@ -290,12 +290,12 @@
                 sessionStorage.immediately = JSON.stringify(false);
                 sessionStorage.date = JSON.stringify(memoryToEdit.reminder.date);
                 sessionStorage.time = JSON.stringify(memoryToEdit.reminder.time);
-                sessionStorage.repeat = JSON.stringify(dbToFrontEndRepeat(memoryToEdit.reminder.repeat));
+                sessionStorage.repeat = memoryToEdit.reminder.repeat != null ? JSON.stringify(dbToFrontEndRepeat(memoryToEdit.reminder.repeat)) : JSON.stringify(dbToFrontEndRepeat("not"));
                 sessionStorage.date_end = JSON.stringify(memoryToEdit.reminder.date_end);
                 let neverRepeat = window.localize('edit_mem_repeat_footer_never');
                 let repeatDate = window.localize('edit_mem_repeat_footer_date');
                 let repeatUntil = window.localize('edit_mem_repeat_footer_until');
-                sessionStorage.footer = JSON.stringify(memoryToEdit.reminder.repeat != "not" ? `${repeatDate} ${dbToFrontEndRepeat(memoryToEdit.reminder.repeat)} ${repeatUntil} ${memoryToEdit.reminder.date_end}` : `${neverRepeat}`);
+                sessionStorage.footer = JSON.stringify(memoryToEdit.reminder.repeat != "not" ? `${repeatDate} ${dbToFrontEndRepeat(memoryToEdit.reminder.repeat)} ${repeatUntil} ${memoryToEdit.reminder.date_end.split("T")[0]}` : `${neverRepeat}`);
                 sessionStorage.on_demand = JSON.stringify(memoryToEdit.on_demand);
                 
                 var contacts = [];
@@ -428,12 +428,13 @@
                         $$('.deliver-cont .deliver-info .date-info').addClass('none');
                         $$('.deliver-cont .deliver-info .time-info').addClass('none');
                     } else {
-                        $$('#deliver-date').val(JSON.parse(sessionStorage.date));
-                        $$('#deliver-time').val(JSON.parse(sessionStorage.time));
+                        console.log(`Session storage date: ${JSON.parse(sessionStorage.date)}`);
+                        $$('#deliver-date').val(JSON.parse(sessionStorage.date).split("T")[0]);
+                        // $$('#deliver-time').val(JSON.parse(sessionStorage.time));
                     }
                     $$('#select-repeat p').text(JSON.parse(sessionStorage.repeat))
-                    if (JSON.parse(sessionStorage.date_end) != "") {
-                        $$('#date-end').val(JSON.parse(sessionStorage.date_end));
+                    if (JSON.parse(sessionStorage.date_end) != "" && JSON.parse(sessionStorage.date_end != "null")) {
+                        $$('#date-end').val(sessionStorage.date_end != null ? JSON.parse(sessionStorage.date_end).split("T")[0] : "");
                         /* frace al inicio */
                         let repeat = JSON.parse(sessionStorage.footer).split(window.language == 'en_US' ? ' until ' : (window.language == 'es_MX' ? " hasta " : ""));
                         let date_foot = repeat[1];
@@ -449,7 +450,7 @@
                         $$('.popup-deliver .footer').text(window.localize('create_mem_repeat_footer_never'));
                     }
                     $$('.deliver-cont .deliver-info .footer-deliver').text(JSON.parse(sessionStorage.footer));
-                    $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date));
+                    $$('.deliver-cont .deliver-info .date-info .val').text(JSON.parse(sessionStorage.date).split("T")[0]);
                     $$('.deliver-cont .deliver-info .time-info .val').text(JSON.parse(sessionStorage.time));
                 }
 
@@ -510,15 +511,18 @@
                         $$('.pop-deliver-inputs#date-end').removeClass('grey');
                         $$('.end-repeat-cont').removeClass('none');
                         $$('.pop-deliver-inputs').trigger('change');
+                        let endDateString = $$('#date-end').val() != "" ? $$('#date-end').val() : "--/--/----";
+
+                        // console.log(`popover-repeat close, not never, endDateString: ${endDateString}, sessionStorage: ${sessionStorage.date_end}, Val: ${$$('#date-end').val()}`);
                         // $$('.popup-deliver .footer').html('The memory will repeat itself ' + $$(this).text() + ' until <div>--/--/----</div>');
-                        $$('.popup-deliver .footer').html(window.localize('create_mem_repeat_footer_date') + ' ' + $$(this).text() + ' ' + window.localize('create_mem_repeat_footer_until') + ' ' + '<div>--/--/----</div>');
+                        $$('.popup-deliver .footer').html(window.localize('create_mem_repeat_footer_date') + ' ' + $$(this).text() + ' ' + window.localize('create_mem_repeat_footer_until') + ' ' + `<div>${endDateString}</div>`);
                     }
                 });
 
                 /* verifica que los inputs necesarios esten llenos en el popover */
                 $$('.pop-deliver-inputs').change(function (e) {
                     var inputs = $$('.pop-deliver-inputs:not(.grey)');
-                    console.log(inputs);
+                    // console.log(inputs);
                     var nonempty = inputs.filter(function () {
                         return this.value != ''
                     });
@@ -793,8 +797,12 @@
 
                     // let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.time, ss.repeat, ss.date_end, ss.on_demand);
                     let result = validateFields(ss.title, ss.desc, cover, files, ss.contacts, ss.latlng, immediately, date, ss.repeat, ss.date_end, ss.on_demand);
+                    if (result.memory.reminder.repeat == "not")
+                    {
+                        delete result.memory.reminder.date_end;
+                    }
 
-                    console.log("Result: ", result);
+                    console.log("Result:\r\n ", result.memory);
                     /* datos que sean completamente necesarios */
                     let check = ss.title && ss.desc && cover && files && ss.contacts && ss.latlng && ss.addr && ss.immediately && ss.date && ss.repeat && ss.date_end && ss.on_demand;
                     if (result.valid) {
@@ -802,29 +810,29 @@
                         app.preloader.show("blue");
 
                         await app.request.promise({
-									url: `${app.data.server}/memories/${memoryToEdit.id}`,
-									method: 'PUT',
-									data: {
-                                        title: result.memory.title,
-                                        description: result.memory.description,
-                                        reminder: result.memory.reminder,
-                                        sent: result.memory.sent,
-									}
-                                }).then(function(response){
-                                    console.log('response');
-                                    console.log(response);
+                            url: `${app.data.server}/memories/${memoryToEdit.id}`,
+                            method: 'PUT',
+                            data: {
+                                title: result.memory.title,
+                                description: result.memory.description,
+                                reminder: result.memory.reminder,
+                                sent: result.memory.sent,
+                            }
+                        }).then(function(response){
+                            console.log('response');
+                            console.log(response);
 
-                                    app.preloader.hide();
-                                    app.dialog.alert(""+window.localize("create_mem_success"));
-                                    sessionStorage.clear();
-                                    app.views.main.router.navigate("/memories/home/user/" + memoryOwner.id);
-                                }).catch(function(err){
-                                    console.log("Error updating thing");
-                                    console.log(err);
+                            app.preloader.hide();
+                            app.dialog.alert(""+window.localize("create_mem_success"));
+                            sessionStorage.clear();
+                            app.views.main.router.navigate("/memories/home/user/" + memoryOwner.id);
+                        }).catch(function(err){
+                            console.log("Error updating thing");
+                            console.log(err);
 
-                                    app.preloader.hide();
-                                    app.dialog.alert(`An error occurred when updating memory info!`);
-                                });
+                            app.preloader.hide();
+                            app.dialog.alert(`An error occurred when updating memory info!`);
+                        });
 
 
 
@@ -1253,8 +1261,8 @@
                     console.log("Resulting memory [validateMemory]\r\n", result.memory);
                     console.log(result.memoryFiles);
 
-                    //result.valid = false;
-                    //result.message += ", Test";
+                    // result.valid = false;
+                    // result.message += ", Test";
                     //title, desc, cover, files, contacts, latlng, addr, immediately, date, time, repeat, date_end, on_demand
                     return result;
                 }
@@ -1292,34 +1300,37 @@
 
                 function deliverAccept() {
                     console.log("Entering deliver accept")
-                    $$('.date-title .edit-btn').removeClass('none');
-                    $$('.deliver-cont .btns-cont').addClass('none');
-                    $$('.deliver-cont .deliver-info').removeClass('none');
-                    let immediately = app.toggle.get('#immediately-toggle').checked;
-                    let date = $$('#deliver-date').val();
-                    let time = $$('#deliver-time').val();
-                    if (immediately) {
-                        $$('.immediatly-info').removeClass('none');
-                        $$('.deliver-cont .deliver-info .date-info').addClass('none');
-                        $$('.deliver-cont .deliver-info .time-info').addClass('none');
-                        date = "";
-                        time = "";
-                    } else {
-                        $$('.immediatly-info').addClass('none');
-                        $$('.deliver-cont .deliver-info .date-info').removeClass('none');
-                        $$('.deliver-cont .deliver-info .time-info').removeClass('none');
-                        $$('.deliver-cont .deliver-info .date-info .val').text(date);
-                        $$('.deliver-cont .deliver-info .time-info .val').text(time);
+                    if (!$$('#accept-deliver-date').hasClass("grey"))
+                    {
+                        $$('.date-title .edit-btn').removeClass('none');
+                        $$('.deliver-cont .btns-cont').addClass('none');
+                        $$('.deliver-cont .deliver-info').removeClass('none');
+                        let immediately = app.toggle.get('#immediately-toggle').checked;
+                        let date = $$('#deliver-date').val();
+                        let time = $$('#deliver-time').val();
+                        if (immediately) {
+                            $$('.immediatly-info').removeClass('none');
+                            $$('.deliver-cont .deliver-info .date-info').addClass('none');
+                            $$('.deliver-cont .deliver-info .time-info').addClass('none');
+                            date = "";
+                            time = "";
+                        } else {
+                            $$('.immediatly-info').addClass('none');
+                            $$('.deliver-cont .deliver-info .date-info').removeClass('none');
+                            $$('.deliver-cont .deliver-info .time-info').removeClass('none');
+                            $$('.deliver-cont .deliver-info .date-info .val').text(date);
+                            $$('.deliver-cont .deliver-info .time-info .val').text(time);
+                        }
+                        let repeat = $$('#select-repeat p').text();
+                        let date_end = repeat == "Never" ? "" : $$('#date-end').val();
+                        $$('.deliver-cont .deliver-info .footer-deliver').text($$('.popup-deliver .footer').text());
+                        sessionStorage.date = JSON.stringify(date);
+                        sessionStorage.time = JSON.stringify(time);
+                        sessionStorage.immediately = JSON.stringify(immediately);
+                        sessionStorage.repeat = JSON.stringify(repeat);
+                        sessionStorage.date_end = JSON.stringify(date_end);
+                        sessionStorage.footer = JSON.stringify($$('.popup-deliver .footer').text());
                     }
-                    let repeat = $$('#select-repeat p').text();
-                    let date_end = repeat == "Never" ? "" : $$('#date-end').val();
-                    $$('.deliver-cont .deliver-info .footer-deliver').text($$('.popup-deliver .footer').text());
-                    sessionStorage.date = JSON.stringify(date);
-                    sessionStorage.time = JSON.stringify(time);
-                    sessionStorage.immediately = JSON.stringify(immediately);
-                    sessionStorage.repeat = JSON.stringify(repeat);
-                    sessionStorage.date_end = JSON.stringify(date_end);
-                    sessionStorage.footer = JSON.stringify($$('.popup-deliver .footer').text());
                 }
 
                 function progressBar(mb) {/* funcion de barra de progreso */
@@ -1345,19 +1356,20 @@
                 }
                 function repetitionToApi(value)
                 {
-                    if (value === "Never" || value == "Nunca")
+                    let auxValue = value.toLowerCase();
+                    if (auxValue === "never" || auxValue == "nunca")
                     {
                         return "not";
                     }
-                    else if (value === "Weekly" || value === "Semanalmente")
+                    else if (auxValue === "weekly" || auxValue === "semanalmente")
                     {
                         return "weekly";
                     }
-                    else if (value === "Monthly" || value === "Mensualmente")
+                    else if (auxValue === "monthly" || auxValue === "mensualmente")
                     {
                         return "monthly";
                     }
-                    else if (value === "Yearly" || value === "Anualmente")
+                    else if (auxValue === "yearly" || auxValue === "anualmente")
                     {
                         return "yearly";
                     }
