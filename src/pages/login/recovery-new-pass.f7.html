@@ -67,14 +67,14 @@
 				var self = this;
 				var app = self.$app;
 				$$(".show").click(function(val) {
-								let type = $$("#pass, #pass_2").attr("type");
+								let type = $$("#recover-pass, #recover-pass_2").attr("type");
 								if (type == "password") {
-												$$("#pass, #pass_2").attr("type", "text");
+												$$("#recover-pass, #recover-pass_2").attr("type", "text");
 								} else {
-												$$("#pass, #pass_2").attr("type", "password");
+												$$("#recover-pass, #recover-pass_2").attr("type", "password");
 								}
 				});
-				$$("#pass, #pass_2").on("input:notempty", function(val) {
+				$$("#recover-pass, #recover-pass_2").on("input:notempty", function(val) {
 								$$(".show").css("display", "block");
 								$$("#pass-edit-icon").css("display", "none");
 				});
@@ -95,7 +95,7 @@
 					let pass1 = $$('#recover-pass').val();
 					let pass2 = $$('#recover-pass_2').val();
 
-					console.log(`passes: (${pass}, ${pass_2})`);
+					console.log(`passes: (${pass1}, ${pass2})`);
 					if (pass1 != '' && pass2 != '')
 					{
 						if (pass1 == pass2)
