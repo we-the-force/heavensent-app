@@ -254,7 +254,18 @@ var app = new Framework7({
             if (currentUser != null) {
                 //http://localhost:1337/contacts/?contact=12&isAdmin=true
                 await this.request.promise.json(`${app.data.server}/contacts/?contact=${currentUser.id}&isAdmin=true`).then(async function(res) {
-                    result = await app.methods.setLocalValueToKey(res.data, 'loggedUserAdminedContacts');
+                    // console.log("loadAdminedContacts (res.data)\r\n", res.data);
+                    for (let i = 0; i < res.data.length; i++)
+                    {
+                        let currentMembership = res.data[i].owner.currentMembership;
+                        // console.log(`CurrentUser: [${i}]\r\n`, res.data[i].owner);
+                        if (currentMembership != null && currentMembership.plan != null && currentMembership.isActive)
+                        {
+                            contacts.push(res.data[i]);
+                        }
+                        // console.log("Resulting contacts:\r\n", contacts);
+                    }
+                    result = await app.methods.setLocalValueToKey(contacts, 'loggedUserAdminedContacts');
                     // console.log(`[loadAdminedContacts] - (${currentUser.id})`, res.data);
                     // return true;
                 })

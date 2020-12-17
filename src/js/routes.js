@@ -71,6 +71,7 @@ async function isMembershipValid(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
     // var adminedUsers = await app.methods.getLocalValue('loggedUserAdminedContacts');
+    console.log("About to canAdmin");
     var canAdmin =  await app.methods.userCanAdminContacts();
     let validMembership = await app.methods.userHasValidMembership();
     // console.log(`Admined users? ${adminedUsers.length}`);
@@ -101,7 +102,7 @@ async function isMembershipValid(to, from, resolve, reject) {
                     // console.log("you're not (coming from select-memberhip and going to select-membership) [isMembershipValid()]");
                     resolve();
                 } else {
-                    // console.log("Youre either coming from or going to selet-membership  [isMembershipValid()]");
+                    console.log("Youre either coming from or going to selet-membership  [isMembershipValid()]");
                     reject();
                     await router.navigate({
                         name: 'select-membership',
@@ -112,7 +113,7 @@ async function isMembershipValid(to, from, resolve, reject) {
                     })
                 }
             } else {
-                // console.log("from was empty, redirecting to select-membership");
+                console.log("from was empty, redirecting to select-membership [isMembershipValid()]");
                 // console.log(from);
                 reject();
                 await router.navigate({
@@ -481,7 +482,7 @@ console.log(err);
     {
         name: 'home-memories',
         path: '/memories/home/user/:userID',
-        beforeEnter: [checkAuth, isMembershipValid],
+        beforeEnter: [checkAuth],
         options: {
             reloadAll: true,
             ignoreCache: true,
@@ -496,6 +497,7 @@ console.log(err);
             var loggedUser = await app.methods.getLocalValue('loggedUser');
             var contacts = await app.methods.getLocalValue('loggedUserContacts');
             var adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
+            var canAdmin = await app.methods.userCanAdminContacts();
             var validMembership = await app.methods.userHasValidMembership();
             var currentUser;
 
@@ -530,10 +532,30 @@ console.log(err);
             }
             if (!isEditing && !validMembership)
             {
-                app.preloader.hide();
-                // console.log(`Nopnop, esta redireccionando el home porque no puede\r\nEdit: ${isEditing}, Authorized: ${userAuthorized}, validMembership: ${validMembership}`);
-                reject();
-                await router.navigate(`/memories/home/user/${adminContacts[0].owner.id}`);
+                // if (adminContacts.length > 0)
+                if (canAdmin)
+                {
+                    app.preloader.hide();
+                    // console.log(`Nopnop, esta redireccionando el home porque no puede\r\nEdit: ${isEditing}, Authorized: ${userAuthorized}, validMembership: ${validMembership}`);
+                    reject();
+                    await router.navigate(`/memories/home/user/${adminContacts[0].owner.id}`);
+                }
+                else
+                {
+                    app.preloader.hide();
+                    reject();
+                    await router.navigate(`/memories/dashboard/user/${currentUser.id}/${"0"}`);
+                    // resolve({
+                    //     component: MemoryDashboard, 
+                    // }, {
+                    //     context: {
+                    //         Server: app.data.server,
+                    //         Memories: getMemories(baseMemories),
+                    //         CurrentUser: currentUser.id,
+                    //         Swiper: swiper
+                    //     }
+                    // })
+                }
             }
             else if (!isEditing || userAuthorized)
             {
@@ -715,6 +737,12 @@ console.log(err);
                 var app = router.app;
                 var userID = routeTo.params.userID;
                 var swiper = routeTo.params.swiper;
+                var loggedUser = await app.methods.getLocalValue('loggedUser');
+
+                if (loggedUser.id != userID)
+                {
+                    userID = loggedUser.id;
+                }
 
                 var baseMemories = null;
                 await app.request.promise.get(`${app.data.server}/memories/?recipients.id=${userID}&sent=true`).then(function(memResult) {
@@ -724,8 +752,6 @@ console.log(err);
                     console.log(err);
                 })
                 // console.log("Swiper [routes.js]", swiper);
-
-                log(getMemories(baseMemories));
 
                 resolve({
                     component: MemoryDashboard,
@@ -740,9 +766,8 @@ console.log(err);
 
                 function getMemories(baseMem) {
                     let memObject = [];
-
                     baseMem.forEach(mem => {
-                        if (mem.owners[0].currentMembership.isActive)
+                        if (mem.owners[0].currentMembership != null ? mem.owners[0].currentMembership.isActive : false)
                             memObject.push(getMemory(mem));
                     })
 
@@ -923,8 +948,8 @@ console.log(err);
                     // console.log(res.data.currentMembership);
                     let plan = GetPlanName(res.data.currentMembership);
                     let shouldClearOnBack = adminContacts != null ? (adminContacts.length > 0 ? 0 : 1) : 1;
-                    // console.log("Redirecting to select-membership ", shouldClearOnBack);
                     if (plan === "None") {
+                        console.log("Going from view-membership to select-membership [view-membership.async]");
                         app.preloader.hide();
                         reject();
                         router.navigate({
@@ -1175,11 +1200,6 @@ console.log(err);
                 let plan = (userMembership.plan.id.toString() === newMembership.plan.toString());
                 let token = (userMembership.token === newMembership.token);
                 let billedCard = (userMembership.billedCard === newMembership.billedCard);
-
-                // console.log(`(${userMembership.nextBillingDate}) vs (${newMembership.nextBillingDate}) = ${billingDate}`);
-                // console.log(`(${userMembership.plan.id}) vs (${newMembership.plan}) = ${plan}`);
-                // console.log(`(${userMembership.token}) vs (${newMembership.token}) = ${token}`);
-                // console.log(`(${userMembership.billedCard}) vs (${newMembership.billedCard}) = ${billedCard}`);
 
                 if (billingDate && plan && token && billedCard) {
                     return true;

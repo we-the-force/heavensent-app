@@ -55,7 +55,7 @@
 					<i class="icon material-icons cloud">cloud</i>
 					<span class="tabbar-label">{{localize "my_memories"}}</span>
 				</a>
-				<a class="item-link" href="/memories/dashboard/user/{{CurrentUser.id}}/0">
+				<a class="item-link" href="/memories/dashboard/user/{{LoggedUser.id}}/0">
 					<div class="custom-icon">
 						<i class="icon material-icons cloud grey">cloud</i>
 						<i class="icon material-icons people">people</i>
@@ -446,8 +446,10 @@
                 var self = this;
                 var app = self.$app;
                 var user = {memories: page.route.context.Memories, memoriesUsed: 0, memoriesLeft: 0};
+                var currentUser = page.route.context.CurrentUser;
+                // console.log("Loading current user:\r\n", currentUser);
                 user.memoriesUsed=user.memories.scheduled.length+user.memories.pending.length;
-                user.memoriesLeft= page.route.context.CurrentUser.currentMembership != null ? page.route.context.CurrentUser.currentMembership.plan.memoriesPerYear : 0;
+                user.memoriesLeft= currentUser.currentMembership != null ? (currentUser.currentMembership.plan != null ? currentUser.currentMembership.plan.memoriesPerYear : 0) : 0;
                 // console.log(user);
                 // console.log(page.route.context);
                 var mempercent = (user.memoriesUsed *100)/user.memoriesLeft
@@ -455,7 +457,6 @@
                 $$('#memsleft').html(user.memoriesLeft-user.memoriesUsed);
                 $$('#memsprogress span').css('transform', 'translate3d(-'+mempercent+'%, 0,0)');
                 var isEditing = page.route.context.IsEditing;
-                var currentUser = page.route.context.CurrentUser;
                 // console.log("Asdasdsd currentUser", currentUser);
                 var fundations = page.route.context.Fundations;
                 var paymentToken;
@@ -468,9 +469,12 @@
                 await app.methods.updateCurrentUser();
                 await app.methods.loadContacts();
 
-                if (!await app.methods.userHasAdmin())
+                if (!isEditing && await app.methods.userHasValidMembership())
                 {
-                    $$('#invite-admin-button').removeClass('none');
+                    if (!await app.methods.userHasAdmin())
+                    {
+                        $$('#invite-admin-button').removeClass('none');
+                    }
                 }
 
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
@@ -872,8 +876,10 @@
                         // console.log("=-=-=-=-=-=-=-=-=-=-=-=Update controls");
                         // console.log(currentUser);
                         var currentMembership = currentUser.currentMembership;
-                        // console.log("Current Membership", currentUser);
-                        if (currentMembership === null) {
+                        let planIsNull = currentMembership != null ? currentMembership.plan == null: true;
+                        // console.log("Current Membership\r\n", currentMembership);
+                        // console.log(`planIsNull: ${planIsNull}`);
+                        if (planIsNull) {
                             if (window.language == 'en_US') {
                                 currentMembership = 'No ' + window.localize('membership');
                             } else if (window.language == 'es_MX') {
