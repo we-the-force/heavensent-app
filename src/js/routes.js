@@ -922,6 +922,11 @@ console.log(err);
         name: 'select-membership',
         path: '/membership/select/user/:userID/clear/:clearOnBack',
         beforeEnter: [checkAuth],
+        options: {
+            reloadAll: true,
+            ignoreCache: true,
+            clearPreviousHistory: true
+        },
         component: SelectMembership,
     },
     {
