@@ -28,7 +28,7 @@
 					class="btn-panel panel-close ">{{localize "ondemand"}}</a>
 				<a id="app-plan-button" href="/onboarding"
 					class="btn-panel panel-close ">Tutorial</a>
-				<div class="block">
+				<div class="block none" id="memsprogress-container">
 					<a href="">{{localize "messages"}} <br> <span id="memsleft"></span> {{localize "of"}} <span id="memsperyear"></span> {{localize "membership-available"}}</a>
 					<div  class="progressbar" id="memsprogress" data-progress="50">
 						<span></span>
@@ -189,14 +189,16 @@
             pageInit: async function() {
                 var self = this;
                 var app = self.$app;
-                var loggedUser = null;
+				var loggedUser = null;
+				let validMembership = false;
                 // console.log(app.views.main.router.url);
                 if (app.views.main.router.url != "/") {
                     // console.log(loggedUser);
-                    loggedUser = await updateUser();
+					loggedUser = await updateUser();
+					validMembership = (loggedUser.currentMembership != null && loggedUser.currentMembership.plan != null);
 					app.progressbar.set('#memories-progress');
                     updateControls();
-					if(loggedUser.currentMembership != null && loggedUser.currentMembership.plan != null && loggedUser.currentMembership.plan.name=='VIP'){
+					if(validMembership && loggedUser.currentMembership.plan.name=='VIP'){
 						$$('#app-on-demand').css('display', 'block');
 					}
                     $$("#edit-profile").off("click").on("click", async function(e) {
@@ -263,7 +265,8 @@
                                     currentMembership = window.localize('membership') + " " + loggedUser.currentMembership.plan.name;
                                 } else {
                                     currentMembership = loggedUser.currentMembership.plan.name + " " + window.localize('membership');
-                                }
+								}
+								$$("#memsprogress-container").removeClass("none");
                                 //currentMembership = loggedUser.currentMembership.plan.name + " membership";
                             }
 
