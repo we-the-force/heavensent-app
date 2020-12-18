@@ -116,7 +116,7 @@
                 var userID = app.views.main.router.currentRoute.params.userID;
 
                 $$("#invite-admin-back").click(async function(e) {
-                    app.methods.clearCurrentUser();
+                    // app.methods.clearCurrentUser();
                     app.views.main.router.back();
                 })
                 $$(".show").click(function(val) {
@@ -249,7 +249,20 @@
                                     console.log(assignRelErr);
                                 })
                         } else {
-                            app.dialog.alert(window.localize('create_admin_repeated'));
+                            let contactData = JSON.parse(res.data);
+                            console.log("Contact relationship result: \r\n", contactData);
+                            await app.request.promise({
+                                url: `${app.data.server}/contacts/${contactData[0].id}`,
+                                method: 'PUT',
+                                data: {
+                                    isAdmin: true
+                                }
+                            }).then(function(response) {
+                                console.log("Dude added successfully!\r\n", response);
+                            }).catch(function(error) {
+                                console.log("An error has occurred!\r\n", error);
+                            });
+                            // app.dialog.alert(window.localize('create_admin_repeated'));
                         }
                     }).catch(async function(err) {
                         app.preloader.hide();

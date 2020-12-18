@@ -172,50 +172,62 @@
                         .then(async function(res) {
                             console.log("Getting inside 'then' [pageInit.login-btn.onClick]");
                             console.log(res);
-                            app.preloader.hide();
 
                             let user = res.data.user;
                             if (!user.confirmed) {
                                 app.dialog.alert("This account has not been confirmed yet, please check your email");
+                                app.preloader.hide();
                                 return false;
                             } else {
                                 console.log("Setting logged user to localStorage [pageInit.login-btn.onClick]");
                                 if (await app.methods.setLocalValueToKey(user, 'loggedUser')) {
                                     let hasAdmin = await app.methods.userHasAdmin();
-                                    console.log("Has admin? [pageInit.login-btn.onClick]");
-                                    console.log(hasAdmin);
-                                    if (hasAdmin) {
-                                        console.log("Successfully logged in [pageInit.login-btn.onClick]");
-                                        // console.log(await app.methods.getLocalValue('loggedUser'))
+                                    // console.log("Has admin? [pageInit.login-btn.onClick]");
+                                    // console.log(hasAdmin);
 
-                                        if (await app.methods.userHasValidMembership()) {
-                                            await app.methods.loadContacts();
-                                            await app.methods.loadAdminedContacts();
-                                            console.log("User has a valid membership! [pageInit.login-btn.onClick]");
-                                            // app.views.main.router.navigate({ name: "home-memories" });
-                                            app.views.main.router.navigate(`/memories/home/user/${user.id}`);
-                                        } else {
-                                            console.log("User doesn't have a valid membership! [pageInit.login-btn.onClick]");
-                                            await app.views.main.router.navigate({
-                                                name: 'select-membership',
-                                                params: {
-                                                    userID: user.id,
-                                                    clearOnBack: "1"
-                                                }
-                                            })
-                                        }
+                                    app.preloader.hide();
+                                    app.views.main.router.navigate(`/memories/home/user/${user.id}`);
 
-                                    } else {
-                                        app.dialog.alert(`${window.localize('no_admin_please_fill')}`);
-                                        await app.views.main.router.navigate({
-                                            name: 'invite-admin',
-                                            params: {
-                                                userID: user.id
-                                            }
-                                        })
-                                    }
+                                    // if (hasAdmin) {
+                                    //     console.log("Successfully logged in [pageInit.login-btn.onClick]");
+                                    //     await app.methods.loadContacts();
+                                    //     await app.methods.loadAdminedContacts();
+                                    //     let validMembership = await app.methods.userHasValidMembership();
+                                    //     let canAdmin = await app.methods.userCanAdminContacts();
+
+
+                                    //     if (validMembership || canAdmin) {
+                                    //         console.log("User has a valid membership! [pageInit.login-btn.onClick]");
+                                    //         // app.views.main.router.navigate({ name: "home-memories" });
+                                    //         app.preloader.hide();
+                                    //         app.views.main.router.navigate(`/memories/home/user/${user.id}`);
+                                    //     } else {
+                                    //         // console.log(`User doesn't have a valid membership! [pageInit.login-btn.onClick]\r\nvalidMembership: ${validMembership}, canAdmin: ${canAdmin}\r\n`, adminContacts);
+
+                                    //         app.preloader.hide();
+                                    //         await app.views.main.router.navigate({
+                                    //             name: 'select-membership',
+                                    //             params: {
+                                    //                 userID: user.id,
+                                    //                 clearOnBack: "1"
+                                    //             }
+                                    //         })
+                                    //     }
+
+                                    // } else {
+                                    //     app.dialog.alert(`${window.localize('no_admin_please_fill')}`);
+                                    //     app.preloader.hide();
+                                    //     await app.views.main.router.navigate({
+                                    //         name: 'invite-admin',
+                                    //         params: {
+                                    //             userID: user.id
+                                    //         }
+                                    //     })
+                                    // }
+
                                 } else {
                                     console.log("Couldn't set the user");
+                                    app.preloader.hide();
                                 }
                             }
                         })

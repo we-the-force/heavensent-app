@@ -42,39 +42,43 @@ import DynamicRoutePage from '../pages/dynamic-route.f7.html';
 import RequestAndLoad from '../pages/request-and-load.f7.html';
 import NotFoundPage from '../pages/404.f7.html';
 
+/**
+ * Checks if the user can indeed loged in and the user exists & has been confirmed via email.
+ * If it is, it allows navigation
+ * If it isn't, it redirects to login. 
+ */
 async function checkAuth(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
     var valid = await app.methods.userIsValid();
 
     if (valid) {
-        if (await app.methods.userHasAdmin()) {
-            // console.log("user had admin [checkAuth()]")
-            // await isMembershipValid(to, from, resolve, reject);
-            resolve();
-        } else {
-            reject();
-            await this.navigate('/');
-            return;
-        }
+        resolve();
     } else {
         reject();
         await this.navigate('/');
         return;
-        // resolve('/asd/');
     }
 }
-// async function isLoggedOrAdmin(to, from, resolve, reject) {
-//     var router = this;
-//     var app = router.app;
-//     if
-// }
+
+/**
+ *  Checks if membership is valid
+ *  If it is, the user can continue as normal.
+ *  If it isn't, and the user can't admin, redirects to select-membership
+ *
+ */
 async function isMembershipValid(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
+    // var adminedUsers = await app.methods.getLocalValue('loggedUserAdminedContacts');
+    console.log("About to canAdmin");
+    var canAdmin =  await app.methods.userCanAdminContacts();
+    let validMembership = await app.methods.userHasValidMembership();
+    // console.log(`Admined users? ${adminedUsers.length}`);
 
-    if (await app.methods.userHasValidMembership()) {
+    if (validMembership || canAdmin) {
         // console.log("user has valid membership [isMembershipValid()]");
+        // console.log(`Valid? '${validMembership}', Admined? '${adminedUsers.length > 0}'`);
         resolve();
     } else {
         /*
@@ -98,7 +102,7 @@ async function isMembershipValid(to, from, resolve, reject) {
                     // console.log("you're not (coming from select-memberhip and going to select-membership) [isMembershipValid()]");
                     resolve();
                 } else {
-                    // console.log("Youre either coming from or going to selet-membership  [isMembershipValid()]");
+                    console.log("Youre either coming from or going to selet-membership  [isMembershipValid()]");
                     reject();
                     await router.navigate({
                         name: 'select-membership',
@@ -109,7 +113,7 @@ async function isMembershipValid(to, from, resolve, reject) {
                     })
                 }
             } else {
-                // console.log("from was empty, redirecting to select-membership");
+                console.log("from was empty, redirecting to select-membership [isMembershipValid()]");
                 // console.log(from);
                 reject();
                 await router.navigate({
@@ -125,46 +129,25 @@ async function isMembershipValid(to, from, resolve, reject) {
         }
     }
 }
+
+/**
+ * Checks if the user is successfully logged in
+ * It it is, redirects to home.
+ * If it isn't, allows you to continue to login.
+ */
 async function isLoggedIn(to, from, resolve, reject) {
     var router = this;
     var app = router.app;
-    // console.log("-Entering isLoggedIn, updating user");
     await app.methods.updateCurrentUser();
     var user = await app.methods.getLocalValue('loggedUser');
-    // console.log(user);
     var valid = await app.methods.userIsValid();
+
     if (valid) {
         reject();
-        if (!await app.methods.userHasAdmin()) {
-            app.dialog.alert(`${window.localize('no_admin_please_fill')}`);
-            await router.navigate({
-                name: 'invite-admin',
-                params: { userID: user.id }
-            })
-        } else {
-            if (!await app.methods.userHasValidMembership()) {
-                // console.log("membership wasn't valid, going to select-membership [isLoggedIn()]");
-                await router.navigate({
-                    name: 'select-membership',
-                    params: {
-                        userID: user.id,
-                        clearOnBack: "1"
-                    }
-                })
-            } else {
-                /* 
-                    puedo tener cuandos admin quiera
-                    si si resolve
-                    si no 
-                        si 
-                */
-                // console.log("Going to memories/home [isLoggedIn()]");
-                await router.navigate('/memories/home/user/' + user.id);
-            }
-        }
+        await router.navigate('/memories/home/user/' + user.id);
     } else {
         // console.log("User was not valid [isLoggedIn()]");
-        console.log(valid);
+        // console.log(valid);
         resolve();
     }
 }
@@ -190,13 +173,11 @@ var routes = [
     {
         name: 'ondemand',
         path: '/ondemand',
-        // beforeEnter: isLoggedIn,
         component: OnDemand,
     },
     {
         name: 'onboarding',
         path: '/onboarding',
-        // beforeEnter: isLoggedIn,
         component: OnBoarding,
     },
     {
@@ -394,6 +375,7 @@ console.log(err);
         }
     },
     {
+        //Is this page still needed?
         name: 'view-family',
         path: '/family/view',
         beforeEnter: [checkAuth, isMembershipValid],
@@ -500,7 +482,7 @@ console.log(err);
     {
         name: 'home-memories',
         path: '/memories/home/user/:userID',
-        beforeEnter: [checkAuth, isMembershipValid],
+        beforeEnter: [checkAuth],
         options: {
             reloadAll: true,
             ignoreCache: true,
@@ -514,69 +496,80 @@ console.log(err);
             var userID = routeTo.params.userID;
             var loggedUser = await app.methods.getLocalValue('loggedUser');
             var contacts = await app.methods.getLocalValue('loggedUserContacts');
-            // console.log(contacts);
             var adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
-            // console.log(contacts);
-            // console.log(`Async function to home-memories, server: ${server}`);
+            var canAdmin = await app.methods.userCanAdminContacts();
+            var validMembership = await app.methods.userHasValidMembership();
             var currentUser;
+
+            app.preloader.show("blue");
             if (userID == -1) {
                 currentUser = loggedUser;
             } else {
                 await app.request.promise.get(`${app.data.server}/users/${userID}`).then(function(targetUserRes) {
                     currentUser = JSON.parse(targetUserRes.data);
-                    // console.log("---------------------- This dude exists yeah");
                 }).catch(async function(err) {
                     currentUser = loggedUser;
-                    // console.log("-----------------------Dude doesn't exist unu");
                     app.dialog.alert(window.localize('user_not_found'));
+                    app.preloader.hide();
                 });
             }
             let loggedID = loggedUser ? loggedUser.id : -1;
             var isEditing = (currentUser.id != loggedID);
             var userAuthorized = false;
-            // console.log(`IsEditing? ${isEditing} (${currentUser.id} != ${loggedUser.id})`);
             if (isEditing){
                 for (const contact in adminContacts) {
-                    // if (currentUser.id == contacts[contact].id) {
-                    //     const element = contacts[contact];
-                        
-                    // }
                     const element = adminContacts[contact];
                     if(element.owner.id==currentUser.id){
                         userAuthorized = true
                     }
                 }
-                // for contact in contacts{
-                //     if(currentUser.id == contact.contact.id && contact.isAdmin){
-                //         userAuthorized = true
-                //     } 
-                // }
                 if(!userAuthorized){
+                    app.preloader.hide();
                     reject();
-                    await router.navigate('/');
-                    // console.log('reject');
-                    app.dialog.alert(window.localize('no_access'),window.localize('sorry_title'),function(){
-                        
-                        
-                    });
+                    await router.navigate('/memories/home/user/' + loggedUser.id);
+                    app.dialog.alert(window.localize('no_access'),window.localize('sorry_title'),function(){});
                 }
             }
-            if (!isEditing || userAuthorized)
+            if (!isEditing && !validMembership)
             {
-                // console.log(`Sipsip, esta entrando a el home porque si puede\r\nEdit: ${isEditing}, Authorized: ${userAuthorized}`);
+                // if (adminContacts.length > 0)
+                if (canAdmin)
+                {
+                    app.preloader.hide();
+                    // console.log(`Nopnop, esta redireccionando el home porque no puede\r\nEdit: ${isEditing}, Authorized: ${userAuthorized}, validMembership: ${validMembership}`);
+                    reject();
+                    await router.navigate(`/memories/home/user/${adminContacts[0].owner.id}`);
+                }
+                else
+                {
+                    app.preloader.hide();
+                    reject();
+                    await router.navigate(`/memories/dashboard/user/${currentUser.id}/${"0"}`);
+                    // resolve({
+                    //     component: MemoryDashboard, 
+                    // }, {
+                    //     context: {
+                    //         Server: app.data.server,
+                    //         Memories: getMemories(baseMemories),
+                    //         CurrentUser: currentUser.id,
+                    //         Swiper: swiper
+                    //     }
+                    // })
+                }
+            }
+            else if (!isEditing || userAuthorized)
+            {
+                // console.log(`Sipsip, esta entrando a el home porque si puede\r\nEdit: ${isEditing}, Authorized: ${userAuthorized}, validMembership: ${validMembership}`);
                 var ownedMemories;
                 await app.request.promise.get(`${app.data.server}/memories/?owners.id=${currentUser.id}`).then(function(memoriesResult) {
                     ownedMemories = JSON.parse(memoriesResult.data);
-                    // console.log(ownedMemories.Memories);
-                    // console.log("-.- memories -.-");
-                    // console.log(ownedMemories);
                     ownedMemories.sort(app.methods.sortByDate);
                     // ownedMemories.Memories.scheduled.sort(app.methods.sortByDate);
-                    // console.log(ownedMemories);
     
                 }).catch(function(err) {
                     console.log("Error fetching memories");
                     console.log(err);
+                    app.preloader.hide();
                 });
     
                 var baseFundations;
@@ -585,8 +578,9 @@ console.log(err);
                 }).catch(function(err) {
                     console.log("Error fetching fundations");
                     console.log(err);
+                    app.preloader.hide();
                 });
-                // console.log('resolve home', userID);
+                app.preloader.hide();
                 resolve({
                     component: HomeMemories,
                 }, {
@@ -595,6 +589,7 @@ console.log(err);
                         LoggedUser: loggedUser,
                         CurrentUser: currentUser,
                         IsEditing: isEditing,
+                        validMembership: validMembership,
                         Contacts: getContacts(contacts, false, true),
                         AdminedContacts: getContacts(adminContacts, true, false),
                         Memories: getMemories(ownedMemories),
@@ -650,7 +645,6 @@ console.log(err);
                             } else {
                                 auxMemory.contacts.urls.push('');
                             }
-                            //auxMemory.contacts.urls.push(contact.profilePicture.url);
                         })
                         auxMemory.contacts.extraContacts = auxMemory.contacts.urls.length - auxMemory.contacts.limitedUrls.length;
 
@@ -661,19 +655,13 @@ console.log(err);
                         }
                     })
                 }
-                // console.log("Memory context generated [memories-home.getMemories]");
-                // console.log(memoryObject);
                 return memoryObject;
             }
 
             function getContacts(baseRelation, admin, getRelation) {
-                // console.log("Home.getContacts()");
-                // console.log(baseRelation);
                 let contactsObject = [];
                 if (baseRelation) {
                     baseRelation.forEach(relation => {
-                        // console.log("Checking relation:");
-                        // console.log(relation);
                         contactsObject.push({
                             id: getRelation ? relation.id : relation.owner.id,
                             name: admin ? ((relation.owner.name != null && relation.owner.name.trim() != "") ? relation.owner.name : relation.owner.username) : (relation.nickname != null && relation.nickname.trim() != "") ? relation.nickname : ((relation.contact.name != null && relation.contact.name.trim() != "") ? relation.contact.name : relation.contact.username),
@@ -682,13 +670,10 @@ console.log(err);
                         });
                     });
                 }
-                // console.log(contactsObject);
                 return contactsObject;
             }
 
             function getFundations(baseFund) {
-                // console.log("Get Fundations");
-                // console.log(baseFundations);
                 let fundations = [];
                 if (baseFund) {
                     baseFund.forEach(fund => {
@@ -702,7 +687,6 @@ console.log(err);
                         });
                     })
                 }
-                // console.log(fundations);
                 return fundations;
             }
         }
@@ -753,6 +737,12 @@ console.log(err);
                 var app = router.app;
                 var userID = routeTo.params.userID;
                 var swiper = routeTo.params.swiper;
+                var loggedUser = await app.methods.getLocalValue('loggedUser');
+
+                if (loggedUser.id != userID)
+                {
+                    userID = loggedUser.id;
+                }
 
                 var baseMemories = null;
                 await app.request.promise.get(`${app.data.server}/memories/?recipients.id=${userID}&sent=true`).then(function(memResult) {
@@ -762,8 +752,6 @@ console.log(err);
                     console.log(err);
                 })
                 // console.log("Swiper [routes.js]", swiper);
-
-                log(getMemories(baseMemories));
 
                 resolve({
                     component: MemoryDashboard,
@@ -778,9 +766,8 @@ console.log(err);
 
                 function getMemories(baseMem) {
                     let memObject = [];
-
                     baseMem.forEach(mem => {
-                        if (mem.owners[0].currentMembership.isActive)
+                        if (mem.owners[0].currentMembership != null ? mem.owners[0].currentMembership.isActive : false)
                             memObject.push(getMemory(mem));
                     })
 
@@ -947,10 +934,11 @@ console.log(err);
         name: 'view-membership',
         path: '/membership/view/user/:userID',
         beforeEnter: [checkAuth],
-        async: function(routeTo, routeFrom, resolve, reject) {
+        async: async function(routeTo, routeFrom, resolve, reject) {
             var router = this;
             var app = router.app;
             var userID = routeTo.params.userID;
+            var adminContacts = await app.methods.getLocalValue('loggedUserAdminedContacts');
             app.preloader.show();
             // console.log("Move to view [view-membership.async]");
             // console.log(`${app.data.server}/users/${userID} [view-membership.async]`);
@@ -959,14 +947,16 @@ console.log(err);
                     // console.log("Current membership: [view-membership.json]")
                     // console.log(res.data.currentMembership);
                     let plan = GetPlanName(res.data.currentMembership);
+                    let shouldClearOnBack = adminContacts != null ? (adminContacts.length > 0 ? 0 : 1) : 1;
                     if (plan === "None") {
+                        console.log("Going from view-membership to select-membership [view-membership.async]");
                         app.preloader.hide();
                         reject();
                         router.navigate({
                             name: 'select-membership',
                             params: {
                                 userID: res.data.id,
-                                clearOnBack: "1"
+                                clearOnBack: shouldClearOnBack
                             }
                         })
                     } else {
@@ -1001,10 +991,10 @@ console.log(err);
             }
 
             function GetPlanName(plan) {
-                // console.log("GetPlanName");
-                // console.log(plan);
+                console.log("GetPlanName");
+                console.log(plan);
                 let isMembershipNull = plan === null;
-                let isPlanNull = plan.plan === null;
+                let isPlanNull = !isMembershipNull ? plan.plan === null : true;
                 if (isMembershipNull || isPlanNull) {
                     return "None";
                 } else {
@@ -1210,11 +1200,6 @@ console.log(err);
                 let plan = (userMembership.plan.id.toString() === newMembership.plan.toString());
                 let token = (userMembership.token === newMembership.token);
                 let billedCard = (userMembership.billedCard === newMembership.billedCard);
-
-                // console.log(`(${userMembership.nextBillingDate}) vs (${newMembership.nextBillingDate}) = ${billingDate}`);
-                // console.log(`(${userMembership.plan.id}) vs (${newMembership.plan}) = ${plan}`);
-                // console.log(`(${userMembership.token}) vs (${newMembership.token}) = ${token}`);
-                // console.log(`(${userMembership.billedCard}) vs (${newMembership.billedCard}) = ${billedCard}`);
 
                 if (billingDate && plan && token && billedCard) {
                     return true;
