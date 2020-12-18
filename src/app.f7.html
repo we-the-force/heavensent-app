@@ -196,7 +196,7 @@
                     loggedUser = await updateUser();
 					app.progressbar.set('#memories-progress');
                     updateControls();
-					if(loggedUser.currentMembership.plan.name=='VIP'){
+					if(loggedUser.currentMembership != null && loggedUser.currentMembership.plan != null && loggedUser.currentMembership.plan.name=='VIP'){
 						$$('#app-on-demand').css('display', 'block');
 					}
                     $$("#edit-profile").off("click").on("click", async function(e) {
