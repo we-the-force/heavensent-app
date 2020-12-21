@@ -451,7 +451,9 @@
                 await app.methods.loadContacts();
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
                 // console.log("Loading current user:\r\n", currentUser);
-                user.memoriesUsed = user.memories.scheduled.length+user.memories.pending.length;
+                // user.memoriesUsed = user.memories.scheduled.length+user.memories.pending.length;
+                user.memoriesUsed = page.route.context.MyMemories.scheduled.length + page.route.context.MyMemories.pending.length;
+                console.log("El user y asi\r\n", user);
                 user.memoriesLeft = loggedUser.currentMembership != null ? (loggedUser.currentMembership.plan != null ? loggedUser.currentMembership.plan.memoriesPerYear : 0) : 0;
                 // console.log(user);
                 // console.log(page.route.context);
