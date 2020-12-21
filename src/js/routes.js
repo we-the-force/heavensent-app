@@ -545,16 +545,6 @@ console.log(err);
                     app.preloader.hide();
                     reject();
                     await router.navigate(`/memories/dashboard/user/${currentUser.id}/${"0"}`);
-                    // resolve({
-                    //     component: MemoryDashboard, 
-                    // }, {
-                    //     context: {
-                    //         Server: app.data.server,
-                    //         Memories: getMemories(baseMemories),
-                    //         CurrentUser: currentUser.id,
-                    //         Swiper: swiper
-                    //     }
-                    // })
                 }
             }
             else if (!isEditing || userAuthorized)
@@ -565,7 +555,17 @@ console.log(err);
                     ownedMemories = JSON.parse(memoriesResult.data);
                     ownedMemories.sort(app.methods.sortByDate);
                     // ownedMemories.Memories.scheduled.sort(app.methods.sortByDate);
-    
+                }).catch(function(err) {
+                    console.log("Error fetching memories");
+                    console.log(err);
+                    app.preloader.hide();
+                });
+
+                var myMemories;
+                await app.request.promise.get(`${app.data.server}/memories/?owners.id=${loggedUser.id}`).then(function(memoriesResult) {
+                    myMemories = JSON.parse(memoriesResult.data);
+                    myMemories.sort(app.methods.sortByDate);
+                    // myMemories.Memories.scheduled.sort(app.methods.sortByDate);
                 }).catch(function(err) {
                     console.log("Error fetching memories");
                     console.log(err);
@@ -593,6 +593,7 @@ console.log(err);
                         Contacts: getContacts(contacts, false, true),
                         AdminedContacts: getContacts(adminContacts, true, false),
                         Memories: getMemories(ownedMemories),
+                        MyMemories: getMemories(myMemories),
                         Fundations: getFundations(baseFundations),
                     }
                 });

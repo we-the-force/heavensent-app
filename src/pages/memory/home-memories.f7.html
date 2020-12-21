@@ -451,7 +451,9 @@
                 await app.methods.loadContacts();
                 var loggedUser = await app.methods.getLocalValue('loggedUser');
                 // console.log("Loading current user:\r\n", currentUser);
-                user.memoriesUsed = user.memories.scheduled.length+user.memories.pending.length;
+                // user.memoriesUsed = user.memories.scheduled.length+user.memories.pending.length;
+                user.memoriesUsed = page.route.context.MyMemories.scheduled.length + page.route.context.MyMemories.pending.length;
+                console.log("El user y asi\r\n", user);
                 user.memoriesLeft = loggedUser.currentMembership != null ? (loggedUser.currentMembership.plan != null ? loggedUser.currentMembership.plan.memoriesPerYear : 0) : 0;
                 // console.log(user);
                 // console.log(page.route.context);
@@ -469,13 +471,36 @@
                 // console.log(app.device);
                 // app.dialog.alert(app.device.os + ", ver 0.0.2.26");
 
-                if (!isEditing && await app.methods.userHasValidMembership())
+
+                // console.log("Before:\r\n",$$("#memsprogress-container"));
+                let memProgressHasNone = $$("#memsprogress-container").hasClass("none");
+                // console.log(`memProgressHasNone: ${memProgressHasNone}`);
+                if (await app.methods.userHasValidMembership())
                 {
-                    if (!await app.methods.userHasAdmin())
+                    // console.log("Si tenia membership");
+                    if (!isEditing)
                     {
-                        $$('#invite-admin-button').removeClass('none');
+                        if (!await app.methods.userHasAdmin())
+                        {
+                            $$('#invite-admin-button').removeClass('none');
+                        }
+                    }
+                    if (memProgressHasNone)
+                    {
+                        // console.log("Quitandole el none al memsprogress-container");
+                        $$("#memsprogress-container").removeClass("none");
                     }
                 }
+                else
+                {
+                    // console.log("No tenia membership :c");
+                    if (!memProgressHasNone)
+                    {
+                        // console.log("poniendole el none al memsprogress-container");
+                        $$("#memsprogress-container").addClass("none");
+                    }
+                }
+                // console.log("After:\r\n",$$("#memsprogress-container"));
 
                 // Check if you're trying to access your own home while not having a valid membership.
                 // If you are, redirect load the first person in your managed users list.
