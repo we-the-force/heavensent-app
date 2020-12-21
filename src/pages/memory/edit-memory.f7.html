@@ -975,9 +975,6 @@
                             "description": "",
                             "cover": "",
                             "media": [],
-                            "owners": [{
-                                "id": loggedUser.id
-                            }],
                             "recipients": [],
                             "reminderType": "none",
                             "reminder": {
@@ -1110,7 +1107,7 @@
                                     result.errors++;
                                 } else {
                                     let mom_date = moment(date);
-                                    let membership = loggedUser.currentMembership;
+                                    let membership = memoryOwner.currentMembership;
                                     let creation_date = moment.unix(membership.creation_date);
                                     if (mom_date.isSameOrBefore(creation_date.add(10, 'y'))) {
                                         result.memory.reminder.date = date;
