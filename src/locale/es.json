@@ -4,7 +4,8 @@
 
     "minor_detected": "Detectamos un menor de edad....",
     "minor_detected_description": "No sugerimos compartir un mensaje con un menor, ¿quieres continuar con esto de todos modos?",
-    "no_admin_message": "¡Su cuenta no tiene un administrador asignado! Por favor, agregue un administrador aqui.",
+    "no_admin_message": "¡Su cuenta no tiene un administrador asignado! Por favor, agregue un administrador.",
+    "add_admin": "Agregar Administrador",
     "sorry_title": "Lo sentimos...",
     "no_access": "No tiene acceso a esta página.",
     "user_not_found": "Tuvimos problemas cargando la cuenta de este usuario, parece que ya no existe. Si cree que hay un error, por favor contacte a soporte.",

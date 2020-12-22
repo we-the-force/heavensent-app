@@ -67,12 +67,16 @@
 		<div class="page-content" id="home-memories">
 
             <!-- Le puse class 'toolbar none' nomas para que haga el comportamiento. Con que el none lo desaparezca deberia estar jalando el comportamiento automatico. -->
-            <div class="toolbar none" id="invite-admin-button">
+            
+            <div class="card card-outline">
+              <!-- <div class="card-header">Card header</div> -->
+              <div class="card-content card-content-padding">{{localize "no_admin_message"}}.</div>
+              <div class="card-footer" id="invite-admin-button">
                 <a href="/admin/invite/user/{{LoggedUser.id}}">
-                    {{localize "no_admin_message"}}
-                </a>
+                      Add Admin
+                  </a>
+              </div>
             </div>
-
 			<!-- <div class="searchbar-backdrop"></div> -->
 			<div class="sqr_bck" id="sqr1"></div>
 			<div class="sqr_bck" id="sqr2"></div>
