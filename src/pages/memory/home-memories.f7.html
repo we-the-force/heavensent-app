@@ -476,12 +476,10 @@
                 // app.dialog.alert(app.device.os + ", ver 0.0.2.26");
 
 
-                console.log("Before:\r\n",$$("#memsprogress-container"));
-                let memProgressHasNone = $$("#memsprogress-container").hasClass("none");
-                console.log(`memProgressHasNone: ${memProgressHasNone}`);
+                // console.log("Before:\r\n",$$("#memsprogress-container"));
                 if (await app.methods.userHasValidMembership())
                 {
-                    console.log("Si tenia membership");
+                    // console.log("Si tenia membership");
                     if (!isEditing)
                     {
                         if (!await app.methods.userHasAdmin())
@@ -489,22 +487,18 @@
                             $$('#invite-admin-button').removeClass('none');
                         }
                     }
-                    if (memProgressHasNone)
-                    {
-                        console.log("Quitandole el none al memsprogress-container");
-                        $$("#memsprogress-container").removeClass("none");
-                    }
+                    // console.log("Quitandole el none, poniendole el block al memsprogress-container");
+                    $$("#memsprogress-container").removeClass("none");
+                    $$("#memsprogress-container").addClass("block");
                 }
                 else
                 {
-                    console.log("No tenia membership :c");
-                    if (!memProgressHasNone)
-                    {
-                        console.log("poniendole el none al memsprogress-container");
-                        $$("#memsprogress-container").addClass("none");
-                    }
+                    // console.log("No tenia membership :c");
+                    // console.log("poniendole el none, quitandole el block al memsprogress-container");
+                    $$("#memsprogress-container").removeClass("block");
+                    $$("#memsprogress-container").addClass("none");
                 }
-                console.log("After:\r\n",$$("#memsprogress-container"));
+                // console.log("After:\r\n",$$("#memsprogress-container"));
 
                 // Check if you're trying to access your own home while not having a valid membership.
                 // If you are, redirect load the first person in your managed users list.
