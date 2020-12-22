@@ -142,7 +142,7 @@
     "billed_with": "Billed with:",
     "change_plan": "Upgrade plan",
     "upgrade_subs": "Upgrade Membership",
-    "30_no_refund": "We're sorry, you can only upgrade or cancel your plan within the first 30 days of purchase.",
+    "30_no_refund": "We're sorry, you can only upgrade or cancel your plan within the first 30 days of purchase. However, even if not refundable and you still want to cancel your account please contact us at info@heavensent.com",
     "upgrade_subs_dialog": "For upgrading your plan, first, you need to cancel the current one and then select the one you want. Do you want to upgrade ? ",
     "cancel_subs": "Cancel Membership",
     "cancel_subs_no_refund": "More than 30 days have passed since your payment, this operation will not generate a refund and it is permanent, are you sure you want to continue?",
