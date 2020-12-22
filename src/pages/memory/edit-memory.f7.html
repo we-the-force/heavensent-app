@@ -429,7 +429,10 @@
                         $$('.deliver-cont .deliver-info .time-info').addClass('none');
                     } else {
                         console.log(`Session storage date: ${JSON.parse(sessionStorage.date)}`);
-                        $$('#deliver-date').val(JSON.parse(sessionStorage.date).split("T")[0]);
+                        if (sessionStorage.date != null)
+                        {
+                            $$('#deliver-date').val(JSON.parse(sessionStorage.date).split("T")[0]);
+                        }
                         // $$('#deliver-time').val(JSON.parse(sessionStorage.time));
                     }
                     $$('#select-repeat p').text(JSON.parse(sessionStorage.repeat))
