@@ -68,10 +68,10 @@
 
             <!-- Le puse class 'toolbar none' nomas para que haga el comportamiento. Con que el none lo desaparezca deberia estar jalando el comportamiento automatico. -->
             
-            <div class="card card-outline">
+            <div class="card card-outline none" id="invite-admin-button">
               <!-- <div class="card-header">Card header</div> -->
               <div class="card-content card-content-padding">{{localize "no_admin_message"}}.</div>
-              <div class="card-footer" id="invite-admin-button">
+              <div class="card-footer" >
                 <a href="/admin/invite/user/{{LoggedUser.id}}">
                       Add Admin
                   </a>
